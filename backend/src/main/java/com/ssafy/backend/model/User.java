@@ -1,23 +1,31 @@
 package com.ssafy.backend.model;
 
 import com.sun.istack.NotNull;
+import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 
 @Data
-@Entity
+@AllArgsConstructor
 public class User {
-  @Id private Integer id;
-  @NotNull private String password;
-  @NotNull private String email;
-  @NotNull private String nickname;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Integer id;
 
-  public User() {}
-  public User(Integer id, String password, String email, String nickname) {
-    this.id = id;
-    this.password = password;
-    this.email = email;
-    this.nickname = nickname;
+  private String password;
+  private String email;
+  private String nickname;
+  private List<com.ssafy.backend.model.Data> dataList;
+
+  @Override
+  public String toString() {
+    return String.format(
+        "Customer[id=%s, nickname='%s', email='%s']",
+        id, nickname, email);
   }
 }
