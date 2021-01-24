@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Reference;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
@@ -39,6 +38,8 @@ public class ClassEntity {
   private List<Section> sectionList = new ArrayList<Section>();
   @Builder.Default
   private List<Tag> tagList = new ArrayList<Tag>();
+  @NonNull
+  private DefaultTimeStamp timeStamp;
 
   public void appendReview(ClassReview review) {
     reviewList.add(review);
