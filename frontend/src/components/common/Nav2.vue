@@ -42,13 +42,16 @@
                 bottom
                 offset-x
                 origin="center center"
-                transition="slide-x-transition">
+                transition="slide-x-transition"
+                nudge-right="16">
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn
                         depressed
                         color="white"
                         v-bind="attrs"
-                        v-on="on">
+                        v-on="on"
+                        width="100"
+                        class="text-left">
                             <v-list-item-title>{{ item.title }}</v-list-item-title>
                         </v-btn>
                     </template>
