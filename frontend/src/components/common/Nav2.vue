@@ -1,9 +1,16 @@
 <template>
   <div>
     <v-app-bar
-    color="indigo">
+    app
+    color="amber darken-1"
+    elevate-on-scroll>
       <v-app-bar-nav-icon>
-          <img src="@/assets/logo.png" alt=""/>
+          <v-img 
+          src="@/assets/logo.png" 
+          alt=""
+          width="30"
+          height="30"
+          />
       </v-app-bar-nav-icon>
 
         <v-menu
@@ -16,7 +23,7 @@
                 <v-btn
                 depressed
                 dark
-                color="indigo"
+                color="amber darken-1"
                 v-bind="attrs"
                 v-on="on">
                     클래스
@@ -60,14 +67,14 @@
         <v-btn
         depressed
         dark
-        color="indigo"
+        color="amber darken-1"
         >
         연습실    
         </v-btn>
         <v-btn
         depressed
         dark
-        color="indigo"
+        color="amber darken-1"
         >
         커뮤니티
             <v-icon>
@@ -91,13 +98,13 @@
         <v-btn
         depressed
         dark
-        color="indigo">
+        color="amber darken-1">
             로그인
         </v-btn>
         <v-btn
         depressed
         dark
-        color="indigo">
+        color="amber darken-1">
             회원가입
         </v-btn>
     </v-app-bar>
@@ -128,10 +135,6 @@ export default Vue.extend({
 </script>
 
 <style>
-img {
-    width: 30px;
-    height: 30px;
-}
 .search {
     max-height: 50px;
 }
