@@ -1,56 +1,138 @@
 <template>
-  <div id="Nav">
-    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light row">
-        <div class="col-5">
-            <a class="navbar-brand" href="#">로고</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Dropdown
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                </li>
-            </ul>
-            </div>
-        </div>
-        <div class="col-3">
-            2
-        </div>
-        <div class="col-1">
-            3
-        </div>
-        <div class="col-3">
-            4
-        </div>
+  <div>
+    <v-app-bar
+    color="indigo">
+      <v-app-bar-nav-icon>
+          <img src="@/assets/logo.png" alt=""/>
+      </v-app-bar-nav-icon>
 
-    </nav>
+        <v-menu
+        rounded="0"
+        bottom
+        offset-y
+        origin="center center"
+        transition="slide-y-transition">
+            <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                depressed
+                dark
+                color="indigo"
+                v-bind="attrs"
+                v-on="on">
+                    클래스
+                    <v-icon>
+                        mdi-chevron-down
+                    </v-icon>
+                </v-btn>
+            </template>
+            <v-list>
+                <v-list-item
+                v-for="(item, i) in category"
+                :key="i"
+                >
+                <v-menu
+                rounded="0"
+                bottom
+                offset-x
+                origin="center center"
+                transition="slide-x-transition">
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                        depressed
+                        color="white"
+                        v-bind="attrs"
+                        v-on="on">
+                            <v-list-item-title>{{ item.title }}</v-list-item-title>
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item
+                        v-for="(item, i) in instruments"
+                        :key="i"
+                        >
+                        <v-list-item-title>{{ item.title }}</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+                </v-list-item>
+            </v-list>
+        </v-menu>
+        <v-btn
+        depressed
+        dark
+        color="indigo"
+        >
+        연습실    
+        </v-btn>
+        <v-btn
+        depressed
+        dark
+        color="indigo"
+        >
+        커뮤니티
+            <v-icon>
+                mdi-chevron-down
+            </v-icon>
+        </v-btn>
+        <v-spacer></v-spacer>
+        <div class="search">
+            <v-text-field
+            solo>
+            </v-text-field>
+        </div>
+        <v-btn icon
+        dark>
+            <v-icon>mdi-magnify</v-icon>
+        </v-btn>
+        <v-btn icon
+        dark>
+            <v-icon>mdi-bell</v-icon>
+        </v-btn>
+        <v-btn
+        depressed
+        dark
+        color="indigo">
+            로그인
+        </v-btn>
+        <v-btn
+        depressed
+        dark
+        color="indigo">
+            회원가입
+        </v-btn>
+    </v-app-bar>
   </div>
 </template>
 
 <script lang="ts">
-export default {
-
-}
+import Vue from 'vue'
+export default Vue.extend({
+    data () {
+      return {
+          category: [
+              { title:'현악기' },
+              { title:'금관악기' },
+              { title:'목관악기' },
+              { title:'타악기' },
+              { title:'전자악기' },
+              { title:'노래' },
+          ],
+          instruments:[
+              { title:'바이올린' },
+              { title:'비올라' },
+              { title:'첼로' },
+          ]
+      }
+    },
+})
 </script>
 
 <style>
-
+img {
+    width: 30px;
+    height: 30px;
+}
+.search {
+    max-height: 50px;
+}
 </style>
