@@ -1,10 +1,9 @@
 package com.ssafy.backend.model;
 
 import java.util.List;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 
 import lombok.*;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
 @Data
@@ -12,8 +11,7 @@ import org.springframework.data.annotation.Id;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private ObjectId id;
 
     //회원정보(필수)
     private String email;
