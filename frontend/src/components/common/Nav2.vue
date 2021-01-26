@@ -3,9 +3,8 @@
     <v-app-bar
     color="indigo">
       <v-app-bar-nav-icon>
-          <img src="@/assets/logo.png" alt=""/>
+        <img src="@/assets/logo.png" alt=""/>
       </v-app-bar-nav-icon>
-
         <v-menu
         rounded="0"
         bottom
@@ -100,6 +99,13 @@
         color="indigo">
             회원가입
         </v-btn>
+        <v-btn
+        depressed
+        dark
+        color="indigo"
+        :to="{name: 'mypage'}">
+            MyPage
+        </v-btn>
     </v-app-bar>
   </div>
 </template>
@@ -128,6 +134,8 @@ export default Vue.extend({
 </script>
 
 <style>
+
+
 img {
     width: 30px;
     height: 30px;
