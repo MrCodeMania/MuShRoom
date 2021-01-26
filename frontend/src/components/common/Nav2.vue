@@ -12,7 +12,7 @@
           height="30"
           />
       </v-app-bar-nav-icon>
-      <v-btn :to="{name:'Home'}" >머쉬룸</v-btn>
+      <v-btn :to="{name:'Home'}">머쉬룸</v-btn>
 
         <v-menu
         rounded="0"
