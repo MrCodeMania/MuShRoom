@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import MyPage from '../views/MyPage.vue'
 import Home from '../views/Home.vue'
+import Class from '../views/Class.vue'
 
 Vue.use(VueRouter)
 
@@ -68,6 +69,11 @@ const routes: Array<RouteConfig> = [
       },
     ]
   },
+  {
+    path: '/class',
+    name: 'Class',
+    component: Class
+  }
 ]
 
 const router = new VueRouter({
