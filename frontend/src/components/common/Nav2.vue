@@ -1,12 +1,6 @@
 <template>
   <div>
     <v-app-bar
-<<<<<<< HEAD
-    color="indigo">
-      <v-app-bar-nav-icon>
-        <img src="@/assets/logo.png" alt=""/>
-      </v-app-bar-nav-icon>
-=======
     app
     color="amber darken-1"
     elevate-on-scroll>
@@ -18,8 +12,8 @@
           height="30"
           />
       </v-app-bar-nav-icon>
+      <v-btn :to="{name:'Home'}" >머쉬룸</v-btn>
 
->>>>>>> 6520594b6822b5480aeb9cb18eba9d3b2c504275
         <v-menu
         rounded="0"
         bottom
@@ -30,11 +24,7 @@
                 <v-btn
                 depressed
                 dark
-<<<<<<< HEAD
-                color="indigo"
-=======
                 color="amber darken-1"
->>>>>>> 6520594b6822b5480aeb9cb18eba9d3b2c504275
                 v-bind="attrs"
                 v-on="on">
                     클래스
@@ -53,24 +43,16 @@
                 bottom
                 offset-x
                 origin="center center"
-<<<<<<< HEAD
-                transition="slide-x-transition">
-=======
                 transition="slide-x-transition"
                 nudge-right="16">
->>>>>>> 6520594b6822b5480aeb9cb18eba9d3b2c504275
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn
                         depressed
                         color="white"
                         v-bind="attrs"
-<<<<<<< HEAD
-                        v-on="on">
-=======
                         v-on="on"
                         width="100"
                         class="text-left">
->>>>>>> 6520594b6822b5480aeb9cb18eba9d3b2c504275
                             <v-list-item-title>{{ item.title }}</v-list-item-title>
                         </v-btn>
                     </template>
@@ -89,22 +71,14 @@
         <v-btn
         depressed
         dark
-<<<<<<< HEAD
-        color="indigo"
-=======
         color="amber darken-1"
->>>>>>> 6520594b6822b5480aeb9cb18eba9d3b2c504275
         >
         연습실    
         </v-btn>
         <v-btn
         depressed
         dark
-<<<<<<< HEAD
-        color="indigo"
-=======
         color="amber darken-1"
->>>>>>> 6520594b6822b5480aeb9cb18eba9d3b2c504275
         >
         커뮤니티
             <v-icon>
@@ -128,18 +102,13 @@
         <v-btn
         depressed
         dark
-<<<<<<< HEAD
-        color="indigo">
-=======
         color="amber darken-1">
->>>>>>> 6520594b6822b5480aeb9cb18eba9d3b2c504275
             로그인
         </v-btn>
         <v-btn
         depressed
         dark
-<<<<<<< HEAD
-        color="indigo">
+        color="amber darken-1">
             회원가입
         </v-btn>
         <v-btn
@@ -149,11 +118,6 @@
         :to="{name: 'mypage'}">
             MyPage
         </v-btn>
-=======
-        color="amber darken-1">
-            회원가입
-        </v-btn>
->>>>>>> 6520594b6822b5480aeb9cb18eba9d3b2c504275
     </v-app-bar>
   </div>
 </template>
@@ -182,15 +146,6 @@ export default Vue.extend({
 </script>
 
 <style>
-<<<<<<< HEAD
-
-
-img {
-    width: 30px;
-    height: 30px;
-}
-=======
->>>>>>> 6520594b6822b5480aeb9cb18eba9d3b2c504275
 .search {
     max-height: 50px;
 }
