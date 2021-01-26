@@ -3,7 +3,8 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import MyPage from '../views/MyPage.vue'
 import Home from '../views/Home.vue'
 import Class from '../views/Class.vue'
-
+import Login from '../views/User/Login.vue'
+import Studentregist from '../views/User/studentRegist.vue'
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
@@ -73,6 +74,16 @@ const routes: Array<RouteConfig> = [
     path: '/class',
     name: 'Class',
     component: Class
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/register/student',
+    name: 'studentRegist',
+    component: Studentregist
   }
 ]
 

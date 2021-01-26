@@ -1,5 +1,8 @@
 <template>
-  <div class="wrapper d-flex flex-column align-center justify-center">
+  <div
+    id="login"
+    class="wrapper d-flex flex-column align-center justify-center"
+  >
     <div class="singup mt-10">
       <v-card style="text-align: center" width="200px">
         <v-icon class="mt-10">mdi-music-circle-outline</v-icon>
@@ -87,41 +90,34 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { Component, Vue } from "vue-property-decorator";
 
-export default Vue.extend({
-  name: "App",
-
-  components: {},
-
-  data: () => ({
-    loginType: false,
-    valid: true,
-    email: "",
-    password: "",
-    emailRules: [
-      (v: string) => !!v || "이메일을 입력하세요",
-      (v: string) => /.+@.+\..+/.test(v) || "이메일형식에 맞지 않습니다",
-    ],
-    pwdRules: [(v: string) => !!v || "비밀번호를 입력하세요"],
-    list: ["학생", "튜터"],
-  }),
-  methods: {
-    test() {
-      this.loginType = !this.loginType;
-      console.log(this.loginType ? "학생" : "튜터");
-    },
-    go() {
-      console.log(
-        this.loginType ? "학생 ~~~~~~~~~~" : "튜터ㅓㅓㅓ어어어어ㅓ어어"
-      );
-      console.log("아이디 비밀번호 찾기하러 가즈아ㅏㅏㅏㅏㅏㅏ");
-    },
-    register() {
-      console.log("회원가입페이지로ㅗㅗㅗ오오오오오롱ㄹㅇ와ㅣ잉");
-    },
-  },
-});
+@Component
+export default class Login extends Vue {
+  private loginType = false;
+  private valid = true;
+  private email = "";
+  private password = "";
+  private emailRules = [
+    (v: string) => !!v || "이메일을 입력하세요",
+    (v: string) => /.+@.+\..+/.test(v) || "이메일형식에 맞지 않습니다",
+  ];
+  private pwdRules = [(v: string) => !!v || "비밀번호를 입력하세요"];
+  private list: any = ["학생", "튜터"];
+  test() {
+    this.loginType = !this.loginType;
+    console.log(this.loginType ? "학생" : "튜터");
+  }
+  go() {
+    console.log(
+      this.loginType ? "학생 ~~~~~~~~~~" : "튜터ㅓㅓㅓ어어어어ㅓ어어"
+    );
+    console.log("아이디 비밀번호 찾기하러 가즈아ㅏㅏㅏㅏㅏㅏ");
+  }
+  register() {
+    console.log("회원가입페이지로ㅗㅗㅗ오오오오오롱ㄹㅇ와ㅣ잉");
+  }
+}
 </script>
 <style>
 .wrapper {

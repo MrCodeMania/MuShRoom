@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="studentRegist">
     <div class="d-flex justify-content-center align-content-center">
       <v-col cols="12" md="5">
         <v-form
@@ -52,35 +52,32 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-export default Vue.extend({
-  data: () => ({
-    valid: false,
-    name: "",
-    nameRules: [(v: string) => !!v || "이름이 필요해요"],
-    email: "",
-    emailRules: [
-      (v: string) => !!v || "이메일이 필요해요",
-      (v: string) => /.+@.+\..+/.test(v) || "이메일형식이 맞지 않습니다",
-    ],
-    password: "",
-    passwordRules: [
-      (v: string) => !!v || "비밀번호를 입력하세요",
-      (v: string) => (v && v.length >= 8) || "비밀번호는 8자리 이상 입니다.",
-      (v: string) =>
-        /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/.test(v) ||
-        "특수문자 영어 숫자 포함해야합니다.",
-    ],
-    confirmPassword: "",
-  }),
-  computed: {},
-  methods: {
-    validate() {
-      const registerForm = [this.name, this.email, this.password];
-      console.log(registerForm);
-    },
-  },
-});
+import { Component, Vue } from "vue-property-decorator";
+
+@Component
+export default class StudentRegist extends Vue {
+  private valid = false;
+  private name = "";
+  private nameRules = [(v: string) => !!v || "이름이 필요해요"];
+  private email = "";
+  private emailRules = [
+    (v: string) => !!v || "이메일이 필요해요",
+    (v: string) => /.+@.+\..+/.test(v) || "이메일형식이 맞지 않습니다",
+  ];
+  private password = "";
+  private passwordRules = [
+    (v: string) => !!v || "비밀번호를 입력하세요",
+    (v: string) => (v && v.length >= 8) || "비밀번호는 8자리 이상 입니다.",
+    (v: string) =>
+      /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/.test(v) ||
+      "특수문자 영어 숫자 포함해야합니다.",
+  ];
+  private confirmPassword = "";
+  validate() {
+    const registerForm = [this.name, this.email, this.password];
+    console.log(registerForm);
+  }
+}
 </script>
 
 <style>
