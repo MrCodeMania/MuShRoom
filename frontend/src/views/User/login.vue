@@ -103,7 +103,7 @@ export default class Login extends Vue {
     (v: string) => /.+@.+\..+/.test(v) || "이메일형식에 맞지 않습니다",
   ];
   private pwdRules = [(v: string) => !!v || "비밀번호를 입력하세요"];
-  private list: any = ["학생", "튜터"];
+  private list: string[] = ["학생", "튜터"];
   test() {
     this.loginType = !this.loginType;
     console.log(this.loginType ? "학생" : "튜터");

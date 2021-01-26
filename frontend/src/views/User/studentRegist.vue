@@ -1,90 +1,65 @@
 <template>
   <div id="studentRegist">
-    <div class="d-flex justify-content-center align-content-center">
-      <v-col cols="12" md="5">
-        <v-form
-          ref="form"
-          v-model="valid"
-          lazy-validation
-          class="align-items-center"
-        >
-          <v-text-field
-            solo
-            v-model="name"
-            :rules="nameRules"
-            label="이름"
-            prepend-inner-icon="mdi-human-handsup"
-            required
-          ></v-text-field>
+    <v-stepper v-model="nowpage" vertical class="mt-10">
+      <v-stepper-step :complete="nowpage > 1" step="1" color="teal">
+        회원정보
+        <small>이름 아이디 비밀번호</small>
+      </v-stepper-step>
 
-          <v-text-field
-            v-model="email"
-            :rules="emailRules"
-            label="E-mail"
-            required
-          ></v-text-field>
-          <v-text-field
-            type="password"
-            v-model="password"
-            :rules="passwordRules"
-            label="비밀번호"
-            required
-          ></v-text-field>
-          <v-text-field
-            type="password"
-            v-model="confirmPassword"
-            :rules="[password === confirmPassword || '비밀번호 일치안함']"
-            label="비밀번호 확인"
-            required
-          ></v-text-field>
-          <v-btn
-            :disabled="!valid"
-            color="teal"
-            id="registerEnter"
-            @click="validate"
-          >
-            가입하기
-          </v-btn>
-        </v-form>
-      </v-col>
-    </div>
+      <v-stepper-content step="1">
+        <v-card color="grey lighten-1" class="mb-12" height="100%">
+          <Account></Account>
+        </v-card>
+        <v-btn color="teal" @click="nowpage = 2"> Continue </v-btn>
+        <v-btn text @click="nowpage = 1"> Cancel </v-btn>
+      </v-stepper-content>
+
+      <v-stepper-step :complete="nowpage > 2" step="2" color="teal">
+        휴대전화 인증
+        <small>전화 인증yo</small>
+      </v-stepper-step>
+
+      <v-stepper-content step="2">
+        <v-card color="grey lighten-1" class="mb-12" height="200px">
+          <Phone></Phone>
+        </v-card>
+        <v-btn color="teal" @click="nowpage = 3"> Continue </v-btn>
+        <v-btn text @click="nowpage = 1"> Cancel </v-btn>
+      </v-stepper-content>
+
+      <v-stepper-step :complete="nowpage > 3" step="3" color="teal">
+        악기
+      </v-stepper-step>
+
+      <v-stepper-content step="3">
+        <v-card color="grey lighten-1" class="mb-12" height="100%">
+          악기 추가 //page
+        </v-card>
+        <v-btn color="teal" @click="nowpage = 4"> 가입하기 </v-btn>
+        <v-btn text @click="nowpage = 2"> 취소 </v-btn>
+      </v-stepper-content>
+    </v-stepper>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import Phone from "@/components/user/Phone.vue";
+import Account from "@/components/user/Account.vue";
 
-@Component
+@Component({
+  components: {
+    Phone,
+    Account,
+  },
+})
 export default class StudentRegist extends Vue {
-  private valid = false;
-  private name = "";
-  private nameRules = [(v: string) => !!v || "이름이 필요해요"];
-  private email = "";
-  private emailRules = [
-    (v: string) => !!v || "이메일이 필요해요",
-    (v: string) => /.+@.+\..+/.test(v) || "이메일형식이 맞지 않습니다",
-  ];
-  private password = "";
-  private passwordRules = [
-    (v: string) => !!v || "비밀번호를 입력하세요",
-    (v: string) => (v && v.length >= 8) || "비밀번호는 8자리 이상 입니다.",
-    (v: string) =>
-      /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/.test(v) ||
-      "특수문자 영어 숫자 포함해야합니다.",
-  ];
-  private confirmPassword = "";
-  validate() {
-    const registerForm = [this.name, this.email, this.password];
-    console.log(registerForm);
-  }
+  //
+  private nowpage = 1;
+  // 가입 처리
+  // 자식 컴포넌트에서 계정정보와 핸드폰 번호 그리고 악기정보 받아 오기
 }
 </script>
 
 <style>
-#registerEnter {
-  top: 0;
-  bottom: 0;
-  margin-top: auto;
-  margin-bottom: auto;
-}
 </style>
