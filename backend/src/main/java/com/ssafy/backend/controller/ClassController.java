@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -151,21 +152,26 @@ public class ClassController {
   @PostMapping("/class/{cid}/section")
   public ResponseEntity<?> insertOneSection(
       @PathVariable ObjectId cid,
-      @RequestBody IndexObject<Section> data) {
+      @RequestParam(required = false) Integer index,
+      @RequestBody Section section) {
     Optional<ClassEntity> clsOpt = classRepository.findById(cid);
     if (clsOpt.isPresent()) {
       ClassEntity cls = clsOpt.get();
       List<Section> sectionList = cls.getSectionList();
 
-      // 사이즈보다 요청 인덱스가 클 경우 오류 제어
-      if (sectionList.size() < data.index) {
-        data.index = sectionList.size();
-      }
-      if (data.index < 0) {
-        data.index = 0;
+      if (index != null) {
+        // 사이즈보다 요청 인덱스가 클 경우 오류 제어
+        if (sectionList.size() < index) {
+          index = sectionList.size();
+        }
+        if (index < 0) {
+          index = 0;
+        }
+        sectionList.add(index, section);
+      } else {
+        sectionList.add(section);
       }
 
-      sectionList.add(data.index, data.data);
       cls.setSectionList(sectionList);
       classRepository.save(cls);
 
