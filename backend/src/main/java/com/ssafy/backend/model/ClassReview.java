@@ -5,9 +5,11 @@ import com.ssafy.backend.other.CustomObjectIdSerializer;
 import lombok.Data;
 import lombok.NonNull;
 import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Data
+@Document(collection = "class.review")
 public class ClassReview {
 
   @JsonSerialize(using = CustomObjectIdSerializer.class)
@@ -19,7 +21,6 @@ public class ClassReview {
   private String review;
 
   public ClassReview(Integer score, String review) {
-    this.id = new ObjectId();
     this.score = score;
     this.review = review;
   }

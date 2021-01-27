@@ -7,9 +7,12 @@ import java.util.List;
 import lombok.Data;
 import lombok.NonNull;
 import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Data
+@Document(collection = "lecture")
 public class Lecture {
 
   @JsonSerialize(using = CustomObjectIdSerializer.class)
@@ -17,12 +20,14 @@ public class Lecture {
   private ObjectId id;
   @NonNull
   private String videoPath;
-  private List<LectureQuestion> questionList = new ArrayList<LectureQuestion>();
+  @DBRef
+  private List<LectureQuestion> questionList = new ArrayList<>();
 
   public Lecture(String videoPath) {
-    this.id = new ObjectId();
     this.videoPath = videoPath;
   }
+
+  public Lecture() {}
 
   public void appendQuestion(LectureQuestion question) {
     questionList.add(question);

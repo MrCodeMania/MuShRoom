@@ -1,21 +1,15 @@
 package com.ssafy.backend.model;
 
 import java.util.Date;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
-@Builder
-@Data
+@Getter
 public class DefaultTimeStamp {
 
+  @CreatedDate
   private Date createdAt;
+  @LastModifiedDate
   private Date updatedAt;
-
-  public void setCreatedAt(Date date) {
-    this.createdAt = date;
-  }
-
-  public void setUpdatedAt(Date date) {
-    this.updatedAt = date;
-  }
 }

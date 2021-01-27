@@ -4,9 +4,7 @@ package com.ssafy.backend.controller;
 import com.ssafy.backend.model.ClassEntity;
 import com.ssafy.backend.model.ClassQuestion;
 import com.ssafy.backend.model.ClassReview;
-import com.ssafy.backend.model.DefaultTimeStamp;
 import com.ssafy.backend.model.ErrorMessage;
-import com.ssafy.backend.model.IndexObject;
 import com.ssafy.backend.model.InstrumentEntity;
 import com.ssafy.backend.model.Lecture;
 import com.ssafy.backend.model.LectureQuestion;
@@ -15,11 +13,15 @@ import com.ssafy.backend.model.Section;
 import com.ssafy.backend.model.Tag;
 import com.ssafy.backend.model.TutorEntity;
 import com.ssafy.backend.other.ErrorType;
+import com.ssafy.backend.repository.ClassQuestionRepository;
 import com.ssafy.backend.repository.ClassRepository;
+import com.ssafy.backend.repository.ClassReviewRepository;
 import com.ssafy.backend.repository.InstrumentRepository;
+import com.ssafy.backend.repository.LectureQuestionRepository;
+import com.ssafy.backend.repository.LectureRepository;
+import com.ssafy.backend.repository.SectionRepository;
 import com.ssafy.backend.repository.TutorRepository;
 import io.swagger.annotations.ApiOperation;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -27,6 +29,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,17 +42,33 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ClassController {
 
+  private final ClassQuestionRepository classQuestionRepository;
   private final ClassRepository classRepository;
-  private final TutorRepository tutorRepository;
+  private final ClassReviewRepository classReviewRepository;
   private final InstrumentRepository instrumentRepository;
+  private final LectureQuestionRepository lectureQuestionRepository;
+  private final LectureRepository lectureRepository;
+  private final SectionRepository sectionRepository;
+  private final TutorRepository tutorRepository;
 
   @Autowired
-  public ClassController(ClassRepository classRepository,
-      TutorRepository tutorRepository,
-      InstrumentRepository instrumentRepository) {
+  public ClassController(
+      ClassQuestionRepository classQuestionRepository,
+      ClassRepository classRepository,
+      ClassReviewRepository classReviewRepository,
+      InstrumentRepository instrumentRepository,
+      LectureQuestionRepository lectureQuestionRepository,
+      LectureRepository lectureRepository,
+      SectionRepository sectionRepository,
+      TutorRepository tutorRepository) {
+    this.classQuestionRepository = classQuestionRepository;
     this.classRepository = classRepository;
-    this.tutorRepository = tutorRepository;
+    this.classReviewRepository = classReviewRepository;
     this.instrumentRepository = instrumentRepository;
+    this.lectureQuestionRepository = lectureQuestionRepository;
+    this.lectureRepository = lectureRepository;
+    this.sectionRepository = sectionRepository;
+    this.tutorRepository = tutorRepository;
   }
 
   @ApiOperation(value = "Get All Class List", notes = "모든 클래스의 리스트를 반환한다")
@@ -60,11 +79,17 @@ public class ClassController {
 
   @ApiOperation(value = "Insert New Class", notes = "새로운 클래스를 삽입한다")
   @PostMapping("/class")
-  public ResponseEntity<?> insertOneClass(@RequestBody TutorEntity t) {
+  public ResponseEntity<?> insertOneClass(
+      @RequestParam ObjectId tutorId,
+      @RequestBody ClassEntity c) {
 
-    Optional<TutorEntity> tutor = tutorRepository.findById(t.getId());
+    Optional<TutorEntity> tutor = tutorRepository.findById(tutorId);
     if (tutor.isPresent()) {
-      ClassEntity cls = ClassEntity.builder().tutor(tutor.get()).build();
+      ClassEntity cls = ClassEntity.builder()
+          .tutor(tutor.get())
+          .title(c.getTitle())
+          .profile(c.getProfile())
+          .build();
       classRepository.save(cls);
       return new ResponseEntity<>(cls, HttpStatus.OK);
     }
@@ -98,7 +123,6 @@ public class ClassController {
       + "변경하고자 하는 필드가 아닌 경우에는 값을 입력하지 않는다.")
   @PutMapping("/class/{cid}")
   public ClassEntity updateOneClass(@PathVariable ObjectId cid, @RequestBody ClassEntity cls) {
-    System.out.println(cls);
     ClassEntity before = classRepository.findById(cid).orElseThrow(() ->
         new IllegalArgumentException("해당 사용자는 존재하지 않습니다")
     );
@@ -133,8 +157,8 @@ public class ClassController {
   }
 
   @ApiOperation(value = "Get All Section", notes = "ObjectID로 부터 클래스를 가져와 세션을 반환한다")
-  @GetMapping("/class/{cid}/section")
-  public ResponseEntity<?> getAllSection(@PathVariable ObjectId cid) {
+  @GetMapping("/section")
+  public ResponseEntity<?> getAllSection(@RequestParam(name = "classId") ObjectId cid) {
     Optional<ClassEntity> cls = classRepository.findById(cid);
     if (cls.isPresent()) {
       List<Section> sectionList = cls.get().getSectionList();
@@ -148,16 +172,17 @@ public class ClassController {
         HttpStatus.BAD_REQUEST);
   }
 
-  @ApiOperation(value = "Update Section", notes = "ObjectID로 부터 클래스를 가져오며, index에 Section을 삽입한다")
-  @PostMapping("/class/{cid}/section")
+  @ApiOperation(value = "Insert Section", notes = "ObjectID로 부터 클래스를 가져오며, index에 Section을 삽입한다")
+  @PostMapping("/section")
   public ResponseEntity<?> insertOneSection(
-      @PathVariable ObjectId cid,
+      @RequestParam(name = "classId") ObjectId cid,
       @RequestParam(required = false) Integer index,
       @RequestBody Section section) {
     Optional<ClassEntity> clsOpt = classRepository.findById(cid);
     if (clsOpt.isPresent()) {
       ClassEntity cls = clsOpt.get();
       List<Section> sectionList = cls.getSectionList();
+      sectionRepository.save(section);
 
       if (index != null) {
         // 사이즈보다 요청 인덱스가 클 경우 오류 제어
@@ -175,7 +200,7 @@ public class ClassController {
       cls.setSectionList(sectionList);
       classRepository.save(cls);
 
-      return new ResponseEntity<>(sectionList, HttpStatus.OK);
+      return new ResponseEntity<>(section, HttpStatus.OK);
     }
 
     return new ResponseEntity<>(
@@ -186,8 +211,10 @@ public class ClassController {
   }
 
   @ApiOperation(value = "Get One Section", notes = "ObjectId로 부터 클래스를 가져오며, ObjectId로 부터 섹션을 가져온다.")
-  @GetMapping("/class/{cid}/section/{sid}")
-  public ResponseEntity<?> getOneSection(@PathVariable ObjectId cid, @PathVariable ObjectId sid) {
+  @GetMapping("/section/{sid}")
+  public ResponseEntity<?> getOneSection(
+      @RequestParam(name = "classId") ObjectId cid,
+      @PathVariable ObjectId sid) {
     Optional<ClassEntity> clsOpt = classRepository.findById(cid);
     if (clsOpt.isPresent()) {
       ClassEntity cls = clsOpt.get();
@@ -213,9 +240,9 @@ public class ClassController {
   }
 
   @ApiOperation(value = "Update Section", notes = "ObjectID로 부터 클래스를 가져오며, ObjectId로 부터 섹션을 가져와 수정한다.")
-  @PutMapping("/class/{cid}/section/{sid}")
+  @PutMapping("/section/{sid}")
   public ResponseEntity<?> updateOneSection(
-      @PathVariable ObjectId cid,
+      @RequestParam(name = "classId") ObjectId cid,
       @PathVariable ObjectId sid,
       @RequestBody Section section) {
     Optional<ClassEntity> clsOpt = classRepository.findById(cid);
@@ -223,21 +250,13 @@ public class ClassController {
       ClassEntity cls = clsOpt.get();
       List<Section> sectionList = cls.getSectionList();
 
-      for (int i = 0; i < sectionList.size(); i++) {
-        if (sectionList.get(i).getId().equals(sid)) {
-          Section before = sectionList.get(i);
-          if (section.getSectionName() != null) {
-            before.setSectionName(section.getSectionName());
-          }
-          if (section.getLectureList() != null) {
-            before.setLectureList(section.getLectureList());
-          }
+      for (Section tmp : sectionList) {
+        if (tmp.getId().equals(sid)) {
+          Section s = sectionRepository.findById(sid).get();
+          s.setSectionName(section.getSectionName());
+          sectionRepository.save(s);
 
-          sectionList.set(i, before);
-          cls.setSectionList(sectionList);
-          classRepository.save(cls);
-
-          return new ResponseEntity<>(before, HttpStatus.OK);
+          return new ResponseEntity<>(s, HttpStatus.OK);
         }
       }
 
@@ -256,8 +275,9 @@ public class ClassController {
   }
 
   @ApiOperation(value = "Delete Section", notes = "ObjectID로 부터 클래스를 가져오며, ObjectId와 일치하는 섹션을 제거한다.")
-  @DeleteMapping("/class/{cid}/section/{sid}")
-  public ResponseEntity<?> deleteOneSection(@PathVariable ObjectId cid,
+  @DeleteMapping("/section/{sid}")
+  public ResponseEntity<?> deleteOneSection(
+      @RequestParam(name = "classId") ObjectId cid,
       @PathVariable ObjectId sid) {
     Optional<ClassEntity> clsOpt = classRepository.findById(cid);
     if (clsOpt.isPresent()) {
@@ -277,6 +297,7 @@ public class ClassController {
         sectionList.remove(index);
         cls.setSectionList(sectionList);
         classRepository.save(cls);
+        sectionRepository.delete(rs);
 
         return new ResponseEntity<>(rs, HttpStatus.OK);
       } else {
@@ -295,52 +316,242 @@ public class ClassController {
         HttpStatus.BAD_REQUEST);
   }
 
+  @ApiOperation(value = "Get All Lecture", notes = "모든 Lecture를 가져온다.")
+  @GetMapping("/lecture")
+  public ResponseEntity<?> getAllLecture(@RequestParam(name = "sectionId") ObjectId sid) {
+    Optional<Section> sectionOpt = sectionRepository.findById(sid);
+
+    if (sectionOpt.isPresent()) {
+      return new ResponseEntity<>(sectionOpt.get().getLectureList(), HttpStatus.OK);
+    }
+
+    return new ResponseEntity<>(
+        new ErrorMessage(
+            ErrorType.SECTION_NOT_EXIST.toString(),
+            HttpStatus.BAD_REQUEST.value()),
+        HttpStatus.BAD_REQUEST);
+  }
+
+  @ApiOperation(value = "Insert Lecture", notes = "Lecture를 삽입한다.")
+  @PostMapping("/lecture")
+  public ResponseEntity<?> insertOneLecture(
+      @RequestParam(name = "sectionId") ObjectId sid,
+      @RequestParam(required = false) Integer index,
+      @RequestBody Lecture lecture) {
+    Optional<Section> sectionOpt = sectionRepository.findById(sid);
+    if (sectionOpt.isPresent()) {
+      Section section = sectionOpt.get();
+      List<Lecture> lectureList = section.getLectureList();
+      lectureRepository.save(lecture);
+
+      if (index != null) {
+        if (lectureList.size() < index) {
+          index = lectureList.size();
+        }
+        if (index < 0) {
+          index = 0;
+        }
+        lectureList.add(index, lecture);
+      } else {
+        lectureList.add(lecture);
+      }
+
+      section.setLectureList(lectureList);
+      sectionRepository.save(section);
+
+      return new ResponseEntity<>(lecture, HttpStatus.OK);
+    }
+
+    return new ResponseEntity<>(
+        new ErrorMessage(
+            ErrorType.SECTION_NOT_EXIST.toString(),
+            HttpStatus.BAD_REQUEST.value()),
+        HttpStatus.BAD_REQUEST);
+  }
+
+  @ApiOperation(value = "Get One Lecture", notes = "Lecture를 리턴한다.")
+  @GetMapping("/lecture/{lid}")
+  public ResponseEntity<?> getOneLecture(
+      @RequestParam(name = "sectionId") ObjectId sid,
+      @PathVariable ObjectId lid) {
+    Optional<Section> sectionOpt = sectionRepository.findById(sid);
+    if (sectionOpt.isPresent()) {
+      Section section = sectionOpt.get();
+      List<Lecture> lectureList = section.getLectureList();
+      for (Lecture lecture : lectureList) {
+        if (lecture.getId().equals(lid)) {
+          return new ResponseEntity<>(lecture, HttpStatus.OK);
+        }
+      }
+
+      return new ResponseEntity<>(
+          new ErrorMessage(
+              ErrorType.LECTURE_NOT_EXIST.toString(),
+              HttpStatus.BAD_REQUEST.value()),
+          HttpStatus.BAD_REQUEST);
+    }
+
+    return new ResponseEntity<>(
+        new ErrorMessage(
+            ErrorType.SECTION_NOT_EXIST.toString(),
+            HttpStatus.BAD_REQUEST.value()),
+        HttpStatus.BAD_REQUEST);
+  }
+
+  @ApiOperation(value = "Update Lecture", notes = "강의를 수정한다.")
+  @PutMapping("/lecture/{lid}")
+  public ResponseEntity<?> updateOneLecture(
+      @RequestParam(name = "sectionId") ObjectId sid,
+      @PathVariable ObjectId lid,
+      @RequestBody Lecture lecture) {
+    Optional<Section> sectionOpt = sectionRepository.findById(sid);
+    if (sectionOpt.isPresent()) {
+      Section section = sectionOpt.get();
+      List<Lecture> lectureList = section.getLectureList();
+
+      for (Lecture tmp : lectureList) {
+        if (tmp.getId().equals(lid)) {
+          Lecture l = lectureRepository.findById(lid).get();
+          l.setVideoPath(lecture.getVideoPath());
+          lectureRepository.save(l);
+
+          return new ResponseEntity<>(l, HttpStatus.OK);
+        }
+      }
+
+      return new ResponseEntity<>(
+          new ErrorMessage(
+              ErrorType.LECTURE_NOT_EXIST.toString(),
+              HttpStatus.BAD_REQUEST.value()),
+          HttpStatus.BAD_REQUEST);
+    }
+
+    return new ResponseEntity<>(
+        new ErrorMessage(
+            ErrorType.SECTION_NOT_EXIST.toString(),
+            HttpStatus.BAD_REQUEST.value()),
+        HttpStatus.BAD_REQUEST);
+  }
+
+  @ApiOperation(value = "Delete Lecture", notes = "강의를 제거한다.")
+  @DeleteMapping("/lecture/{lid}")
+  public ResponseEntity<?> deleteOneLecture(
+      @RequestParam(name = "sectionId") ObjectId sid,
+      @PathVariable ObjectId lid) {
+    Optional<Section> sectionOpt = sectionRepository.findById(sid);
+    if (sectionOpt.isPresent()) {
+      Section section = sectionOpt.get();
+      List<Lecture> lectureList = section.getLectureList();
+
+      int index = -1;
+      for (int i = 0; i < lectureList.size(); i++) {
+        if (lectureList.get(i).getId().equals(lid)) {
+          index = i;
+          break;
+        }
+      }
+
+      if (index >= 0) {
+        Lecture rs = lectureList.get(index);
+        lectureList.remove(index);
+        section.setLectureList(lectureList);
+        sectionRepository.save(section);
+        lectureRepository.delete(rs);
+
+        return new ResponseEntity<>(rs, HttpStatus.OK);
+      } else {
+        return new ResponseEntity<>(
+            new ErrorMessage(
+                ErrorType.LECTURE_NOT_EXIST.toString(),
+                HttpStatus.BAD_REQUEST.value()),
+            HttpStatus.BAD_REQUEST);
+      }
+    }
+
+    return new ResponseEntity<>(
+        new ErrorMessage(
+            ErrorType.SECTION_NOT_EXIST.toString(),
+            HttpStatus.BAD_REQUEST.value()),
+        HttpStatus.BAD_REQUEST);
+  }
+
   // insert test sample
   @ApiOperation(value = "Post New Class", notes = "새로운 클래스를 삽입한다")
   @PostMapping("/test")
   public ClassEntity insertClassTest() {
-    tutorRepository.deleteAll();
+    classQuestionRepository.deleteAll();
     classRepository.deleteAll();
+    classReviewRepository.deleteAll();
     instrumentRepository.deleteAll();
+    lectureQuestionRepository.deleteAll();
+    lectureRepository.deleteAll();
+    sectionRepository.deleteAll();
+    tutorRepository.deleteAll();
+
+    ClassReview classReview = new ClassReview(5, "review");
+    classReviewRepository.save(classReview);
 
     TutorEntity tutor = new TutorEntity();
     tutor.setData("testData");
+    tutorRepository.save(tutor);
 
-    Date now = new Date();
     ClassEntity cls = ClassEntity.builder()
         .profile(new Profile("testPath", "testIntro"))
-        .title("testTile")
-        .tutor(tutor)
-        .timeStamp(DefaultTimeStamp.builder().createdAt(now).updatedAt(now).build())
+        .title("testTile").tutor(tutor)
         .build();
 
-    cls.appendReview(new ClassReview(5, "testReview1"));
-    cls.appendReview(new ClassReview(4, "testReview2"));
+    cls.appendReview(classReview);
+    cls.appendReview(classReview);
 
-    cls.appendQuestion(new ClassQuestion("testQuestion1"));
-    cls.appendQuestion(new ClassQuestion("testQuestion2"));
+    ClassQuestion cq1 = new ClassQuestion("testQuestion1");
+    ClassQuestion cq2 = new ClassQuestion("testQuestion2");
+    classQuestionRepository.save(cq1);
+    classQuestionRepository.save(cq2);
+
+    cls.appendQuestion(cq1);
+    cls.appendQuestion(cq2);
 
     Lecture lecture1 = new Lecture("videoPath1");
     Lecture lecture2 = new Lecture("videoPath2");
     Lecture lecture3 = new Lecture("videoPath3");
     Lecture lecture4 = new Lecture("videoPath4");
 
+    lectureRepository.save(lecture1);
+    lectureRepository.save(lecture2);
+    lectureRepository.save(lecture3);
+    lectureRepository.save(lecture4);
+
     Section section1 = new Section("sectionName1");
     section1.appendLecture(lecture1);
-    section1.appendLecture(lecture2);
-    lecture1.appendQuestion(new LectureQuestion("question1"));
-    lecture2.appendQuestion(new LectureQuestion("question2"));
+    sectionRepository.save(section1);
+
+    LectureQuestion lq1 = new LectureQuestion("question1");
+    LectureQuestion lq2 = new LectureQuestion("question2");
+    LectureQuestion lq3 = new LectureQuestion("question3");
+    LectureQuestion lq4 = new LectureQuestion("question4");
+    lectureQuestionRepository.save(lq1);
+    lectureQuestionRepository.save(lq2);
+    lectureQuestionRepository.save(lq3);
+    lectureQuestionRepository.save(lq4);
+
+    lecture1.appendQuestion(lq1);
+    lecture2.appendQuestion(lq2);
 
     Section section2 = new Section("sectionName1");
     section2.appendLecture(lecture3);
     section2.appendLecture(lecture4);
-    lecture3.appendQuestion(new LectureQuestion("question3"));
-    lecture4.appendQuestion(new LectureQuestion("question4"));
+    lecture3.appendQuestion(lq3);
+    lecture4.appendQuestion(lq4);
+    sectionRepository.save(section2);
 
     InstrumentEntity instrument1 = new InstrumentEntity("inst1");
     InstrumentEntity instrument2 = new InstrumentEntity("inst2");
+    instrumentRepository.save(instrument1);
+    instrumentRepository.save(instrument2);
+
     Tag tag1 = new Tag(instrument1, 1);
     Tag tag2 = new Tag(instrument2, 2);
+
     cls.appendTag(tag1);
     cls.appendTag(tag2);
 
@@ -351,7 +562,16 @@ public class ClassController {
     instrumentRepository.save(instrument2);
     tutorRepository.save(tutor);
     classRepository.save(cls);
+    tutor.appendClass(cls);
+    tutor.appendClass(cls);
+    tutorRepository.save(tutor);
+    classReviewRepository.save(classReview);
 
     return cls;
+  }
+
+  @GetMapping("/tutor")
+  public ResponseEntity getAllTutor() {
+    return new ResponseEntity(tutorRepository.findAll(), HttpStatus.OK);
   }
 }

@@ -19,12 +19,10 @@ public class InstrumentEntity {
   private String instrumentName;
 
   public InstrumentEntity(String instrumentName) {
-    this.id = new ObjectId();
     this.instrumentName = instrumentName;
   }
 
-  public InstrumentEntity() {
-  }
+  public InstrumentEntity() {}
 
   // Temp
 }

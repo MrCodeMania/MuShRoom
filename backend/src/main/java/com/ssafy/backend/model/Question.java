@@ -3,12 +3,14 @@ package com.ssafy.backend.model;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.ssafy.backend.other.CustomObjectIdSerializer;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class Question {
+public class Question extends DefaultTimeStamp {
 
   @JsonSerialize(using = CustomObjectIdSerializer.class)
   @MongoId
@@ -18,7 +20,6 @@ public class Question {
   private String answer;
 
   public Question(String question) {
-    this.id = new ObjectId();
     this.question = question;
   }
 }
