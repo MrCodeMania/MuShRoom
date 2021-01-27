@@ -3,39 +3,36 @@
     <v-col cols="12">
       <v-form ref="form" lazy-validation>
         <!--악기선택 창-->
-        <p>강의할 악기 선택</p>
-        <v-dialog v-model="dialog" persistent max-width="600px">
-          <template v-slot:activator="{ on, attrs }">
-            <v-sheet elevation="2" rounded>
-              <v-btn color="teal" dark v-bind="attrs" v-on="on"
-                ><v-icon>mdi-selection-search</v-icon>
-              </v-btn>
-              <span class="align-center">
-                test
-                {{ selectInstrument }}
-              </span>
-            </v-sheet>
-          </template>
-          <v-card>
-            <v-card-title>
-              <span class="headline">수강 악기 선택</span>
-            </v-card-title>
-            <v-card-text> 악기 선택 구현 중 </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="dialog = false">
-                Close
-              </v-btn>
-              <v-btn color="teal darken-1" text @click="selectItems">
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+        <p>강의 악기 선택</p>
+        <v-autocomplete
+          solo
+          v-model="careerForm.instrument"
+          :items="items"
+          auto-select-first
+          clearable
+          hide-details
+          no-data-text="찾으시는 악기가 없습니다"
+        ></v-autocomplete>
         <v-divider></v-divider>
         <div>경력</div>
+        <v-textarea
+          solo
+          v-model="careerForm.careertext"
+          name="input-7-4"
+          label="경력사항 입력"
+          class="mt-2"
+          hide-details
+        ></v-textarea>
         <v-divider></v-divider>
         <div>수상이력</div>
+        <v-textarea
+          solo
+          v-model="careerForm.award"
+          name="input-7-4"
+          label="수상 이력"
+          class="mt-2"
+          hide-details
+        ></v-textarea>
         <v-divider></v-divider>
         <!--파일입력-->
         <div>증빙자료</div>
@@ -49,6 +46,7 @@
           required
         ></v-file-input>
       </v-form>
+      <v-btn @click="test">form test</v-btn>
     </v-col>
   </div>
 </template>
@@ -58,12 +56,12 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class extends Vue {
+  private careerForm = [{ instrument: "" }, { careertext: "" }, { award: "" }];
+  private items = ["피아노", "기타", "바이올린", "오보에", "단소"];
   private dialog = false;
   private selectInstrument = "";
-  private item = ["피아노", "기타", "바이올린", "오보에", "단소"];
-  selectItems(s: string) {
-    this.dialog = false;
-    this.selectInstrument = s;
+  test() {
+    console.log(this.careerForm);
   }
 }
 </script>

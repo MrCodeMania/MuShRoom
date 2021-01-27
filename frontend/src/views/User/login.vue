@@ -26,7 +26,7 @@
         validate
       >
         <div>
-          <v-item-group class="d-flex" mandatory @change="changeState">
+          <v-item-group class="d-flex" mandatory @change="changeLoginType">
             <v-item v-slot="{ active, toggle }" v-for="n in list" :key="n">
               <v-card
                 :color="active ? 'teal' : ''"
@@ -81,13 +81,19 @@
         </v-btn>
       </v-form>
       <div class="align-items-center d-flex flex-column">
-        <div
+        <v-btn
           id="findID"
           class="mt-2 font-weight-light"
-          @click="$router.push({ path: linkName })"
+          plain
+          @click="
+            $router.push({
+              name: linkName,
+              params: { type: loginType ? `학생` : `튜터` },
+            })
+          "
         >
           아이디 비밀번호찾기
-        </div>
+        </v-btn>
         <v-sheet
           color="teal"
           elevation="1"
@@ -135,13 +141,7 @@ export default class Login extends Vue {
   private pwdRules = [(v: string) => !!v || "비밀번호를 입력하세요"];
   private list: string[] = ["학생", "튜터"];
   private linkName = "FindUser";
-
-  changeState() {
-    if (!this.loginType) {
-      this.linkName = "/user/find/student";
-    } else {
-      this.linkName = "/user/find/tutor";
-    }
+  changeLoginType() {
     this.loginType = !this.loginType;
   }
   go() {

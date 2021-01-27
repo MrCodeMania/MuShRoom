@@ -33,7 +33,7 @@
 
       <v-stepper-content step="3">
         <v-card color="grey lighten-1" class="mb-12" height="100%">
-          악기 추가 //page
+          <Instrument></Instrument>
         </v-card>
         <v-btn color="teal" @click="nowpage = 4"> 가입하기 </v-btn>
         <v-btn text @click="nowpage = 2"> 이전으로 </v-btn>
@@ -46,11 +46,12 @@
 import { Component, Vue } from "vue-property-decorator";
 import Phone from "@/components/user/Phone.vue";
 import Account from "@/components/user/Account.vue";
-
+import Instrument from "@/components/user/Instrument.vue";
 @Component({
   components: {
     Phone,
     Account,
+    Instrument,
   },
 })
 export default class StudentRegist extends Vue {
