@@ -25,7 +25,8 @@
               <v-btn
               v-if="isTaken"
               dark
-              :color="color[idx]+' darken-4'">
+              :color="color[idx]+' darken-4'"
+              to="/detail/feedback">
                 피드백 신청
               </v-btn>
             </v-card-title>

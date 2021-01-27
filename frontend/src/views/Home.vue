@@ -26,7 +26,9 @@
         </v-sheet>
       </v-carousel-item>
     </v-carousel>
-    <div v-for="title in titles"
+    <div 
+    class="mb-16"
+    v-for="title in titles"
     :key="title">
       <ClassList :name="title" />
     </div>
