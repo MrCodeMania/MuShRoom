@@ -4,7 +4,9 @@ import MyPage from '../views/MyPage.vue'
 import Home from '../views/Home.vue'
 import Class from '../views/Class.vue'
 import Login from '../views/User/Login.vue'
-import Studentregist from '../views/User/studentRegist.vue'
+import Studentregist from '../views/User/StudentRegist.vue'
+import TuterRegister from '../views/User/TuterRegister.vue'
+import FindUser from '../views/User/FindUserInfo.vue'
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
@@ -82,9 +84,30 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/register/student',
-    name: 'studentRegist',
+    name: 'StudentRegist',
     component: Studentregist
-  }
+  },
+  {
+    path: '/register/tutor',
+    name: 'TutorRegist',
+    component: TuterRegister
+  },
+  {
+    path: '/user/find',
+    name: 'FindUser',
+    component: FindUser,
+    children: [
+      {
+        path: "student",
+        name: "student",
+        component: () => import("@/components/user/StudentFind.vue")
+      },
+      {
+        path: "tutor",
+        name: "tutor",
+        component: () => import("@/components/user/TutorFind.vue")
+      },]
+  },
 ]
 
 const router = new VueRouter({

@@ -79,7 +79,7 @@
         depressed
         dark
         color="amber darken-1"
-        :to="{ name: 'studentRegist' }"
+        :to="{ name: 'StudentRegist' }"
       >
         회원가입
       </v-btn>

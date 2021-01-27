@@ -1,5 +1,5 @@
 <template>
-  <v-col cols="12" md="5">
+  <v-col cols="12">
     <v-form
       ref="form"
       v-model="valid"
@@ -13,6 +13,15 @@
         :rules="nameRules"
         label="이름"
         prepend-inner-icon="mdi-human-handsup"
+        required
+      ></v-text-field>
+
+      <v-text-field
+        solo
+        v-model="nickname"
+        :rules="nicknameRules"
+        label="별명"
+        prepend-inner-icon="mdi-rename-box"
         required
       ></v-text-field>
 
@@ -50,13 +59,19 @@ import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class Account extends Vue {
   private valid = false;
+  //이름
   private name = "";
   private nameRules = [(v: string) => !!v || "이름이 필요해요"];
+  //닉네임
+  private nickname = "";
+  private nicknameRules = [(v: string) => !!v || "별명이 필요해요"];
+  //이메일
   private email = "";
   private emailRules = [
     (v: string) => !!v || "이메일이 필요해요",
     (v: string) => /.+@.+\..+/.test(v) || "이메일형식이 맞지 않습니다",
   ];
+  //비밀번호
   private password = "";
   private passwordRules = [
     (v: string) => !!v || "비밀번호를 입력하세요",
@@ -65,13 +80,14 @@ export default class Account extends Vue {
       /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/.test(v) ||
       "특수문자 영어 숫자 포함해야합니다.",
   ];
+  // 비밀번호 재입력
+  private confirmPassword = "";
   //emit 변수
   private phoneNumber = "default";
   private emitEvent(phoneNumber: string) {
     this.phoneNumber = phoneNumber;
   }
   //입력폼 함수
-  private confirmPassword = "";
   validate() {
     const registerForm = [
       this.name,
