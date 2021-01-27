@@ -96,17 +96,6 @@ const routes: Array<RouteConfig> = [
     path: '/user/find',
     name: 'FindUser',
     component: FindUser,
-    children: [
-      {
-        path: "student",
-        name: "student",
-        component: () => import("@/components/user/StudentFind.vue")
-      },
-      {
-        path: "tutor",
-        name: "tutor",
-        component: () => import("@/components/user/TutorFind.vue")
-      },]
   },
 ]
 

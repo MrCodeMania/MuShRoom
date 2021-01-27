@@ -2,7 +2,7 @@
   <v-form ref="form">
     <v-container>
       <v-row class="mt-2" cols="12">
-        <v-col cols="9">
+        <v-col cols="9" align="center">
           <v-text-field
             solo
             v-model="phoneNumber"
@@ -11,14 +11,19 @@
             required
           ></v-text-field>
         </v-col>
-        <v-col cols="1"> <v-btn @click="phoneCheck">check</v-btn></v-col>
+        <v-col cols="1"> <v-btn @click="phoneCheck">보내기</v-btn></v-col>
       </v-row>
-      <v-text-field
-        solo
-        v-model="confirmNumber"
-        label="인증번호"
-        required
-      ></v-text-field>
+      <v-row cols="12">
+        <v-col cols="9">
+          <v-text-field
+            solo
+            v-model="confirmNumber"
+            label="인증번호"
+            required
+          ></v-text-field>
+        </v-col>
+        <v-col cols="1"> <v-btn @click="sendPhoneNumber">확인</v-btn></v-col>
+      </v-row>
     </v-container>
   </v-form>
 </template>
@@ -35,6 +40,11 @@ export default class Phone extends Vue {
   private phoneCheck() {
     console.log(this.phoneNumber);
     this.$emit("emitEvent", this.phoneNumber);
+  }
+  private sendPhoneNumber() {
+    // 인증번호맞는지 확인하고 emit보내기
+    //console.log(this.phoneNumber);
+    this.$emit("sendPhonenumber", this.phoneNumber);
   }
 }
 </script>
