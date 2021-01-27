@@ -1,5 +1,7 @@
 package com.ssafy.backend.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.ssafy.backend.other.CustomObjectIdSerializer;
 import lombok.Data;
 import lombok.NonNull;
 import org.bson.types.ObjectId;
@@ -10,13 +12,18 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 @Document(collection = "instrument")
 public class InstrumentEntity {
 
+  @JsonSerialize(using = CustomObjectIdSerializer.class)
   @MongoId
   private ObjectId id;
   @NonNull
   private String instrumentName;
+
   public InstrumentEntity(String instrumentName) {
     this.id = new ObjectId();
     this.instrumentName = instrumentName;
+  }
+
+  public InstrumentEntity() {
   }
 
   // Temp

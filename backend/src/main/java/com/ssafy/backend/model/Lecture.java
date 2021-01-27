@@ -1,5 +1,7 @@
 package com.ssafy.backend.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.ssafy.backend.other.CustomObjectIdSerializer;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
@@ -10,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 @Data
 public class Lecture {
 
+  @JsonSerialize(using = CustomObjectIdSerializer.class)
   @MongoId
   private ObjectId id;
   @NonNull
