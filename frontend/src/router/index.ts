@@ -3,7 +3,10 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import MyPage from '../views/MyPage.vue'
 import Home from '../views/Home.vue'
 import Class from '../views/Class.vue'
-
+import Login from '../views/User/login.vue'
+import Studentregist from '../views/User/studentRegist.vue'
+import TuterRegister from '../views/User/TuterRegister.vue'
+import FindUser from '../views/User/FindUserInfo.vue'
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
@@ -73,7 +76,27 @@ const routes: Array<RouteConfig> = [
     path: '/class',
     name: 'Class',
     component: Class
-  }
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/register/student',
+    name: 'StudentRegist',
+    component: Studentregist
+  },
+  {
+    path: '/register/tutor',
+    name: 'TutorRegist',
+    component: TuterRegister
+  },
+  {
+    path: '/user/find',
+    name: 'FindUser',
+    component: FindUser,
+  },
 ]
 
 const router = new VueRouter({
