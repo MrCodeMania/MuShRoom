@@ -60,6 +60,3 @@ export default class Footer extends Vue {
     ];
 }
 </script>
-
-<style>
-</style>

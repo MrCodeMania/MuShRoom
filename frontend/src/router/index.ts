@@ -5,6 +5,13 @@ import Home from '../views/Home.vue'
 import Class from '../views/Class.vue'
 import UpdateInfo from '../views/User/UpdateInfo.vue' 
 
+
+import ClassDetail from '../views/ClassDetail.vue'
+import Login from '../views/User/login.vue'
+import Studentregist from '../views/User/studentRegist.vue'
+import TuterRegister from '../views/User/TuterRegister.vue'
+import FindUser from '../views/User/FindUserInfo.vue'
+
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
@@ -71,7 +78,7 @@ const routes: Array<RouteConfig> = [
     ]
   },
   {
-    path: '/class',
+    path: '/class/All',
     name: 'Class',
     component: Class
   },
@@ -79,6 +86,58 @@ const routes: Array<RouteConfig> = [
     path: '/updateuser',
     name: 'updateuser',
     component: UpdateInfo
+  },
+  {
+    path: '/detail',
+    name: 'Detail',
+    component: ClassDetail,
+    children: [
+      {
+        path: "intro",
+        name: "Intro",
+        component: () => import("@/components/class/detail/Introduction.vue")
+      },
+      {
+        path: "curriculum",
+        name: "Curriculum",
+        component: () => import("@/components/class/detail/Curriculum.vue")
+      },
+      {
+        path: "review",
+        name: "Review",
+        component: () => import("@/components/class/detail/Review.vue")
+      },
+      {
+        path: "feedback",
+        name: "Feedback",
+        component: () => import("@/components/class/detail/Feedback.vue")
+      },
+      {
+        path: "qna",
+        name: "QnA",
+        component: () => import("@/components/class/detail/QnA.vue")
+      },
+    ]
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/register/student',
+    name: 'StudentRegist',
+    component: Studentregist
+  },
+  {
+    path: '/register/tutor',
+    name: 'TutorRegist',
+    component: TuterRegister
+  },
+  {
+    path: '/user/find',
+    name: 'FindUser',
+    component: FindUser,
   },
 ]
 
