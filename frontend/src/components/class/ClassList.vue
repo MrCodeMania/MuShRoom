@@ -58,7 +58,3 @@ export default class ClassList extends Vue {
   @Prop(String) name!: string
 }
 </script>
-
-<style>
-
-</style>

@@ -27,7 +27,7 @@
                 color="amber darken-1"
                 v-bind="attrs"
                 v-on="on"
-                to="Class">
+                to="/class/All">
                     클래스
                     <v-icon>
                         mdi-chevron-down
