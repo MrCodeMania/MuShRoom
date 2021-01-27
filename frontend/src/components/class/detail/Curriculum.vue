@@ -71,7 +71,8 @@
                     <v-btn
                     v-if="isTaken"
                     dark
-                    color="amber darken-3">
+                    color="amber darken-3"
+                    to="/lesson">
                       강의 보러가기
                     </v-btn>
                   </v-col>
