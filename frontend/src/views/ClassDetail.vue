@@ -1,6 +1,7 @@
 <template>
     <div id="detail">
-        <v-container fluid>
+        <v-container fluid
+        class="mb-16">
             <v-row justify="center">
                 <v-col md="2">
                     <v-avatar
@@ -62,7 +63,9 @@
                         v-if="!isTaken"
                         dark
                         color="amber darken-3" 
-                        class="mt-4 mr-4 float-right font-weight-bold">
+                        class="mt-4 mr-4 float-right font-weight-bold"
+                        @click="clickRegister"
+                        >
                             수강신청
                         </v-btn>
                     </v-card>
@@ -95,22 +98,39 @@
                 </v-col>
             </v-row>
         </v-container>
+        <RegisterClass
+        :register="register"
+        @clickClose="closeEventHandler"
+        :title="title"/>
     </div> 
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import RegisterClass from '@/components/class/modal/RegisterClass.vue';
 
-@Component
+@Component({
+    components:{
+        RegisterClass,
+    }
+})
+
 export default class ClassDetail extends Vue {
     private name = '김철수';
     private heartClicked = false;
     private title = '피아노로 연주하는 올드 팝';
     private describe = '비틀즈의 명곡을 피아노로 연주해 봅시다!';
     private isTaken = true;
+    private register = false;
 
     clickHeart(){
         this.heartClicked = !this.heartClicked;
+    }
+    closeEventHandler(close: boolean){
+        this.register = close;
+    }
+    clickRegister(){
+        this.register = true;
     }
 }
 </script>
