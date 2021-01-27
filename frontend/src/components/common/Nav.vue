@@ -12,7 +12,7 @@
           height="30"
           />
       </v-app-bar-nav-icon>
-      <v-btn :to="{name:'Home'}">머쉬룸</v-btn>
+      <v-btn to="/">머쉬룸</v-btn>
 
         <v-menu
         rounded="0"
@@ -115,8 +115,8 @@
         <v-btn
         depressed
         dark
-        color="indigo"
-        :to="{name: 'mypage'}">
+        color="amber darken-1"
+        to="mypage">
             MyPage
         </v-btn>
     </v-app-bar>

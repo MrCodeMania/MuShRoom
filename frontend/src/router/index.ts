@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import MyPage from '../views/MyPage.vue'
 import Home from '../views/Home.vue'
 import Class from '../views/Class.vue'
+import UpdateInfo from '../views/User/UpdateInfo.vue' 
 
 Vue.use(VueRouter)
 
@@ -63,9 +64,9 @@ const routes: Array<RouteConfig> = [
         component: () => import("@/components/mypage/tutor/Schedule.vue")
       },
       {
-        path: "lectureadd",
-        name: "tutor-lectureadd",
-        component: () => import("@/components/mypage/tutor/LectureAdd.vue")
+        path: "addlecture",
+        name: "tutor-addlecture",
+        component: () => import("@/components/mypage/tutor/AddLecture.vue")
       },
     ]
   },
@@ -73,7 +74,12 @@ const routes: Array<RouteConfig> = [
     path: '/class',
     name: 'Class',
     component: Class
-  }
+  },
+  {
+    path: '/updateuser',
+    name: 'updateuser',
+    component: UpdateInfo
+  },
 ]
 
 const router = new VueRouter({

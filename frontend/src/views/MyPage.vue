@@ -33,6 +33,14 @@
             <v-list-item-title v-text="item.text" class="menu_items"/>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item
+          class="align-end"
+          :to="{name: 'tutor-addlecture'}"
+        >
+          <v-list-item-content>
+            <v-list-item-title class="menu_items">강의 등록</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </div>
       </v-list-item-group>
     </v-list>
@@ -52,9 +60,7 @@ export default class MyPage extends Vue{
     nickname: "XXXXXXXXXXXXXX",
   }
 
-  private isStudent = true;
-
-  private selectedItem: any = null;
+  private selectedItem = null;
 
   private student_items: any = [
         { text: '회원정보확인', link: "user-info" },
@@ -69,7 +75,6 @@ export default class MyPage extends Vue{
       { text: '내 강의', link: "tutor-lecture" },
       { text: '피드백 관리', link: "tutor-feedback" },
       { text: '스케줄 관리', link: "tutor-schedule" },
-      { text: '강의 등록', link: "tutor-lectureadd" },
     ];
 
 }
@@ -85,7 +90,7 @@ export default class MyPage extends Vue{
   width: 250px;
   top: 0;
   left: 0;
-  height: 100vh;
+  min-height: 800px;
   background: #7386D5;
   color: #fff;
 }
