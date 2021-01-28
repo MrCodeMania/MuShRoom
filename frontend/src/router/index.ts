@@ -12,6 +12,7 @@ import Login from '../views/User/login.vue'
 import Studentregist from '../views/User/studentRegist.vue'
 import TuterRegister from '../views/User/TuterRegister.vue'
 import FindUser from '../views/User/FindUserInfo.vue'
+import Lesson from '../views/Lesson.vue'
 
 Vue.use(VueRouter)
 
@@ -124,6 +125,11 @@ const routes: Array<RouteConfig> = [
         component: () => import("@/components/class/detail/QnA.vue")
       },
     ]
+  },
+  {
+    path: '/lesson',
+    name: 'Lesson',
+    component: Lesson
   },
   {
     path: '/login',
