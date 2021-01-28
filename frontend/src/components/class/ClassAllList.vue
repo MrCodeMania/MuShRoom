@@ -76,7 +76,7 @@ import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
 @Component
 export default class ClassList extends Vue {
     @Prop(Array) filters!: string[]
-    @Prop(Array) query!: string
+    @Prop(String) query!: string
     private cards: {[key: string]: any}[] = [
         { title: '기타로 장범준 따라잡기', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', heart: 1},
         { title: '초보자도 할 수 있는 피아노 반주', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', heart: 0},
