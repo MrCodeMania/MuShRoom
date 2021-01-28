@@ -5,13 +5,13 @@ import Home from '../views/Home.vue'
 import Class from '../views/Class.vue'
 import UpdateInfoUser from '../views/User/UpdateInfoUser.vue' 
 import UpdateInfoTutor from '../views/User/UpdateInfoTutor.vue' 
-
-
 import ClassDetail from '../views/ClassDetail.vue'
 import Login from '../views/User/login.vue'
 import Studentregist from '../views/User/studentRegist.vue'
 import TuterRegister from '../views/User/TuterRegister.vue'
 import FindUser from '../views/User/FindUserInfo.vue'
+import Board from '../views/Board/Board.vue'
+import Voc from '../views/Board/Voc.vue'
 import Lesson from '../views/Lesson.vue'
 
 Vue.use(VueRouter)
@@ -151,8 +151,57 @@ const routes: Array<RouteConfig> = [
     name: 'FindUser',
     component: FindUser,
   },
-]
+  {
+    path: '/board',
+    name: 'Board',
+    component: Board,
+    children: [
+      {
+        path: "",
+        name: "boardlist",
+        component: () => import("@/components/Board/Boardlist.vue")
+      },
+      {
+        path: "detail/:articleid",
+        name: "boardview",
+        component: () => import("@/components/Board/Detail.vue")
+      },
+      {
+        path: "register",
+        name: "boardregister",
+        component: () => import("@/components/Board/Register.vue")
+      }
+    ],
+    redirect: () => {
+      return "/board";
+    }
+  },
+  {
+    path: '/voc',
+    name: 'voc',
+    component: Voc,
+    children: [
+      {
+        path: "/notice",
+        name: "notice",
+        component: () => import("@/components/Board/QnA/list.vue")
+      },
+      {
+        path: "/QnA",
+        name: "voc-QnA",
+        component: () => import("@/components/Board/QnA/QnA.vue")
+      }, {
+        path: "/Qlist",
+        name: "qlist",
+        component: () => import("@/components/Board/QnA/Questionlist.vue")
+      }
 
+    ],
+    redirect: () => {
+      return "/voc";
+    }
+  },
+]
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,

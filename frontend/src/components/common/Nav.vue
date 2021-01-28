@@ -58,7 +58,7 @@
         </v-list>
       </v-menu>
       <v-btn depressed dark color="amber darken-1"> 연습실 </v-btn>
-      <v-btn depressed dark color="amber darken-1">
+      <v-btn depressed dark color="amber darken-1" :to="{ name: 'boardlist' }">
         커뮤니티
         <v-icon> mdi-chevron-down </v-icon>
       </v-btn>
