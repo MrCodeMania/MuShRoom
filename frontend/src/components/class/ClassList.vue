@@ -17,14 +17,23 @@
             :key="card.title"
             class="d-inline-block mx-3"
             width="300">
-                <v-img
-                :src="card.src"
-                class="white--text align-end"
-                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                height="200"
-                >
-                    <v-card-title v-text="card.title"></v-card-title>
-                </v-img>
+                <v-btn
+                text
+                to="/detail/curriculum"
+                class="p-0 text-center"
+                height="200">
+                    <v-img
+                    :src="card.src"
+                    class="white--text align-end"
+                    gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                    width="300"
+                    height="200"
+                    >
+                        <v-card-title
+                        class="justify-center"
+                        v-text="card.title"></v-card-title>
+                    </v-img>
+                </v-btn>
 
                 <v-card-actions>
                     <v-spacer></v-spacer>

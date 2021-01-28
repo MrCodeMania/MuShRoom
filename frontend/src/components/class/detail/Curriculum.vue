@@ -4,83 +4,95 @@
     dense>
       <div v-for="(section, idx) in sections"
       :key="section.title">
-        <v-timeline-item
-          :color="color[idx]"
-          fill-dot
-          right
-        >
-          <v-card>
-            <v-card-title :class="color[idx]">
-              <v-icon
-                dark
-                size="42"
-                class="mr-4"
-              >
-                mdi-music-note-quarter
-              </v-icon>
-              <h2 class="white--text font-weight-bold">
-                {{ section.title }}
-              </h2>
-              <v-spacer></v-spacer>
-              <v-btn
-              v-if="isTaken"
-              dark
-              :color="color[idx]+' darken-4'"
-              to="/detail/feedback">
-                피드백 신청
-              </v-btn>
-            </v-card-title>
-          </v-card>
-        </v-timeline-item>
+        <v-list>
+          <v-list-group>
+            <template v-slot:activator>
+              <v-list-item-title>
+                <v-timeline-item
+                :color="color[idx]"
+                fill-dot
+                right
+                >
+                  <v-card>
+                    <v-card-title :class="color[idx]">
+                      <v-icon
+                        dark
+                        size="42"
+                        class="mr-4"
+                      >
+                        mdi-music-note-quarter
+                      </v-icon>
+                      <h2 class="white--text font-weight-bold">
+                        {{ section.title }}
+                      </h2>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                      v-if="isTaken"
+                      dark
+                      :color="color[idx]+' darken-4'"
+                      to="/detail/feedback">
+                        피드백 신청
+                      </v-btn>
+                    </v-card-title>
+                  </v-card>
+                </v-timeline-item>
+              </v-list-item-title>
+            </template>
 
-        <div
-        v-for="lecture in section.lectures"
-        :key="lecture.title">
-          <v-timeline-item
-          color="amber lighten-1"
-          fill-dot
-          left
-          small
-          >
-            <v-card>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" md="1">
-                    <v-icon
-                    size="32"
-                    class="mr-4"
-                    >
-                      mdi-music-note
-                    </v-icon>
-                  </v-col>
-                  <v-col md="1">
-                    <v-card-text class="p-0 mt-2">
-                      {{ lecture.title }}
-                    </v-card-text>
-                  </v-col>
-                  <v-col md="6">
-                    <v-progress-linear 
-                    v-model="lecture.value"
-                    height="25"
-                    color="amber darken-4"
-                    >
-                      <strong>{{ Math.ceil(lecture.value) }}%</strong>
-                    </v-progress-linear>
-                  </v-col>
-                  <v-col md="4">
-                    <v-btn
-                    v-if="isTaken"
-                    dark
-                    color="amber darken-3"
-                    to="/lesson">
-                      강의 보러가기
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card>
-          </v-timeline-item>
-        </div>
+            <v-list-item-content>
+              <div
+              v-for="lecture in section.lectures"
+              :key="lecture.title">
+                <v-timeline-item
+                color="amber lighten-1"
+                fill-dot
+                left
+                small
+                class="pr-16"
+                >
+                  <v-card
+                  class="mr-4">
+                    <v-container>
+                      <v-row>
+                        <v-col cols="12" md="1">
+                          <v-icon
+                          size="32"
+                          class="mr-4"
+                          >
+                            mdi-music-note
+                          </v-icon>
+                        </v-col>
+                        <v-col md="1">
+                          <v-card-text class="p-0 mt-2">
+                            {{ lecture.title }}
+                          </v-card-text>
+                        </v-col>
+                        <v-col md="6">
+                          <v-progress-linear 
+                          v-model="lecture.value"
+                          height="25"
+                          color="amber darken-4"
+                          >
+                            <strong>{{ Math.ceil(lecture.value) }}%</strong>
+                          </v-progress-linear>
+                        </v-col>
+                        <v-col md="4">
+                          <v-btn
+                          v-if="isTaken"
+                          dark
+                          color="amber darken-3"
+                          to="/lesson">
+                            강의 보러가기
+                          </v-btn>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-card>
+                </v-timeline-item>
+              </div>
+            </v-list-item-content>
+          </v-list-group>
+        </v-list>
       </div>
     </v-timeline>
   </div>
@@ -111,3 +123,9 @@ export default class Curriculum extends Vue {
   }
 }
 </script>
+
+<style scoped lang="scss">
+::v-deep .v-list-item {
+  padding: 0 16px 0 0;
+}
+</style>

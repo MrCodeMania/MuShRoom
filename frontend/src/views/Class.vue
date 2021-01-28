@@ -5,23 +5,23 @@
     max-width="80%"
     color="amber darken-3"
     dark>
-        <div
-        class="pt-6">
-            <v-btn 
-            x-large
-            depressed
-            color="amber darken-3"
-            v-for="category in categories"
-            :key="category.title"
-            @click="addQuery(category.title)">
-                {{ category.title }}
-            </v-btn>
-        </div>
+        <v-btn 
+        x-large
+        height="80"
+        depressed
+        color="amber darken-3"
+        v-for="category in categories"
+        :key="category.title"
+        @click="addQuery(category.title)">
+            {{ category.title }}
+        </v-btn>
         <v-divider
+        class="m-0"
         dark>
         </v-divider>
         <v-btn 
         x-large
+        height="80"
         depressed
         color="amber darken-3"
         v-for="instrument in instruments"
@@ -30,19 +30,19 @@
             {{ instrument }}
         </v-btn>
         <v-divider
+        class="m-0"
         dark>
         </v-divider>
-            <div class="pb-6">
-                <v-btn 
-                x-large
-                depressed
-                color="amber darken-3"
-                v-for="step in steps"
-                :key="step.title"
-                @click="addQuery(step.title)">
-                    {{ step.title }}
-                </v-btn>
-            </div>
+        <v-btn 
+        x-large
+        height="80"
+        depressed
+        color="amber darken-3"
+        v-for="step in steps"
+        :key="step.title"
+        @click="addQuery(step.title)">
+            {{ step.title }}
+        </v-btn>
     </v-card>
     <ClassAllList :name="query"/>
   </div>
