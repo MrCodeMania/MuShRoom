@@ -3,12 +3,17 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import MyPage from '../views/MyPage.vue'
 import Home from '../views/Home.vue'
 import Class from '../views/Class.vue'
+import UpdateInfoUser from '../views/User/UpdateInfoUser.vue' 
+import UpdateInfoTutor from '../views/User/UpdateInfoTutor.vue' 
+import ClassDetail from '../views/ClassDetail.vue'
 import Login from '../views/User/login.vue'
 import Studentregist from '../views/User/studentRegist.vue'
 import TuterRegister from '../views/User/TuterRegister.vue'
 import FindUser from '../views/User/FindUserInfo.vue'
 import Board from '../views/Board/Board.vue'
 import Voc from '../views/Board/Voc.vue'
+import Lesson from '../views/Lesson.vue'
+
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
@@ -68,16 +73,63 @@ const routes: Array<RouteConfig> = [
         component: () => import("@/components/mypage/tutor/Schedule.vue")
       },
       {
-        path: "lectureadd",
-        name: "tutor-lectureadd",
-        component: () => import("@/components/mypage/tutor/LectureAdd.vue")
+        path: "addlecture",
+        name: "tutor-addlecture",
+        component: () => import("@/components/mypage/tutor/AddLecture.vue")
       },
     ]
   },
   {
-    path: '/class',
+    path: '/class/All',
     name: 'Class',
     component: Class
+  },
+  {
+    path: '/user/update',
+    name: 'updateuser',
+    component: UpdateInfoUser,
+  },
+  {
+    path: '/tutor/update',
+    name: 'updatetutor',
+    component: UpdateInfoTutor,
+  },
+  {
+    path: '/detail',
+    name: 'Detail',
+    component: ClassDetail,
+    children: [
+      {
+        path: "intro",
+        name: "Intro",
+        component: () => import("@/components/class/detail/Introduction.vue")
+      },
+      {
+        path: "curriculum",
+        name: "Curriculum",
+        component: () => import("@/components/class/detail/Curriculum.vue")
+      },
+      {
+        path: "review",
+        name: "Review",
+        component: () => import("@/components/class/detail/Review.vue")
+      },
+      {
+        path: "feedback",
+        name: "Feedback",
+        component: () => import("@/components/class/detail/Feedback.vue")
+      },
+      {
+        path: "qna",
+        name: "QnA",
+        component: () => import("@/components/class/detail/QnA.vue")
+      },
+    ]
+  },
+  {
+    path: '/lesson',
+    name: 'Lesson',
+    component: Lesson
   },
   {
     path: '/login',

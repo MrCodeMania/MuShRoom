@@ -29,7 +29,6 @@ public class SwaggerConfig {
         .select()
         .apis(RequestHandlerSelectors
             .basePackage("com.ssafy.backend.controller"))
-        // .paths(PathSelectors.ant("/**"))
         .paths(PathSelectors.any())
         .build();
   }

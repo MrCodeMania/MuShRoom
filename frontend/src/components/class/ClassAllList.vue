@@ -13,14 +13,23 @@
             :key="card.title"
             class="d-inline-block mx-3"
             width="300">
-                <v-img
-                :src="card.src"
-                class="white--text align-end"
-                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                height="200"
-                >
-                    <v-card-title v-text="card.title"></v-card-title>
-                </v-img>
+                <v-btn
+                text
+                to="/detail/curriculum"
+                class="p-0 text-center"
+                height="200">
+                    <v-img
+                    :src="card.src"
+                    class="white--text align-end"
+                    gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                    width="300"
+                    height="200"
+                    >
+                        <v-card-title
+                        class="justify-center"
+                        v-text="card.title"></v-card-title>
+                    </v-img>
+                </v-btn>
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -48,7 +57,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class ClassList extends Vue {
-    @Prop(String) name!: string
+    @Prop(Array) name!: string[]
     private cards: {[key: string]: any}[] = [
         { title: '기타로 장범준 따라잡기', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', heart: 1},
         { title: '초보자도 할 수 있는 피아노 반주', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', heart: 0},
