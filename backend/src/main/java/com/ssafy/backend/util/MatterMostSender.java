@@ -1,8 +1,8 @@
-package com.ssafy.backend.other;
+package com.ssafy.backend.util;
 
 import com.google.gson.Gson;
-import com.ssafy.backend.other.MatterMostMessageDto.Attachment;
-import com.ssafy.backend.other.MatterMostMessageDto.Attachments;
+import com.ssafy.backend.util.MatterMostMessageDto.Attachment;
+import com.ssafy.backend.util.MatterMostMessageDto.Attachments;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.ssafy.backend.other;
+package com.ssafy.backend.util;
 
 public enum ErrorType {
   CLASS_NOT_EXIST(1, "클래스가 존재하지 않습니다."),

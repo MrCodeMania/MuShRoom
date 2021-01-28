@@ -1,4 +1,4 @@
-package com.ssafy.backend.other;
+package com.ssafy.backend.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

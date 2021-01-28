@@ -1,4 +1,4 @@
-package com.ssafy.backend.other;
+package com.ssafy.backend.util;
 
 import com.google.gson.annotations.SerializedName;
 import java.io.PrintWriter;

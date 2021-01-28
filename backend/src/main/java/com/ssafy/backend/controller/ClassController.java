@@ -12,7 +12,7 @@ import com.ssafy.backend.model.Profile;
 import com.ssafy.backend.model.Section;
 import com.ssafy.backend.model.Tag;
 import com.ssafy.backend.model.TutorEntity;
-import com.ssafy.backend.other.ErrorType;
+import com.ssafy.backend.util.ErrorType;
 import com.ssafy.backend.repository.ClassQuestionRepository;
 import com.ssafy.backend.repository.ClassRepository;
 import com.ssafy.backend.repository.ClassReviewRepository;
@@ -29,7 +29,6 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,6 +50,8 @@ public class ClassController {
   private final SectionRepository sectionRepository;
   private final TutorRepository tutorRepository;
 
+
+  // Repository DI
   @Autowired
   public ClassController(
       ClassQuestionRepository classQuestionRepository,
@@ -104,18 +105,9 @@ public class ClassController {
   @ApiOperation(value = "Get Class", notes = "ObjectID로 부터 클래스를 가져와 반환한다")
   @GetMapping("/class/{cid}")
   public ClassEntity getOneClass(@PathVariable ObjectId cid) {
-    return classRepository.findById(cid).orElseThrow(
-        new Supplier<IllegalArgumentException>() {
-          @Override
-          public IllegalArgumentException get() {
-            return new IllegalArgumentException("해당 사용자는 존재하지 않습니다");
-          }
-        });
-
-    /* 람다 표현식
-    ClassEntity cls = classRepository.findById(id.toString()).orElseThrow(() -> {
-      return new IllegalArgumentException("해당 사용자는 존재하지 않습니다");
-    }); */
+    return classRepository.findById(cid).orElseThrow(() ->
+      new IllegalArgumentException("해당 사용자는 존재하지 않습니다")
+    );
   }
 
   @ApiOperation(value = "Update Class", notes = "해당 ObjectID의 클래스를 변경한다.\n"
@@ -182,6 +174,7 @@ public class ClassController {
     if (clsOpt.isPresent()) {
       ClassEntity cls = clsOpt.get();
       List<Section> sectionList = cls.getSectionList();
+      // sectionId를 store 하기 위한 save
       sectionRepository.save(section);
 
       if (index != null) {

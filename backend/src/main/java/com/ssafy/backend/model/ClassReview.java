@@ -1,7 +1,7 @@
 package com.ssafy.backend.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.ssafy.backend.other.CustomObjectIdSerializer;
+import com.ssafy.backend.util.CustomObjectIdSerializer;
 import lombok.Data;
 import lombok.NonNull;
 import org.bson.types.ObjectId;

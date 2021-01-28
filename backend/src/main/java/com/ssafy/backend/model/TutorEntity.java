@@ -3,7 +3,7 @@ package com.ssafy.backend.model;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators.IntSequenceGenerator;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.ssafy.backend.other.CustomObjectIdSerializer;
+import com.ssafy.backend.util.CustomObjectIdSerializer;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;

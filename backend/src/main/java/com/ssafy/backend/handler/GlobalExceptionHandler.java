@@ -1,7 +1,7 @@
 package com.ssafy.backend.handler;
 
 import com.ssafy.backend.model.ErrorMessage;
-import com.ssafy.backend.other.NotificationManager;
+import com.ssafy.backend.util.NotificationManager;
 import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +30,7 @@ public class GlobalExceptionHandler {
         HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
+  // 일반적으로 Param이 잘못되었을 때 발생하는 ErrorException
   @ExceptionHandler(HttpMessageNotReadableException.class)
   public ResponseEntity wrongParamException(Exception e, HttpServletRequest req) {
     e.printStackTrace();
