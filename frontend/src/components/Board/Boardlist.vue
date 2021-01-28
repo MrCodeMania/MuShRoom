@@ -6,7 +6,7 @@
           <v-btn>자유게시판</v-btn>
 
           <v-btn>노래게시판</v-btn>
-          <v-btn>이런저런게시판</v-btn>
+          <v-btn>악기게시판</v-btn>
         </v-btn-toggle>
       </v-sheet>
     </div>
@@ -59,37 +59,37 @@ export default class Boardlist extends Vue {
   private items = [
     {
       id: "공지",
-      title: "공지는 공지",
-      userid: "공지사항",
+      title: "Celebrity",
+      userid: "아이유",
       date: "2020-01-28",
       count: 2,
     },
     {
-      id: 1,
-      title: "제목",
-      userid: "지나가던사람",
+      id: 4,
+      title: "너무 재미있어요!!!",
+      userid: "지나가는 사람",
       date: "2020-01-27",
       count: 1,
     },
     {
-      id: 2,
-      title: "제목이다제목제목제제제제제목",
-      userid: "어느날",
-      date: "2020-01-28",
+      id: 3,
+      title: "제목은 title",
+      userid: "글쓴이는누구",
+      date: "2020-01-27",
       count: 2,
     },
     {
-      id: 3,
-      title: "제목이다제목제목제제제제제목",
-      userid: "저런날",
-      date: "2020-01-28",
+      id: 2,
+      title: "피아노 추천해주세요!",
+      userid: "피아노초보",
+      date: "2020-01-27",
       count: 3,
     },
     {
-      id: 4,
-      title: "제목이다제목제목제제제제제목",
-      userid: "그런날",
-      date: "2020-01-28",
+      id: 1,
+      title: "첫글",
+      userid: "1위",
+      date: "2020-01-26",
       count: 2,
     },
   ];
