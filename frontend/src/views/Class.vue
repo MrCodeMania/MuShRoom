@@ -49,7 +49,7 @@
     class="mx-auto">
       <v-card
       elevation="0"
-      max-width="286"
+      max-width="288"
       height="80"
       color="amber"
       class="mx-auto mt-6 p-3 pr-0">
