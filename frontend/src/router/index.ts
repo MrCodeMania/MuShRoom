@@ -7,6 +7,7 @@ import Login from '../views/User/login.vue'
 import Studentregist from '../views/User/studentRegist.vue'
 import TuterRegister from '../views/User/TuterRegister.vue'
 import FindUser from '../views/User/FindUserInfo.vue'
+import Board from '../views/Board/Board.vue'
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
@@ -96,9 +97,32 @@ const routes: Array<RouteConfig> = [
     path: '/user/find',
     name: 'FindUser',
     component: FindUser,
+  }, {
+    path: '/board',
+    name: 'Board',
+    component: Board,
+    children: [
+      {
+        path: "",
+        name: "boardlist",
+        component: () => import("@/components/Board/Boardlist.vue")
+      },
+      {
+        path: "detail/:articleid",
+        name: "boardview",
+        component: () => import("@/components/Board/Detail.vue")
+      },
+      {
+        path: "register",
+        name: "boardregister",
+        component: () => import("@/components/Board/Register.vue")
+      }
+    ],
+    redirect: () => {
+      return "/board";
+    }
   },
 ]
-
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
