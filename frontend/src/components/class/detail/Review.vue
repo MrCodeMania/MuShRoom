@@ -9,7 +9,7 @@
           <v-col md="1">
             <v-card-text
             class="p-0 text-center">
-              {{idx+1}} 점
+              {{ idx+1 }} 점
             </v-card-text>
           </v-col>
           <v-col md="6">
