@@ -208,4 +208,71 @@ public class TutorController {
     tutorRepository.save(tutor);
   }
 
+  @ApiOperation(value = "Get TutorPoint", notes = "튜터의 포인트를 조회한다")
+  @GetMapping("/tutor/{id}/point/")
+  public ResponseEntity<Integer> getPoint(@PathVariable ObjectId id) {
+    Tutor tutor = tutorRepository.findById(id).orElseThrow(() -> {
+      return new IllegalArgumentException("해당 사용자는 존재하지 않습니다");
+    });
+
+    return new ResponseEntity<Integer> (tutor.getPoint(), HttpStatus.OK);
+  }
+
+  @ApiOperation(value = "Put TutorPoint", notes = "튜터의 포인트를 수정한다")
+  @PutMapping("/tutor/{id}/point/")
+  public void putPoint(@PathVariable ObjectId id, Integer point) {
+    Tutor tutor = tutorRepository.findById(id).orElseThrow(() -> {
+      return new IllegalArgumentException("해당 사용자는 존재하지 않습니다");
+    });
+
+    tutor.setPoint(tutor.getPoint() + point);
+
+    tutorRepository.save(tutor);
+  }
+
+  @ApiOperation(value = "Get TutorLike", notes = "튜터의 좋아요를 조회한다")
+  @GetMapping("/tutor/{id}/like/")
+  public ResponseEntity<Integer> getLike(@PathVariable ObjectId id) {
+    Tutor tutor = tutorRepository.findById(id).orElseThrow(() -> {
+      return new IllegalArgumentException("해당 사용자는 존재하지 않습니다");
+    });
+
+    return new ResponseEntity<Integer> (tutor.getLike(), HttpStatus.OK);
+  }
+
+  @ApiOperation(value = "Put TutorLike", notes = "튜터의 좋아요를 수정한다")
+  @PutMapping("/tutor/{id}/point/")
+  public void putLike(@PathVariable ObjectId id, Integer like) {
+    Tutor tutor = tutorRepository.findById(id).orElseThrow(() -> {
+      return new IllegalArgumentException("해당 사용자는 존재하지 않습니다");
+    });
+
+    tutor.setPoint(tutor.getPoint() + like);
+
+    tutorRepository.save(tutor);
+  }
+
+  @ApiOperation(value = "Get TutorAccount", notes = "튜터의 계좌 정보를 조회한다")
+  @GetMapping("/tutor/{id}/account/")
+  public ResponseEntity<TutorAccount> getAccount(@PathVariable ObjectId id) {
+    Tutor tutor = tutorRepository.findById(id).orElseThrow(() -> {
+      return new IllegalArgumentException("해당 사용자는 존재하지 않습니다");
+    });
+
+    return new ResponseEntity<TutorAccount> (tutor.getTutorAccount(), HttpStatus.OK);
+  }
+
+  @ApiOperation(value = "Put TutorAccount", notes = "튜터의 계좌 정보를 수정한다")
+  @PutMapping("/tutor/{id}/account/")
+  public void putAccount(@PathVariable ObjectId id, TutorAccount newAccount) {
+    Tutor tutor = tutorRepository.findById(id).orElseThrow(() -> {
+      return new IllegalArgumentException("해당 사용자는 존재하지 않습니다");
+    });
+
+    tutor.setTutorAccount(newAccount);
+
+    tutorRepository.save(tutor);
+  }
+
+
 }
