@@ -8,6 +8,7 @@ import Studentregist from '../views/User/studentRegist.vue'
 import TuterRegister from '../views/User/TuterRegister.vue'
 import FindUser from '../views/User/FindUserInfo.vue'
 import Board from '../views/Board/Board.vue'
+import Voc from '../views/Board/Voc.vue'
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
@@ -97,7 +98,8 @@ const routes: Array<RouteConfig> = [
     path: '/user/find',
     name: 'FindUser',
     component: FindUser,
-  }, {
+  },
+  {
     path: '/board',
     name: 'Board',
     component: Board,
@@ -120,6 +122,31 @@ const routes: Array<RouteConfig> = [
     ],
     redirect: () => {
       return "/board";
+    }
+  },
+  {
+    path: '/voc',
+    name: 'voc',
+    component: Voc,
+    children: [
+      {
+        path: "/notice",
+        name: "notice",
+        component: () => import("@/components/Board/QnA/list.vue")
+      },
+      {
+        path: "/QnA",
+        name: "voc-QnA",
+        component: () => import("@/components/Board/QnA/QnA.vue")
+      }, {
+        path: "/Qlist",
+        name: "qlist",
+        component: () => import("@/components/Board/QnA/Questionlist.vue")
+      }
+
+    ],
+    redirect: () => {
+      return "/voc";
     }
   },
 ]
