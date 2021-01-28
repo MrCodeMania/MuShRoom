@@ -11,7 +11,7 @@ import com.ssafy.backend.model.LectureQuestion;
 import com.ssafy.backend.model.Profile;
 import com.ssafy.backend.model.Section;
 import com.ssafy.backend.model.Tag;
-import com.ssafy.backend.model.TutorEntity;
+import com.ssafy.backend.model.Tutor;
 import com.ssafy.backend.util.ErrorType;
 import com.ssafy.backend.repository.ClassQuestionRepository;
 import com.ssafy.backend.repository.ClassRepository;
@@ -24,7 +24,6 @@ import com.ssafy.backend.repository.TutorRepository;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -84,7 +83,7 @@ public class ClassController {
       @RequestParam ObjectId tutorId,
       @RequestBody ClassEntity c) {
 
-    Optional<TutorEntity> tutor = tutorRepository.findById(tutorId);
+    Optional<Tutor> tutor = tutorRepository.findById(tutorId);
     if (tutor.isPresent()) {
       ClassEntity cls = ClassEntity.builder()
           .tutor(tutor.get())
@@ -776,8 +775,7 @@ public class ClassController {
     ClassReview classReview = new ClassReview(5, "review");
     classReviewRepository.save(classReview);
 
-    TutorEntity tutor = new TutorEntity();
-    tutor.setData("testData");
+    Tutor tutor = new Tutor();
     tutorRepository.save(tutor);
 
     ClassEntity cls = ClassEntity.builder()
@@ -853,10 +851,5 @@ public class ClassController {
     classReviewRepository.save(classReview);
 
     return cls;
-  }
-
-  @GetMapping("/tutor")
-  public ResponseEntity getAllTutor() {
-    return new ResponseEntity(tutorRepository.findAll(), HttpStatus.OK);
   }
 }

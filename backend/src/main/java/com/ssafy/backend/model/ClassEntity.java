@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-@JsonIdentityInfo(generator = IntSequenceGenerator.class, property = "identity") // 순환 참조 방지
+// @JsonIdentityInfo(generator = IntSequenceGenerator.class, property = "identity") // 순환 참조 방지
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
@@ -27,7 +27,7 @@ public class ClassEntity extends DefaultTimeStamp {
   private Profile profile;
   private String title;
   @DBRef
-  private TutorEntity tutor;
+  private Tutor tutor;
   @Builder.Default
   @DBRef
   private List<ClassReview> reviewList = new ArrayList<>();
