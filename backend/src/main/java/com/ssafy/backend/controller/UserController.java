@@ -101,4 +101,20 @@ public class UserController {
 //        repository.delete(user);
     }
 
+    @ApiOperation(value = "찜한 강의 수정")
+    @PostMapping("/like/class/update")
+    public void updateClassLike(@RequestBody User user) {
+        Optional<User> findUser = repository.findById(user.getId());
+        findUser.get().getLike().setClassId(user.getLike().getClassId());
+        repository.save(findUser.get());
+    }
+
+    @ApiOperation(value = "찜한 선생님 수정")
+    @PostMapping("/like/tutor/update")
+    public void updateTutorLike(@RequestBody User user) {
+        Optional<User> findUser = repository.findById(user.getId());
+        findUser.get().getLike().setTutorId(user.getLike().getTutorId());
+        repository.save(findUser.get());
+    }
+
 }
