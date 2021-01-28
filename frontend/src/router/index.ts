@@ -3,7 +3,8 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import MyPage from '../views/MyPage.vue'
 import Home from '../views/Home.vue'
 import Class from '../views/Class.vue'
-import UpdateInfo from '../views/User/UpdateInfo.vue' 
+import UpdateInfoUser from '../views/User/UpdateInfoUser.vue' 
+import UpdateInfoTutor from '../views/User/UpdateInfoTutor.vue' 
 
 
 import ClassDetail from '../views/ClassDetail.vue'
@@ -83,9 +84,14 @@ const routes: Array<RouteConfig> = [
     component: Class
   },
   {
-    path: '/updateuser',
+    path: '/user/update',
     name: 'updateuser',
-    component: UpdateInfo
+    component: UpdateInfoUser,
+  },
+  {
+    path: '/tutor/update',
+    name: 'updatetutor',
+    component: UpdateInfoTutor,
   },
   {
     path: '/detail',
