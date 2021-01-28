@@ -151,6 +151,25 @@ public class TutorController {
     tutorRepository.deleteById(id);
   }
 
+  @ApiOperation(value = "Update Password", notes = "튜터의 패스워드를 수정한다")
+  @PutMapping("/tutor/{id}/password")
+  public Boolean updatePassword(@PathVariable ObjectId id, String password, String newPassword)
+  {
+    Tutor tutor = tutorRepository.findById(id).orElseThrow(() -> {
+      return new IllegalArgumentException("해당 사용자는 존재하지 않습니다");
+    });
+
+    if(tutor.getPassword().equals(password)) {
+      tutor.setPassword(newPassword);
+      tutorRepository.save(tutor);
+      return true;
+    }
+    else {
+      System.out.println("비밀번호 불일치");
+      return false;
+    }
+  }
+
   // Career 중복 제거
   public List<TutorCareer> removeDuplicateCareerByName(List<TutorCareer> originalList, List<TutorCareer> newList){
     List<String> newCareerNameList = newList.stream().map(TutorCareer::getName).collect(Collectors.toList());
@@ -177,6 +196,7 @@ public class TutorController {
     }
     return originalList;
   }
+
 
   @ApiOperation(value = "Get TutorFeedbackTime", notes = "튜터의 피드백 가능 시간을 조회한다")
   @GetMapping("/tutor/{id}/feedback/")
@@ -241,7 +261,7 @@ public class TutorController {
   }
 
   @ApiOperation(value = "Put TutorLike", notes = "튜터의 좋아요를 수정한다")
-  @PutMapping("/tutor/{id}/point/")
+  @PutMapping("/tutor/{id}/like/")
   public void putLike(@PathVariable ObjectId id, Integer like) {
     Tutor tutor = tutorRepository.findById(id).orElseThrow(() -> {
       return new IllegalArgumentException("해당 사용자는 존재하지 않습니다");
