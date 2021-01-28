@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h1>피드백(강사)</h1>
   </div>
 </template>

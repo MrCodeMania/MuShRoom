@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h1>강의 등록(강사)</h1>
   </div>
 </template>

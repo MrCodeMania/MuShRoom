@@ -49,21 +49,42 @@
                 ></v-text-field>
                 <v-btn>인증</v-btn>
             </div>
+            <v-btn 
+            @click="toggleEventPassword"
+            >
+                비밀번호 변경
+            </v-btn>
         </v-row>
         <v-row>
             <!-- 테이블에서 추가 삭제하는 방법 찾아서 추가 -->
         </v-row>
+        <UpdatePassword :toggleUpdatePassword="toggleUpdatePassword" @closeUpdatePassword="closeUpdatePassword" />
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import UpdatePassword from '@/components/user/UpdatePassword.vue';
 
-@Component
-export default class UpdateInfo extends Vue {
+@Component({
+    components: {
+        UpdatePassword,
+    }
+})
+export default class UpdateInfoUser extends Vue {
 
-    private userInfo = this.$route.params.userInfo
+    private userInfo = this.$route.params.userInfo;
 
+    private toggleUpdatePassword = false;
+
+
+    toggleEventPassword() {
+        this.toggleUpdatePassword = true;
+    }
+
+    closeUpdatePassword() {
+        this.toggleUpdatePassword = false;
+    }
 }
 </script>
 
