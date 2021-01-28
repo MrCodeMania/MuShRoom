@@ -1,12 +1,13 @@
 <template>
   <div>
     <div class="text-center">
-      <v-sheet class="px-7 pt-7 pb-4 mx-auto text-center d-inline-block">
+      <v-sheet class="pt-7 pb-4 mx-auto text-center d-inline-block">
         <v-btn-toggle mandatory color="teal">
-          <v-btn>자유게시판</v-btn>
-
-          <v-btn>노래게시판</v-btn>
-          <v-btn>악기게시판</v-btn>
+          <v-col>
+            <v-btn>자유게시판</v-btn>
+            <v-btn>노래게시판</v-btn>
+            <v-btn>악기게시판</v-btn>
+          </v-col>
         </v-btn-toggle>
       </v-sheet>
     </div>
