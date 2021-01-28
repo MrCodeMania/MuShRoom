@@ -229,6 +229,11 @@ export default class MyPage extends Vue{
     comment: '이번 강의는 총 3부로 제작되어 그렇습니다^^ 연결되는 내용입니다^^!', date: '2021-01-26 09:00'},
   ];
     private menu = '1';
+    private scrollInvoked = 0;
+
+    onScroll(){
+        this.scrollInvoked++;
+    }
 }
 </script>
 <style>
