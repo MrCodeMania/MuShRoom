@@ -468,6 +468,298 @@ public class ClassController {
         HttpStatus.BAD_REQUEST);
   }
 
+  @ApiOperation(value = "Get All Class Question", notes = "모든 클래스의 질문을 가져온다.")
+  @GetMapping("/class-question")
+  public ResponseEntity<?> getAllClassQuestion(@RequestParam(name = "classId") ObjectId cid) {
+    Optional<ClassEntity> classOpt = classRepository.findById(cid);
+
+    if (classOpt.isPresent()) {
+      return new ResponseEntity<>(classOpt.get().getQuestionList(), HttpStatus.OK);
+    }
+
+    return new ResponseEntity<>(
+        new ErrorMessage(
+            ErrorType.CLASS_NOT_EXIST.toString(),
+            HttpStatus.BAD_REQUEST.value()),
+        HttpStatus.BAD_REQUEST);
+  }
+
+  @ApiOperation(value = "Insert Class Question", notes = "클래스 질문을 삽입한다.")
+  @PostMapping("/class-question")
+  public ResponseEntity<?> insertOneClassQuestion(
+      @RequestParam(name = "classId") ObjectId cid,
+      @RequestBody ClassQuestion classQuestion) {
+    Optional<ClassEntity> classOpt = classRepository.findById(cid);
+    if (classOpt.isPresent()) {
+      ClassEntity cls = classOpt.get();
+      classQuestionRepository.save(classQuestion);
+
+      cls.appendQuestion(classQuestion);
+      classRepository.save(cls);
+
+      return new ResponseEntity<>(classQuestion, HttpStatus.OK);
+    }
+
+    return new ResponseEntity<>(
+        new ErrorMessage(
+            ErrorType.CLASS_NOT_EXIST.toString(),
+            HttpStatus.BAD_REQUEST.value()),
+        HttpStatus.BAD_REQUEST);
+  }
+
+  @ApiOperation(value = "Get One Class Question", notes = "클래스 질문을 리턴한다.")
+  @GetMapping("/class-question/{qid}")
+  public ResponseEntity<?> getOneClassQuestion(
+      @RequestParam(name = "classId") ObjectId cid,
+      @PathVariable ObjectId qid) {
+    Optional<ClassEntity> clsOpt = classRepository.findById(cid);
+    if (clsOpt.isPresent()) {
+      ClassEntity cls = clsOpt.get();
+      List<ClassQuestion> classQuestionList = cls.getQuestionList();
+      for (ClassQuestion classQuestion : classQuestionList) {
+        if (classQuestion.getId().equals(qid)) {
+          return new ResponseEntity<>(classQuestion, HttpStatus.OK);
+        }
+      }
+
+      return new ResponseEntity<>(
+          new ErrorMessage(
+              ErrorType.CLASS_QUESTION_NOT_EXIST.toString(),
+              HttpStatus.BAD_REQUEST.value()),
+          HttpStatus.BAD_REQUEST);
+    }
+
+    return new ResponseEntity<>(
+        new ErrorMessage(
+            ErrorType.CLASS_NOT_EXIST.toString(),
+            HttpStatus.BAD_REQUEST.value()),
+        HttpStatus.BAD_REQUEST);
+  }
+
+  @ApiOperation(value = "Update Class Question", notes = "클래스 질문을 수정한다.")
+  @PutMapping("/class-question/{qid}")
+  public ResponseEntity<?> updateOneLecture(
+      @RequestParam(name = "classId") ObjectId cid,
+      @PathVariable ObjectId qid,
+      @RequestBody ClassQuestion classQuestion) {
+    Optional<ClassEntity> clsOpt = classRepository.findById(cid);
+    if (clsOpt.isPresent()) {
+      ClassEntity cls = clsOpt.get();
+      List<ClassQuestion> classQuestionList = cls.getQuestionList();
+
+      for (ClassQuestion tmp : classQuestionList) {
+        if (tmp.getId().equals(qid)) {
+          ClassQuestion q = classQuestionRepository.findById(qid).get();
+          if (classQuestion.getQuestion() != null) q.setQuestion(classQuestion.getQuestion());
+          if (classQuestion.getAnswer() != null) q.setAnswer(classQuestion.getAnswer());
+          classQuestionRepository.save(q);
+
+          return new ResponseEntity<>(q, HttpStatus.OK);
+        }
+      }
+
+      return new ResponseEntity<>(
+          new ErrorMessage(
+              ErrorType.CLASS_QUESTION_NOT_EXIST.toString(),
+              HttpStatus.BAD_REQUEST.value()),
+          HttpStatus.BAD_REQUEST);
+    }
+
+    return new ResponseEntity<>(
+        new ErrorMessage(
+            ErrorType.CLASS_NOT_EXIST.toString(),
+            HttpStatus.BAD_REQUEST.value()),
+        HttpStatus.BAD_REQUEST);
+  }
+
+  @ApiOperation(value = "Delete Class Question", notes = "클래스 질문을 제거한다.")
+  @DeleteMapping("/class-question/{qid}")
+  public ResponseEntity<?> deleteOneClassQuestion(
+      @RequestParam(name = "classId") ObjectId cid,
+      @PathVariable ObjectId qid) {
+    Optional<ClassEntity> clsOpt = classRepository.findById(cid);
+    if (clsOpt.isPresent()) {
+      ClassEntity cls = clsOpt.get();
+      List<ClassQuestion> classQuestionList = cls.getQuestionList();
+
+      int index = -1;
+      for (int i = 0; i < classQuestionList.size(); i++) {
+        if (classQuestionList.get(i).getId().equals(qid)) {
+          index = i;
+          break;
+        }
+      }
+
+      if (index >= 0) {
+        ClassQuestion rs = classQuestionList.get(index);
+        classQuestionList.remove(index);
+        cls.setQuestionList(classQuestionList);
+        classRepository.save(cls);
+        classQuestionRepository.delete(rs);
+
+        return new ResponseEntity<>(rs, HttpStatus.OK);
+      } else {
+        return new ResponseEntity<>(
+            new ErrorMessage(
+                ErrorType.CLASS_QUESTION_NOT_EXIST.toString(),
+                HttpStatus.BAD_REQUEST.value()),
+            HttpStatus.BAD_REQUEST);
+      }
+    }
+
+    return new ResponseEntity<>(
+        new ErrorMessage(
+            ErrorType.CLASS_NOT_EXIST.toString(),
+            HttpStatus.BAD_REQUEST.value()),
+        HttpStatus.BAD_REQUEST);
+  }
+
+  @ApiOperation(value = "Get All Lecture Question", notes = "강의의 질문을 가져온다.")
+  @GetMapping("/lecture-question")
+  public ResponseEntity<?> getAllLectureQuestion(@RequestParam(name = "lectureId") ObjectId lid) {
+    Optional<Lecture> lectureOpt = lectureRepository.findById(lid);
+
+    if (lectureOpt.isPresent()) {
+      return new ResponseEntity<>(lectureOpt.get().getQuestionList(), HttpStatus.OK);
+    }
+
+    return new ResponseEntity<>(
+        new ErrorMessage(
+            ErrorType.LECTURE_NOT_EXIST.toString(),
+            HttpStatus.BAD_REQUEST.value()),
+        HttpStatus.BAD_REQUEST);
+  }
+
+  @ApiOperation(value = "Insert Lecture Question", notes = "강의 질문을 삽입한다.")
+  @PostMapping("/lecture-question")
+  public ResponseEntity<?> insertOneClassQuestion(
+      @RequestParam(name = "lectureId") ObjectId lid,
+      @RequestBody LectureQuestion lectureQuestion) {
+    Optional<Lecture> lectureOpt = lectureRepository.findById(lid);
+    if (lectureOpt.isPresent()) {
+      Lecture lecture = lectureOpt.get();
+      lectureQuestionRepository.save(lectureQuestion);
+
+      lecture.appendQuestion(lectureQuestion);
+      lectureRepository.save(lecture);
+
+      return new ResponseEntity<>(lecture, HttpStatus.OK);
+    }
+
+    return new ResponseEntity<>(
+        new ErrorMessage(
+            ErrorType.LECTURE_NOT_EXIST.toString(),
+            HttpStatus.BAD_REQUEST.value()),
+        HttpStatus.BAD_REQUEST);
+  }
+
+  @ApiOperation(value = "Get One Lecture Question", notes = "강의 질문을 리턴한다.")
+  @GetMapping("/lecture-question/{qid}")
+  public ResponseEntity<?> getOneLectureQuestion(
+      @RequestParam(name = "lectureId") ObjectId lid,
+      @PathVariable ObjectId qid) {
+    Optional<Lecture> lectureOpt = lectureRepository.findById(lid);
+    if (lectureOpt.isPresent()) {
+      Lecture lecture = lectureOpt.get();
+      List<LectureQuestion> lectureQuestionList = lecture.getQuestionList();
+      for (LectureQuestion lectureQuestion : lectureQuestionList) {
+        if (lectureQuestion.getId().equals(qid)) {
+          return new ResponseEntity<>(lectureQuestion, HttpStatus.OK);
+        }
+      }
+
+      return new ResponseEntity<>(
+          new ErrorMessage(
+              ErrorType.LECTURE_QUESTION_NOT_EXIST.toString(),
+              HttpStatus.BAD_REQUEST.value()),
+          HttpStatus.BAD_REQUEST);
+    }
+
+    return new ResponseEntity<>(
+        new ErrorMessage(
+            ErrorType.LECTURE_NOT_EXIST.toString(),
+            HttpStatus.BAD_REQUEST.value()),
+        HttpStatus.BAD_REQUEST);
+  }
+
+  @ApiOperation(value = "Update Lecture Question", notes = "강의 질문을 수정한다.")
+  @PutMapping("/lecture-question/{qid}")
+  public ResponseEntity<?> updateOneLecture(
+      @RequestParam(name = "lectureId") ObjectId lid,
+      @PathVariable ObjectId qid,
+      @RequestBody LectureQuestion lectureQuestion) {
+    Optional<Lecture> lectureOpt = lectureRepository.findById(lid);
+    if (lectureOpt.isPresent()) {
+      Lecture lecture = lectureOpt.get();
+      List<LectureQuestion> lectureQuestionList = lecture.getQuestionList();
+
+      for (LectureQuestion tmp : lectureQuestionList) {
+        if (tmp.getId().equals(qid)) {
+          LectureQuestion q = lectureQuestionRepository.findById(qid).get();
+          if (lectureQuestion.getQuestion() != null) q.setQuestion(lectureQuestion.getQuestion());
+          if (lectureQuestion.getAnswer() != null) q.setAnswer(lectureQuestion.getAnswer());
+          lectureQuestionRepository.save(q);
+
+          return new ResponseEntity<>(q, HttpStatus.OK);
+        }
+      }
+
+      return new ResponseEntity<>(
+          new ErrorMessage(
+              ErrorType.LECTURE_QUESTION_NOT_EXIST.toString(),
+              HttpStatus.BAD_REQUEST.value()),
+          HttpStatus.BAD_REQUEST);
+    }
+
+    return new ResponseEntity<>(
+        new ErrorMessage(
+            ErrorType.LECTURE_NOT_EXIST.toString(),
+            HttpStatus.BAD_REQUEST.value()),
+        HttpStatus.BAD_REQUEST);
+  }
+
+  @ApiOperation(value = "Delete Lecture Question", notes = "강의 질문을 제거한다.")
+  @DeleteMapping("/lecture-question/{qid}")
+  public ResponseEntity<?> deleteOneLectureQuestion(
+      @RequestParam(name = "lectureId") ObjectId lid,
+      @PathVariable ObjectId qid) {
+    Optional<Lecture> lectureOpt = lectureRepository.findById(lid);
+    if (lectureOpt.isPresent()) {
+      Lecture lecture = lectureOpt.get();
+      List<LectureQuestion> lectureQuestionList = lecture.getQuestionList();
+
+      int index = -1;
+      for (int i = 0; i < lectureQuestionList.size(); i++) {
+        if (lectureQuestionList.get(i).getId().equals(qid)) {
+          index = i;
+          break;
+        }
+      }
+
+      if (index >= 0) {
+        LectureQuestion rs = lectureQuestionList.get(index);
+        lectureQuestionList.remove(index);
+        lecture.setQuestionList(lectureQuestionList);
+        lectureRepository.save(lecture);
+        lectureQuestionRepository.delete(rs);
+
+        return new ResponseEntity<>(rs, HttpStatus.OK);
+      } else {
+        return new ResponseEntity<>(
+            new ErrorMessage(
+                ErrorType.LECTURE_QUESTION_NOT_EXIST.toString(),
+                HttpStatus.BAD_REQUEST.value()),
+            HttpStatus.BAD_REQUEST);
+      }
+    }
+
+    return new ResponseEntity<>(
+        new ErrorMessage(
+            ErrorType.LECTURE_NOT_EXIST.toString(),
+            HttpStatus.BAD_REQUEST.value()),
+        HttpStatus.BAD_REQUEST);
+  }
+
   // insert test sample
   @ApiOperation(value = "Post New Class", notes = "새로운 클래스를 삽입한다")
   @PostMapping("/test")

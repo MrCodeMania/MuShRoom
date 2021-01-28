@@ -16,10 +16,12 @@ public class Question extends DefaultTimeStamp {
   @MongoId
   private ObjectId id;
   @NonNull
-  private String question = "";
+  private String question;
   private String answer;
 
   public Question(String question) {
     this.question = question;
   }
+
+  public Question() {}
 }

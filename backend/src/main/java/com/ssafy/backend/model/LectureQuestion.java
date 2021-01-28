@@ -8,4 +8,6 @@ public class LectureQuestion extends Question {
   public LectureQuestion(String question) {
     super(question);
   }
+
+  public LectureQuestion() { super(); }
 }
