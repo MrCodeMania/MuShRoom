@@ -1,31 +1,35 @@
 package com.ssafy.backend.model;
 
-import com.sun.istack.NotNull;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+
+import lombok.*;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
 public class User {
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Integer id;
 
-  private String password;
-  private String email;
-  private String nickname;
-  private List<com.ssafy.backend.model.Data> dataList;
+    @Id
+    private ObjectId id;
 
-  @Override
-  public String toString() {
-    return String.format(
-        "Customer[id=%s, nickname='%s', email='%s']",
-        id, nickname, email);
-  }
+    //회원정보(필수)
+    private String email;
+    private String password;
+    private String phone;
+    private String nickname;
+
+    private int point;
+
+    //회원정보(선택)
+    private String profile;
+    private String introduction;
+    private List<UserInstrument> instrument;
+
+    //마이페이지
+    private UserLike like;
+    private UserClass userClass;
+    private List<UserLectureProgress> lectureProgress;
+    private List<UserFeedback> feedback;
+
 }
