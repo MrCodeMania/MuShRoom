@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "회원 정보 수정")
-    @PostMapping("/updateInfo")
+    @PutMapping("/updateInfo")
     public void updateInformation(@RequestBody User user) {
         Optional<User> findUser = repository.findById(user.getId());
         if (user.getPhone() != null) findUser.get().setPhone(user.getPhone());
@@ -92,11 +92,29 @@ public class UserController {
     }
 
     @ApiOperation(value = "회원 탈퇴")
-    @PostMapping("/withdraw/{id}")
+    @DeleteMapping("/withdraw/{id}")
     public void withdrawal(@PathVariable ObjectId id) {
         Optional<User> findUser = repository.findById(id);
         repository.delete(findUser.get());
 //        repository.delete(user);
+    }
+
+    @ApiOperation(value = "찜한 강의 수정")
+    @PutMapping("/like/class/update")
+    public void updateClassLike(@RequestBody User user) {
+        Optional<User> findUser = repository.findById(user.getId());
+        if (findUser.get().getLike() == null) findUser.get().setLike(user.getLike());
+        else findUser.get().getLike().setClassId(user.getLike().getClassId());
+        repository.save(findUser.get());
+    }
+
+    @ApiOperation(value = "찜한 선생님 수정")
+    @PutMapping("/like/tutor/update")
+    public void updateTutorLike(@RequestBody User user) {
+        Optional<User> findUser = repository.findById(user.getId());
+        if (findUser.get().getLike() == null) findUser.get().setLike(user.getLike());
+        else findUser.get().getLike().setTutorId(user.getLike().getTutorId());
+        repository.save(findUser.get());
     }
 
 }
