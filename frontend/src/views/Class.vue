@@ -5,23 +5,23 @@
     max-width="80%"
     color="amber darken-3"
     dark>
-        <div
-        class="pt-6">
-            <v-btn 
-            x-large
-            depressed
-            color="amber darken-3"
-            v-for="category in categories"
-            :key="category.title"
-            @click="addQuery(category.title)">
-                {{ category.title }}
-            </v-btn>
-        </div>
+        <v-btn 
+        x-large
+        height="80"
+        depressed
+        color="amber darken-3"
+        v-for="category in categories"
+        :key="category.title"
+        @click="addQuery(category.title)">
+            {{ category.title }}
+        </v-btn>
         <v-divider
+        class="m-0"
         dark>
         </v-divider>
         <v-btn 
         x-large
+        height="80"
         depressed
         color="amber darken-3"
         v-for="instrument in instruments"
@@ -30,21 +30,48 @@
             {{ instrument }}
         </v-btn>
         <v-divider
+        class="m-0"
         dark>
         </v-divider>
-            <div class="pb-6">
-                <v-btn 
-                x-large
-                depressed
-                color="amber darken-3"
-                v-for="step in steps"
-                :key="step.title"
-                @click="addQuery(step.title)">
-                    {{ step.title }}
-                </v-btn>
-            </div>
+        <v-btn 
+        x-large
+        height="80"
+        depressed
+        color="amber darken-3"
+        v-for="step in steps"
+        :key="step.title"
+        @click="addQuery(step.title)">
+            {{ step.title }}
+        </v-btn>
     </v-card>
-    <ClassAllList :name="query"/>
+    <v-card
+    elevation="0"
+    class="mx-auto">
+      <v-card
+      elevation="0"
+      max-width="288"
+      height="80"
+      color="amber"
+      class="mx-auto mt-6 p-3 pr-0">
+        <div class="d-inline-block">
+          <v-text-field
+          v-model="keyword"
+          solo>
+          </v-text-field>
+        </div>
+        <v-btn
+        class="mt-2 justify-center p-0"
+        @click="searchWord"
+        text>
+          <v-icon>
+            mdi-magnify
+          </v-icon>
+        </v-btn>
+      </v-card>
+    </v-card>
+    <ClassAllList :filters="filters" 
+    :query="query"
+    @deleteFilter="addQuery"/>
   </div>
 </template>
 
@@ -78,16 +105,21 @@ export default class Class extends Vue {
       { level: 2, title: '중급' },
       { level: 3, title: '고급' },
   ];
-  private query: string[] = [];
+  private filters: string[] = [];
   private index = -1;
+  private keyword = '';
+  private query = '';
 
   addQuery(word: string) {
-      this.index = this.query.indexOf(word);
+      this.index = this.filters.indexOf(word);
       if(this.index === -1)
-        this.query.push(word);
+        this.filters.push(word);
       else
-        this.query.splice(this.index, 1);
+        this.filters.splice(this.index, 1);
   }
   
+  searchWord(){
+    this.query = this.keyword;
+  }
 }
 </script>

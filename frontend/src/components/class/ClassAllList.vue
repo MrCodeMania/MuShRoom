@@ -2,9 +2,27 @@
   <div id="classList">
       <v-container fluid
       class="my-16">
-        <div class="ml-16">
+        <div class="pl-16 ml-16">
+            <div
+            class="ml-16">
+                <v-btn 
+                v-for="filter in filters"
+                :key="filter"
+                rounded
+                color="teal lighten-2"
+                dark
+                class="mr-2"
+                @click="deleteFilter(filter)"
+                >
+                    {{ filter }}
+                    <v-icon
+                    size="4">
+                        mdi-close
+                    </v-icon>
+                </v-btn>
+            </div>
             <v-card-title class="ml-16 text-h4">
-                {{ name }} 의 검색 결과 입니다.
+                '{{ query }}' 의 검색 결과 입니다.
             </v-card-title>
         </div>
         <div class="d-flex justify-center">
@@ -12,16 +30,24 @@
             v-for="card in cards"
             :key="card.title"
             class="d-inline-block mx-3"
-            width="300"
-            to="/detail/curriculum">
-                <v-img
-                :src="card.src"
-                class="white--text align-end"
-                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                height="200"
-                >
-                    <v-card-title v-text="card.title"></v-card-title>
-                </v-img>
+            width="300">
+                <v-btn
+                text
+                to="/detail/curriculum"
+                class="p-0 text-center"
+                height="200">
+                    <v-img
+                    :src="card.src"
+                    class="white--text align-end"
+                    gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                    width="300"
+                    height="200"
+                    >
+                        <v-card-title
+                        class="justify-center"
+                        v-text="card.title"></v-card-title>
+                    </v-img>
+                </v-btn>
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -45,11 +71,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class ClassList extends Vue {
-    @Prop(Array) name!: string[]
+    @Prop(Array) filters!: string[]
+    @Prop(String) query!: string
     private cards: {[key: string]: any}[] = [
         { title: '기타로 장범준 따라잡기', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', heart: 1},
         { title: '초보자도 할 수 있는 피아노 반주', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', heart: 0},
@@ -63,6 +90,11 @@ export default class ClassList extends Vue {
             if(card['title'] === s)
                 card['heart'] = card['heart']==0 ? 1 : 0;
         });
+    }
+
+    @Emit('deleteFilter')
+    deleteFilter(filter: string){
+        //
     }
 }
 </script>

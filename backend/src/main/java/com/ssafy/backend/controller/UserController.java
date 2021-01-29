@@ -2,10 +2,8 @@ package com.ssafy.backend.controller;
 
 import com.ssafy.backend.model.User;
 import com.ssafy.backend.repository.UserRepository;
-import com.ssafy.backend.util.MailSender;
 import com.ssafy.backend.util.PasswordUtil;
 import com.ssafy.backend.util.UserSha256;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;

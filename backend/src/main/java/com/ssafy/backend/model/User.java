@@ -1,5 +1,7 @@
 package com.ssafy.backend.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.ssafy.backend.util.CustomObjectIdSerializer;
 import java.util.List;
 
 import lombok.*;
@@ -10,6 +12,7 @@ import org.springframework.data.annotation.Id;
 @NoArgsConstructor
 public class User {
 
+    @JsonSerialize(using = CustomObjectIdSerializer.class)
     @Id
     private ObjectId id;
 

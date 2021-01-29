@@ -77,6 +77,14 @@ export default class MyPage extends Vue{
       { text: '스케줄 관리', link: "tutor-schedule" },
     ];
 
+  mounted() {
+    if (this.user_info.isStudent) {
+      this.$router.push({name : 'user-info'})
+    } else {
+      this.$router.push({name : 'tutor-info'})
+    }
+  }
+
 }
 </script>
   
