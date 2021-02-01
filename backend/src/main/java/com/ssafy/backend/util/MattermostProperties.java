@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class MattermostProperties {
 
   private String channel;
-  private String pretext = "@kkiu1756";
+  private String pretext = "";
   private String color = "#ff5d52";
   private String authorName;
   private String authorIcon;

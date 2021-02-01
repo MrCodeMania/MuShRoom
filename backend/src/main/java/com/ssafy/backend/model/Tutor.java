@@ -66,7 +66,7 @@ public class Tutor {
   // 강의 중, 혹은 강의한 목록
   @Builder.Default
   @DBRef
-  private List<ClassEntity> tutorClass;
+  private List<ClassEntity> tutorClass = new ArrayList<>();
   // 피드백 가능 시간
   @Builder.Default
   private List<TutorFeedbackAvailableTime> tutorFeedbackAvailableTime = new ArrayList<>();
@@ -88,6 +88,14 @@ public class Tutor {
     this.name = newTutor.getName();
     this.tutorProfile = newTutor.getTutorProfile();
     this.instList = newTutor.getInstList();
+    this.point = 0;
+    this.like = 0;
+    this.tutorCareerList = newTutor.getTutorCareerList();
+    this.tutorAwardList = newTutor.getTutorAwardList();
+    this.tutorAccount = newTutor.getTutorAccount();
+    this.tutorClass = newTutor.getTutorClass();
+    this.tutorFeedbackAvailableTime = newTutor.getTutorFeedbackAvailableTime();
+    this.tutorFeedbackReservationTime = newTutor.getTutorFeedbackReservationTime();
   }
 
   public void appendClass(ClassEntity cls) {
