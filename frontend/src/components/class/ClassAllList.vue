@@ -72,6 +72,7 @@
 
 <script lang="ts">
 import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
+import ClassDataService from '@/service/ClassDataService';
 
 @Component
 export default class ClassList extends Vue {
@@ -84,6 +85,22 @@ export default class ClassList extends Vue {
         { title: '드럼의 모든 것', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', heart: 0},
     ];
     private page = 1;
+    private classes: any[] = [];
+
+    created() {
+        this.getAllClass();
+    }
+
+    getAllClass(){
+        ClassDataService.getAllClass()
+        .then((response) => {
+            this.classes = response.data;
+            console.log(response.data);
+        })
+        .catch((error) => {
+            console.log(error.data);
+        });
+    }
 
     clickHeart(s: string) {
         this.cards.forEach(card => {
