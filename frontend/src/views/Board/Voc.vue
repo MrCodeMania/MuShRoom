@@ -23,7 +23,7 @@
       </v-sheet>
     </div>
     <div>
-      <v-sheet width="600px" class="mx-auto" color="white" elevation="2"
+      <v-sheet width="600px" class="mx-auto mb-10" color="white" elevation="2"
         ><router-view :key="$route.fullPath"></router-view
       ></v-sheet>
     </div>

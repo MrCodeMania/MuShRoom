@@ -8,10 +8,8 @@
 
       <v-stepper-content step="1">
         <v-card color="grey lighten-1" class="mb-12" height="400px">
-          <Account></Account>
+          <Account @sendform="receiveform"></Account>
         </v-card>
-        <v-btn color="teal" @click="nowpage = 2"> 계속하기 </v-btn>
-        <v-btn text @click="nowpage = 1"> 이전으로 </v-btn>
       </v-stepper-content>
       <!--휴대전화-->
       <v-stepper-step :complete="nowpage > 2" step="2" color="teal">
@@ -21,9 +19,11 @@
 
       <v-stepper-content step="2">
         <v-card color="grey lighten-1" class="mb-12" height="200px">
-          <Phone></Phone>
+          <Phone @sendPhonenumber="receivePhonenumber"></Phone>
         </v-card>
-        <v-btn color="teal" @click="nowpage = 3"> 계속하기 </v-btn>
+        <v-btn color="teal" :disabled="!phoneCheck" @click="nowpage = 3">
+          계속하기
+        </v-btn>
         <v-btn text @click="nowpage = 1"> 이전으로 </v-btn>
       </v-stepper-content>
       <!--경력-->
@@ -33,10 +33,8 @@
 
       <v-stepper-content step="3">
         <v-card color="grey lighten-1" class="mb-12" height="100%">
-          <Career></Career>
+          <Career @stepPrev="nowpage = 2" @sendCareer="receiveCareer"></Career>
         </v-card>
-        <v-btn color="teal" @click="nowpage = 4"> 계속하기 </v-btn>
-        <v-btn text @click="nowpage = 2"> 이전으로 </v-btn>
       </v-stepper-content>
       <!--계좌-->
       <v-stepper-step :complete="nowpage > 4" step="4" color="teal">
@@ -45,9 +43,11 @@
 
       <v-stepper-content step="4">
         <v-card color="grey lighten-1" class="mb-12" height="100%">
-          <Bank></Bank>
+          <Bank @sendBank="registerFormWrite"></Bank>
         </v-card>
-        <v-btn color="teal" @click="nowpage = 4"> 가입하기 </v-btn>
+        <v-btn color="teal" :disabled="!registerCheck" @click="register">
+          가입하기
+        </v-btn>
         <v-btn text @click="nowpage = 3"> 이전으로 </v-btn>
       </v-stepper-content>
     </v-stepper>
@@ -71,8 +71,31 @@ import Bank from "@/components/user/tutor/Bankaccount.vue";
 export default class TuterRegister extends Vue {
   //
   private nowpage = 1;
+  private phoneCheck = false;
+  private registerCheck = false;
   // 가입 처리
   // 자식 컴포넌트에서 계정정보와 핸드폰 번호 그리고 악기정보 받아 오기
+  receiveform(form: object) {
+    //인적정보 받아오는 부분
+
+    this.nowpage = 2;
+    console.log(form);
+  }
+  receivePhonenumber(phoneNumber: string) {
+    // 핸드폰 번호 받아오기
+    console.log(phoneNumber);
+    this.phoneCheck = true;
+  }
+  receiveCareer(v: object) {
+    this.nowpage = 4;
+  }
+  registerFormWrite(v: string) {
+    console.log(v);
+    this.registerCheck = true;
+  }
+  register() {
+    console.log("가입하기");
+  }
 }
 </script>
 
