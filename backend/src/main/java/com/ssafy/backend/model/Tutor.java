@@ -66,7 +66,7 @@ public class Tutor {
   // 강의 중, 혹은 강의한 목록
   @Builder.Default
   @DBRef
-  private List<ClassEntity> tutorClass;
+  private List<ClassEntity> tutorClass = new ArrayList<>();
   // 피드백 가능 시간
   @Builder.Default
   private List<TutorFeedbackAvailableTime> tutorFeedbackAvailableTime = new ArrayList<>();
