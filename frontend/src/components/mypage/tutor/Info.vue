@@ -62,7 +62,6 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
-
 @Component
 export default class Info extends Vue{
 
@@ -81,6 +80,7 @@ export default class Info extends Vue{
       { type: "수상", content: "전국노래자랑 최우수상" },
     ]
   }
+  
 }
 
 </script>
