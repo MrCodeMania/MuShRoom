@@ -32,14 +32,13 @@ import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class Phone extends Vue {
   private phoneNumber = "";
-  private confirmNumber = "";
+  private confirmNumber = ""; // 인증번호 확인
   private phoneNumberRules = [
     (v: string) => !!v || "핸드폰번호를 입력하세요",
     (v: string) => !/[^0-9]/.test(v) || "숫자만 입력해야합니다.",
   ];
   private phoneCheck() {
-    console.log(this.phoneNumber);
-    this.$emit("emitEvent", this.phoneNumber);
+    // 핸드폰번호 맞는지 하는 부분
   }
   private sendPhoneNumber() {
     // 인증번호맞는지 확인하고 emit보내기
