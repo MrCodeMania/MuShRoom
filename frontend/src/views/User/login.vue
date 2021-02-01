@@ -72,10 +72,10 @@
 
         <v-btn
           color="teal"
+          :disabled="!valid"
           class="mx-auto mt-5"
           width="100%"
-          :rules="[emailRules, pwdRules]"
-          @click="logincheck"
+          @click="validate"
         >
           로그인
         </v-btn>
@@ -127,16 +127,16 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-
+import RegisterService from "@/service/User/RegisterService";
 @Component
 export default class Login extends Vue {
-  private loginType = false;
-  private valid = false;
+  private loginType = false; // 로그인 타입 체크
+  private valid = true; // 현재 아이디 비밀번호 유효성 체크
   private email = "";
   private password = "";
   private emailRules = [
-    (v: string) => !!v || "이메일을 입력하세요",
-    (v: string) => /.+@.+\..+/.test(v) || "이메일형식에 맞지 않습니다",
+    (v: string) => !!v || "이메일을 입력하세요", // 이메일입력받았는지 검사
+    (v: string) => /.+@.+\..+/.test(v) || "이메일형식에 맞지 않습니다", // 이메일 형식 ~@~.~ 형식 검사
   ];
   private pwdRules = [(v: string) => !!v || "비밀번호를 입력하세요"];
   private list: string[] = ["학생", "튜터"];
@@ -151,13 +151,31 @@ export default class Login extends Vue {
       console.log("튜터로그인 처리");
     }
   }
-  logincheck() {
-    const loginForm = { id: this.email, password: this.password };
-    console.log(loginForm);
-    if (this.loginType === true) {
-      //학생로그인처리
-    } else {
-      console.log("튜터로그인 처리");
+
+  validate() {
+    (this.$refs.form as Vue & { validate: () => boolean }).validate();
+    if (this.valid) {
+      const loginForm = { email: this.email, password: this.password };
+      if (this.email == "" || this.password == "") return;
+
+      //login PART
+      if (this.loginType === true) {
+        RegisterService.loginStudent(loginForm)
+          .then((response) => {
+            const loginData = response.data;
+            if (loginData === "") {
+              alert("아이디 또는 비밀번호가 틀렸어요");
+              return;
+            }
+            this.$store.commit("setUserInfo", loginData);
+            this.$router.push("/");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        console.log("튜터 로그인 처리");
+      }
     }
   }
 }
