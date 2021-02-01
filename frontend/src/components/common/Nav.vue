@@ -95,7 +95,7 @@ import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Nav extends Vue{
-  private isStudent = true;
+  private isStudent = false;
 
   private category: object[]|string = [
     { title: "현악기" },
