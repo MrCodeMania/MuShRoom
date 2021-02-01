@@ -168,13 +168,25 @@ export default class Login extends Vue {
               return;
             }
             this.$store.commit("setUserInfo", loginData);
+            this.$store.commit("setType", false);
             this.$router.push("/");
           })
           .catch((err) => {
             console.log(err);
           });
       } else {
-        console.log("튜터 로그인 처리");
+        // UserService.loginTutor(loginForm)
+        //   .then((response) => {
+        //     console.log(response);
+        //     this.$store.commit("setUserInfo", response.data);
+        //     this.$store.commit("setType", true);
+        //     this.$router.push("/");
+        //   })
+        //   .catch((err) => {
+        //     console.log(err);
+        //   });
+        this.$store.commit("setType", true);
+        this.$router.push("/");
       }
     }
   }

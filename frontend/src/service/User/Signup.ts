@@ -5,6 +5,10 @@ class UserService {
         console.log(formData)
         return http.post("/tutor", formData);
     }
+    loginTutor(formData: object) {
+        console.log(formData);
+        return http.get("/tutor/login");
+    }
     pushUser(formData: object) {
         //console.log(formData);
         return http.post("/user/signup", formData);
