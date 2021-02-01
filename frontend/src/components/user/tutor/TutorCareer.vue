@@ -19,7 +19,7 @@
           solo
           v-model="careerForm.careertext"
           name="input-7-4"
-          label="경력사항 입력"
+          label="지금 써도 동작 안함"
           class="mt-2"
           hide-details
         ></v-textarea>
@@ -29,7 +29,7 @@
           solo
           v-model="careerForm.award"
           name="input-7-4"
-          label="수상 이력"
+          label="지금 써도 동작 안함"
           class="mt-2"
           hide-details
         ></v-textarea>
@@ -65,11 +65,9 @@ export default class extends Vue {
   private selectInstrument = "";
   validate() {
     (this.$refs.form as Vue & { validate: () => boolean }).validate();
-    console.log(this.careerForm);
     this.$emit("sendCareer", this.careerForm);
   }
   prev() {
-    console.log("123");
     this.$emit("stepPrev");
   }
 }

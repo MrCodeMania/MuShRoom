@@ -1,6 +1,10 @@
 import http from "../axios.service";
 
 class UserService {
+    signupTutor(formData: object) {
+        console.log(formData)
+        return http.post("/tutor", formData);
+    }
     pushUser(formData: object) {
         //console.log(formData);
         return http.post("/user/signup", formData);
@@ -10,6 +14,7 @@ class UserService {
         //console.log(formData);
         return http.post("user/login", formData);
     }
+
 }
 
 export default new UserService();
