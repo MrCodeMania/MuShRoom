@@ -5,6 +5,7 @@
         <v-text-field
           solo
           v-model="bankname"
+          :rules="check"
           label="은행"
           required
         ></v-text-field>
@@ -12,12 +13,13 @@
         <v-text-field
           solo
           v-model="account"
+          :rules="check"
           label="계좌번호"
           required
         ></v-text-field>
 
         <v-btn :disabled="!valid" color="teal" class="mr-4" @click="validate">
-          확인
+          확인하기
         </v-btn>
       </v-form>
     </v-col>
@@ -29,11 +31,14 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class extends Vue {
-  private valid = true;
+  private valid = false;
   private bankname = "";
   private account = "";
+  private check = [(v: string) => !!v || "값 있어야합니다"];
   validate() {
-    console.log(this.valid);
+    (this.$refs.form as Vue & { validate: () => boolean }).validate();
+    //현재페이지 정보를 보냄
+    this.$emit("sendBank", this.bankname);
   }
 }
 </script>

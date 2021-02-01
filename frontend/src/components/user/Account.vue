@@ -51,6 +51,9 @@
         prepend-inner-icon="mdi-lock-check"
         required
       ></v-text-field>
+      <v-btn color="teal" :disabled="!valid" @click="validate">
+        계속하기
+      </v-btn>
     </v-form>
   </v-col>
 </template>
@@ -82,20 +85,18 @@ export default class Account extends Vue {
   ];
   // 비밀번호 재입력
   private confirmPassword = "";
-  //emit 변수
-  private phoneNumber = "default";
-  private emitEvent(phoneNumber: string) {
-    this.phoneNumber = phoneNumber;
-  }
+
   //입력폼 함수
   validate() {
-    const registerForm = [
-      this.name,
-      this.email,
-      this.password,
-      this.phoneNumber,
-    ];
-    console.log(registerForm);
+    (this.$refs.form as Vue & { validate: () => boolean }).validate();
+    const registerForm = {
+      name: this.name,
+      nickname: this.nickname,
+      email: this.email,
+      password: this.password,
+    };
+    if (this.name === "" || this.email === "" || this.password === "") return;
+    this.$emit("sendform", registerForm);
   }
 }
 </script>

@@ -185,7 +185,12 @@ const routes: Array<RouteConfig> = [
         path: "/notice",
         name: "notice",
         component: () => import("@/components/Board/QnA/list.vue")
-      },
+      }, {
+        path: "/notice/:articleid",
+        name: "noticeview",
+        component: () => import("@/components/Board/Detail.vue")
+      }
+      ,
       {
         path: "/QnA",
         name: "voc-QnA",
