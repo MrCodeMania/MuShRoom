@@ -120,7 +120,7 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "아이템 추가" : "아이템 수정";
+      return this.editedIndex === -1 ? "악기 추가" : "악기 수정";
     },
   },
 

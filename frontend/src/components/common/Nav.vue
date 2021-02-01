@@ -83,7 +83,7 @@
       >
         회원가입
       </v-btn>
-      <v-btn depressed dark color="indigo" :to="{ name: 'mypage' }">
+      <v-btn depressed dark color="indigo" :to="{ name: isStudent? 'user-info':'tutor-info', params: {isStudent: isStudent} }">
         MyPage
       </v-btn>
     </v-app-bar>
@@ -91,26 +91,30 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-export default Vue.extend({
-  data() {
-    return {
-      category: [
-        { title: "현악기" },
-        { title: "금관악기" },
-        { title: "목관악기" },
-        { title: "타악기" },
-        { title: "전자악기" },
-        { title: "노래" },
-      ],
-      instruments: [
-        { title: "바이올린" },
-        { title: "비올라" },
-        { title: "첼로" },
-      ],
-    };
-  },
-});
+import { Component, Vue } from 'vue-property-decorator';
+
+@Component
+export default class Nav extends Vue{
+  private isStudent = false;
+
+  private category: object[]|string = [
+    { title: "현악기" },
+    { title: "금관악기" },
+    { title: "목관악기" },
+    { title: "타악기" },
+    { title: "전자악기" },
+    { title: "노래" },
+  ]
+
+  private instruments: object[]|string = [
+    { title: "바이올린" },
+    { title: "비올라" },
+    { title: "첼로" },
+  ]
+    
+  
+
+}
 </script>
 
 <style>

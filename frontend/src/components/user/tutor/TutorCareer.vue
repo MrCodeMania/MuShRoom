@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-col cols="12">
-      <v-form ref="form" lazy-validation>
+      <v-form ref="form" lazy-validation v-model="valid">
         <!--악기선택 창-->
         <p>강의 악기 선택</p>
         <v-autocomplete
@@ -46,8 +46,9 @@
           required
         ></v-file-input>
       </v-form>
-      <v-btn @click="test">form test</v-btn>
     </v-col>
+    <v-btn color="teal" :disabled="!valid" @click="validate"> 계속하기 </v-btn>
+    <v-btn @click="prev"> 이전으로 </v-btn>
   </div>
 </template>
 
@@ -56,12 +57,20 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class extends Vue {
+  private valid = false;
+
   private careerForm = [{ instrument: "" }, { careertext: "" }, { award: "" }];
   private items = ["피아노", "기타", "바이올린", "오보에", "단소"];
   private dialog = false;
   private selectInstrument = "";
-  test() {
+  validate() {
+    (this.$refs.form as Vue & { validate: () => boolean }).validate();
     console.log(this.careerForm);
+    this.$emit("sendCareer", this.careerForm);
+  }
+  prev() {
+    console.log("123");
+    this.$emit("stepPrev");
   }
 }
 </script>
