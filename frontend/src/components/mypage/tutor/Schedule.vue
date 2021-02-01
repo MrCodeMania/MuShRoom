@@ -10,7 +10,7 @@
       <v-col>
         <v-card>
           <div class="d-flex align-center justify-center">
-            <v-card-title> {{ beforeDate }} </v-card-title>
+            <v-card-title @click="prev"> {{ beforeDate }} </v-card-title>
             <v-btn fab text small color="grey darken-2" @click="prev">
                 <v-icon small>mdi-chevron-left</v-icon>
             </v-btn>
@@ -18,7 +18,7 @@
             <v-btn fab text small color="grey darken-2" @click="next">
                 <v-icon small>mdi-chevron-right</v-icon>
             </v-btn>
-            <v-card-title> {{ afterDate }} </v-card-title>
+            <v-card-title @click="next"> {{ afterDate }} </v-card-title>
           </div>
           <v-divider class="mx-4"></v-divider>
           <v-card-actions justify="around">
