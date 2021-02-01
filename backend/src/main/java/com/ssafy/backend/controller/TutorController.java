@@ -4,7 +4,6 @@ import com.ssafy.backend.model.ClassEntity;
 import com.ssafy.backend.model.TutorAccount;
 import com.ssafy.backend.model.TutorAward;
 import com.ssafy.backend.model.TutorCareer;
-// import com.ssafy.backend.model.InstrumentEntity;
 import com.ssafy.backend.model.Profile;
 import com.ssafy.backend.model.Tutor;
 import com.ssafy.backend.model.TutorFeedbackAvailableTime;
@@ -19,6 +18,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/")
+@CrossOrigin(origins = "*")
 public class TutorController {
 
   // @Autowired
