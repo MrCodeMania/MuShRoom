@@ -56,7 +56,7 @@ import { Component, Vue } from "vue-property-decorator";
 export default class MyPage extends Vue{
 
   private user_info: any = {
-    isStudent: true,
+    isStudent: false,
     nickname: "XXXXXXXXXXXXXX",
   }
 
