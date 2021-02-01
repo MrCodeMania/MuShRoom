@@ -8,6 +8,7 @@ import com.ssafy.backend.model.TutorCareer;
 import com.ssafy.backend.model.Profile;
 import com.ssafy.backend.model.Tutor;
 import com.ssafy.backend.model.TutorFeedbackAvailableTime;
+import com.ssafy.backend.model.User;
 import com.ssafy.backend.repository.TutorRepository;
 import com.ssafy.backend.util.ErrorType;
 import com.ssafy.backend.util.UserSha256;
@@ -66,11 +67,34 @@ public class TutorController {
   @ApiOperation(value = "Post New Tutor", notes = "새로운 튜터를 삽입한다")
   @PostMapping("/tutor")
   public ResponseEntity<?> insertTutor(@RequestBody Tutor newTutor) {
-    Tutor tutor = new Tutor(newTutor); // Test용 코드 아래가 진퉁
+    newTutor.setPassword(UserSha256.encrypt(newTutor.getPassword()));
+
+    Tutor tutor = new Tutor(newTutor);
 
     tutorRepository.save(tutor);
 
     return new ResponseEntity<>(tutor, HttpStatus.OK);
+  }
+
+  @ApiOperation(value = "Login Tutor", notes = "튜터의 로그인을 한다")
+  @GetMapping("/tutor/login")
+  public ResponseEntity<?> getOneTutor(@RequestBody Tutor loginTutor) {
+    Optional<Tutor> tutor = tutorRepository.findById(loginTutor.getId());
+
+    if(tutor.isPresent()){
+      if(tutor.get().getPassword().equals(UserSha256.encrypt(loginTutor.getPassword())))
+        return new ResponseEntity<> (tutor.get(), HttpStatus.OK);
+      else
+        return new ResponseEntity<> (
+            new ErrorMessage(
+                "Password is not correct",
+                HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
+    }
+
+    return new ResponseEntity<> (
+        new ErrorMessage(
+            ErrorType.TUTOR_NOT_EXIST.toString(),
+            HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
   }
 
   @ApiOperation(value = "Get Tutor", notes = "ObjectID로 부터 튜터를 가져와 반환한다")
@@ -204,8 +228,8 @@ public class TutorController {
 
     return new ResponseEntity<> (
         new ErrorMessage(
-        ErrorType.TUTOR_NOT_EXIST.toString(),
-        HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
+            ErrorType.TUTOR_NOT_EXIST.toString(),
+            HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
   }
 
   @ApiOperation(value = "Post TutorFeedbackTime", notes = "튜터의 피드백 가능 시간을 등록한다")
