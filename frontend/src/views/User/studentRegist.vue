@@ -33,7 +33,7 @@
 
       <v-stepper-content step="3">
         <v-card color="grey lighten-1" class="mb-12" height="100%">
-          <Instrument></Instrument>
+          <Instrument @formSend="receiveInst"></Instrument>
         </v-card>
         <v-btn color="teal" @click="register"> 가입하기 </v-btn>
         <v-btn text @click="nowpage = 2"> 이전으로 </v-btn>
@@ -47,7 +47,8 @@ import { Component, Vue } from "vue-property-decorator";
 import Phone from "@/components/user/Phone.vue";
 import Account from "@/components/user/Account.vue";
 import Instrument from "@/components/user/Instrument.vue";
-import RegisterService from "@/service/User/RegisterService";
+import UserService from "@/service/User/Signup";
+import { Grademap, IDmap } from "../../utils/instrmentID";
 @Component({
   components: {
     Phone,
@@ -61,11 +62,12 @@ export default class StudentRegist extends Vue {
   //
   private nowpage = 1;
   private phoneCheck = false;
-  private data: any[] = [];
-  private registerForm = {
+  private data: object[] = [];
+  private tempInstrument = [];
+  private registerForm: any = {
     email: "",
-    instrument: [],
     nickname: "",
+    instrument: [],
     password: "",
     phone: "",
   };
@@ -82,12 +84,23 @@ export default class StudentRegist extends Vue {
   receivePhonenumber(phoneNumber: string) {
     // 핸드폰 번호 받아오기
     this.registerForm.phone = phoneNumber;
-    console.log(phoneNumber);
     this.phoneCheck = true;
+  }
+  receiveInst(v: []) {
+    this.tempInstrument = v;
   }
   register() {
     console.log("가입완료처리");
-    RegisterService.pushUser(this.registerForm)
+    const newInsForm = [];
+    for (const item of Array.from(this.tempInstrument)) {
+      const tempData = {
+        instrumentId: IDmap.get(item["name"]),
+        level: Grademap.get(item["grade"]),
+      };
+      newInsForm.push(tempData);
+    }
+    this.registerForm.instrument = newInsForm;
+    UserService.pushUser(this.registerForm)
       .then((response) => {
         this.data = response.data;
         console.log(this.data);

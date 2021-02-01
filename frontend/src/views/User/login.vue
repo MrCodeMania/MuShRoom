@@ -127,7 +127,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import RegisterService from "@/service/User/RegisterService";
+import UserService from "@/service/User/Signup";
 @Component
 export default class Login extends Vue {
   private loginType = false; // 로그인 타입 체크
@@ -160,7 +160,7 @@ export default class Login extends Vue {
 
       //login PART
       if (this.loginType === true) {
-        RegisterService.loginStudent(loginForm)
+        UserService.loginStudent(loginForm)
           .then((response) => {
             const loginData = response.data;
             if (loginData === "") {
