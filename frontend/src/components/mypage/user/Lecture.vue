@@ -60,7 +60,7 @@
                             readonly
                             size="18"
                             ></v-rating>
-                            <v-btn class="ml-4" color="amber">보러가기</v-btn>
+                            <v-btn class="ml-4" color="amber" :to="{ name: 'Curriculum' }">보러가기</v-btn>
                         </v-col>
                     </v-row>
                     <v-card-actions>
@@ -82,7 +82,8 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-// import LectureCard from "@/components/common/LectureCard.vue"
+import ClassDataService from '@/service/ClassDataService';
+
 
 @Component( {
     components: {
@@ -109,6 +110,25 @@ export default class Lecture extends Vue {
     { title: '오늘부터 바이올리니스트', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', progress: 50, tutor: '박박박', overview: '헨리 바이올린 딱 기다려', rate: 3.5},
     { title: '드럼의 모든 것', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', progress: 65, tutor: '조조조', overview: '드럼을 오래 치면 힘드럼...', rate: 1},
       ];
+
+    private classId = "6012bc10a9faba392091ade6";
+
+    created() {
+        this.getAllClass()
+    }
+
+    getAllClass(){
+        ClassDataService.getAllClass()
+        .then((response) => {
+            console.log(response.data);
+        })
+        .catch((error) => {
+            console.log(error.data);
+        });
+    }
+  
+
+
 }
 </script>
 

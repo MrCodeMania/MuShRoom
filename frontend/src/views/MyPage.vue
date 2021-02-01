@@ -56,7 +56,7 @@ import { Component, Vue } from "vue-property-decorator";
 export default class MyPage extends Vue{
 
   private user_info: any = {
-    isStudent: false,
+    isStudent: this.$route.params.isStudent,
     nickname: "XXXXXXXXXXXXXX",
   }
 
@@ -77,13 +77,7 @@ export default class MyPage extends Vue{
       { text: '스케줄 관리', link: "tutor-schedule" },
     ];
 
-  mounted() {
-    if (this.user_info.isStudent) {
-      this.$router.push({name : 'user-info'})
-    } else {
-      this.$router.push({name : 'tutor-info'})
-    }
-  }
+
 
 }
 </script>
