@@ -111,8 +111,6 @@ export default class Lecture extends Vue {
     { title: '드럼의 모든 것', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', progress: 65, tutor: '조조조', overview: '드럼을 오래 치면 힘드럼...', rate: 1},
       ];
 
-    private classId = "6012bc10a9faba392091ade6";
-
     created() {
         this.getAllClass()
     }
