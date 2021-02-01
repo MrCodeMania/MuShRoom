@@ -27,8 +27,8 @@
         </div>
         <div class="d-flex justify-center">
             <v-card 
-            v-for="card in cards"
-            :key="card.title"
+            v-for="cls in classes"
+            :key="cls.title"
             class="d-inline-block mx-3"
             width="300">
                 <v-btn
@@ -37,7 +37,7 @@
                 class="p-0 text-center"
                 height="200">
                     <v-img
-                    :src="card.src"
+                    :src="cls.profile.imagePath === 'testPath' ? sampleImg : cls.profile.imagePath"
                     class="white--text align-end"
                     gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                     width="300"
@@ -45,15 +45,15 @@
                     >
                         <v-card-title
                         class="justify-center"
-                        v-text="card.title"></v-card-title>
+                        v-text="cls.title"></v-card-title>
                     </v-img>
                 </v-btn>
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
 
-                    <v-btn icon @click="clickHeart(card.title)">
-                        <v-icon v-if="card.heart==0">mdi-heart-outline</v-icon>
+                    <v-btn icon @click="clickHeart(cls.id)">
+                        <v-icon v-if="cls.like==0">mdi-heart-outline</v-icon>
                         <v-icon v-else>mdi-heart</v-icon>
                     </v-btn>
 
@@ -64,48 +64,57 @@
     <div class="text-center mb-6">
         <v-pagination
         v-model="page"
-        :length="10"
+        :total-visible="10"
+        :length="numOfPages"
         ></v-pagination>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
+import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator';
 import ClassDataService from '@/service/ClassDataService';
+const size = 12;
 
 @Component
 export default class ClassList extends Vue {
     @Prop(Array) filters!: string[]
     @Prop(String) query!: string
-    private cards: {[key: string]: any}[] = [
-        { title: '기타로 장범준 따라잡기', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', heart: 1},
-        { title: '초보자도 할 수 있는 피아노 반주', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', heart: 0},
-        { title: '오늘부터 바이올리니스트', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', heart: 0},
-        { title: '드럼의 모든 것', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', heart: 0},
-    ];
-    private page = 1;
-    private classes: any[] = [];
+
+    private page = 1;   // 현재 페이지
+    private classes: {[key: string]: any}[] = [];   // 전체 클래스 목록
+    private classList: {[key: string]: any}[] = []; // 현재 페이지 클래스 목록
+    private sampleImg = require('../../assets/mushroom.png');   // 기본 썸네일 경로
+    private numOfPages = 0; // 전체 페이지 수
 
     created() {
-        this.getAllClass();
-    }
-
-    getAllClass(){
+        // 전체 클래스 목록 get request
+        // 클래스 검색 api 필요
         ClassDataService.getAllClass()
         .then((response) => {
             this.classes = response.data;
-            console.log(response.data);
+            this.numOfPages = Math.ceil(this.classes.length/size);
+            this.calculateListOfPage();
         })
         .catch((error) => {
             console.log(error.data);
         });
     }
 
-    clickHeart(s: string) {
-        this.cards.forEach(card => {
-            if(card['title'] === s)
-                card['heart'] = card['heart']==0 ? 1 : 0;
+    // 현재 페이지 번호에 맞춰 클래스 목록 계산하는 method
+    @Watch('page')
+    calculateListOfPage(){
+        const start = (this.page-1) * size;
+        const end = start + size;
+        this.classList = this.classes.slice(start, end);
+    }
+
+    // class마다 like 추가/삭제하는 method
+    // like update하는 api 필요
+    clickHeart(id: string) {
+        this.classes.forEach(cls => {
+            if(cls['id'] === id)
+                cls['like'] = cls['like']==0 ? 1 : 0;
         });
     }
 
