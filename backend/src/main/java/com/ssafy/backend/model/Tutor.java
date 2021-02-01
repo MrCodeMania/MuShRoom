@@ -88,6 +88,14 @@ public class Tutor {
     this.name = newTutor.getName();
     this.tutorProfile = newTutor.getTutorProfile();
     this.instList = newTutor.getInstList();
+    this.point = 0;
+    this.like = 0;
+    this.tutorCareerList = newTutor.getTutorCareerList();
+    this.tutorAwardList = newTutor.getTutorAwardList();
+    this.tutorAccount = newTutor.getTutorAccount();
+    this.tutorClass = newTutor.getTutorClass();
+    this.tutorFeedbackAvailableTime = newTutor.getTutorFeedbackAvailableTime();
+    this.tutorFeedbackReservationTime = newTutor.getTutorFeedbackReservationTime();
   }
 
   public void appendClass(ClassEntity cls) {
