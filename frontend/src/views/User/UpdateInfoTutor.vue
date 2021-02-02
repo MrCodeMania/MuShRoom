@@ -1,9 +1,8 @@
 <template>
-    <div class="container">
+    <div class="container mb-10">
         <v-row class="my-4">
             <v-card class="mx-auto my-4">
                 <h1 class="text-center">회원정보수정페이지</h1>
-                {{ userInfo }}
             </v-card>
         </v-row>
         <v-row>
@@ -63,7 +62,25 @@
             
         </v-row>
         <v-row>
-            <!-- 테이블에서 추가 삭제하는 방법 찾아서 추가 -->
+            <v-card class="d-flex justify-center my-4">
+                <v-chip close v-for="(instrument,n) in userInfo.instrument" :key="n" @click="userInfo.instrument.splice(n,1)">{{instrument}} </v-chip>    
+                <div class="ml-6 d-flex" style="width: 200px;">
+                    <v-select
+                        class="control"
+                        :items="instrument"
+                        placeholder="악기"
+                        dense
+                        solo
+                        v-model="selectInstrument"
+                    ></v-select>
+                    <v-btn outlined @click="addInstrument"> + </v-btn>
+                </div>
+            </v-card>
+        </v-row>
+        <v-row>
+            <v-btn @click="updateInfo">
+                회원정보수정
+            </v-btn>
         </v-row>
         <UpdatePassword :toggleUpdatePassword="toggleUpdatePassword" @closeUpdatePassword="closeUpdatePassword" />
         <UpdateBank :bankInfo="userInfo.bankInfo" :toggleUpdateBank="toggleUpdateBank" @closeUpdateBank="closeUpdateBank($event)" />
@@ -83,11 +100,14 @@ import UpdateBank from '@/components/user/UpdateBank.vue';
 })
 export default class UpdateInfoTutor extends Vue {
 
-    private userInfo = this.$route.params.userInfo;
+    private userInfo: any = this.$route.params.userInfo;
 
     private toggleUpdatePassword = false;
     private toggleUpdateBank = false;
-
+    private instrument: string[] = [
+        "바이올린", "비올라", "첼로"
+    ]
+    private selectInstrument = "";
 
     toggleEventPassword() {
         this.toggleUpdatePassword = true;
@@ -107,6 +127,15 @@ export default class UpdateInfoTutor extends Vue {
             console.log("안왔어")
         }
         this.toggleUpdateBank = false;
+    }
+
+    addInstrument() {
+        this.userInfo.instrument.push(this.selectInstrument);
+        this.selectInstrument = "";
+    }
+
+    updateInfo() {
+        console.log(this.userInfo)
     }
 }
 </script>

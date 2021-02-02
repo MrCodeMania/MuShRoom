@@ -24,6 +24,7 @@
       <p class="my-2 infotext">이름 : {{ userInfo.name }}</p>
       <p class="my-2 infotext">별명 : {{ userInfo.nickname }}</p>
       <p class="my-2 infotext">이메일 : {{ userInfo.email }}</p>
+      <p class="my-2 infotext">악기 : <v-chip disabled v-for="(instrument,n) in userInfo.instrument" :key="n">{{instrument}} </v-chip></p>
       <p class="my-2 infotext">번호 : {{ userInfo.phone }}</p>
       <p class="my-2 infotext">계좌 : {{ userInfo.bankInfo.name }} {{ userInfo.bankInfo.account }}</p>
       </v-card>

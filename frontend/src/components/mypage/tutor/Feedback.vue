@@ -21,7 +21,7 @@
             <v-card-title @click="next"> {{ afterDate }} </v-card-title>
           </div>
           <v-divider class="mx-4"></v-divider>
-          <div  v-for="(schedule,n) in schedules" :key="n">
+          <div  v-for="(schedule,index) in schedules" :key="index">
             <v-card-text v-if="picker === schedule.date">
               <v-card class="mb-3" v-for="(feedback,n) in schedule.feedbacks" :key="n">
                 <v-card-text class="d-flex align-center">
@@ -33,7 +33,7 @@
                     <v-spacer></v-spacer>
                     <v-btn
                       color="amber"
-                      @click="dialog = true"
+                      @click="editFeedback(index, n)"
                     >관리</v-btn>
                 </v-card-text>
               </v-card>
@@ -89,7 +89,7 @@ export default class Feedback extends Vue{
   public pre = new Date(new Date(this.picker).setDate(new Date(this.picker).getDate() - 1)).toISOString().substring(5,10);
   public post = new Date(new Date(this.picker).setDate(new Date(this.picker).getDate() + 1)).toISOString().substring(5,10);
   // public feedbacks: string[] = []
-  public schedules: object[]|string|string[] = [
+  public schedules: object[]|string|any = [
     { date: "2021-01-27", 
       feedbacks: [
         { student: "김학생", class: "바이올린", time: "09:00" },
@@ -110,7 +110,7 @@ export default class Feedback extends Vue{
         { student: "황학생", class: "바이올린", time: "17:30" },
         { student: "우학생", class: "바이올린", time: "19:00" }
       ]},
-    { date: "2021-01-31", 
+    { date: "2021-02-02", 
       feedbacks: [
         { student: "김학생", class: "바이올린", time: "09:00" },
         { student: "박학생", class: "바이올린", time: "09:30" },
@@ -161,11 +161,18 @@ export default class Feedback extends Vue{
     this.tempDate = this.picker.split('-')
   }
 
-  postpone() {
-    this.dialog = false;
-    console.log("예")
+  private index = 0;
+  private n = 0;
+  editFeedback(index: number, n: number) {
+    this.index = index;
+    this.n = n;
+    this.dialog = true;
   }
 
+  postpone() {
+    this.schedules[this.index].feedbacks.splice(this.n,1);
+    this.dialog = false;
+  }
 }
 </script>
 

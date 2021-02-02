@@ -13,6 +13,7 @@ import FindUser from '../views/User/FindUserInfo.vue'
 import Board from '../views/Board/Board.vue'
 import Voc from '../views/Board/Voc.vue'
 import Lesson from '../views/Lesson.vue'
+import UpdateLecture from '../views/UpdateLecture.vue'
 
 Vue.use(VueRouter)
 
@@ -28,52 +29,52 @@ const routes: Array<RouteConfig> = [
     component: MyPage,
     children: [
       {
-        path: "info",
+        path: "userinfo",
         name: "user-info",
         component: () => import("@/components/mypage/user/Info.vue")
       },
       {
-        path: "lecture",
+        path: "userlecture",
         name: "user-lecture",
         component: () => import("@/components/mypage/user/Lecture.vue")
       },
       {
-        path: "like",
+        path: "userlike",
         name: "user-like",
         component: () => import("@/components/mypage/user/Like.vue")
       },
       {
-        path: "feedback",
+        path: "userfeedback",
         name: "user-feedback",
         component: () => import("@/components/mypage/user/Feedback.vue")
       },
       {
-        path: "practice",
+        path: "userpractice",
         name: "user-practice",
         component: () => import("@/components/mypage/user/Practice.vue")
       },
       {
-        path: "info",
+        path: "tutorinfo",
         name: "tutor-info",
         component: () => import("@/components/mypage/tutor/Info.vue")
       },
       {
-        path: "lecture",
+        path: "tutorlecture",
         name: "tutor-lecture",
         component: () => import("@/components/mypage/tutor/Lecture.vue")
       },
       {
-        path: "feedback",
+        path: "tutorfeedback",
         name: "tutor-feedback",
         component: () => import("@/components/mypage/tutor/Feedback.vue")
       },
       {
-        path: "schedule",
+        path: "tutorschedule",
         name: "tutor-schedule",
         component: () => import("@/components/mypage/tutor/Schedule.vue")
       },
       {
-        path: "addlecture",
+        path: "tutoraddlecture",
         name: "tutor-addlecture",
         component: () => import("@/components/mypage/tutor/AddLecture.vue")
       },
@@ -206,6 +207,11 @@ const routes: Array<RouteConfig> = [
       return "/voc";
     }
   },
+  {
+    path: "/updatelecture",
+    name: "updatelecture",
+    component: UpdateLecture
+  }
 ]
 const router = new VueRouter({
   mode: 'history',

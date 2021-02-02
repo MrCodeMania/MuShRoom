@@ -103,7 +103,6 @@ export default class Schedule extends Vue{
       this.times.push(time+':00');
       this.times.push(time+':30');
     }
-    this.selection = this.times
   }
 
   public availableTimes: object|string|string[]|any = { date: "", time: [] }
@@ -119,17 +118,17 @@ export default class Schedule extends Vue{
   }
 
   get beforeDate() {
-    const tempDate = this.pre.split("-")
+    const tempDate = this.pre.split("-");
     return this.pre = tempDate[0] + "월 " + tempDate[1] + "일" 
   }
 
   get afterDate() {
-    const tempDate = this.post.split("-")
+    const tempDate = this.post.split("-");
     return this.post = tempDate[0] + "월 " + tempDate[1] + "일" 
   }
 
   get targetDate () {
-    const tempDate = this.picker.split("-")
+    const tempDate = this.picker.split("-");
     return tempDate[0] + "년 " + tempDate[1] + "월 " + tempDate[2] + "일" 
   }
 
@@ -139,33 +138,47 @@ export default class Schedule extends Vue{
   onPickerChanged(value: string, oldValue: string) {
     this.pre = new Date(new Date(this.picker).setDate(new Date(this.picker).getDate() - 1)).toISOString().substring(5,10);
     this.post = new Date(new Date(this.picker).setDate(new Date(this.picker).getDate() + 1)).toISOString().substring(5,10);
-    this.tempDate = this.picker.split('-')
+    this.tempDate = this.picker.split('-');
   }
 
   selectMorning() {
     for (let i=0;i<6;i++){
-      if (!(this.times[i] in this.selection)){
-        this.selection.push(this.times[i])
+      if (!(this.selection.includes(this.times[i]))){
+        console.log(this.times[i])
+        this.selection.push(this.times[i]);
       }
     }
+    console.log(this.selection)
+    console.log(this.times)
   }
   selectAfternoon() {
     for (let i=6;i<22;i++){
-      if (!(this.times[i] in this.selection)){
-        this.selection.push(this.times[i])
+      if (!(this.selection.includes(this.times[i]))){
+        this.selection.push(this.times[i]);
       }
     }
+    console.log(this.selection)
+    console.log(this.times)
   }
   selectAll() {
-    this.selection = this.times
+    for (let i=0;i<22;i++){
+      if (!(this.selection.includes(this.times[i]))){
+        this.selection.push(this.times[i]);
+      }
+    }
+    console.log(this.selection)
+    console.log(this.times)
   }
   removeAll() {
     this.selection = []
+    console.log(this.selection)
+    console.log(this.times)
   }
 
   updateSchedule() {
     this.availableTimes.date = this.picker
     this.availableTimes.time = this.selection
+
     console.log(this.availableTimes)
   }
 
