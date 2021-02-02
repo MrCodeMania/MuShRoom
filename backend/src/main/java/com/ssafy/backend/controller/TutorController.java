@@ -12,6 +12,7 @@ import com.ssafy.backend.model.TutorFeedbackAvailableTime;
 import com.ssafy.backend.model.User;
 import com.ssafy.backend.repository.TutorRepository;
 import com.ssafy.backend.util.ErrorType;
+import com.ssafy.backend.util.PasswordUtil;
 import com.ssafy.backend.util.UserSha256;
 import io.swagger.annotations.ApiOperation;
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -79,7 +82,7 @@ public class TutorController {
 
   @ApiOperation(value = "Login Tutor", notes = "튜터의 로그인을 한다")
   @GetMapping("/tutor/login")
-  public ResponseEntity<?> getOneTutor(@RequestBody Tutor loginTutor) {
+  public ResponseEntity<?> loginTutor(@RequestBody Tutor loginTutor) {
     Optional<Tutor> tutor = tutorRepository.findById(loginTutor.getId());
 
     if(tutor.isPresent()){
@@ -90,6 +93,64 @@ public class TutorController {
             new ErrorMessage(
                 "Password is not correct",
                 HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
+    }
+
+    return new ResponseEntity<> (
+        new ErrorMessage(
+            ErrorType.TUTOR_NOT_EXIST.toString(),
+            HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
+  }
+
+  @ApiOperation(value = "Find Tutor ID", notes = "튜터의 아이디를 찾는다")
+  @GetMapping("/tutor/findId/")
+  public ResponseEntity<?> findTutorId(@RequestBody Tutor findTutor) {
+    Optional<Tutor> tutor = tutorRepository.findByPhoneNumber(findTutor.getPhoneNumber());
+
+    if(tutor.isPresent()){
+        return new ResponseEntity<> (tutor.get(), HttpStatus.OK);
+    }
+
+    return new ResponseEntity<> (
+        new ErrorMessage(
+            ErrorType.TUTOR_NOT_EXIST.toString(),
+            HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
+  }
+
+  // 비밀번호 찾기 -> 메일 보내기
+  @Autowired
+  public JavaMailSender javaMailSender;
+
+  public void sendMail(String email, String pwd) {
+    SimpleMailMessage s = new SimpleMailMessage();
+    s.setTo(email);
+    s.setSubject("MuShRoom 비밀번호 찾기");
+
+    StringBuilder sb = new StringBuilder();
+    sb.append("임시 비밀번호: ").append(pwd).append("\n");
+    sb.append("보안을 위해서 로그인 후 바로 비밀번호를 변경해주세요.");
+
+    s.setText(sb.toString());
+    javaMailSender.send(s);
+  }
+
+  @ApiOperation(value = "Find Tutor Password", notes = "튜터의 비밀번호를 찾는다")
+  @GetMapping("/tutor/findPwd")
+  public ResponseEntity<?> findTutorPwd(@RequestBody Tutor loginTutor) {
+    Optional<Tutor> tutor = tutorRepository.findByEmail(loginTutor.getEmail());
+
+    if(tutor.isPresent()){
+      String newPassword = PasswordUtil.getRandomPassword(8);
+
+      tutor.get().setPassword(UserSha256.encrypt(newPassword));
+
+      tutorRepository.save(tutor.get());
+
+      sendMail(tutor.get().getEmail(), newPassword);
+
+      return new ResponseEntity<> (
+          new ErrorMessage(
+              "Send e-mail completed",
+              HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
     }
 
     return new ResponseEntity<> (
