@@ -2,6 +2,7 @@
     <div class="container">
         <v-row class="my-4">
             <h1>내 강의 목록</h1>
+            {{ classList }}
         </v-row>
         <v-row class="mt-2 mb-7">
             <div class="d-flex flex-row align-end mt-1 ml-0.75">
@@ -111,14 +112,19 @@ export default class Lecture extends Vue {
     { title: '드럼의 모든 것', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', progress: 65, tutor: '조조조', overview: '드럼을 오래 치면 힘드럼...', rate: 1},
       ];
 
+    private classList: object[] = []
+
     created() {
         this.getAllClass()
     }
 
+    private classId = "6018053c28c43914d00acb45"
+
     getAllClass(){
-        ClassDataService.getAllClass()
+        ClassDataService.getOneClass(this.classId)
         .then((response) => {
             console.log(response.data);
+            this.classList.push(response.data);
         })
         .catch((error) => {
             console.log(error.data);

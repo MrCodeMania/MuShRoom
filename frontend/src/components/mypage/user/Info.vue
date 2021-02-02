@@ -38,7 +38,6 @@
             height="auto"
             style="width: 300px;"
           >
-          <!-- <template v-slot:default> -->
             <thead>
               <tr>
                 <th class="text-left">
@@ -58,7 +57,6 @@
                 <td>{{ item.level }}</td>
               </tr>
             </tbody>
-          <!-- </template> -->
         </v-simple-table>
       </p>
       </v-card>
@@ -79,7 +77,7 @@ import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class Info extends Vue{
 
-  private userInfo: object = {
+  private userInfo: object| object[]| string = {
     name: "이름받을까요", nickname: "별명은있고", 
     img: "https://cdn.vuetifyjs.com/images/profiles/marcus.jpg",
     interest: [

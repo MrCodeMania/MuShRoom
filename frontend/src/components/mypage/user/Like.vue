@@ -5,13 +5,13 @@
         </v-row>
         <v-row>
             <v-tabs>
-                <v-tab @click="selectLecture">눈여겨본 강의</v-tab>
-                <v-tab @click="selectTutor">팔로우 중인 강사</v-tab>
+                <v-tab @click="selectTab">눈여겨본 강의</v-tab>
+                <v-tab @click="selectTab">팔로우 중인 강사</v-tab>
             </v-tabs>
         </v-row>
 
         <v-row>
-            <like-class v-if="selectLike == 0" />
+            <like-class v-if="select" />
             <like-tutor v-else />
         </v-row>
     </div>
@@ -31,7 +31,7 @@ import LikeTutor from "@/components/mypage/user/Like/LikeTutor.vue";
 })
 export default class Like extends Vue{
 
-    private selectLike= 0;
+    private select = true;
 
 
     private cards: object[] = [
@@ -41,13 +41,10 @@ export default class Like extends Vue{
     { title: '드럼의 모든 것', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', progress: 65, tutor: '조조조', overview: '드럼을 오래 치면 힘드럼...', rate: 1},
       ];
     
-    selectLecture() {
-        this.selectLike = 0;
+    selectTab() {
+        this.select = !this.select;
     }
 
-    selectTutor() {
-        this.selectLike = 1;
-    }
 }
 </script>
 

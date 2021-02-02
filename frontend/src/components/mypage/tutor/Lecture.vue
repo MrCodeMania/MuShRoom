@@ -65,7 +65,7 @@
                     </v-row>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn text>관리하기</v-btn>
+                      <v-btn text :to="{name: 'updatelecture', params: { classInfo: card }}">관리하기</v-btn>
                     </v-card-actions>
 
                     
@@ -106,14 +106,19 @@ export default class Lecture extends Vue {
     { title: '드럼의 모든 것', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', count: 65, tutor: '조조조', overview: '드럼을 오래 치면 힘드럼...', rate: 1},
       ];
 
+    private classList: object[] = []
+
     created() {
         this.getAllClass()
     }
 
+    private classId = "6018053c28c43914d00acb45"
+
     getAllClass(){
-        ClassDataService.getAllClass()
+        ClassDataService.getOneClass(this.classId)
         .then((response) => {
             console.log(response.data);
+            this.classList.push(response.data);
         })
         .catch((error) => {
             console.log(error.data);
