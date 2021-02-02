@@ -10,8 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserLectureProgress {
-    private int classId;
-    private int sectionId;
+//    private int classId;
+//    private int sectionId;
     private int lectureId;
     private int progress;
 }

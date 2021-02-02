@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = "*")
 public class UserController {
     @Autowired
     private UserRepository repository;
@@ -43,7 +44,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "회원 정보 수정")
-    @PutMapping("/updateInfo")
+    @PutMapping("/update/info")
     public void updateInformation(@RequestBody User user) {
         Optional<User> findUser = repository.findById(user.getId());
         if (user.getPhone() != null) findUser.get().setPhone(user.getPhone());
@@ -55,7 +56,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "비밀번호 변경")
-    @PostMapping("/updatePwd")
+    @PostMapping("/update/pwd")
     public void updatePassword(@RequestBody User user) {
         Optional<User> findUser = repository.findById(user.getId());
         findUser.get().setPassword(UserSha256.encrypt(user.getPassword()));
@@ -79,7 +80,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "비밀번호 찾기")
-    @PostMapping("/findPwd")
+    @PostMapping("/find/pwd")
     public void findPassword(@RequestBody User user) {
         String newPassword = PasswordUtil.getRandomPassword(8);
 //        System.out.println(newPassword);

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 
@@ -12,6 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserClass {
-    private List<Integer> progress;
-    private List<Integer> done;
+    private List<ObjectId> progress;
+    private List<ObjectId> done;
 }

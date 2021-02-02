@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 public interface TutorRepository extends MongoRepository<Tutor, ObjectId> {
 
   Optional<Tutor> findById(ObjectId id);
+  Optional<Tutor> findByEmail(String email);
+  Optional<Tutor> findByPhoneNumber(String phoneNumber);
   List<Tutor> findAll();
 
 }
