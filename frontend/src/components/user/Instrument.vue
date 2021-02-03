@@ -139,16 +139,7 @@ export default {
 
   methods: {
     initialize() {
-      this.instrument = [
-        {
-          name: "피아노",
-          grade: "초급",
-        },
-        {
-          name: "거문고",
-          grade: "고급",
-        },
-      ];
+      this.instrument = [];
     },
 
     editItem(item) {
@@ -190,7 +181,12 @@ export default {
       } else {
         this.instrument.push(this.editedItem);
       }
+
+      this.emitEvent();
       this.close();
+    },
+    emitEvent() {
+      this.$emit("formSend", this.instrument);
     },
   },
 };

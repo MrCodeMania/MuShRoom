@@ -60,6 +60,8 @@ import Phone from "@/components/user/Phone.vue";
 import Account from "@/components/user/Account.vue";
 import Career from "@/components/user/tutor/TutorCareer.vue";
 import Bank from "@/components/user/tutor/Bankaccount.vue";
+import { IDmap } from "../../utils/instrmentID";
+import UserService from "@/service/User/Signup";
 @Component({
   components: {
     Phone,
@@ -73,28 +75,49 @@ export default class TuterRegister extends Vue {
   private nowpage = 1;
   private phoneCheck = false;
   private registerCheck = false;
-  // 가입 처리
-  // 자식 컴포넌트에서 계정정보와 핸드폰 번호 그리고 악기정보 받아 오기
-  receiveform(form: object) {
+  private registerForm: any = {
+    email: "",
+    name: "",
+    nickname: "",
+    password: "",
+    phoneNumber: "",
+    tutorAccount: { accountNumber: "", bankName: "" },
+    tutorProfile: {
+      imagePath: "empty",
+      intro: "empty",
+    },
+  };
+  receiveform(form: { name: ""; nickname: ""; email: ""; password: "" }) {
     //인적정보 받아오는 부분
-
+    this.registerForm.email = form["email"];
+    this.registerForm.name = form["name"];
+    this.registerForm.nickname = form["nickname"];
+    this.registerForm.password = form["password"];
     this.nowpage = 2;
-    console.log(form);
   }
   receivePhonenumber(phoneNumber: string) {
-    // 핸드폰 번호 받아오기
-    console.log(phoneNumber);
+    this.registerForm.phoneNumber = phoneNumber;
     this.phoneCheck = true;
   }
-  receiveCareer(v: object) {
+  receiveCareer(v: { instrument: "" }) {
+    // this.registerForm.instList.push(Number(IDmap.get(v["instrument"])));
     this.nowpage = 4;
   }
-  registerFormWrite(v: string) {
-    console.log(v);
+  registerFormWrite(b: string, a: string) {
+    this.registerForm.tutorAccount.accountNumber = a;
+    this.registerForm.tutorAccount.bankName = b;
     this.registerCheck = true;
   }
   register() {
     console.log("가입하기");
+    //console.log(this.registerForm);
+    UserService.signupTutor(this.registerForm)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }
 </script>

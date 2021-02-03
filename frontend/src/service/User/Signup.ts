@@ -1,6 +1,14 @@
 import http from "../axios.service";
 
-class RegisterService {
+class UserService {
+    signupTutor(formData: object) {
+        console.log(formData)
+        return http.post("/tutor", formData);
+    }
+    loginTutor(formData: object) {
+        console.log(formData);
+        return http.get("/tutor/login");
+    }
     pushUser(formData: object) {
         //console.log(formData);
         return http.post("/user/signup", formData);
@@ -10,6 +18,7 @@ class RegisterService {
         //console.log(formData);
         return http.post("user/login", formData);
     }
+
 }
 
-export default new RegisterService();
+export default new UserService();

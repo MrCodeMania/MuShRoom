@@ -37,8 +37,7 @@ export default class extends Vue {
   private check = [(v: string) => !!v || "값 있어야합니다"];
   validate() {
     (this.$refs.form as Vue & { validate: () => boolean }).validate();
-    //현재페이지 정보를 보냄
-    this.$emit("sendBank", this.bankname);
+    this.$emit("sendBank", this.bankname, this.account);
   }
 }
 </script>
