@@ -96,7 +96,7 @@ const routes: Array<RouteConfig> = [
     component: UpdateInfoTutor,
   },
   {
-    path: '/detail',
+    path: '/detail/:cid',
     name: 'Detail',
     component: ClassDetail,
     children: [

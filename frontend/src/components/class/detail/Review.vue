@@ -110,14 +110,24 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import ClassDataService from '@/service/ClassDataService';
+import { mapState } from 'vuex';
 
-@Component
+@Component({
+  computed: {
+      ...mapState(['userInfo'])
+  }
+})
+
 export default class Review extends Vue {
-  @Prop(Boolean) isTaken!: boolean;
+  private userInfo!: {[key: string]: any};  // 사용자 정보
+  private isTaken = false;  // 수강여부
+  // 별 아이콘
   private empty = 'mdi-star-outline';
   private full = 'mdi-star';
   private half = 'mdi-star-half-full';
-  private scores: number[] = [2, 8, 15, 60, 10]; 
+
+  private scores = []; // 리뷰 점수
   private reviews: object[] = [
     { nickname: '김싸피', value: 5, content: '최고의 강의! 추천합니다.', date: '2021-01-26 22:25'},
     { nickname: '박싸피', value: 4.5, content: '유익한 내용, 간결한 설명', date: '2021-01-26 18:30'},
@@ -130,5 +140,22 @@ export default class Review extends Vue {
   }
   private starValue = 0;
   private content = '';
+
+  created() {
+    //  리뷰 계산하는 메소드 만들어야함
+  }
+
+  // 사용자의 강의 수강 여부 확인 method
+  checkTakeClass(){
+    const userClass = this.userInfo.userClass;
+    if(userClass != null){
+        if(userClass.progress.length != 0){
+            // 
+        }
+        if(userClass.done.length != 0){
+            //
+        }
+    }
+  }
 }
 </script>
