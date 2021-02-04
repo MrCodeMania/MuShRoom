@@ -30,10 +30,12 @@ export default {
   }),
   methods: {
     deleteThis() {
-      console.log(this.fileData.url);
+      console.log(this.fileData.id);
+
+      this.$emit("delList", this.fileData.id);
     },
     addThis() {
-      console.log(this.fileData.url);
+      console.log(this.fileData.id);
     },
   },
   created() {

@@ -39,7 +39,10 @@
     >
       <v-card class="overflow-y-auto" width="" height="100%" max-height="530px">
         <div v-for="(item, index) in records" :key="index">
-          <recordCard v-bind:fileData="records[index]" />
+          <recordCard
+            v-on:delList="delRecord"
+            v-bind:fileData="records[index]"
+          />
         </div>
       </v-card>
     </v-sheet>
@@ -59,7 +62,7 @@ export default {
       scrollInvoked: 0,
       records: [],
       files: [],
-      progress: 0,
+      idx: 0,
     };
   },
   components: {
@@ -71,6 +74,8 @@ export default {
       this.records.push(data);
     },
     receiveData(data) {
+      data["id"] = this.idx;
+      this.idx += 1;
       this.addCard(data);
     },
     selectFile(e) {
@@ -78,6 +83,9 @@ export default {
       this.upload();
     },
     upload() {
+      if (this.files === null) {
+        return;
+      }
       const data = new FormData();
       data.append("file", this.files);
 
@@ -85,6 +93,8 @@ export default {
         .send(data)
         .then((result) => {
           const returnData = { url: result.data.fileDownloadUri };
+          returnData["id"] = this.idx;
+          this.idx += 1;
           this.addCard(returnData);
         })
         .catch((err) => {
@@ -102,6 +112,9 @@ export default {
       );
 
       this.$refs.uploader.click();
+    },
+    delRecord(data) {
+      console.log(data);
     },
   },
 };
