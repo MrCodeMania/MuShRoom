@@ -10,14 +10,15 @@
 
 <script>
 export default {
-    props: ['url'],
+    props: ['url', 'height'],
     data() {
         return {
             options: {
                 barWidth: 2,
                 normalize: true,
                 cursorColor: '#00ff0000',
-                scrollParent: false
+                scrollParent: false,
+                height: this.height
             }
         }
     },
