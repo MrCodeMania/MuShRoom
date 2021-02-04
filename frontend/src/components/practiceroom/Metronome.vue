@@ -195,7 +195,7 @@ export default {
 
 #metronome {
   position: relative;
-  padding: 20px;
+  padding: 10px;
 }
 
 .v-card__title {

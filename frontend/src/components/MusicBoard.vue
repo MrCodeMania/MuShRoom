@@ -1,6 +1,15 @@
 <template>
-  <div class ="musicBoard">
-    <div id="musicListId" class="musicList">
+  <v-card class ="musicBoard"
+    elevation="0"
+    width="100%"
+    height="100%">
+    <v-card id="musicListId" 
+    class="musicList
+    overflow-y-auto"
+    min-height="70vh"
+    max-height="70vh"
+    v-scroll.self="onScroll"
+    elevation="0">
         <ul>
             <li is="musicComp" v-for="item in music" 
                     v-bind:key="item.id"                
@@ -9,19 +18,27 @@
                     v-bind:options="item.options">
             </li>
         </ul>
-    </div>
-    <div class="buttonBar">
+    </v-card>
+    <v-divider></v-divider>
+    <v-card class="buttonBar text-end"
+    elevation="0">
         <v-btn
-            @click="addMusicList"
+        height="50px"
+        text
+        @click="addMusicList"
         >Test
         </v-btn>
         <v-btn
-            @click="downloadButton"
+        height="50px"
+        text
+        @click="downloadButton"
         >
             <v-icon dark large>mdi-download-circle</v-icon>
         </v-btn>
         <v-btn
-            @click="musicPlayButton"
+        height="50px"
+        text
+        @click="musicPlayButton"
         >
             <div v-if="!play">
                 <v-icon dark large>mdi-arrow-right-drop-circle</v-icon>
@@ -31,22 +48,24 @@
             </div>
         </v-btn>
         <v-btn
-            @click="musicStopButton"
+        height="50px"
+        text
+        @click="musicStopButton"
         >
             <v-icon dark large>mdi-stop-circle</v-icon>
         </v-btn>
-    </div>
-  </div>
+    </v-card>
+  </v-card>
 </template>
 
 <script>
 
-import musicComp from './musicComp'
-
+import Player from './practiceroom/Player'
 
 export default {
+    props: ['url'],
     components:{
-        'musicComp' : musicComp
+        'musicComp' : Player
     },
     data() {
         return{
@@ -84,12 +103,14 @@ export default {
                 options: 'blahblah'
             },
             ],
+
             play: false,
+            scrollInvoked: 0,
         }
     },
     methods:{
         addMusicList(){
-            this.music.push({id:this.times++, title:'되네이게', url:'url', options:'blahblah'});
+            this.music.push({id:this.times++, title:'되네이게', url:this.url, options:'blahblah'});
             console.log(this.times);
         },
         downloadButton(){
@@ -108,37 +129,12 @@ export default {
             console.log("stop");
             this.play = false;
         },
+        onScroll () {
+        this.scrollInvoked++
+      },
     }
 }
 </script>
 
 <style>
-
-.musicBoard{
-    /* 포지션은 바꿔야함 */
-    display: flex;
-    flex-direction: column;
-    position:fixed;
-    left:15%;
-    min-width: 50%; 
-    max-width: 50%; 
-    min-height: 50%;
-    max-height: 50%;
-    border:2px solid black;
-    
-}
-.buttonBar{
-    position:absolute;
-    top: 90%;
-    left:70%;
-    display:flex;
-}
-.musicList{
-    min-width: 100%; 
-    max-width: 100%; 
-    min-height: 450px;
-    max-height: 450px;
-    border-bottom:2px solid black;
-    overflow:auto;
-}
 </style>
