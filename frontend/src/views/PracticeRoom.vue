@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>PracticeRoom</h1>
+    <Metronome />
     <player
       url="http://i4a105.p.ssafy.io:8080/downloadFile/sample.mp3"
     ></player>
@@ -9,11 +9,13 @@
 
 <script>
 import Player from "../components/practiceroom/Player.vue";
+import Metronome from "@/components/practiceroom/Metronome.vue";
 
 export default {
   name: "PracticeRoom",
   components: {
     Player,
+    Metronome
   },
   data() {
     return {};

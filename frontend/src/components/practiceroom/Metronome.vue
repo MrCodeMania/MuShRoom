@@ -1,58 +1,66 @@
 <template>
-  <v-container>
-    <v-card
-    flat
-    color="transparent"
-    max-width="300"
-    >
-      <v-card-text>
-        <v-row>
-          <v-col class="pr-4">
-            <v-slider
-              v-model.number="bpm"
-              class="align-center"
-              :max="bpmMax"
-              :min="bpmMin"
-              hide-details
-              style="width: 300px;"
-            >
-              <template v-slot:append>
-                <v-text-field
-                  v-model.number="bpm"
-                  class="mt-0 pt-0"
-                  hide-details
-                  single-line
-                  type="number"
-                  style="width: 50px"
-                ></v-text-field>
-              </template>
-            </v-slider>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-text-field
-            :disabled="isPlaying()"
-            v-model.number="beatsPerBar"
-            class="mt-0 pt-0"
-            hide-details
-            single-line
-            type="number"
-            style="width: 50px"
-          ></v-text-field>
-        </v-row>
-      </v-card-text>
-    </v-card>
-    <v-btn height="200" width="200" @click="onStart">start</v-btn>
-    <v-btn height="200" width="200" @click="onStop">stop</v-btn>
-    <v-btn height="200" width="200" @click="onVolumeUp">up</v-btn>
-    <v-btn height="200" width="200" @click="onVolumeDown">down</v-btn>
-    <v-btn height="200" width="200" @click="onVolumeMute">mute</v-btn>
-    <p>{{ volume | volume(mute) }}</p>
+  <v-card
+    class="d-flex flex-column"
+    id="metronome"
+    color="amber"
+  >
+  <v-card-title>
+    <p style="font-size: 3em;" class="pt-2">{{ bpm }}</p>
+    <v-spacer></v-spacer>
     <div
-      class="pa-7 rounded-circle d-inline-block" :class="beatIndex? 'secondary' : 'primary'"
-    ></div>{{ beatIndex? beatIndex : 1 }}/4
-   
-  </v-container>
+      class="pa-3 ml-9 rounded-circle d-inline-block" :class="beatIndex? 'grey' : 'brown lighten-1'"
+    >{{ beatIndex? beatIndex : 1 }}/4</div>
+    <v-text-field
+      :disabled="isPlaying()"
+      v-model.number="beatsPerBar"
+      class="mt-0 ml-3 pt-0"
+      hide-details
+      single-line
+      type="number"
+      style="width: 10px"
+    ></v-text-field>
+  </v-card-title>
+  <v-card-text>
+    <v-slider
+      v-model.number="bpm"
+      class="align-center"
+      :max="bpmMax"
+      :min="bpmMin"
+      hide-details
+      style="width: 300px;"
+    >
+      <template v-slot:append>
+        <v-text-field
+          v-model.number="bpm"
+          class="mt-0 pt-0"
+          hide-details
+          single-line
+          type="number"
+          style="width: 45px"
+        ></v-text-field>
+      </template> 
+    </v-slider>
+  </v-card-text>
+  <v-card-actions>
+    <v-btn small>
+      <v-icon  v-if="isPlaying()" @click="onStop">mdi-stop</v-icon>
+      <v-icon  v-else @click="onStart">mdi-play</v-icon>
+    </v-btn>
+    <v-spacer></v-spacer>
+    <div>
+      {{ volume | volume(mute) }}
+      <v-btn small @click="onVolumeDown">
+        <v-icon>mdi-volume-medium</v-icon>
+      </v-btn>
+      <v-btn small @click="onVolumeUp">
+        <v-icon>mdi-volume-high</v-icon>
+      </v-btn>
+      <v-btn small @click="onVolumeMute">
+        <v-icon>mdi-volume-off</v-icon>
+      </v-btn>
+    </div>
+  </v-card-actions>
+  </v-card>
 </template>
 
 <script>
@@ -74,7 +82,7 @@ Vue.filter('volume',( value, mute ) => {
 console.log(synth, accent, beat)
 
 export default {
-  name: "metronome",
+  name: "metronome1",
   data: function() {
     return {
       bpmMin: 20,
@@ -181,10 +189,34 @@ export default {
     
   },
 
-
 }
 </script>
 
 <style>
+
+#metronome {
+  position: relative;
+  width: 300px;
+  height: 150px;
+  padding: 10px;
+}
+
+.v-card__title {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: 0.0125em;
+    line-height: 2rem;
+    word-break: break-all;
+    padding: 0px !important;
+}
+
+.v-card__actions {
+  align-items: center;
+  display: flex;
+  padding: 0px !important;
+}
 
 </style>
