@@ -37,7 +37,12 @@
       width="100%"
       max-width="400px"
     >
-      <v-card class="overflow-y-auto" width="" height="100%" max-height="530px">
+      <v-card
+        class="overflow-y-auto ma-1 pt-1"
+        width=""
+        height="100%"
+        max-height="530px"
+      >
         <div v-for="(item, index) in records" :key="index">
           <recordCard
             v-on:delList="delRecord"
