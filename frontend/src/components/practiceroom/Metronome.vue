@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="d-flex flex-column"
+    class="d-flex flex-column justify-space-between"
     id="metronome"
     color="amber"
     width="100%"
@@ -67,9 +67,8 @@
 
 <script>
 import Vue from 'vue'
-import { Synth, Player, Sequence, Transport, start, Destination } from 'tone';
+import { Player, Sequence, Transport, start, Destination } from 'tone';
 
-const synth = new Synth().toDestination();
 const accent = new Player('http://i4a105.p.ssafy.io:8080/downloadFile/Ping%20Hi.wav').toDestination();
 const beat = new Player('http://i4a105.p.ssafy.io:8080/downloadFile/Ping%20Low.wav').toDestination();
 
@@ -80,8 +79,6 @@ Vue.filter('volume',( value, mute ) => {
   const prefix = value > 0? '+' : '';
   return `${prefix}${value}db`;
 })
-
-console.log(synth, accent, beat)
 
 export default {
   name: "metronome1",
@@ -198,9 +195,7 @@ export default {
 
 #metronome {
   position: relative;
-  width: 300px;
-  height: 150px;
-  padding: 10px;
+  padding: 20px;
 }
 
 .v-card__title {
