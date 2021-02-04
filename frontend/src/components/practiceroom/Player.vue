@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex align-center">
-      <div class="mb-3 border" style="flex: 1">
+      <div class="mb-3 border d-flex" style="flex: 1">
         <v-btn
           v-if="this.state == 'stopped'"
           class="ml-3 mr-3"
