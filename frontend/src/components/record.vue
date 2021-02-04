@@ -7,17 +7,26 @@
       width="100%"
       max-width="400px"
     >
-      <div class="align-self-center d-flex justify-space-around">
+      <div class="align-self-center d-flex justify-space-around align-center">
         <recordBtn class="mt-3" v-on:sendData="receiveData"></recordBtn>
         <div>
-          <v-file-input
-            v-model="files"
-            hide-input
-            hide-details
+          <v-btn
+            width="50px"
+            height="50px"
+            class="text-none mb-5"
+            rounded
+            depressed
+            :loading="isSelecting"
+            @click="onButtonClick"
+            ><v-icon size="50px">mdi-file </v-icon></v-btn
+          >
+          <input
+            ref="uploader"
+            class="d-none"
+            type="file"
             accept="audio/*"
-            prepend-icon="mdi-file"
             @change="selectFile"
-          ></v-file-input>
+          />
         </div>
       </div>
     </v-sheet>
@@ -28,12 +37,7 @@
       width="100%"
       max-width="400px"
     >
-      <v-card
-        class="overflow-y-auto"
-        width="90%"
-        height="100%"
-        max-height="530px"
-      >
+      <v-card class="overflow-y-auto" width="" height="100%" max-height="530px">
         <div v-for="(item, index) in records" :key="index">
           <recordCard v-bind:fileData="records[index]" />
         </div>
@@ -51,6 +55,7 @@ export default {
   mixins: [UploaderPropsMixin],
   data: () => {
     return {
+      isSelecting: false,
       scrollInvoked: 0,
       records: [],
       files: [],
@@ -68,9 +73,8 @@ export default {
     receiveData(data) {
       this.addCard(data);
     },
-    selectFile(file) {
-      this.progress = 0;
-      this.currentFile = file;
+    selectFile(e) {
+      this.files = e.target.files[0];
       this.upload();
     },
     upload() {
@@ -86,6 +90,18 @@ export default {
         .catch((err) => {
           console.log("업로드 실패 ㅠㅠ", err);
         });
+    },
+    onButtonClick() {
+      this.isSelecting = true;
+      window.addEventListener(
+        "focus",
+        () => {
+          this.isSelecting = false;
+        },
+        { once: true }
+      );
+
+      this.$refs.uploader.click();
     },
   },
 };
