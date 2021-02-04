@@ -1,5 +1,5 @@
 <template>
-  <div style="width:50%">
+  <div>
       <vue-wave-surfer 
         ref="waveform"
         :src="url"
