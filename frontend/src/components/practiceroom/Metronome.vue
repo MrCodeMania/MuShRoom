@@ -7,7 +7,7 @@
     height="100%"
   >
   <v-card-title>
-    <p v-bind="attrs" v-on="on" style="font-size: 1.75em;" class="pt-2">BPM: {{ bpm }}</p>
+    <p style="font-size: 1.75em;" class="pt-2">BPM: {{ bpm }}</p>
     <v-spacer></v-spacer>
     <div
       class="pa-3 mx-3 rounded-circle d-inline-block" :class="beatIndex? 'grey' : 'brown lighten-1'"
