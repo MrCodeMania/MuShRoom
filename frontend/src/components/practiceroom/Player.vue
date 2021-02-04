@@ -25,6 +25,7 @@
         >
           <v-icon dense>mdi-pause</v-icon>
         </v-btn>
+        <v-btn @click="sendDelete(n)"> X </v-btn>
         <!-- <v-btn :disabled="player == null" v-on:click="stop()">
           <v-icon dense>mdi-stop</v-icon>
         </v-btn> -->
@@ -146,6 +147,7 @@ export default {
   name: "Player",
   props: {
     url: String,
+    n: Number,
   },
   components: {
     Waveform,
@@ -252,6 +254,9 @@ export default {
       this.isExist = true;
       //Tone.Transport.start(); // start
     },
+    sendDelete(n) {
+      this.$emit('deleteMusic',n)
+    }
   },
 };
 </script>

@@ -9,18 +9,17 @@
       elevation="0"
     >
       <ul>
-        <li
-          is="musicComp"
-          v-for="item in music"
-          v-bind:key="item.id"
+        <Player
+          v-for="(item,n) in music"
+          v-bind:key="n"
           v-bind:title="item.title"
           v-bind:url="item.url"
           v-bind:options="item.options"
-        ></li>
+          @deleteMusic="deleteMusic(n)"
+        />
       </ul>
     </v-card>
     <v-divider></v-divider>
-    <v-btn v-for="(index,n) in music.length " :key="index" @click="deleteMusic(n)">{{ n }}</v-btn>
     <v-card class="buttonBar text-end" elevation="0">
       <v-btn height="50px" text @click="addMusicList">Test </v-btn>
       <v-btn height="50px" text @click="downloadButton">
@@ -47,7 +46,7 @@ import Player from "./practiceroom/Player";
 export default {
   props: ["url"],
   components: {
-    musicComp: Player,
+    Player,
   },
   data() {
     return {
@@ -87,6 +86,7 @@ export default {
       this.scrollInvoked++;
     },
     deleteMusic(n) {
+        console.log(n)
         this.music.splice(n,1);
     }
   },
