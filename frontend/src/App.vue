@@ -1,28 +1,12 @@
 <template>
   <v-app>
-    <Nav/>
-    <v-main>
-      <router-view/>
-    </v-main>
-    <Footer/>
+    <router-view />
   </v-app>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
-import Nav from './components/common/Nav.vue';
-import Footer from './components/common/Footer.vue';
+<script>
 
-export default Vue.extend({
+export default {
   name: 'App',
-
-  components: {
-    Nav,
-    Footer
-  },
-
-  data: () => ({
-    //
-  }),
-});
+};
 </script>
