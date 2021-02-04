@@ -3,6 +3,8 @@
     class="d-flex flex-column"
     id="metronome"
     color="amber"
+    width="100%"
+    height="100%"
   >
   <v-card-title>
     <p style="font-size: 3em;" class="pt-2">{{ bpm }}</p>
