@@ -7,12 +7,7 @@
     height="100%"
   >
   <v-card-title>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <p v-bind="attrs" v-on="on" style="font-size: 1.75em;" class="pt-2">BPM: {{ bpm }}</p>
-      </template>
-      <span>BPM</span>
-    </v-tooltip>
+    <p style="font-size: 1.75em;" class="pt-2">BPM: {{ bpm }}</p>
     <v-spacer></v-spacer>
     <div
       class="pa-3 mx-3 rounded-circle d-inline-block" :class="beatIndex? 'grey' : 'brown lighten-1'"
@@ -22,7 +17,7 @@
         <v-text-field
           :disabled="isPlaying()"
           v-model.number="beatsPerBar"
-          class="mt-0 pt-0"
+          class="mt-0 mr-4 pt-0"
           hide-details
           single-line
           type="number"
@@ -45,19 +40,21 @@
       <template v-slot:append>
         <v-text-field
           v-model.number="bpm"
-          class="mt-0 pt-0"
+          class="mt-0 pl-4 pt-0"
           hide-details
           single-line
           type="number"
-          style="width: 45px"
+          style="width: 60px"
         ></v-text-field>
       </template> 
     </v-slider>
   </v-card-text>
   <v-card-actions>
-    <v-btn small>
-      <v-icon  v-if="isPlaying()" @click="onStop">mdi-stop</v-icon>
-      <v-icon  v-else @click="onStart">mdi-play</v-icon>
+    <v-btn small v-if="isPlaying()" @click="onStop">
+      <v-icon>mdi-stop</v-icon>
+    </v-btn>
+    <v-btn small v-else @click="onStart">
+      <v-icon>mdi-play</v-icon>
     </v-btn>
     <v-spacer></v-spacer>
     <div>
