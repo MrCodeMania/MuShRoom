@@ -9,6 +9,7 @@ import com.ssafy.backend.model.InstrumentEntity;
 import com.ssafy.backend.model.Lecture;
 import com.ssafy.backend.model.LectureQuestion;
 import com.ssafy.backend.model.Profile;
+import com.ssafy.backend.model.ProfileIntro;
 import com.ssafy.backend.model.Section;
 import com.ssafy.backend.model.Tag;
 import com.ssafy.backend.model.Tutor;
@@ -51,7 +52,6 @@ public class ClassController {
   private final SectionRepository sectionRepository;
   private final TutorRepository tutorRepository;
 
-
   // Repository DI
   @Autowired
   public ClassController(
@@ -73,9 +73,23 @@ public class ClassController {
     this.tutorRepository = tutorRepository;
   }
 
+  @ApiOperation(value = "Get Top 10 Class List", notes = "키워드에 따른 top10 리스트를 반환한다.")
+  @GetMapping("/top10")
+  public ResponseEntity<List<ClassEntity>> getTop10Class(@RequestParam String sorted) {
+    if (sorted.equals("like")) {
+      return new ResponseEntity<>(classRepository.findTop10ByOrderByLikeDesc(), HttpStatus.OK);
+    } else if (sorted.equals("studentCount")) {
+      return new ResponseEntity<>(classRepository.findTop10ByOrderByStudentCountDesc(), HttpStatus.OK);
+    }
+    return new ResponseEntity<>(classRepository.findAll(), HttpStatus.OK);
+  }
+
   @ApiOperation(value = "Get All Class List", notes = "모든 클래스의 리스트를 반환한다")
   @GetMapping("/class")
-  public ResponseEntity<List<ClassEntity>> getAllClass() {
+  public ResponseEntity<List<ClassEntity>> getAllClass(@RequestParam(required = false) String keyword) {
+    if (keyword != null) {
+      return new ResponseEntity<>(classRepository.findByTitleContaining(keyword), HttpStatus.OK);
+    }
     return new ResponseEntity<>(classRepository.findAll(), HttpStatus.OK);
   }
 
@@ -107,7 +121,7 @@ public class ClassController {
   @GetMapping("/class/{cid}")
   public ClassEntity getOneClass(@PathVariable ObjectId cid) {
     return classRepository.findById(cid).orElseThrow(() ->
-      new IllegalArgumentException("해당 사용자는 존재하지 않습니다")
+      new IllegalArgumentException("해당 클래스는 존재하지 않습니다")
     );
   }
 
@@ -117,7 +131,7 @@ public class ClassController {
   @PutMapping("/class/{cid}")
   public ClassEntity updateOneClass(@PathVariable ObjectId cid, @RequestBody ClassEntity cls) {
     ClassEntity before = classRepository.findById(cid).orElseThrow(() ->
-        new IllegalArgumentException("해당 사용자는 존재하지 않습니다")
+        new IllegalArgumentException("해당 클래스는 존재하지 않습니다")
     );
     if (cls.getProfile() != null) {
       before.setProfile(cls.getProfile());
@@ -142,6 +156,23 @@ public class ClassController {
     if (cls.isPresent()) {
       classRepository.deleteById(cid);
       return new ResponseEntity<>(cls.get(), HttpStatus.OK);
+    }
+
+    return new ResponseEntity(
+        new ErrorMessage(ErrorType.CLASS_NOT_EXIST.toString(), HttpStatus.BAD_REQUEST.value()),
+        HttpStatus.BAD_REQUEST);
+  }
+
+  @ApiOperation(value = "Like Class", notes = "해당 클래스의 like를 1만큼 증가시키거나 감소시킨다.")
+  @PostMapping("/class/{cid}/like")
+  public ResponseEntity<ClassEntity> LikeClass(@PathVariable ObjectId cid) {
+
+    Optional<ClassEntity> clsOpt = classRepository.findById(cid);
+    if (clsOpt.isPresent()) {
+      ClassEntity cls = clsOpt.get();
+      cls.setLike(cls.getLike() + 1);
+      classRepository.save(cls);
+      return new ResponseEntity<>(cls, HttpStatus.OK);
     }
 
     return new ResponseEntity(
@@ -781,7 +812,7 @@ public class ClassController {
     tutorRepository.save(tutor);
 
     ClassEntity cls = ClassEntity.builder()
-        .profile(new Profile("testPath", "testIntro"))
+        .profile(new Profile("testPath", new ProfileIntro("testSubTiTle", "testDecription")))
         .title("testTile").tutor(tutor)
         .build();
 
@@ -796,10 +827,10 @@ public class ClassController {
     cls.appendQuestion(cq1);
     cls.appendQuestion(cq2);
 
-    Lecture lecture1 = new Lecture("videoPath1");
-    Lecture lecture2 = new Lecture("videoPath2");
-    Lecture lecture3 = new Lecture("videoPath3");
-    Lecture lecture4 = new Lecture("videoPath4");
+    Lecture lecture1 = new Lecture("testTitle1", "videoPath1");
+    Lecture lecture2 = new Lecture("testTitle2", "videoPath2");
+    Lecture lecture3 = new Lecture("testTitle3", "videoPath3");
+    Lecture lecture4 = new Lecture("testTitle4", "videoPath4");
 
     lectureRepository.save(lecture1);
     lectureRepository.save(lecture2);

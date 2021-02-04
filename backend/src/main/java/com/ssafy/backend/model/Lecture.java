@@ -19,11 +19,15 @@ public class Lecture {
   @MongoId
   private ObjectId id;
   @NonNull
+  private String title;
+  private String content;
+  @NonNull
   private String videoPath;
   @DBRef
   private List<LectureQuestion> questionList = new ArrayList<>();
 
-  public Lecture(String videoPath) {
+  public Lecture(String title, String videoPath) {
+    this.title = title;
     this.videoPath = videoPath;
   }
 

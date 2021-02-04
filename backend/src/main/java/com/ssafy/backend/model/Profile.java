@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Profile {
 
   @NonNull
-  private String imagePath;
+  private String mainImagePath;
   @NonNull
-  private String intro;
+  private ProfileIntro intro;
 }
