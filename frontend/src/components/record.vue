@@ -24,11 +24,16 @@
     <v-sheet
       color="white"
       elevation="1"
-      height="100"
+      height="100%"
       width="100%"
       max-width="400px"
     >
-      <v-card class="overflow-y-auto" height="400" max-height="400">
+      <v-card
+        class="overflow-y-auto"
+        width="90%"
+        height="100%"
+        max-height="530px"
+      >
         <div v-for="(item, index) in records" :key="index">
           <recordCard v-bind:fileData="records[index]" />
         </div>

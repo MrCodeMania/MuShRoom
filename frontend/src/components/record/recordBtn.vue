@@ -1,7 +1,7 @@
 
 <template>
   <div>
-    <div class="" width="100px">
+    <div class="" width="80px">
       <audio-recorder
         ref="recorder"
         :after-recording="setRecorded"
