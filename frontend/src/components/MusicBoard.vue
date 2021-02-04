@@ -52,7 +52,7 @@ export default {
     return {
       times: 0, // id 증진 넘버
       music: [],
-
+      musicURL: "",
       play: false,
       scrollInvoked: 0,
     };
@@ -62,7 +62,7 @@ export default {
       this.music.push({
         id: this.times++,
         title: "되네이게",
-        url: this.url,
+        url: this.musicURL,
         options: "blahblah",
       });
       console.log(this.times);
@@ -95,7 +95,7 @@ export default {
     getURL(val) {
       if (val === "") return;
       console.log("watched", val);
-      this.url = val;
+      this.musicURL = val;
       this.addMusicList();
       this.$store.commit("pushURL", "");
     },
