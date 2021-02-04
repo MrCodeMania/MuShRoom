@@ -8,7 +8,8 @@
       <v-img
       max-width="180"
       height="50"
-      :src="logo">
+      :src="logo"
+      @click="toMain">
       </v-img>
   </v-app-bar>
 </template>
@@ -18,6 +19,11 @@ export default {
     data() {
         return {
             logo: require('@/assets/tmpLogo.png')
+        }
+    },
+    methods: {
+        toMain() {
+            this.$router.push({name : 'Home'})
         }
     }
 

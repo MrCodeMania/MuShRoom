@@ -1,28 +1,39 @@
 <template>
   <v-card
-    class="d-flex flex-column"
+    class="d-flex flex-column justify-space-between"
     id="metronome"
     color="amber"
     width="100%"
     height="100%"
   >
   <v-card-title>
-    <p style="font-size: 3em;" class="pt-2">{{ bpm }}</p>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on, attrs }">
+        <p v-bind="attrs" v-on="on" style="font-size: 1.75em;" class="pt-2">BPM: {{ bpm }}</p>
+      </template>
+      <span>BPM</span>
+    </v-tooltip>
     <v-spacer></v-spacer>
     <div
-      class="pa-3 ml-9 rounded-circle d-inline-block" :class="beatIndex? 'grey' : 'brown lighten-1'"
-    >{{ beatIndex? beatIndex : 1 }}/4</div>
-    <v-text-field
-      :disabled="isPlaying()"
-      v-model.number="beatsPerBar"
-      class="mt-0 ml-3 pt-0"
-      hide-details
-      single-line
-      type="number"
-      style="width: 10px"
-    ></v-text-field>
+      class="pa-3 mx-3 rounded-circle d-inline-block" :class="beatIndex? 'grey' : 'brown lighten-1'"
+    >{{ beatIndex? beatIndex : 1 }}</div>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on, attrs }">
+        <v-text-field
+          :disabled="isPlaying()"
+          v-model.number="beatsPerBar"
+          class="mt-0 pt-0"
+          hide-details
+          single-line
+          type="number"
+          style="width: 18px"
+          v-bind="attrs" v-on="on"
+        ></v-text-field>
+      </template>
+    <span>Beats/bar</span>
+  </v-tooltip>
   </v-card-title>
-  <v-card-text>
+  <v-card-text class="d-flex align-center">
     <v-slider
       v-model.number="bpm"
       class="align-center"
@@ -67,9 +78,8 @@
 
 <script>
 import Vue from 'vue'
-import { Synth, Player, Sequence, Transport, start, Destination } from 'tone';
+import { Player, Sequence, Transport, start, Destination } from 'tone';
 
-const synth = new Synth().toDestination();
 const accent = new Player('http://i4a105.p.ssafy.io:8080/downloadFile/Ping%20Hi.wav').toDestination();
 const beat = new Player('http://i4a105.p.ssafy.io:8080/downloadFile/Ping%20Low.wav').toDestination();
 
@@ -80,8 +90,6 @@ Vue.filter('volume',( value, mute ) => {
   const prefix = value > 0? '+' : '';
   return `${prefix}${value}db`;
 })
-
-console.log(synth, accent, beat)
 
 export default {
   name: "metronome1",
@@ -120,7 +128,9 @@ export default {
         sequence.start(0);
       }
       this.isStopped = false;
+
       Transport.start();
+
     },
 
     onStop() {
@@ -156,6 +166,7 @@ export default {
       return new Sequence((time, note) => {
         switch(note) {
           case accentNote:
+            console.log('노트', Transport)
             this.beatIndex = 0;
             accent.start(time);
             break;
@@ -198,9 +209,7 @@ export default {
 
 #metronome {
   position: relative;
-  width: 300px;
-  height: 150px;
-  padding: 10px;
+  padding: 20px;
 }
 
 .v-card__title {
