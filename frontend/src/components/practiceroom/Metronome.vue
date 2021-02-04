@@ -20,7 +20,7 @@
       single-line
       type="number"
       style="width: 10px"
-    ></v-text-field>
+    ></v-text-field>/4
   </v-card-title>
   <v-card-text>
     <v-slider
@@ -117,7 +117,9 @@ export default {
         sequence.start(0);
       }
       this.isStopped = false;
+
       Transport.start();
+
     },
 
     onStop() {
@@ -147,12 +149,14 @@ export default {
     },
 
     createNoteSequence() {
+      console.log('시퀀스', Transport)
       const accentNote = 'G2';
       const beatNote = 'C2';
       const notes = [accentNote, ...new Array(this.beatsPerBar -1).fill(beatNote)]
       return new Sequence((time, note) => {
         switch(note) {
           case accentNote:
+            console.log('노트', Transport)
             this.beatIndex = 0;
             accent.start(time);
             break;
@@ -184,6 +188,7 @@ export default {
 
   mounted() {
     Transport.bpm.value = this.bpm
+    console.log('마운티드', Transport)
     start()
     
   },

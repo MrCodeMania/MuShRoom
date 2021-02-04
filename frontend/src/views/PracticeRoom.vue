@@ -94,7 +94,7 @@
       pa-4">
         <v-card
         height="100%">
-          파일 목록
+          <Record/>
         </v-card>
       </v-col>
     </v-row>
@@ -107,13 +107,15 @@ import Header from '@/components/common/Header.vue';
 import Footer from '@/components/common/Footer.vue';
 import Metronome from '@/components/practiceroom/Metronome.vue';
 import MusicBoard from '@/components/MusicBoard.vue';
+import Record from '@/components/record.vue';
 
 export default {
   components: {
     Header,
     Footer,
     Metronome,
-    MusicBoard
+    MusicBoard,
+    Record
   },
   data() {
     return {
