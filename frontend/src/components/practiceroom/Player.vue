@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex align-center">
-      <div class="mb-3 border d-flex" style="flex: 1">
+      <div class="mb-1 border d-flex" style="flex: 1">
         <v-btn
           v-if="this.state == 'stopped'"
           class="ml-3 mr-3"
@@ -32,7 +32,7 @@
       </div>
 
       <div style="flex: 5">
-        <Waveform :url="url" height="64"></Waveform>
+        <Waveform :url="url" height="64" class="ml-3"></Waveform>
       </div>
 
       <div class="ml-3" style="flex: 1">
@@ -255,8 +255,8 @@ export default {
       //Tone.Transport.start(); // start
     },
     sendDelete(n) {
-      this.$emit('deleteMusic',n)
-    }
+      this.$emit("deleteMusic", n);
+    },
   },
 };
 </script>

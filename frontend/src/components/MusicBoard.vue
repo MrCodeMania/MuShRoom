@@ -8,9 +8,9 @@
       v-scroll.self="onScroll"
       elevation="0"
     >
-      <ul>
+      <ul class="pl-1 pr-3">
         <Player
-          v-for="(item,n) in music"
+          v-for="(item, n) in music"
           v-bind:key="n"
           v-bind:title="item.title"
           v-bind:url="item.url"
@@ -21,7 +21,7 @@
     </v-card>
     <v-divider></v-divider>
     <v-card class="buttonBar text-end" elevation="0">
-      <v-btn height="50px" text @click="addMusicList">Test </v-btn>
+      <!-- <v-btn height="50px" text @click="addMusicList">Test </v-btn> -->
       <v-btn height="50px" text @click="downloadButton">
         <v-icon dark large>mdi-download-circle</v-icon>
       </v-btn>
