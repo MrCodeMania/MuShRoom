@@ -8,7 +8,7 @@
       v-scroll.self="onScroll"
       elevation="0"
     >
-      <ul>
+      <ul class="pl-1 pr-3">
         <Player
           v-for="(item, n) in music"
           v-bind:key="n"
@@ -21,7 +21,7 @@
     </v-card>
     <v-divider></v-divider>
     <v-card class="buttonBar text-end" elevation="0">
-      <v-btn height="50px" text @click="addMusicList">Test </v-btn>
+      <!-- <v-btn height="50px" text @click="addMusicList">Test </v-btn> -->
       <v-btn height="50px" text @click="downloadButton">
         <v-icon dark large>mdi-download-circle</v-icon>
       </v-btn>
@@ -85,9 +85,15 @@ export default {
       this.scrollInvoked++;
     },
     deleteMusic(n) {
+<<<<<<< HEAD
       console.log(n);
       this.music.splice(n, 1);
     },
+=======
+        console.log(this.music[n])
+        this.music.splice(n,1);
+    }
+>>>>>>> 9723b4f945c19dc312f60dbf2aaf75fbfe9a74b2
   },
   computed: {
     getURL() {
