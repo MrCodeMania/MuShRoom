@@ -86,7 +86,7 @@ export default {
       this.scrollInvoked++;
     },
     deleteMusic(n) {
-        console.log(n)
+        console.log(this.music[n])
         this.music.splice(n,1);
     }
   },
