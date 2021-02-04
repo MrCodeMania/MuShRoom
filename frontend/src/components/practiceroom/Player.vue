@@ -14,7 +14,14 @@
           v-else
           class="ml-3 mr-3"
           :disabled="player == null"
-          v-on:click="pause()"
+          v-on:click="stop()"
+        >
+          <v-icon dense>mdi-pause</v-icon>
+        </v-btn>
+        <v-btn
+          class="ml-3 mr-3"
+          :disabled="player == null"
+          v-on:click="addToTransport()"
         >
           <v-icon dense>mdi-pause</v-icon>
         </v-btn>
@@ -37,7 +44,7 @@
     </div>
 
     <div class="ml-5">
-      <v-simple-table :hidden="isShow == 1">
+      <v-simple-table :hidden="isShow == 0">
         <tbody>
           <tr>
             <td>Volume</td>
@@ -162,29 +169,41 @@ export default {
       isShow: 0,
       loopStart: 0.0,
       loopEnd: 0.0,
+      isExist: false,
     };
   },
   created() {
     const player = new Tone.Player(this.url, () => {
       this.player = player;
       //player.start();
-      player.sync().start(0);
-      Tone.start();
+      //player.sync().start(0);
     }).toDestination();
   },
   methods: {
     start() {
-      //this.player.start();
+      // //this.player.unsync();
+      // this.player.sync().start(0);
+      // Tone.start();
+      // Tone.Transport.start();
+      Tone.Transport.cancel(); // clean objects
+
+      Tone.start();
+      this.player.sync().start(0);
       Tone.Transport.start();
       this.state = this.player.state;
+      this.isExist = false;
     },
     pause() {
       Tone.Transport.pause();
       this.state = this.player.state;
     },
     stop() {
+      //this.player.stop();
+      //this.player.start();
       Tone.Transport.stop();
+      Tone.Transport.cancel(); // clean objects
       this.state = this.player.state;
+      this.isExist = false;
     },
     changeDistortion(value) {
       this.distortion.object.distortion = value;
@@ -224,6 +243,14 @@ export default {
     setLoopTime() {
       this.player.loopStart = this.loopStart;
       this.player.loopEnd = this.loopEnd;
+    },
+    addToTransport() {
+      if (this.isExist) return;
+
+      Tone.start();
+      this.player.sync().start(0);
+      this.isExist = true;
+      //Tone.Transport.start(); // start
     },
   },
 };
