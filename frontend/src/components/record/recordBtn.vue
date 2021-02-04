@@ -3,6 +3,7 @@
   <div>
     <div class="" width="80px">
       <audio-recorder
+        style="border: none"
         ref="recorder"
         :after-recording="setRecorded"
         :before-recording="startRecord"

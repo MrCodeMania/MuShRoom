@@ -85,15 +85,9 @@ export default {
       this.scrollInvoked++;
     },
     deleteMusic(n) {
-<<<<<<< HEAD
       console.log(n);
       this.music.splice(n, 1);
     },
-=======
-        console.log(this.music[n])
-        this.music.splice(n,1);
-    }
->>>>>>> 9723b4f945c19dc312f60dbf2aaf75fbfe9a74b2
   },
   computed: {
     getURL() {

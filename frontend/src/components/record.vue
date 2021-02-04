@@ -2,10 +2,8 @@
   <div>
     <v-sheet
       color="white"
-      elevation="1"
       height="100"
       width="100%"
-      max-width="400px"
     >
       <div class="align-self-center d-flex justify-space-around align-center">
         <recordBtn class="mt-3" v-on:sendData="receiveData"></recordBtn>
@@ -32,12 +30,12 @@
     </v-sheet>
     <v-sheet
       color="white"
-      elevation="1"
       height="100%"
       width="100%"
-      max-width="400px"
     >
-      <v-card class="overflow-y-auto" width="" height="100%" max-height="530px">
+      <v-card 
+      elevation="0"
+      class="overflow-y-auto" width="100%" height="100%" max-height="530px">
         <div v-for="(item, index) in records" :key="index">
           <recordCard
             v-on:delList="delRecord"

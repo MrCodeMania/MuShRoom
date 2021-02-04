@@ -2,7 +2,8 @@
   <v-card
     class="d-flex flex-column justify-space-between"
     id="metronome"
-    color="amber"
+    color="amber lighten-1"
+    elevation="0"
     width="100%"
     height="100%"
   >
@@ -28,7 +29,8 @@
     <span>Beats/bar</span>
   </v-tooltip>
   </v-card-title>
-  <v-card-text class="d-flex align-center">
+  <v-card-text class="d-flex align-center
+  pa-0">
     <v-slider
       v-model.number="bpm"
       class="align-center"
@@ -50,22 +52,47 @@
     </v-slider>
   </v-card-text>
   <v-card-actions>
-    <v-btn small v-if="isPlaying()" @click="onStop">
+    <v-btn 
+    fab
+    small
+    elevation="0"
+    color="amber lighten-1" 
+    v-if="isPlaying()" @click="onStop">
       <v-icon>mdi-stop</v-icon>
     </v-btn>
-    <v-btn small v-else @click="onStart">
+    <v-btn 
+    fab
+    small
+    elevation="0"
+    color="amber lighten-1"
+    v-else @click="onStart">
       <v-icon>mdi-play</v-icon>
     </v-btn>
     <v-spacer></v-spacer>
     <div>
       {{ volume | volume(mute) }}
-      <v-btn small @click="onVolumeDown">
+      <v-btn 
+      fab
+      small
+      elevation="0"
+      color="amber lighten-1"
+      @click="onVolumeDown">
         <v-icon>mdi-volume-medium</v-icon>
       </v-btn>
-      <v-btn small @click="onVolumeUp">
+      <v-btn
+      fab
+      small
+      elevation="0"
+      color="amber lighten-1" 
+      @click="onVolumeUp">
         <v-icon>mdi-volume-high</v-icon>
       </v-btn>
-      <v-btn small @click="onVolumeMute">
+      <v-btn 
+      fab
+      small
+      elevation="0"
+      color="amber lighten-1"
+      @click="onVolumeMute">
         <v-icon>mdi-volume-off</v-icon>
       </v-btn>
     </div>
@@ -206,7 +233,7 @@ export default {
 
 #metronome {
   position: relative;
-  padding: 20px;
+  padding: 10px;
 }
 
 .v-card__title {

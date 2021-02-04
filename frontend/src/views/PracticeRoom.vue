@@ -1,28 +1,28 @@
 <template>
   <v-main
-  style="background-color: #FFF8E1">
+  style="background-color: #FFECB3">
     <Header/>
 
     <!-- 부모 row -->
     <v-row
     no-gutters>
 
+      <!-- 공백 -->
       <v-col
       cols="1">
-
       </v-col>
       <!-- 왼쪽 컴포넌트들 -->
       <v-col cols="7"
       class="flex-grow-0 
       flex-shrink-0
-      px-4">
+      pa-4">
       
         <!-- 페이지 확인, 넘기기 -->
         <v-row
         no-gutters
         style="height:10vh;">
           <v-card
-          color="amber lighten-5"
+          color="amber lighten-4"
           elevation="0"
           height="100%"
           width="100%"
@@ -34,7 +34,7 @@
               fab
               small
               elevation="0"
-              color="amber lighten-5"
+              color="amber lighten-4"
               :disabled="page == 1"
               @click="moveLeft()">
                 <v-icon>
@@ -51,7 +51,7 @@
               fab
               small
               elevation="0"
-              color="amber lighten-5"
+              color="amber lighten-4"
               :disabled="page == length"
               @click="moveRight()">
                 <v-icon>
@@ -67,6 +67,7 @@
         no-gutters
         style="height:80vh">
           <v-card
+          elevation="0"
           width="100%"
           height="100%">
             <MusicBoard :url="url"/>
@@ -74,21 +75,17 @@
         </v-row>
       </v-col>
 
-      <!-- 공백 -->
-      <v-col cols="1">
-      </v-col>
-
       <!-- 오른쪽 컴포넌트들 -->
-      <v-col cols="3"
+      <v-col cols="4"
       class="flex-grow-0 
       flex-shrink-0
-      px-4 pt-3">
+      pa-4">
         <!-- 매트로놈 -->
         <v-row
         no-gutters
         style="height:20vh">
           <v-card
-          text
+          elevation="0"
           width="100%"
           height="100%">
             <Metronome/>
@@ -100,6 +97,7 @@
         no-gutters
         style="height:70vh">
           <v-card
+          elevation="0"
           width="100%"
           height="100%">
             <Record/>
