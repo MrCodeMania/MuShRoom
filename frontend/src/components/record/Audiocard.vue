@@ -2,7 +2,7 @@
   <v-menu v-model="showMenu" absolute offset-y style="max-width: 600px">
     <template v-slot:activator="{ on, attrs }">
       <v-card class="mx-auto mt-3" max-width="344" v-bind="attrs" v-on="on">
-        <v-card-title>파일이름</v-card-title>
+        <v-card-title>{{ fileData.fileName }}</v-card-title>
         <v-card-text><Waveform :url="fileData.url" height="64" /></v-card-text>
       </v-card>
     </template>
@@ -30,12 +30,9 @@ export default {
   }),
   methods: {
     deleteThis() {
-      console.log(this.fileData.id);
-
       this.$emit("delList", this.fileData.id);
     },
     addThis() {
-      console.log("add", this.fileData.url);
       this.$store.commit("pushURL", this.fileData.url);
     },
   },

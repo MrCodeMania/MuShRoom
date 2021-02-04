@@ -26,6 +26,8 @@ export default {
       // blob 형태 {size , type 두가지 정보} , duration 재생길이 , url => 로컬 다운로드 url
       file: "",
       showExtra: false,
+      fileName: "녹음파일 ",
+      fineNum: 0,
     };
   },
   methods: {
@@ -34,8 +36,12 @@ export default {
         return;
       }
       const data = new FormData();
-      const fileName = Date.now().toString();
-      data.append("file", this.file.blob, `${fileName}.mp3`);
+      data.append(
+        "file",
+        this.file.blob,
+        `${this.fileName} ${this.fineNum}.mp3`
+      );
+      this.fineNum++;
 
       const headers = Object.assign(this.headers, {});
 
@@ -76,6 +82,7 @@ export default {
         const top = recorder.recordList.length - 1;
         recorder.selected = recorder.recordList[top];
         this.file = recorder.selected;
+        this.file["fileName"] = `${this.fileName} ${this.fineNum}`;
         //파일 데이터를 전송해줍니다.
         this.upload();
         this.$emit("sendData", this.file);
