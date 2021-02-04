@@ -5,16 +5,20 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    url:"",
+    url: "",
+    fileName:"",
   },
   mutations: {
     pushURL(state,e=""){
-      state.url=e;
+      state.url = e;
+    },
+    pushName(state, name = "") {
+      state.fileName= name
     }
   },
   getters: {
     getURL(state) {
-      return state.url;
+      return [state.url, state.fileName];
     }
   },
   actions: {

@@ -10,7 +10,7 @@
     >
       <ul>
         <Player
-          v-for="(item,n) in music"
+          v-for="(item, n) in music"
           v-bind:key="n"
           v-bind:title="item.title"
           v-bind:url="item.url"
@@ -58,12 +58,11 @@ export default {
     };
   },
   methods: {
-    addMusicList() {
+    addMusicList(tempTitle) {
       this.music.push({
         id: this.times++,
-        title: "되네이게",
+        title: tempTitle,
         url: this.musicURL,
-        options: "blahblah",
       });
       console.log(this.times);
     },
@@ -86,9 +85,9 @@ export default {
       this.scrollInvoked++;
     },
     deleteMusic(n) {
-        console.log(n)
-        this.music.splice(n,1);
-    }
+      console.log(n);
+      this.music.splice(n, 1);
+    },
   },
   computed: {
     getURL() {
@@ -97,11 +96,11 @@ export default {
   },
   watch: {
     getURL(val) {
-      if (val === "") return;
+      if (val[0] === "") return;
       console.log("watched", val);
-      this.musicURL = val;
-      this.addMusicList();
-      this.$store.commit("pushURL", "");
+      this.musicURL = val[0];
+      this.addMusicList(val[1]);
+      this.$store.commit("pushURL", "", "");
     },
   },
 };

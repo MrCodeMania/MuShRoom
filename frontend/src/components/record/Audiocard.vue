@@ -33,6 +33,7 @@ export default {
       this.$emit("delList", this.fileData.id);
     },
     addThis() {
+      this.$store.commit("pushName", this.fileData.fileName);
       this.$store.commit("pushURL", this.fileData.url);
     },
   },

@@ -59,7 +59,6 @@ export default {
   data: () => {
     return {
       isSelecting: false,
-      scrollInvoked: 0,
       records: [],
       files: [],
       idx: 0,
