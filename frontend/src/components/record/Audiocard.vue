@@ -35,7 +35,8 @@ export default {
       this.$emit("delList", this.fileData.id);
     },
     addThis() {
-      console.log(this.fileData.id);
+      console.log("add", this.fileData.url);
+      this.$store.commit("pushURL", this.fileData.url);
     },
   },
   created() {
