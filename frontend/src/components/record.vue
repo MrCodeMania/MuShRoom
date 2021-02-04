@@ -1,10 +1,6 @@
   <template>
   <div>
-    <v-sheet
-      color="white"
-      height="100"
-      width="100%"
-    >
+    <v-sheet color="white" height="100" width="100%">
       <div class="align-self-center d-flex justify-space-around align-center">
         <recordBtn class="mt-3" v-on:sendData="receiveData"></recordBtn>
         <div>
@@ -28,15 +24,15 @@
         </div>
       </div>
     </v-sheet>
-    <v-sheet
-      color="white"
-      height="100%"
-      width="100%"
-    >
-      <v-card 
-      elevation="0"
-      class="overflow-y-auto" width="100%" height="100%" max-height="530px">
-        <div v-for="(item, index) in records" :key="index">
+    <v-sheet color="white" height="100%" width="100%">
+      <v-card
+        elevation="0"
+        class="overflow-y-auto"
+        width="100%"
+        height="100%"
+        max-height="530px"
+      >
+        <div v-for="(item, index) in records" :key="item.id">
           <recordCard
             v-on:delList="delRecord"
             v-bind:fileData="records[index]"
