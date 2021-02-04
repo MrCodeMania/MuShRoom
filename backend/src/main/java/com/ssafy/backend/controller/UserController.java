@@ -1,16 +1,21 @@
 package com.ssafy.backend.controller;
 
 import com.ssafy.backend.model.User;
+import com.ssafy.backend.model.UserClass;
+import com.ssafy.backend.model.UserLike;
 import com.ssafy.backend.repository.UserRepository;
 import com.ssafy.backend.util.PasswordUtil;
 import com.ssafy.backend.util.UserSha256;
 import io.swagger.annotations.ApiOperation;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @RestController
@@ -23,7 +28,11 @@ public class UserController {
     @ApiOperation(value = "회원 가입")
     @PostMapping("/signup")
     public void signup(@RequestBody User user) {
-        user.setPassword(UserSha256.encrypt(user.getPassword()));
+        user.setPassword(UserSha256.encrypt(user.getPassword())); //비밀번호 암호화
+        user.setLike(new UserLike(new ArrayList<>(), new ArrayList<>()));
+        user.setUserClass(new UserClass(new ArrayList<>(), new ArrayList<>()));
+        user.setLectureProgress(new ArrayList<>());
+        user.setFeedback(new ArrayList<>());
         repository.insert(user);
     }
 
@@ -31,36 +40,43 @@ public class UserController {
     @PostMapping("/login")
     public User login(@RequestBody User user) {
         User findUser = repository.findByEmail(user.getEmail());
-//        System.out.println(findUser);
-//        System.out.println(findUser.getPassword());
-//        System.out.println(UserSha256.encrypt(user.getPassword()));
         if (findUser.getPassword().equals(UserSha256.encrypt(user.getPassword()))) {
-//            System.out.println("1");
             return findUser;
         } else {
-//            System.out.println("2");
             return null;
         }
     }
 
     @ApiOperation(value = "회원 정보 수정")
-    @PutMapping("/update/info")
-    public void updateInformation(@RequestBody User user) {
+    @PutMapping("/information")
+    public ResponseEntity<?> updateInformation(@RequestBody User user) {
         Optional<User> findUser = repository.findById(user.getId());
-        if (user.getPhone() != null) findUser.get().setPhone(user.getPhone());
-        if (user.getNickname() != null) findUser.get().setNickname(user.getNickname());
-        if (user.getProfile() != null) findUser.get().setProfile(user.getProfile());
-        if (user.getIntroduction() != null) findUser.get().setIntroduction(user.getIntroduction());
-        if (user.getInstrument() != null) findUser.get().setInstrument(user.getInstrument());
-        repository.save(findUser.get());
+        if (findUser.isPresent()) {
+            if (user.getPhone() != null) findUser.get().setPhone(user.getPhone());
+            if (user.getNickname() != null) findUser.get().setNickname(user.getNickname());
+            if (user.getProfile() != null) findUser.get().setProfile(user.getProfile());
+            if (user.getIntroduction() != null) findUser.get().setIntroduction(user.getIntroduction());
+            if (user.getInstrument() != null) findUser.get().setInstrument(user.getInstrument());
+            repository.save(findUser.get());
+
+            return new ResponseEntity<>(findUser, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "비밀번호 변경")
-    @PostMapping("/update/pwd")
-    public void updatePassword(@RequestBody User user) {
+    @PutMapping("/password")
+    public ResponseEntity<?> updatePassword(@RequestBody User user) {
         Optional<User> findUser = repository.findById(user.getId());
-        findUser.get().setPassword(UserSha256.encrypt(user.getPassword()));
-        repository.save(findUser.get());
+        if (findUser.isPresent()) {
+            findUser.get().setPassword(UserSha256.encrypt(user.getPassword()));
+            repository.save(findUser.get());
+
+            return new ResponseEntity<>(findUser, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @Autowired
@@ -78,13 +94,22 @@ public class UserController {
         s.setText(sb.toString());
         javaMailSender.send(s);
     }
+    
+    @ApiOperation(value = "아이디 찾기")
+    @PostMapping("/email")
+    public String findEmail(@RequestBody User user){
+        User findUser = repository.findByPhone(user.getPhone());
+        if (findUser.getName().equals(user.getName())){
+            return findUser.getEmail();
+        } else {
+            return null;
+        }
+    }
 
     @ApiOperation(value = "비밀번호 찾기")
-    @PostMapping("/find/pwd")
+    @PostMapping("/password")
     public void findPassword(@RequestBody User user) {
         String newPassword = PasswordUtil.getRandomPassword(8);
-//        System.out.println(newPassword);
-//        System.out.println(UserSha256.encrypt(newPassword));
         User findUser = repository.findByEmail(user.getEmail());
         findUser.setPassword(UserSha256.encrypt(newPassword));
         repository.save(findUser);
@@ -93,29 +118,60 @@ public class UserController {
     }
 
     @ApiOperation(value = "회원 탈퇴")
-    @DeleteMapping("/withdraw/{id}")
-    public void withdrawal(@PathVariable ObjectId id) {
+    @DeleteMapping("/{id}/withdraw")
+    public ResponseEntity<?> withdrawal(@PathVariable ObjectId id) {
         Optional<User> findUser = repository.findById(id);
-        repository.delete(findUser.get());
-//        repository.delete(user);
+        if (findUser.isPresent()) {
+            repository.delete(findUser.get());
+
+            return new ResponseEntity<>(findUser, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "찜한 강의 수정")
-    @PutMapping("/like/class/update")
-    public void updateClassLike(@RequestBody User user) {
+    @PutMapping("/like/class")
+    public ResponseEntity<?> updateClassLike(@RequestBody User user) {
         Optional<User> findUser = repository.findById(user.getId());
-        if (findUser.get().getLike() == null) findUser.get().setLike(user.getLike());
-        else findUser.get().getLike().setClassId(user.getLike().getClassId());
-        repository.save(findUser.get());
+        if (findUser.isPresent()) {
+            if (findUser.get().getLike() == null) findUser.get().setLike(user.getLike());
+            else findUser.get().getLike().setClassId(user.getLike().getClassId());
+            repository.save(findUser.get());
+
+            return new ResponseEntity<>(findUser, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "찜한 선생님 수정")
-    @PutMapping("/like/tutor/update")
-    public void updateTutorLike(@RequestBody User user) {
+    @PutMapping("/like/tutor")
+    public ResponseEntity<?> updateTutorLike(@RequestBody User user) {
         Optional<User> findUser = repository.findById(user.getId());
-        if (findUser.get().getLike() == null) findUser.get().setLike(user.getLike());
-        else findUser.get().getLike().setTutorId(user.getLike().getTutorId());
-        repository.save(findUser.get());
+        if (findUser.isPresent()) {
+            if (findUser.get().getLike() == null) findUser.get().setLike(user.getLike());
+            else findUser.get().getLike().setTutorId(user.getLike().getTutorId());
+            repository.save(findUser.get());
+
+            return new ResponseEntity<>(findUser, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @ApiOperation(value = "Get User Classes")
+    @GetMapping("/{id}/class")
+    public UserClass getClass (@PathVariable ObjectId id) {
+        Optional<User> findUser = repository.findById(id);
+        return findUser.get().getUserClass();
+    }
+
+    @ApiOperation(value = "Get User Likes")
+    @GetMapping("/{id}/like")
+    public UserLike getLike (@PathVariable ObjectId id) {
+        Optional<User> findUser = repository.findById(id);
+        return findUser.get().getLike();
     }
 
 }
