@@ -20,6 +20,7 @@
       </ul>
     </v-card>
     <v-divider></v-divider>
+    <v-btn v-for="(index,n) in music.length " :key="index" @click="deleteMusic(n)">{{ n }}</v-btn>
     <v-card class="buttonBar text-end" elevation="0">
       <v-btn height="50px" text @click="addMusicList">Test </v-btn>
       <v-btn height="50px" text @click="downloadButton">
@@ -85,6 +86,9 @@ export default {
     onScroll() {
       this.scrollInvoked++;
     },
+    deleteMusic(n) {
+        this.music.splice(n,1);
+    }
   },
   computed: {
     getURL() {
