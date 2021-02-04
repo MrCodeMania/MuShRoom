@@ -10,12 +10,12 @@
     >
       <ul class="pl-1 pr-3">
         <Player
-          v-for="(item, n) in music"
-          v-bind:key="n"
+          v-for="item in music"
+          v-bind:key="item.id"
           v-bind:title="item.title"
           v-bind:url="item.url"
           v-bind:options="item.options"
-          @deleteMusic="deleteMusic(n)"
+          @deleteMusic="deleteMusic(item.id)"
         />
       </ul>
     </v-card>
@@ -86,7 +86,9 @@ export default {
     },
     deleteMusic(n) {
       console.log(n);
-      this.music.splice(n, 1);
+      for(let i = 0; i < this.music.length; i++)
+        if(this.music[i].id == n)
+          this.music.splice(i, 1);
     },
   },
   computed: {
