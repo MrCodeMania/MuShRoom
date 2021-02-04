@@ -3,13 +3,7 @@
     <template v-slot:activator="{ on, attrs }">
       <v-card class="mx-auto mt-3" max-width="344" v-bind="attrs" v-on="on">
         <v-card-title>파일이름</v-card-title>
-        <v-card-text
-          ><v-img
-            width="100%"
-            height="50px"
-            lazy-src="http://www.pngall.com/wp-content/uploads/2/Sound-Waves-PNG.png"
-          ></v-img
-        ></v-card-text>
+        <v-card-text><Waveform :url="fileData.url" height="64" /></v-card-text>
       </v-card>
     </template>
     <v-list>
@@ -23,8 +17,13 @@
   </v-menu>
 </template>
 <script>
+import Waveform from "../practiceroom/Waveform";
+
 export default {
   props: ["fileData"],
+  components: {
+    Waveform,
+  },
   data: () => ({
     showMenu: false,
     fileform: "",
