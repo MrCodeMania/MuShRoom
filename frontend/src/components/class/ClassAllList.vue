@@ -33,7 +33,7 @@
             width="300">
                 <v-btn
                 text
-                to="/detail/curriculum"
+                :to="'/detail/'+cls.id+'/curriculum'"
                 class="p-0 text-center"
                 height="200">
                     <v-img

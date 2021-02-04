@@ -3,7 +3,7 @@
     <v-timeline
     dense>
       <div v-for="(section, idx) in sections"
-      :key="section.title">
+      :key="section.id">
         <v-list>
           <v-list-group>
             <template v-slot:activator>
@@ -23,7 +23,7 @@
                         mdi-music-note-quarter
                       </v-icon>
                       <h2 class="white--text font-weight-bold">
-                        {{ section.title }}
+                        {{ section.sectionName }}
                       </h2>
                       <v-spacer></v-spacer>
                       <v-btn
@@ -41,8 +41,8 @@
 
             <v-list-item-content>
               <div
-              v-for="lecture in section.lectures"
-              :key="lecture.title">
+              v-for="(lecture, idx) in section.lectureList"
+              :key="lecture.id">
                 <v-timeline-item
                 color="amber lighten-1"
                 fill-dot
@@ -62,21 +62,28 @@
                             mdi-music-note
                           </v-icon>
                         </v-col>
-                        <v-col md="1">
+                        <v-col md="3">
                           <v-card-text class="p-0 mt-2">
-                            {{ lecture.title }}
+                            {{ lecture.id }}
                           </v-card-text>
                         </v-col>
                         <v-col md="6">
-                          <v-progress-linear 
-                          v-model="lecture.value"
+                          <v-progress-linear
+                          v-if="isTaken"
+                          v-model="progresses[idx].progress"
                           height="25"
                           color="amber darken-4"
                           >
-                            <strong>{{ Math.ceil(lecture.value) }}%</strong>
+                            <strong>{{ Math.ceil(progresses[idx].progress) }}%</strong>
+                          </v-progress-linear>
+                          <v-progress-linear
+                          v-else
+                          height="25"
+                          color="amber darken-4"
+                          >
                           </v-progress-linear>
                         </v-col>
-                        <v-col md="4">
+                        <v-col md="2">
                           <v-btn
                           v-if="isTaken"
                           dark
@@ -100,26 +107,44 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import ClassDataService from '@/service/ClassDataService';
+import { mapState } from 'vuex';
 
-@Component
+@Component({
+  computed: {
+    ...mapState(['userInfo'])
+  }
+})
+
 export default class Curriculum extends Vue {
   @Prop(Boolean) isTaken!: boolean;
   private color: string[] = ['purple lighten-2', 'cyan lighten-1', 'red lighten-1', 'green lighten-1'];
-  private sections: object[] = [];
+  private userInfo!: {[key: string]: any};  // 사용자 정보
+  private cid = this.$route.params.cid; // 조회하려는 클래스 id
+  private sections: object[] = [];  // 현재 클래스의 섹션 리스트
+  private progresses!: object[]; // 현재 클래스의 수강률
 
   created() {
-    if(this.isTaken){
-      this.sections = [{title:'1강', lectures: [{title: '1-1강', value: 100}, {title: '1-2강', value: 100}, {title: '1-3강', value: 100}]},
-        {title:'2강', lectures: [{title: '2-1강', value: 96}, {title: '2-2강', value: 92}, {title: '2-3강', value: 86}]},
-        {title:'3강', lectures: [{title: '3-1강', value: 72}, {title: '3-2강', value: 32}, {title: '3-3강', value: 16}]},
-        {title:'4강', lectures: [{title: '4-1강', value: 0}, {title: '4-2강', value: 0}, {title: '4-3강', value: 0}]}];  
-    } else {
-      this.sections = [{title:'1강', lectures: [{title: '1-1강', value: 0}, {title: '1-2강', value: 0}, {title: '1-3강', value: 0}]},
-        {title:'2강', lectures: [{title: '2-1강', value: 0}, {title: '2-2강', value: 0}, {title: '2-3강', value: 0}]},
-        {title:'3강', lectures: [{title: '3-1강', value: 0}, {title: '3-2강', value: 0}, {title: '3-3강', value: 0}]},
-        {title:'4강', lectures: [{title: '4-1강', value: 0}, {title: '4-2강', value: 0}, {title: '4-3강', value: 0}]}];  
+    // 현재 클래스의 섹션 리스트 조회
+    ClassDataService.getAllSection(this.cid)
+    .then((response) => {
+      this.sections = response.data;
+      // 수강 중인 경우
+      if(this.isTaken)
+        this.setProgress;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
 
-    }
+  // 수강률 조회 method
+  setProgress(){
+    const array = this.userInfo.lectureProgress;
+    array.forEach((element: {[key: string]: any}) => {
+      if(element.classId == this.cid)
+        this.progresses.push({ 'lectureId' : element.lectureId, 'progress' : element.progress });
+    });
   }
 }
 </script>
