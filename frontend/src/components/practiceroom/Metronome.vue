@@ -7,22 +7,33 @@
     height="100%"
   >
   <v-card-title>
-    <p style="font-size: 3em;" class="pt-2">{{ bpm }}</p>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on, attrs }">
+        <p v-bind="attrs" v-on="on" style="font-size: 1.75em;" class="pt-2">BPM: {{ bpm }}</p>
+      </template>
+      <span>BPM</span>
+    </v-tooltip>
     <v-spacer></v-spacer>
     <div
-      class="pa-3 ml-9 rounded-circle d-inline-block" :class="beatIndex? 'grey' : 'brown lighten-1'"
-    >{{ beatIndex? beatIndex : 1 }}/4</div>
-    <v-text-field
-      :disabled="isPlaying()"
-      v-model.number="beatsPerBar"
-      class="mt-0 ml-3 pt-0"
-      hide-details
-      single-line
-      type="number"
-      style="width: 10px"
-    ></v-text-field>
+      class="pa-3 mx-3 rounded-circle d-inline-block" :class="beatIndex? 'grey' : 'brown lighten-1'"
+    >{{ beatIndex? beatIndex : 1 }}</div>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on, attrs }">
+        <v-text-field
+          :disabled="isPlaying()"
+          v-model.number="beatsPerBar"
+          class="mt-0 pt-0"
+          hide-details
+          single-line
+          type="number"
+          style="width: 18px"
+          v-bind="attrs" v-on="on"
+        ></v-text-field>
+      </template>
+    <span>Beats/bar</span>
+  </v-tooltip>
   </v-card-title>
-  <v-card-text>
+  <v-card-text class="d-flex align-center">
     <v-slider
       v-model.number="bpm"
       class="align-center"
@@ -117,7 +128,9 @@ export default {
         sequence.start(0);
       }
       this.isStopped = false;
+
       Transport.start();
+
     },
 
     onStop() {
@@ -153,6 +166,7 @@ export default {
       return new Sequence((time, note) => {
         switch(note) {
           case accentNote:
+            console.log('노트', Transport)
             this.beatIndex = 0;
             accent.start(time);
             break;
@@ -195,7 +209,7 @@ export default {
 
 #metronome {
   position: relative;
-  padding: 10px;
+  padding: 20px;
 }
 
 .v-card__title {
