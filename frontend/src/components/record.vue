@@ -88,12 +88,12 @@ export default {
       }
       const data = new FormData();
       data.append("file", this.files);
-
       sendfile
         .send(data)
         .then((result) => {
           const returnData = { url: result.data.fileDownloadUri };
           returnData["id"] = this.idx;
+          returnData["fileName"] = result.data.fileName;
           this.idx += 1;
           this.addCard(returnData);
         })
@@ -114,7 +114,14 @@ export default {
       this.$refs.uploader.click();
     },
     delRecord(data) {
-      console.log(data);
+      var idx = 0;
+      for (var i = 0; i < this.records.length; i++) {
+        if (this.records[i].id === data) {
+          idx = i;
+          break;
+        }
+      }
+      this.records.splice(idx, 1);
     },
   },
 };
