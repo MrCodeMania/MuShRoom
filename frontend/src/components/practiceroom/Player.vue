@@ -96,6 +96,35 @@
               </div>
             </td>
           </tr>
+          <tr>
+            <td>Loop</td>
+            <td>
+              <!-- loop check box -->
+              <v-checkbox v-on:change="toggleLoop($event)"></v-checkbox>
+            </td>
+          </tr>
+          <tr>
+            <td>LoopStart</td>
+            <td>
+              <v-text-field
+                type="number"
+                label="Start Time"
+                v-model="loopStart"
+                v-on:change="setLoopTime()"
+              ></v-text-field>
+            </td>
+          </tr>
+          <tr>
+            <td>LoopEnd</td>
+            <td>
+              <v-text-field
+                type="number"
+                label="End Time"
+                v-model="loopEnd"
+                v-on:change="setLoopTime()"
+              ></v-text-field>
+            </td>
+          </tr>
         </tbody>
       </v-simple-table>
     </div>
@@ -131,6 +160,8 @@ export default {
       player: null,
       state: "stopped",
       isShow: 0,
+      loopStart: 0.0,
+      loopEnd: 0.0,
     };
   },
   created() {
@@ -186,6 +217,13 @@ export default {
     },
     toggleDropdown() {
       this.isShow ^= 1;
+    },
+    toggleLoop(e) {
+      this.player.loop = e;
+    },
+    setLoopTime() {
+      this.player.loopStart = this.loopStart;
+      this.player.loopEnd = this.loopEnd;
     },
   },
 };
