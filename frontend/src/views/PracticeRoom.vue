@@ -7,12 +7,8 @@
     <v-row
     no-gutters>
 
-      <!-- 공백 -->
-      <v-col
-      cols="1">
-      </v-col>
       <!-- 왼쪽 컴포넌트들 -->
-      <v-col cols="7"
+      <v-col cols="8"
       class="flex-grow-0 
       flex-shrink-0
       pa-4">
@@ -33,7 +29,6 @@
               <v-btn
               fab
               small
-              elevation="0"
               color="amber lighten-4"
               :disabled="page == 1"
               @click="moveLeft()">
@@ -50,9 +45,8 @@
               <v-btn
               fab
               small
-              elevation="0"
               color="amber lighten-4"
-              :disabled="page == length"
+              :disabled="page == 5 || page == length"
               @click="moveRight()">
                 <v-icon>
                   mdi-chevron-right
@@ -70,7 +64,9 @@
           elevation="0"
           width="100%"
           height="100%">
-            <MusicBoard :url="url"/>
+            <MusicBoard :pageData="pageData" :length="length"
+            v-on:add="addPage" v-on:remove="removePage"
+            />
           </v-card>
         </v-row>
       </v-col>
@@ -128,19 +124,59 @@ export default {
   data() {
     return {
       page: 1,  //  현재 페이지
-      length: 10, // 전체 페이지 수,
-      url: 'http://i4a105.p.ssafy.io:8080/downloadFile/sample.mp3'
+      length: 1, // 전체 페이지 수
+      pageList: [{  // 페이지 리스트
+        page: 1, // 페이지 번호
+        data: [] // 저장된 데이터
+      }],
+      pageData: [],  // 현재 페이지 데이터
     }
   },
   methods: {
+    //  페이지 저장
+    savePage(data){
+      this.pageList.forEach( obj => {
+        if(obj.page == this.page)
+          obj.data = data;
+      });
+    },
+    //  페이지 불러오기
+    findPage() {
+      this.pageList.forEach( obj => {
+        if(obj.page == this.page)
+          this.pageData = obj.data;
+      });
+    },
     //  페이지 왼쪽 이동
     moveLeft() {
-      this.page = this.page != 1 ? this.page-1 : this.page;
+      this.savePage(this.pageData);
+      this.page -= 1;
+      this.findPage();
     },
     //  페이지 오른쪽 이동
     moveRight() {
-      this.page = this.page != this.length ? this.page+1 : this.page;
+      this.savePage(this.pageData);
+      this.page += 1;
+      this.findPage();
     },
+    //  페이지 생성
+    addPage(data){
+      this.savePage(data);
+      this.length += 1;
+      this.page += 1;
+      this.pageList.push({page: this.page, data: []});
+      this.findPage();
+    },
+    // 페이지 삭제
+    removePage(){
+      this.pageList.forEach( obj => {
+        if(obj.page == this.page)
+          this.pageList.splice(this.page-1, 1);
+      })
+      this.length -= 1;
+      this.page -= 1;
+      this.findPage();
+    }
   },
 }
 </script>

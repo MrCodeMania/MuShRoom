@@ -8,7 +8,7 @@
       v-scroll.self="onScroll"
       elevation="0"
     >
-      <ul class="pl-1 pr-3">
+      <ul class="px-auto pt-2">
         <Player
           v-for="item in music"
           v-bind:key="item.id"
@@ -20,22 +20,57 @@
       </ul>
     </v-card>
     <v-divider></v-divider>
-    <v-card class="buttonBar text-end" elevation="0">
+    <v-card class="buttonBar d-flex justify-space-between" elevation="0" width="100%">
+      <v-card class="d-flex justify-start"
+      elevation="0">
+        <!-- 페이지 생성, 삭제 -->
+        <v-btn
+        fab
+        text
+        height="50px"
+        :disabled="length == 5"
+        @click="addPage">
+          <v-icon
+          large>
+            mdi-card-plus
+          </v-icon>
+        </v-btn>
+        <v-btn
+        fab
+        text
+        height="50px"
+        :disabled="length == 1"
+        @click="removePage">
+          <v-icon
+          large>
+            mdi-card-minus
+          </v-icon>
+        </v-btn>
+      </v-card>
       <!-- <v-btn height="50px" text @click="addMusicList">Test </v-btn> -->
-      <v-btn height="50px" text @click="downloadButton">
-        <v-icon dark large>mdi-download-circle</v-icon>
-      </v-btn>
-      <v-btn height="50px" text @click="musicPlayButton">
-        <div v-if="!play">
-          <v-icon dark large>mdi-arrow-right-drop-circle</v-icon>
-        </div>
-        <div v-else>
-          <v-icon dark large>mdi-pause-circle</v-icon>
-        </div>
-      </v-btn>
-      <v-btn height="50px" text @click="musicStopButton">
-        <v-icon dark large>mdi-stop-circle</v-icon>
-      </v-btn>
+      <v-card class="d-flex justify-end"
+      elevation="0">
+        <v-btn 
+        fab
+        height="50px" text @click="downloadButton">
+          <v-icon dark large>mdi-download-circle</v-icon>
+        </v-btn>
+        <v-btn 
+        fab
+        height="50px" text @click="musicPlayButton">
+          <div v-if="!play">
+            <v-icon dark large>mdi-arrow-right-drop-circle</v-icon>
+          </div>
+          <div v-else>
+            <v-icon dark large>mdi-pause-circle</v-icon>
+          </div>
+        </v-btn>
+        <v-btn 
+        fab
+        height="50px" text @click="musicStopButton">
+          <v-icon dark large>mdi-stop-circle</v-icon>
+        </v-btn>
+      </v-card>
     </v-card>
   </v-card>
 </template>
@@ -44,15 +79,15 @@
 import Player from "./practiceroom/Player";
 
 export default {
-  props: ["url"],
+  props: ['pageData', 'length', 'page'],
   components: {
     Player,
   },
   data() {
     return {
       times: 0, // id 증진 넘버
-      music: [],
       musicURL: "",
+      music: this.pageData,
       play: false,
       scrollInvoked: 0,
     };
@@ -90,6 +125,13 @@ export default {
         if(this.music[i].id == n)
           this.music.splice(i, 1);
     },
+    addPage() {
+      console.log('add');
+      this.$emit('add', this.music);
+    },
+    removePage() {
+      this.$emit('remove');
+    }
   },
   computed: {
     getURL() {
@@ -104,6 +146,10 @@ export default {
       this.addMusicList(val[1]);
       this.$store.commit("pushURL", "", "");
     },
+    pageData() {
+      this.music = this.pageData;
+      this.times = this.music.length-1;
+    }
   },
 };
 </script>

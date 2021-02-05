@@ -30,7 +30,7 @@
         class="overflow-y-auto"
         width="100%"
         height="100%"
-        max-height="530px"
+        max-height="50vh"
       >
         <div v-for="(item, index) in records" :key="item.id">
           <recordCard
