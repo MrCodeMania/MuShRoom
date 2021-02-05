@@ -40,7 +40,7 @@ export default {
       data.append(
         "file",
         this.file.blob,
-        `${this.fileName} ${this.fineNum}.mp3`
+        `${this.$store.state.myName}${this.fileName} ${this.fineNum}.mp3`
       );
       this.fineNum++;
 
