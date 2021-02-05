@@ -126,6 +126,38 @@
               ></v-text-field>
             </td>
           </tr>
+          <!-- temp start -->
+          <tr>
+            <td>Delay</td>
+            <td>
+              <v-text-field
+                type="number"
+                label="Delay Time (단위: note)"
+                v-model="delay"
+              ></v-text-field>
+            </td>
+          </tr>
+          <tr>
+            <td>StartAt</td>
+            <td>
+              <v-text-field
+                type="number"
+                label="Offset (단위: note)"
+                v-model="offset"
+              ></v-text-field>
+            </td>
+          </tr>
+          <tr>
+            <td>StartAtTime</td>
+            <td>
+              <v-text-field
+                type="number"
+                label="Offset (단위: second)"
+                v-model="offsetSecond"
+              ></v-text-field>
+            </td>
+          </tr>
+          <!-- temp end -->
         </tbody>
       </v-simple-table>
     </div>
@@ -165,6 +197,9 @@ export default {
       loopStart: 0.0,
       loopEnd: 0.0,
       isExist: false,
+      offset: 0,
+      offsetSecond: 0,
+      delay: 0,
     };
   },
   created() {
@@ -172,6 +207,11 @@ export default {
       this.player = player;
       //player.start();
       //player.sync().start(0);
+      this.player.onstop = () => {
+        console.log("event");
+        this.state = "stopped";
+        Tone.Transport.stop();
+      };
     }).toDestination();
   },
   methods: {
@@ -182,10 +222,28 @@ export default {
       // Tone.Transport.start();
       Tone.Transport.cancel(); // clean objects
 
-      Tone.start();
+      Tone.start(); // bug fix
+
+      console.log(this.player.sampleTime);
       this.player.sync().start(0);
-      Tone.Transport.start();
-      this.state = this.player.state;
+      var now = Tone.now();
+
+      // now: Transport 생성 후 현재 시간
+      // offset: 시작할 오프셋 위치. 초 단위
+      // 박자로 시간과 오프셋을 맞추고싶다면: time or offset + Tone.Time(박자).toSeconds();
+      if (this.offsetSecond) {
+        Tone.Transport.start(
+          now + Tone.Time(this.delay).toSeconds(),
+          this.offsetSecond
+        );
+      } else {
+        Tone.Transport.start(
+          now + Tone.Time(this.delay).toSeconds(),
+          Tone.Time(this.offset).toSeconds()
+        );
+      }
+
+      this.state = "started"; // delay를 줄 경우, player.state로 즉시 받아오면 stopped가 넘어옴
       this.isExist = false;
     },
     pause() {
@@ -243,7 +301,7 @@ export default {
       if (this.isExist) return;
 
       Tone.start();
-      this.player.sync().start(0);
+      this.player.sync().start();
       this.isExist = true;
       //Tone.Transport.start(); // start
     },
