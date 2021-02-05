@@ -18,17 +18,6 @@
         >
           <v-icon dense>mdi-pause</v-icon>
         </v-btn>
-        <v-btn
-          class="ml-3 mr-3"
-          :disabled="player == null"
-          v-on:click="addToTransport()"
-        >
-          <v-icon dense>mdi-pause</v-icon>
-        </v-btn>
-        <v-btn @click="sendDelete(n)"> X </v-btn>
-        <!-- <v-btn :disabled="player == null" v-on:click="stop()">
-          <v-icon dense>mdi-stop</v-icon>
-        </v-btn> -->
       </div>
 
       <div style="flex: 5">
@@ -41,6 +30,10 @@
           <v-icon v-if="isShow == 0">mdi-chevron-down</v-icon>
           <v-icon v-else>mdi-chevron-up</v-icon>
         </v-btn>
+      </div>
+
+      <div style="flex: 1">
+        <v-icon class="ml-2" dense @click="sendDelete(n)">mdi-delete</v-icon>
       </div>
     </div>
 
@@ -255,8 +248,8 @@ export default {
       //Tone.Transport.start(); // start
     },
     sendDelete(n) {
-      this.$emit('deleteMusic',n)
-    }
+      this.$emit("deleteMusic", n);
+    },
   },
 };
 </script>
