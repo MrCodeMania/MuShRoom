@@ -83,7 +83,9 @@ export default {
         const top = recorder.recordList.length - 1;
         recorder.selected = recorder.recordList[top];
         this.file = recorder.selected;
-        this.file["fileName"] = `${this.fileName} ${this.fineNum}`;
+        this.file[
+          "fileName"
+        ] = `${this.$store.state.myName}${this.fileName} ${this.fineNum}`;
         //파일 데이터를 전송해줍니다.
         this.upload();
         this.$emit("sendData", this.file);

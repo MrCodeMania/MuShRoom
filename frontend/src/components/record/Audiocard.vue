@@ -37,6 +37,7 @@ export default {
     },
     addThis() {
       this.$store.commit("pushURL", this.fileData.url);
+      this.$store.commit("pushName", this.fileData.fileName);
     },
   },
   created() {

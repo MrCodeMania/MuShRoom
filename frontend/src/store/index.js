@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     url: "",
-    fileName:"",
+    fileName: "",
+    myName:"여기에 이름",
   },
   mutations: {
     pushURL(state,e=""){
