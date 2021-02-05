@@ -126,25 +126,24 @@ export default {
     return {
       page: 1,  //  현재 페이지
       length: 1, // 전체 페이지 수
-      pageList: [{  // 페이지 리스트
-        page: 1, // 페이지 번호
-        data: [] // 저장된 데이터
-      }],
+      pageList: [  // 페이지 리스트
+        [] // 저장된 데이터
+      ],
       pageData: [],  // 현재 페이지 데이터
     }
   },
   methods: {
     //  페이지 저장
     savePage(data){
-      this.pageList.forEach( obj => {
-        if(obj.page == this.page)
+      this.pageList.forEach((obj, idx) => {
+        if(idx == this.page-1)
           obj.data = data;
       });
     },
     //  페이지 불러오기
     findPage() {
-      this.pageList.forEach( obj => {
-        if(obj.page == this.page)
+      this.pageList.forEach((obj, idx) => {
+        if(idx == this.page-1)
           this.pageData = obj.data;
       });
     },
@@ -170,9 +169,9 @@ export default {
     },
     // 페이지 삭제
     removePage(){
-      this.pageList.forEach( obj => {
-        if(obj.page == this.page)
-          this.pageList.splice(this.page-1, 1);
+      this.pageList.forEach((obj, idx) => {
+        if(idx == this.page-1)
+          this.pageList.splice(idx, 1);
       })
       this.length -= 1;
       if(this.page != 1)
