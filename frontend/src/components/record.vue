@@ -1,6 +1,7 @@
   <template>
   <div>
-    <v-sheet color="white" height="100" width="100%">
+    <v-sheet color="white" height="100" width="100%"
+    rounded>
       <div class="align-self-center d-flex justify-space-around align-center">
         <recordBtn class="mt-3" v-on:sendData="receiveData"></recordBtn>
         <div>

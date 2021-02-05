@@ -10,24 +10,28 @@
   <v-card-title>
     <p style="font-size: 1.75em;" class="pt-2">BPM: {{ bpm }}</p>
     <v-spacer></v-spacer>
-    <div
-      class="pa-3 mx-3 rounded-circle d-inline-block" :class="beatIndex? 'grey' : 'brown lighten-1'"
-    >{{ beatIndex? beatIndex : 1 }}</div>
+    <v-card
+    dark
+    elevation="0"
+    width="50px"
+    rounded="circle"
+      class="pa-2 mx-3 d-inline-block text-center" :class="beatIndex? 'grey' : 'brown darken-1'"
+    >{{ beatIndex? beatIndex : 1 }}</v-card>
     <v-tooltip bottom>
       <template v-slot:activator="{ on, attrs }">
         <v-text-field
           :disabled="isPlaying()"
           v-model.number="beatsPerBar"
-          class="mt-0 mr-4 pt-0"
+          class="mt-0 mx-auto pt-0"
           hide-details
           single-line
           type="number"
-          style="width: 18px"
+          style="max-width: 60px"
           v-bind="attrs" v-on="on"
         ></v-text-field>
       </template>
-    <span>Beats/bar</span>
-  </v-tooltip>
+      <span>Beats/bar</span>
+    </v-tooltip>
   </v-card-title>
   <v-card-text class="d-flex align-center
   pa-0">
@@ -46,7 +50,7 @@
           hide-details
           single-line
           type="number"
-          style="width: 60px"
+          style="width: 80px"
         ></v-text-field>
       </template> 
     </v-slider>
