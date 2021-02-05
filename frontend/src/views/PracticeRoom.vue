@@ -66,6 +66,7 @@
           height="100%">
             <MusicBoard :pageData="pageData" :length="length"
             v-on:add="addPage" v-on:remove="removePage"
+            :page="page"
             />
           </v-card>
         </v-row>
@@ -174,7 +175,8 @@ export default {
           this.pageList.splice(this.page-1, 1);
       })
       this.length -= 1;
-      this.page -= 1;
+      if(this.page != 1)
+        this.page -= 1;
       this.findPage();
     }
   },

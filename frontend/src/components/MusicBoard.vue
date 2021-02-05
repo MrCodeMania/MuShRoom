@@ -150,7 +150,9 @@ export default {
     },
     pageData() {
       this.music = this.pageData;
-      this.times = this.music.length - 1;
+    },
+    page() {
+      this.times = this.music.length;
     },
   },
 };
