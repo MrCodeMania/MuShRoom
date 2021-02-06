@@ -1,14 +1,20 @@
-
 <template>
   <div>
-    <div class="" width="80px">
+    <div width="80px">
       <audio-recorder
         style="border: none"
         ref="recorder"
         :after-recording="setRecorded"
         :before-recording="startRecord"
       />
-      <div v-if="showExtra"></div>
+      <v-sheet class="d-flex">
+        <v-text-field
+          v-model="fileName"
+          :rules="rules"
+          label="파일이름"
+        ></v-text-field>
+        <v-btn @click="upload">업로드</v-btn>
+      </v-sheet>
     </div>
   </div>
 </template>
@@ -26,13 +32,19 @@ export default {
       //컴포넌트에서 녹화한 파일을 담는 변수
       // blob 형태 {size , type 두가지 정보} , duration 재생길이 , url => 로컬 다운로드 url
       file: "",
-      showExtra: false,
-      fileName: "녹음파일 ",
+      fileName: "",
       fineNum: 0,
+      rules: [
+        (value) => !!value || "Required.",
+        (value) => (value && value.length >= 3) || "Min 3 characters",
+      ],
     };
   },
   methods: {
     upload() {
+      if (!this.fileName) {
+        return;
+      }
       if (!this.file.url) {
         return;
       }
@@ -51,20 +63,14 @@ export default {
         .send(data)
         .then((result) => {
           this.file.url = result.data.fileDownloadUri;
+          console.log(result.data);
         })
         .catch((err) => {
-          console.log("녹음 파일 업로드 실패 ㅠㅠ", err);
+          console.log("녹음 파일 업로드 실패", err);
         });
+      this.$emit("sendData", this.file);
     },
 
-    setPlayerDisabled() {
-      const $player = this.$refs.recorder.$el.querySelector(".ar-player");
-      $player.classList.remove("abled");
-    },
-    setPlayerAbled() {
-      const $player = this.$refs.recorder.$el.querySelector(".ar-player");
-      $player.classList.add("abled");
-    },
     hideStopBtn() {
       const $stopBtn = this.$refs.recorder.$el.querySelector(
         ".ar-recorder__stop"
@@ -83,31 +89,20 @@ export default {
         const top = recorder.recordList.length - 1;
         recorder.selected = recorder.recordList[top];
         this.file = recorder.selected;
-        this.file[
-          "fileName"
-        ] = `${this.$store.state.myName}${this.fileName} ${this.fineNum}`;
+        this.file["fileName"] = `${this.fileName} ${this.fineNum}`;
         //파일 데이터를 전송해줍니다.
-        this.upload();
-        this.$emit("sendData", this.file);
       }
-    },
-    showExtraBtn(show) {
-      this.showExtra = show;
     },
     // :after-recording
     setRecorded() {
       this.hideStopBtn();
-      this.setPlayerDisabled();
       setTimeout(() => {
         this.setRecentRecord();
-        this.setPlayerAbled();
-        this.showExtraBtn(true);
       }, 800);
     },
 
     //:before-recording=
     startRecord() {
-      this.showExtraBtn(false);
       this.showStopBtn();
     },
   },

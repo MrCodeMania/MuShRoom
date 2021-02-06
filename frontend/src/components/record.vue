@@ -10,7 +10,7 @@
       <v-card
         v-show="expand"
         mode="in-out"
-        height="100"
+        height="130"
         width="100%"
         class="mx-auto"
         ><recordBtn @sendData="receiveData"
@@ -58,11 +58,6 @@ export default {
       records: [],
       files: [],
       idx: 0,
-      dummy: {
-        url: "123",
-        fileName: "123",
-        id: 1,
-      },
     };
   },
   components: {
@@ -107,18 +102,7 @@ export default {
       console.log(data);
       this.addCard(data);
     },
-    onButtonClick() {
-      this.isSelecting = true;
-      window.addEventListener(
-        "focus",
-        () => {
-          this.isSelecting = false;
-        },
-        { once: true }
-      );
 
-      this.$refs.uploader.click();
-    },
     delRecord(data) {
       var idx = 0;
       for (var i = 0; i < this.records.length; i++) {

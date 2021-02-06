@@ -29,16 +29,18 @@ export default {
       }
       for (let i = 0; i < this.files.length; i++) {
         const data = new FormData();
+        const file = { fileName: "", url: "" };
         data.append("file", this.files[i]);
         sendfile
           .send(data)
           .then((result) => {
-            console.log(result.data);
+            file["fileName"] = result.data.fileName;
+            file["url"] = result.data.fileDownloadUri;
+            this.$emit("sendData", file);
           })
           .catch((err) => {
             console.log("업로드 실패 ㅠㅠ", err);
           });
-        this.$emit("sendData", this.files[i]);
       }
     },
   },

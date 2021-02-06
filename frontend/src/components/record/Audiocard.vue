@@ -6,7 +6,7 @@
         outlined
         class="mx-auto mt-1"
         width="90%"
-        height="50px"
+        height="100px"
         v-bind="attrs"
         v-on="on"
       >
