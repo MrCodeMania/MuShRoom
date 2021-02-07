@@ -6,6 +6,7 @@
         ref="recorder"
         :after-recording="setRecorded"
         :before-recording="startRecord"
+        :bit-rate="192"
       />
       <v-sheet class="d-flex">
         <v-text-field
