@@ -7,48 +7,53 @@
     width="100%"
     height="100%"
   >
-  <v-card-title class="d-flex justify-space-between">
-    <v-fade-transition>
-      <v-avatar
-      :color="beatIndex? 'grey':'brown darken-1'"
-      :style="isPlaying()? {animationDuration: animationDuration} : ''"
-      class="mb-1 v-avatar--metronome pa-3 mx-3"
-      size="50"
-      >{{ beatIndex + 1}}</v-avatar>
-    </v-fade-transition>
-    <div class="d-flex">
-      <div class="d-flex">
-        <p style="font-size: 2em; " class="pt-2">BPM: </p>
-        <v-text-field
-          v-model.number="bpm"
-          class="mt-0 pl-1 pb-2"
-          hide-details
-          single-line
-          flat solo
-          type="number"
-          background-color="amber lighten-1"
-          style="max-width: 100px; width: auto; font-size: 2em;"
-        ></v-text-field>
-      </div>
-      <div class="d-flex">
-        <p style="font-size: 2em;" class="pt-2">Beat: </p>
+  <v-card-title>
+    <p style="font-size: 1.75em;" class="pt-2">BPM: {{ bpm }}</p>
+    <v-spacer></v-spacer>
+    <v-card
+    dark
+    elevation="0"
+    width="50px"
+    rounded="circle"
+      class="pa-2 mx-3 d-inline-block text-center" :class="beatIndex? 'grey' : 'brown darken-1'"
+    >{{ beatIndex? beatIndex : 1 }}</v-card>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on, attrs }">
         <v-text-field
           :disabled="isPlaying()"
           v-model.number="beatsPerBar"
-          class="mt-0 pl-1 pb-2"
+          class="mt-0 mx-auto pt-0"
           hide-details
-          flat solo
-          type="number"
-          background-color="amber lighten-1"
           single-line
-          style="max-width: 80px; width: auto; font-size: 2em;"
-          hint="Beats/bar"
+          type="number"
+          style="max-width: 60px"
+          v-bind="attrs" v-on="on"
         ></v-text-field>
-      </div>
-    </div>
+      </template>
+      <span>Beats/bar</span>
+    </v-tooltip>
   </v-card-title>
   <v-card-text class="d-flex align-center
   pa-0">
+    <v-slider
+      v-model.number="bpm"
+      class="align-center"
+      :max="bpmMax"
+      :min="bpmMin"
+      hide-details
+      style="width: 300px;"
+    >
+      <template v-slot:append>
+        <v-text-field
+          v-model.number="bpm"
+          class="mt-0 pl-4 pt-0"
+          hide-details
+          single-line
+          type="number"
+          style="width: 80px"
+        ></v-text-field>
+      </template> 
+    </v-slider>
   </v-card-text>
   <v-card-actions>
     <v-btn 
@@ -96,7 +101,6 @@
       </v-btn>
     </div>
   </v-card-actions>
-
   </v-card>
 </template>
 
@@ -109,18 +113,20 @@ const beat = new Player('http://i4a105.p.ssafy.io:8080/downloadFile/Ping%20Low.w
 
 Vue.filter('volume',( value, mute ) => {
   if (mute) {
-    return 'mute';
+    return '';
   }
   const prefix = value > 0? '+' : '';
   return `${prefix}${value}db`;
 })
 
 export default {
-  name: "metronome",
+  name: "metronome1",
   data: function() {
     return {
+      bpmMin: 20,
+      bpmMax: 300,
       bpm: 60,
-      hideSlider: true,
+
       beatsPerBar: 4,
       beatIndex: 0,
 
@@ -156,30 +162,13 @@ export default {
     },
 
     onStop() {
+      start()
       Transport.stop();
       Transport.cancel(0);
       Transport.seconds = 0;
       this.beatIndex = 0;
       this.isStopped = true;
     },
-
-    // onRecordStop() {
-    // onStop() {
-    //   if (this.beatIndex != this.beatsPerBar -1) {
-    //     console.log("마지막 박자까지 가", this.beatIndex)
-    //     setTimeout(() => {
-    //       this.onStop();
-    //       console.log(Transport.seconds)
-    //     }, 1000*60/(this.bpm+20))
-    //   } else {
-    //     console.log("마지막 박자에 멈춰", this.beatIndex)
-    //     Transport.stop();
-    //     Transport.cancel(0);
-    //     Transport.seconds = 0;
-    //     this.beatIndex = 0;
-    //     this.isStopped = true;
-    //   }
-    // },
 
     onVolumeDown() {
       this.mute = false;
@@ -205,10 +194,14 @@ export default {
       return new Sequence((time, note) => {
         switch(note) {
           case accentNote:
+            console.log('노트', Transport)
             this.beatIndex = 0;
             accent.start(time);
             break;
-          case beatNote:            
+          case beatNote:
+            if (this.beatIndex == 0) {
+              this.beatIndex = 1;
+            }
             this.beatIndex += 1;
             beat.start(time);
             break;
@@ -218,47 +211,17 @@ export default {
       }, notes, '4n');
     },
 
-    countDowntimer() {
-      if (this.startTime > 0) {
-          setTimeout(() => {
-            this.startTime -= 1
-            console.log(this.startTime)
-            this.countDowntimer()
-          }, 1000)
-      } else {
-        this.startTime = 4
-        // console.log(this.startTime)
-
-      }
-    }
 
   },
 
   watch: {
     bpm: function () {
-      if (this.bpm > 300) {
-        Vue.set(this.$data, 'bpm', 300)
-        this.bpm = 300
-      } else if (this.bpm < 20) {
-        this.bpm = 20
-      }
-      Transport.bpm.value = this.bpm;
+      Transport.bpm.value = this.bpm
     },
-    
+
     beatsPerBar() {
-      if (this.beatsPerBar > 16) {
-        this.beatsPerBar = 16
-      } else if (this.beatsPerBar < 1) {
-        this.beatsPerBar = 1
-      }
       Transport.timeSignature = this.beatsPerBar;
     }
-  },
-
-  computed: {
-    animationDuration () {
-      return `${30 / this.bpm}s`
-    },
   },
 
   mounted() {
@@ -294,26 +257,5 @@ export default {
   display: flex;
   padding: 0px !important;
 }
-
-.v-text-field > .v-input__control > .v-input__slot:before {
-  border-style: none; 
-}
-
-@keyframes metronome-example {
-  from {
-    transform: scale(.9);
-  }
-
-  to {
-    transform: scale(1);
-  }
-}
-
-.v-avatar--metronome {
-  animation-name: metronome-example;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
-
 
 </style>
