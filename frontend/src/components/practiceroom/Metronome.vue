@@ -252,12 +252,24 @@ export default {
         this.beatsPerBar = 1
       }
       Transport.timeSignature = this.beatsPerBar;
+    },
+    getRC(val) {
+      if (val === "startMetro") {
+        console.log("METRO watched", val);
+        this.recordStart();
+      } else if (val === "stopMetro") {
+        console.log("METRO watched", val);
+        this.onStop();
     }
+  },
   },
 
   computed: {
-    animationDuration () {
-      return `${30 / this.bpm}s`
+    animationDuration() {
+      return `${30 / this.bpm}s`;
+    },
+    getRC() {
+      return this.$store.getters.getRC;
     },
   },
 
@@ -271,7 +283,6 @@ export default {
 </script>
 
 <style>
-
 #metronome {
   position: relative;
   padding: 10px;
@@ -301,7 +312,7 @@ export default {
 
 @keyframes metronome-example {
   from {
-    transform: scale(.9);
+    transform: scale(0.9);
   }
 
   to {
@@ -314,6 +325,4 @@ export default {
   animation-iteration-count: infinite;
   animation-direction: alternate;
 }
-
-
 </style>

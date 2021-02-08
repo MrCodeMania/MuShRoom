@@ -1,3 +1,4 @@
+<!--지금은 이걸 사용합니다.-->
 <template>
   <div>
     <div width="80px">
@@ -6,7 +7,7 @@
         ref="recorder"
         :after-recording="setRecorded"
         :before-recording="startRecord"
-        :bit-rate="192"
+        :bit-rate="320"
       />
       <v-expand-transition>
         <v-card v-show="expand" mode="in-out" width="100%">
@@ -111,7 +112,6 @@ export default {
       this.showStopBtn();
       this.expand = false;
     },
-
   },
 };
 </script>
