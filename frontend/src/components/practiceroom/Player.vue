@@ -1,23 +1,34 @@
 <template>
   <div>
     <div class="d-flex align-center">
-      <div class="mb-3 border d-flex" style="flex: 1">
-        <v-btn
-          v-if="this.state == 'stopped'"
-          class="ml-3 mr-3"
-          :disabled="player == null"
-          v-on:click="start()"
-        >
-          <v-icon dense>mdi-play</v-icon>
-        </v-btn>
-        <v-btn
-          v-else
-          class="ml-3 mr-3"
-          :disabled="player == null"
-          v-on:click="stop()"
-        >
-          <v-icon dense>mdi-pause</v-icon>
-        </v-btn>
+      <div class="border d-flex align-center" style="flex: 1">
+        <div class="d-flex">
+          <v-btn
+            v-if="this.state == 'paused' || this.state == 'stopped'"
+            class="ml-3 mr-3 pa-1"
+            style="min-width: 5px"
+            :disabled="player == null"
+            v-on:click="start()"
+          >
+            <v-icon dense>mdi-play</v-icon>
+          </v-btn>
+          <v-btn
+            v-else
+            class="ml-3 mr-3 pa-1"
+            style="min-width: 5px"
+            :disabled="player == null"
+            v-on:click="pause()"
+          >
+            <v-icon dense>mdi-pause</v-icon>
+          </v-btn>
+          <v-btn
+            class="ml-0 mr-3 pa-1"
+            style="min-width: 5px"
+            v-on:click="stop()"
+          >
+            <v-icon dense>mdi-stop</v-icon>
+          </v-btn>
+        </div>
       </div>
 
       <div style="flex: 5">
@@ -142,18 +153,8 @@
             <td>
               <v-text-field
                 type="number"
-                label="Offset (단위: note)"
+                label="Start Time (단위: note)"
                 v-model="offset"
-              ></v-text-field>
-            </td>
-          </tr>
-          <tr>
-            <td>StartAtTime</td>
-            <td>
-              <v-text-field
-                type="number"
-                label="Offset (단위: second)"
-                v-model="offsetSecond"
               ></v-text-field>
             </td>
           </tr>
@@ -197,72 +198,64 @@ export default {
       loopStart: 0.0,
       loopEnd: 0.0,
       isExist: false,
-      offset: 0,
-      offsetSecond: 0,
       delay: 0,
+      offset: 0,
+      currentTime: 0,
     };
   },
   created() {
     const player = new Tone.Player(this.url, () => {
       this.player = player;
-      //player.start();
-      //player.sync().start(0);
       this.player.onstop = () => {
-        console.log("event");
-        this.state = "stopped";
-        Tone.Transport.stop();
+        console.log(this.state);
+        if (this.state == "stopped") {
+          Tone.Transport.stop();
+        } else if (this.state == "paused") {
+          Tone.Transport.stop();
+        } else {
+          // 기본적으로 종료되면 started로 넘어옴
+          this.stop();
+        }
       };
     }).toDestination();
   },
   methods: {
     start() {
-      // //this.player.unsync();
-      // this.player.sync().start(0);
-      // Tone.start();
-      // Tone.Transport.start();
+      Tone.start(); // ...start()를 실행하기 위한 사전 작업
+      Tone.Transport.stop();
       Tone.Transport.cancel(); // clean objects
 
-      Tone.start(); // bug fix
-
-      console.log(this.player.sampleTime);
       this.player.sync().start(0);
-      var now = Tone.now();
 
       // now: Transport 생성 후 현재 시간
       // offset: 시작할 오프셋 위치. 초 단위
       // 박자로 시간과 오프셋을 맞추고싶다면: time or offset + Tone.Time(박자).toSeconds();
-      if (this.offsetSecond) {
-        Tone.Transport.start(
-          now + Tone.Time(this.delay).toSeconds(),
-          this.offsetSecond
-        );
-      } else {
-        Tone.Transport.start(
-          now + Tone.Time(this.delay).toSeconds(),
-          Tone.Time(this.offset).toSeconds()
-        );
-      }
+      var now = Tone.now();
+      Tone.Transport.start(
+        now + Tone.Time(this.delay).toSeconds(),
+        Tone.Time(this.offset).toSeconds() + this.currentTime
+      );
 
       this.state = "started"; // delay를 줄 경우, player.state로 즉시 받아오면 stopped가 넘어옴
       this.isExist = false;
     },
     pause() {
-      Tone.Transport.pause();
-      this.state = this.player.state;
+      this.currentTime = Tone.Transport.seconds;
+      this.state = "paused";
+      Tone.Transport.stop();
+      Tone.Transport.cancel();
     },
     stop() {
-      //this.player.stop();
-      //this.player.start();
+      this.currentTime = 0;
+      this.state = "stopped";
       Tone.Transport.stop();
       Tone.Transport.cancel(); // clean objects
-      this.state = this.player.state;
       this.isExist = false;
     },
     changeDistortion(value) {
       this.distortion.object.distortion = value;
     },
     changeVolume(value) {
-      //this.volume.object.volume.value = value;
       this.player.volume.value = value;
       console.log(this.player.volume.value);
     },
@@ -303,10 +296,13 @@ export default {
       Tone.start();
       this.player.sync().start();
       this.isExist = true;
-      //Tone.Transport.start(); // start
+      // Tone.Transport.start(); // play
     },
     sendDelete(n) {
       this.$emit("deleteMusic", n);
+    },
+    setTime(sec) {
+      console.log("Player set time: ", sec);
     },
   },
 };
