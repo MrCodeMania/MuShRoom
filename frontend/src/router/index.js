@@ -3,9 +3,6 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import PracticeRoom from '../views/PracticeRoom.vue'
 
-
-
-
 Vue.use(VueRouter)
 
 const routes = [

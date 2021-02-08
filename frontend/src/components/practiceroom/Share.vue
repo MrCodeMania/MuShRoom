@@ -60,10 +60,13 @@ export default {
         };
     },
     created() {
+        console.log(Sha256("1-master")); // sha256 test
+
+        // 이 부분은 
         // 현재 URL을 저장
         // split해서 파라미터만 저장할지?
-        console.log(Sha256("url")); // sha256 test
-        this.roomNo = document.location.href.split('?')[1];
+        // this.roomNo = document.location.href.split('?')[1];
+
         this.getShareUrl();
     },
     methods: {
