@@ -34,19 +34,14 @@ export default {
   },
   data: () => ({
     showMenu: false,
-    fileform: "",
   }),
   methods: {
     deleteThis() {
-      this.$emit("delList", this.fileData.id);
+      this.$emit("delRecord", this.fileData.id);
     },
     addThis() {
-      this.$store.commit("pushURL", this.fileData.url);
-      this.$store.commit("pushName", this.fileData.fileName);
+      this.$emit("addRecord", this.fileData.id);
     },
-  },
-  created() {
-    this.fileform = this.fileData;
   },
 };
 </script>

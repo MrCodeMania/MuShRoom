@@ -48,7 +48,7 @@
     fab
     small
     elevation="0"
-    color="amber lighten-1" 
+    color="#00ff0000"
     v-if="isPlaying()" @click="onStop">
       <v-icon>mdi-stop</v-icon>
     </v-btn>
@@ -56,7 +56,7 @@
     fab
     small
     elevation="0"
-    color="amber lighten-1"
+    color="#00ff0000"
     v-else @click="onStart">
       <v-icon>mdi-play</v-icon>
     </v-btn>
@@ -67,7 +67,7 @@
       fab
       small
       elevation="0"
-      color="amber lighten-1"
+      color="#00ff0000"
       @click="onVolumeDown">
         <v-icon>mdi-volume-medium</v-icon>
       </v-btn>
@@ -75,7 +75,7 @@
       fab
       small
       elevation="0"
-      color="amber lighten-1" 
+      color="#00ff0000"
       @click="onVolumeUp">
         <v-icon>mdi-volume-high</v-icon>
       </v-btn>
@@ -83,7 +83,7 @@
       fab
       small
       elevation="0"
-      color="amber lighten-1"
+      color="#00ff0000"
       @click="onVolumeMute">
         <v-icon>mdi-volume-off</v-icon>
       </v-btn>
