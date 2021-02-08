@@ -1,7 +1,7 @@
   <template>
   <div>
     <v-sheet color="white" height="50" width="100%" rounded>
-      <div class="mt-3 mb-3 d-flex justify-space-around">
+      <div class="mt-5 mb-3 d-flex justify-space-around">
         <v-btn @click="expandChange(1)">record </v-btn>
         <v-btn @click="expandChange(2)">upload </v-btn>
       </div>

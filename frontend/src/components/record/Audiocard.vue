@@ -11,7 +11,7 @@
         v-on="on"
       >
         <v-card-title width="50%" max-width="60px"
-          ><span class="title font-weight-light">{{
+          ><span class="title font-weight-medium">{{
             fileData.fileName
           }}</span></v-card-title
         >

@@ -10,18 +10,24 @@
         :bit-rate="320"
       />
       <v-expand-transition>
-        <v-card v-show="expand" mode="in-out" width="100%">
-          <div class="d-flex align-center">
-            <v-text-field
-              v-model="inputFileName"
-              :rules="filenameRules"
-              label="파일이름"
-              solo
-              hide-details
-            ></v-text-field>
-            <v-btn @click="upload">업로드</v-btn>
-          </div>
-        </v-card>
+        <div class="mx-auto">
+          <v-card v-show="expand" mode="in-out" width="100%" class="mt-n1">
+            <div class="d-flex align-center justify-center">
+              <v-sheet width="80%" class="d-flex align-center justify-center">
+                <v-text-field
+                  v-model="inputFileName"
+                  :rules="filenameRules"
+                  label="파일이름"
+                  solo
+                  hide-details
+                ></v-text-field>
+                <v-btn @click="upload" class="ml-2"
+                  ><v-icon>mdi-plus-circle</v-icon></v-btn
+                >
+              </v-sheet>
+            </div>
+          </v-card>
+        </div>
       </v-expand-transition>
     </div>
   </div>
