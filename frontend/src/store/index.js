@@ -11,7 +11,7 @@ export default new Vuex.Store({
     recordStartState: "",
   },
   mutations: {
-    pushURL(state,e=""){
+    pushURL(state, e = "") {
       state.url = e;
     },
     pushName(state, name = "") {

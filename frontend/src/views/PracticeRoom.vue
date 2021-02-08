@@ -177,7 +177,7 @@ export default {
       if(this.page != 1)
         this.page -= 1;
       this.findPage();
-    }
+    },
   },
 }
 </script>
