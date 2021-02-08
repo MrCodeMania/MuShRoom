@@ -36,7 +36,6 @@ export default {
       file: "",
       fileName: "",
       fineNum: 0,
-      startTime: 4,
       filenameRules: [(value) => !!value || "Required."],
       fileUploadCheck: false,
     };
@@ -92,7 +91,6 @@ export default {
     },
     // :after-recording
     setRecorded() {
-      this.countDowntimer();
       this.hideStopBtn();
       setTimeout(() => {
         this.setRecentRecord();
@@ -103,20 +101,6 @@ export default {
     startRecord() {
       this.showStopBtn();
     },
-
-    countDowntimer() {
-      if (this.startTime > 0) {
-          setTimeout(() => {
-            this.startTime -= 1
-            console.log(this.startTime)
-            this.countDowntimer()
-          }, 1000)
-      } else {
-        this.startTime = 4
-        // console.log(this.startTime)
-
-      }
-    }
   },
 };
 </script>

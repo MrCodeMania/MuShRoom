@@ -2,9 +2,14 @@
   <v-menu v-model="showMenu" absolute offset-y style="max-width: 600px">
     <template v-slot:activator="{ on, attrs }">
       <v-card
-      elevation="0"
-      outlined
-      class="mx-auto mt-1" width="90%" v-bind="attrs" v-on="on">
+        elevation="0"
+        outlined
+        class="mx-auto mt-1"
+        width="90%"
+        height="100px"
+        v-bind="attrs"
+        v-on="on"
+      >
         <v-card-title>{{ fileData.fileName }}</v-card-title>
         <v-card-text><Waveform :url="fileData.url" height="64" /></v-card-text>
       </v-card>
