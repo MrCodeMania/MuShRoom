@@ -40,7 +40,6 @@ export default {
   },
   data: function() {
     return {
-      img: require("@/assets/homebg.jpg"),
       src: require("@/assets/mushroom.png")
     }
   }
@@ -51,7 +50,7 @@ export default {
 
 .home {
   width:100vw;
-  height: 100vh;
+  height: 72.8vh;
 }
 
 </style>

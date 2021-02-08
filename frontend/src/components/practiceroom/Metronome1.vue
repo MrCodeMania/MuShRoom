@@ -8,6 +8,8 @@
     height="100%"
   >
   <v-card-title>
+    <p style="font-size: 1.75em;" class="pt-2">BPM: {{ bpm }}</p>
+    <v-spacer></v-spacer>
     <v-card
     dark
     elevation="0"
@@ -15,33 +17,43 @@
     rounded="circle"
       class="pa-2 mx-3 d-inline-block text-center" :class="beatIndex? 'grey' : 'brown darken-1'"
     >{{ beatIndex? beatIndex : 1 }}</v-card>
-    <p style="font-size: 2em; " class="pt-2">BPM: </p>
-    <v-text-field
-      v-model.number="bpm"
-      class="mt-0 pl-2 pb-3 pt-0"
-      hide-details
-      single-line
-      flat solo
-      background-color="amber lighten-1"
-      type="number"
-      style="max-width: 100px; width: auto; font-size: 2em;"
-    ></v-text-field>
-    <p style="font-size: 2em;" class="pt-2">Beat: </p>
-    <v-text-field
-      :disabled="isPlaying()"
-      v-model.number="beatsPerBar"
-      class="mt-0 mx-auto pl-2 pb-3 pt-0"
-      hide-details
-      flat solo
-      background-color="amber lighten-1"
-      single-line
-      type="number"
-      style="max-width: 80px; width: auto; font-size: 2em;"
-      hint="Beats/bar"
-    ></v-text-field>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on, attrs }">
+        <v-text-field
+          :disabled="isPlaying()"
+          v-model.number="beatsPerBar"
+          class="mt-0 mx-auto pt-0"
+          hide-details
+          single-line
+          type="number"
+          style="max-width: 60px"
+          v-bind="attrs" v-on="on"
+        ></v-text-field>
+      </template>
+      <span>Beats/bar</span>
+    </v-tooltip>
   </v-card-title>
   <v-card-text class="d-flex align-center
   pa-0">
+    <v-slider
+      v-model.number="bpm"
+      class="align-center"
+      :max="bpmMax"
+      :min="bpmMin"
+      hide-details
+      style="width: 300px;"
+    >
+      <template v-slot:append>
+        <v-text-field
+          v-model.number="bpm"
+          class="mt-0 pl-4 pt-0"
+          hide-details
+          single-line
+          type="number"
+          style="width: 80px"
+        ></v-text-field>
+      </template> 
+    </v-slider>
   </v-card-text>
   <v-card-actions>
     <v-btn 
@@ -108,7 +120,7 @@ Vue.filter('volume',( value, mute ) => {
 })
 
 export default {
-  name: "metronome",
+  name: "metronome1",
   data: function() {
     return {
       bpmMin: 20,
@@ -245,10 +257,5 @@ export default {
   display: flex;
   padding: 0px !important;
 }
-
-.v-text-field > .v-input__control > .v-input__slot:before {
-  border-style: none; 
-}
-
 
 </style>
