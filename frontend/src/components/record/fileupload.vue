@@ -23,7 +23,7 @@ export default {
   }),
   methods: {
     upload() {
-      if (this.files === null) {
+      if (this.files === undefined) {
         return;
       }
       for (let i = 0; i < this.files.length; i++) {

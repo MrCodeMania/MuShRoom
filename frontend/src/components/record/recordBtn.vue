@@ -12,7 +12,7 @@
         <v-card v-show="expand" mode="in-out" width="100%">
           <div class="d-flex align-center">
             <v-text-field
-              v-model="sendFileData.fileName"
+              v-model="inputFileName"
               :rules="filenameRules"
               label="파일이름"
               solo
@@ -27,22 +27,17 @@
 </template>
 <script>
 import recBtn from "./recBtn.vue";
-import UploaderPropsMixin from "@/mixins/uploader-props";
 import sendfile from "@/service/filecontrol";
 import { getYyyyMmDdMmSsToString } from "@/lib/timestamp";
 export default {
-  mixins: [UploaderPropsMixin],
   components: { recBtn },
   data: function () {
     return {
+      inputFileName: "",
       //컴포넌트에서 녹화한 파일을 담는 변수
       // blob 형태 {size , type 두가지 정보} , duration 재생길이 , url => 로컬 다운로드 url
       file: {}, // 녹음 완료 후 파일 정보
-      sendFileData: {
-        //audio card로 보낼 데이터
-        fileName: "",
-        downloadURL: "",
-      }, //
+
       startTime: 4,
       filenameRules: [(value) => !!value || "Required."],
       expand: false,
@@ -51,30 +46,35 @@ export default {
   methods: {
     expandInit() {
       this.expand = false;
+      this.inputFileName = "";
     },
-    upload() {
+    async upload() {
       if (!this.expand) return;
-      if (this.sendFileData.fileName === "") return;
+      const sendFileData = {
+        fileName: "",
+        downloadURL: "",
+      };
+      if (this.inputFileName === "") return;
       const data = new FormData();
-
+      sendFileData.fileName = this.inputFileName;
       var date = new Date();
       date = getYyyyMmDdMmSsToString(date);
       console.log(date);
       data.append(
         "file",
         this.file.blob,
-        `${this.sendFileData.fileName}_${date.toString()}.mp3`
+        `${sendFileData.fileName}_${date.toString()}.mp3`
       );
-      sendfile
+      await sendfile
         .send(data)
         .then((result) => {
-          this.sendFileData.downloadURL = result.data.fileDownloadUri;
-          this.expand = false;
+          sendFileData.downloadURL = result.data.fileDownloadUri;
         })
         .catch((err) => {
           console.log("녹음 파일 업로드 실패", err);
         });
-      this.$emit("sendData", this.sendFileData);
+      this.$emit("sendData", sendFileData);
+      this.expand = false;
     },
 
     hideStopBtn() {

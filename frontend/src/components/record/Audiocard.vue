@@ -10,7 +10,11 @@
         v-bind="attrs"
         v-on="on"
       >
-        <v-card-title>{{ fileData.fileName }}</v-card-title>
+        <v-card-title width="50%" max-width="60px"
+          ><span class="title font-weight-light">{{
+            fileData.fileName
+          }}</span></v-card-title
+        >
         <v-card-text><Waveform :url="downloadURL" height="64" /></v-card-text>
       </v-card>
     </template>
@@ -38,7 +42,7 @@ export default {
   }),
   methods: {
     deleteThis() {
-      this.$emit("delList", this.id);
+      this.$emit("delList", this.fileData.id);
     },
     addThis() {
       this.$store.commit("pushURL", this.downloadURL);

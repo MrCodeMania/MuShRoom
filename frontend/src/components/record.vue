@@ -34,7 +34,7 @@
         height="100%"
         max-height="50vh"
       >
-        <div v-for="(item, index) in records" :key="index">
+        <div v-for="(item, index) in records" :key="item.id">
           <recordCard
             v-on:delList="delRecord"
             v-bind:fileData="records[index]"
@@ -43,7 +43,7 @@
       </v-card>
     </v-sheet>
   </div>
-</template>
+</template> 
 
 <script>
 import recordBtn from "./record/recordBtn";
