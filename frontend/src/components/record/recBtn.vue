@@ -62,9 +62,11 @@ export default {
       if (this.attempts && this.recorder.records.length >= this.attempts) {
         return;
       }
-      this.$store.commit("setRC", "startMetro");
+
       if (!this.isRecording || (this.isRecording && this.isPause)) {
+        // this.$store.commit("setRC", "startMetro");
         console.log("메트로놈으로 시작신호 보냄");
+        this.recorder.start(); // 메트로놈 연동시에는 주석처리
       }
     },
     stopRecorder() {
