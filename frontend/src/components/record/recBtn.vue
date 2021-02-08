@@ -69,7 +69,7 @@ export default {
             console.log("녹음시작!");
             this.recorder.start();
           }.bind(this),
-          3000
+          0
         );
       }
     },
