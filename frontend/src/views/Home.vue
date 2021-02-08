@@ -40,7 +40,6 @@ export default {
   },
   data: function() {
     return {
-      img: require("@/assets/homebg.jpg"),
       src: require("@/assets/mushroom.png")
     }
   }
