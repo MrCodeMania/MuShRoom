@@ -80,7 +80,7 @@
         <!-- 매트로놈 -->
         <v-row
         no-gutters
-        style="height:20vh">
+        style="height:18vh">
           <v-card
           elevation="0"
           width="100%"
