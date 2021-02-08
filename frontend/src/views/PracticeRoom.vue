@@ -139,7 +139,7 @@ export default {
     // URL을 읽거나 DB에서 받거나
     // Status를 얻은 뒤, vuex에 저장
     this.$store.commit("pushStatus", "Master");
-    //this.$store.commit("pushURL", "ReadOnly");
+    //this.$store.commit("pushStatus", "ReadOnly");
     
     this.status = this.$store.state.status;
   },

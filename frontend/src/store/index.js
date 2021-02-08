@@ -7,8 +7,9 @@ export default new Vuex.Store({
   state: {
     url: "",
     fileName: "",
-    myName: "이병희",
-    status:""
+    myName: "여기에 이름",
+    status:"",
+    recordStartState: ""
   },
   mutations: {
     pushURL(state, e = "") {
@@ -20,14 +21,17 @@ export default new Vuex.Store({
     pushStatus(state, status){
       state.status = status;
       console.log(state.status);
+    },
+    setRC(state, start="") {
+      state.recordStartState = start
     }
   },
   getters: {
     getURL(state) {
       return [state.url, state.fileName];
     },
-    getStatus(state){
-      return state.status;
+    getRC(state) {
+      return state.recordStartState;
     }
   },
   actions: {
