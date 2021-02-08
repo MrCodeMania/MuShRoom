@@ -1,18 +1,20 @@
 <template>
   <div>
     <div width="80px">
-      <audio-recorder
+      <recBtn
         style="border: none"
         ref="recorder"
         :after-recording="setRecorded"
         :before-recording="startRecord"
         :bit-rate="192"
       />
-      <v-sheet class="d-flex">
+      <v-sheet class="d-flex align-center" width="100%" height="100%">
         <v-text-field
           v-model="fileName"
-          :rules="rules"
+          :rules="filenameRules"
           label="파일이름"
+          solo
+          hide-details
         ></v-text-field>
         <v-btn @click="upload">업로드</v-btn>
       </v-sheet>
@@ -20,14 +22,13 @@
   </div>
 </template>
 <script>
-import Vue from "vue";
-import AudioRecorder from "vue-audio-recorder";
+import recBtn from "./recBtn.vue";
 import UploaderPropsMixin from "@/mixins/uploader-props";
 import sendfile from "@/service/filecontrol";
-Vue.use(AudioRecorder);
 
 export default {
   mixins: [UploaderPropsMixin],
+  components: { recBtn },
   data: function () {
     return {
       //컴포넌트에서 녹화한 파일을 담는 변수
@@ -35,10 +36,8 @@ export default {
       file: "",
       fileName: "",
       fineNum: 0,
-      rules: [
-        (value) => !!value || "Required.",
-        (value) => (value && value.length >= 3) || "Min 3 characters",
-      ],
+      filenameRules: [(value) => !!value || "Required."],
+      fileUploadCheck: false,
     };
   },
   methods: {
@@ -56,10 +55,6 @@ export default {
         `${this.$store.state.myName}${this.fileName} ${this.fineNum}.mp3`
       );
       this.fineNum++;
-
-      const headers = Object.assign(this.headers, {});
-
-      headers["Content-Type"] = `multipart/form-data;`;
       sendfile
         .send(data)
         .then((result) => {

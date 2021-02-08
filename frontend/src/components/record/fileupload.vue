@@ -17,8 +17,9 @@
 <script>
 import sendfile from "@/service/filecontrol";
 import UploaderPropsMixin from "@/mixins/uploader-props";
+import filePropsMixin from "@/mixins/file-props";
 export default {
-  mixins: [UploaderPropsMixin],
+  mixins: [UploaderPropsMixin, filePropsMixin],
   data: () => ({
     files: undefined,
   }),
