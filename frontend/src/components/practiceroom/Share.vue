@@ -14,8 +14,32 @@
             </v-btn>
         </template>
 
-        <v-list>
+        <v-list v-if="status === 'Master'">
             <v-list-item v-for="item in urls" :key="item.name">
+                <v-list-item-content>
+                    <v-list-item-title style="font-size:20pt; font-weight:bold;">{{ item.name }}</v-list-item-title>
+                    <div class="share-component">
+                        <input
+                            class="share-url-input"
+                            v-model="item.url"
+                            type="text"
+                            readonly="readonly"
+                            ref="textToCopy">
+                        <v-btn
+                            fab="fab"
+                            tile="tile"
+                            text="text"
+                            class="share-url-button"
+                            @click="copyShareUrl(item.name)">
+                            <v-icon dark="dark" large="large">mdi-content-copy</v-icon>
+                        </v-btn>
+                    </div>
+                </v-list-item-content>
+            </v-list-item>
+        </v-list>
+
+        <v-list v-else>
+            <v-list-item v-for="item in readOnlyUrls" :key="item.name">
                 <v-list-item-content>
                     <v-list-item-title style="font-size:20pt; font-weight:bold;">{{ item.name }}</v-list-item-title>
                     <div class="share-component">
@@ -57,17 +81,20 @@ export default {
                     url: "http://i4a105.p.ssafy.io:8080/practiceroom/?room="
                 }
             ],
+            readOnlyUrls: [
+                {
+                    name: "ReadOnly",
+                    url: "http://i4a105.p.ssafy.io:8080/practiceroom/?room="
+                }
+            ]
         };
     },
     created() {
         console.log(Sha256("1-master")); // sha256 test
 
-        // 이 부분은 
-        // 현재 URL을 저장
-        // split해서 파라미터만 저장할지?
-        // this.roomNo = document.location.href.split('?')[1];
-
         this.getShareUrl();
+        
+        this.status = this.$store.state.status;
     },
     methods: {
         // url 받아오는 메소드
