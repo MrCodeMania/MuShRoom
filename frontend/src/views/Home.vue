@@ -51,7 +51,7 @@ export default {
 
 .home {
   width:100vw;
-  height: 100vh;
+  height: 72.8vh;
 }
 
 </style>
