@@ -90,7 +90,8 @@
         </v-row>
 
         <!-- 파일 목록 -->
-        <v-row
+        <v-row 
+        v-if="status === 'Master'"
         no-gutters
         style="height:70vh">
           <v-card
@@ -131,6 +132,16 @@ export default {
       ],
       pageData: [],  // 현재 페이지 데이터
     }
+  },
+  created(){
+    // Status 저장
+
+    // URL을 읽거나 DB에서 받거나
+    // Status를 얻은 뒤, vuex에 저장
+    this.$store.commit("pushStatus", "Master");
+    //this.$store.commit("pushURL", "ReadOnly");
+    
+    this.status = this.$store.state.status;
   },
   methods: {
     //  페이지 저장
