@@ -13,7 +13,7 @@
         height="130"
         width="100%"
         class="mx-auto"
-        ><recordBtn @sendData="receiveData"
+        ><recordBtn @sendData="receiveData" ref="recBtn"
       /></v-card>
     </v-expand-transition>
     <v-expand-transition>
@@ -34,7 +34,7 @@
         height="100%"
         max-height="50vh"
       >
-        <div v-for="(item, index) in records" :key="item.id">
+        <div v-for="(item, index) in records" :key="index">
           <recordCard
             v-on:delList="delRecord"
             v-bind:fileData="records[index]"
@@ -52,12 +52,10 @@ import recordCard from "./record/Audiocard";
 export default {
   data: () => {
     return {
-      showExpand: false,
       expand: false,
       expand2: false, // expand data
-      records: [],
-      files: [],
-      idx: 0,
+      records: [], // 업로드하거나 녹음한거 리스트
+      idx: 0, //레코드 리스트의 번호
     };
   },
   components: {
@@ -66,7 +64,11 @@ export default {
     uploadBtn,
   },
   methods: {
+    rec_expand_close() {
+      this.$refs.recBtn.expandInit();
+    },
     expandChange(data) {
+      if (data === 1) this.rec_expand_close();
       if (this.showExpand === true) {
         if (this.expand == true && data === 1) {
           this.expand = false;
@@ -104,6 +106,7 @@ export default {
     },
 
     delRecord(data) {
+      //삭제
       var idx = 0;
       for (var i = 0; i < this.records.length; i++) {
         if (this.records[i].id === data) {
@@ -118,5 +121,5 @@ export default {
 </script>
 
 
-<style scoped lang="scss">
+<style>
 </style>

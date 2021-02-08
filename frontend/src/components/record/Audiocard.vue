@@ -11,7 +11,7 @@
         v-on="on"
       >
         <v-card-title>{{ fileData.fileName }}</v-card-title>
-        <v-card-text><Waveform :url="fileData.url" height="64" /></v-card-text>
+        <v-card-text><Waveform :url="downloadURL" height="64" /></v-card-text>
       </v-card>
     </template>
     <v-list>
@@ -26,7 +26,6 @@
 </template>
 <script>
 import Waveform from "../practiceroom/Waveform";
-
 export default {
   props: ["fileData"],
   components: {
@@ -34,19 +33,21 @@ export default {
   },
   data: () => ({
     showMenu: false,
-    fileform: "",
+    downloadURL: "",
+    fileName: "",
   }),
   methods: {
     deleteThis() {
-      this.$emit("delList", this.fileData.id);
+      this.$emit("delList", this.id);
     },
     addThis() {
-      this.$store.commit("pushURL", this.fileData.url);
-      this.$store.commit("pushName", this.fileData.fileName);
+      this.$store.commit("pushURL", this.downloadURL);
+      this.$store.commit("pushName", this.fileName);
     },
   },
   created() {
-    this.fileform = this.fileData;
+    this.downloadURL = this.fileData.downloadURL;
+    this.fileName = this.fileData.fileName;
   },
 };
 </script>

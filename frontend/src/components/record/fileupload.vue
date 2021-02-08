@@ -16,10 +16,8 @@
 </template>
 <script>
 import sendfile from "@/service/filecontrol";
-import UploaderPropsMixin from "@/mixins/uploader-props";
-import filePropsMixin from "@/mixins/file-props";
+import { getYyyyMmDdMmSsToString } from "@/lib/timestamp";
 export default {
-  mixins: [UploaderPropsMixin, filePropsMixin],
   data: () => ({
     files: undefined,
   }),
@@ -30,13 +28,15 @@ export default {
       }
       for (let i = 0; i < this.files.length; i++) {
         const data = new FormData();
-        const file = { fileName: "", url: "" };
+        var date = new Date();
+        date = getYyyyMmDdMmSsToString(date);
+        const file = { fileName: "", downloadURL: "" };
         data.append("file", this.files[i]);
         sendfile
           .send(data)
           .then((result) => {
             file["fileName"] = result.data.fileName;
-            file["url"] = result.data.fileDownloadUri;
+            file["downloadURL"] = result.data.fileDownloadUri;
             this.$emit("sendData", file);
           })
           .catch((err) => {

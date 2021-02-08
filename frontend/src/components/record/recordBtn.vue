@@ -8,16 +8,20 @@
         :before-recording="startRecord"
         :bit-rate="192"
       />
-      <v-sheet class="d-flex align-center" width="100%" height="100%">
-        <v-text-field
-          v-model="fileName"
-          :rules="filenameRules"
-          label="파일이름"
-          solo
-          hide-details
-        ></v-text-field>
-        <v-btn @click="upload">업로드</v-btn>
-      </v-sheet>
+      <v-expand-transition>
+        <v-card v-show="expand" mode="in-out" width="100%">
+          <div class="d-flex align-center">
+            <v-text-field
+              v-model="sendFileData.fileName"
+              :rules="filenameRules"
+              label="파일이름"
+              solo
+              hide-details
+            ></v-text-field>
+            <v-btn @click="upload">업로드</v-btn>
+          </div>
+        </v-card>
+      </v-expand-transition>
     </div>
   </div>
 </template>
@@ -25,7 +29,7 @@
 import recBtn from "./recBtn.vue";
 import UploaderPropsMixin from "@/mixins/uploader-props";
 import sendfile from "@/service/filecontrol";
-
+import { getYyyyMmDdMmSsToString } from "@/lib/timestamp";
 export default {
   mixins: [UploaderPropsMixin],
   components: { recBtn },
@@ -33,39 +37,44 @@ export default {
     return {
       //컴포넌트에서 녹화한 파일을 담는 변수
       // blob 형태 {size , type 두가지 정보} , duration 재생길이 , url => 로컬 다운로드 url
-      file: "",
-      fileName: "",
-      fineNum: 0,
+      file: {}, // 녹음 완료 후 파일 정보
+      sendFileData: {
+        //audio card로 보낼 데이터
+        fileName: "",
+        downloadURL: "",
+      }, //
       startTime: 4,
       filenameRules: [(value) => !!value || "Required."],
-      fileUploadCheck: false,
+      expand: false,
     };
   },
   methods: {
+    expandInit() {
+      this.expand = false;
+    },
     upload() {
-      if (!this.fileName) {
-        return;
-      }
-      if (!this.file.url) {
-        return;
-      }
+      if (!this.expand) return;
+      if (this.sendFileData.fileName === "") return;
       const data = new FormData();
+
+      var date = new Date();
+      date = getYyyyMmDdMmSsToString(date);
+      console.log(date);
       data.append(
         "file",
         this.file.blob,
-        `${this.$store.state.myName}${this.fileName} ${this.fineNum}.mp3`
+        `${this.sendFileData.fileName}_${date.toString()}.mp3`
       );
-      this.fineNum++;
       sendfile
         .send(data)
         .then((result) => {
-          this.file.url = result.data.fileDownloadUri;
-          console.log(result.data);
+          this.sendFileData.downloadURL = result.data.fileDownloadUri;
+          this.expand = false;
         })
         .catch((err) => {
           console.log("녹음 파일 업로드 실패", err);
         });
-      this.$emit("sendData", this.file);
+      this.$emit("sendData", this.sendFileData);
     },
 
     hideStopBtn() {
@@ -86,22 +95,22 @@ export default {
         const top = recorder.recordList.length - 1;
         recorder.selected = recorder.recordList[top];
         this.file = recorder.selected;
-        this.file["fileName"] = `${this.fileName} ${this.fineNum}`;
-        //파일 데이터를 전송해줍니다.
       }
     },
     // :after-recording
     setRecorded() {
-      this.countDowntimer();
+      // this.countDowntimer();
       this.hideStopBtn();
       setTimeout(() => {
         this.setRecentRecord();
       }, 800);
+      this.expand = true;
     },
 
     //:before-recording=
     startRecord() {
       this.showStopBtn();
+      this.expand = false;
     },
 
     countDowntimer() {
