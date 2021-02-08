@@ -24,6 +24,7 @@
           <v-btn
             class="ml-0 mr-3 pa-1"
             style="min-width: 5px"
+            :disabled="player == null"
             v-on:click="stop()"
           >
             <v-icon dense>mdi-stop</v-icon>
@@ -32,7 +33,7 @@
       </div>
 
       <div style="flex: 5">
-        <Waveform :url="url" height="64"></Waveform>
+        <Waveform :url="url" height="64" @setTime="setTime"></Waveform>
       </div>
 
       <div class="ml-3" style="flex: 1">
@@ -208,10 +209,14 @@ export default {
       this.player = player;
       this.player.onstop = () => {
         console.log(this.state);
+        this.player.unsync();
+        Tone.Transport.cancel();
         if (this.state == "stopped") {
           Tone.Transport.stop();
         } else if (this.state == "paused") {
           Tone.Transport.stop();
+        } else if (this.state == "playing") {
+          this.start();
         } else {
           // 기본적으로 종료되면 started로 넘어옴
           this.stop();
@@ -220,8 +225,8 @@ export default {
     }).toDestination();
   },
   methods: {
-    start() {
-      Tone.start(); // ...start()를 실행하기 위한 사전 작업
+    async start() {
+      await Tone.start(); // ...start()를 실행하기 위한 사전 작업
       Tone.Transport.stop();
       Tone.Transport.cancel(); // clean objects
 
@@ -242,14 +247,14 @@ export default {
     pause() {
       this.currentTime = Tone.Transport.seconds;
       this.state = "paused";
-      Tone.Transport.stop();
       Tone.Transport.cancel();
+      Tone.Transport.stop();
     },
     stop() {
       this.currentTime = 0;
       this.state = "stopped";
-      Tone.Transport.stop();
       Tone.Transport.cancel(); // clean objects
+      Tone.Transport.stop();
       this.isExist = false;
     },
     changeDistortion(value) {
@@ -257,7 +262,6 @@ export default {
     },
     changeVolume(value) {
       this.player.volume.value = value;
-      console.log(this.player.volume.value);
     },
     changeGain(value) {
       this.gain.object.gain.value = value;
@@ -290,10 +294,10 @@ export default {
       this.player.loopStart = this.loopStart;
       this.player.loopEnd = this.loopEnd;
     },
-    addToTransport() {
+    async addToTransport() {
       if (this.isExist) return;
 
-      Tone.start();
+      await Tone.start();
       this.player.sync().start();
       this.isExist = true;
       // Tone.Transport.start(); // play
@@ -302,7 +306,10 @@ export default {
       this.$emit("deleteMusic", n);
     },
     setTime(sec) {
-      console.log("Player set time: ", sec);
+      if (this.player.state == "started") this.state = "playing";
+      this.currentTime = sec;
+      Tone.Transport.cancel();
+      Tone.Transport.stop();
     },
   },
 };
