@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import Axios from 'axios'
+// import Axios from 'axios'
 import Sha256 from '@/lib/sha256.js'
 
 export default {
@@ -68,14 +68,14 @@ export default {
     },
     methods: {
         // url 받아오는 메소드
-        
+        // 아직 DB 없음
         getShareUrl() {
-          Axios.get('',{
-            params:{roomNo:this.baseUrl}
-            }).then(res => {
-              this.urls[0].url = res[0].data;
-              this.urls[1].url = res[1].data;
-            })
+          // Axios.get('',{
+          //   params:{roomNo:this.baseUrl}
+          //   }).then(res => {
+          //     this.urls[0].url = res[0].data;
+          //     this.urls[1].url = res[1].data;
+          //   })
         },
         copyShareUrl(name) {
             let copied = this.$refs.textToCopy;
