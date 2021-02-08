@@ -109,6 +109,7 @@
 
 <script>
 import Vue from "vue";
+import { mapState } from 'vuex'
 import { Player, Sequence, Transport, start, Destination } from "tone";
 
 const accent = new Player(
@@ -182,6 +183,8 @@ export default {
     //     }, 1000*60/(this.bpm+20))
     //   } else {
     //     console.log("마지막 박자에 멈춰", this.beatIndex)
+    //     this.$store.state.recordStartState = false;
+    //     console.log("끝났어", this.recordStartState)
     //     Transport.stop();
     //     Transport.cancel(0);
     //     Transport.seconds = 0;
@@ -223,6 +226,11 @@ export default {
               break;
             case beatNote:
               this.beatIndex += 1;
+              if (this.beatIndex == this.beatsPerBar-1 && !this.recordStartState) {
+                console.log("왔고", this.recordStartState)
+                this.$store.state.recordStartState = true;
+                console.log("변했어", this.recordStartState)
+              }
               beat.start(time);
               break;
             default:
@@ -285,6 +293,7 @@ export default {
     getRC() {
       return this.$store.getters.getRC;
     },
+    ...mapState(['recordStartState'])
   },
 
   mounted() {

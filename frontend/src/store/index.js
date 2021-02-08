@@ -8,7 +8,7 @@ export default new Vuex.Store({
     url: "",
     fileName: "",
     myName: "여기에 이름",
-    recordStartState: "",
+    recordStartState: false,
   },
   mutations: {
     pushURL(state, e = "") {
