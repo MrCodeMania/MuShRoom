@@ -4,18 +4,22 @@
   tile
   flat
   rounded
-  height="auto">
-      <v-img
+  height="auto"
+  >
+     <v-img
       max-width="180"
       height="50"
       :src="logo"
       @click="toMain">
       </v-img>
+     <Share/>
   </v-app-bar>
 </template>
 
 <script>
+import Share from '../practiceroom/Share.vue'
 export default {
+  components: { Share },
     data() {
         return {
             logo: require('@/assets/tmpLogo.png')
@@ -31,4 +35,7 @@ export default {
 </script>
 
 <style>
+.share-component{
+    
+}
 </style>
