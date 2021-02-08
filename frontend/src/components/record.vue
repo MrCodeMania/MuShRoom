@@ -13,7 +13,7 @@
         height="130"
         width="100%"
         class="mx-auto"
-        ><recordBox @sendData="receiveData"
+        ><recordBtn @sendData="receiveData"
       /></v-card>
     </v-expand-transition>
     <v-expand-transition>
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import recordBox from "./record/recordBox";
+import recordBtn from "./record/recordBtn";
 import uploadBtn from "./record/fileupload";
 import recordCard from "./record/Audiocard";
 export default {
@@ -62,7 +62,7 @@ export default {
   },
   components: {
     recordCard,
-    recordBox,
+    recordBtn,
     uploadBtn,
   },
   methods: {
