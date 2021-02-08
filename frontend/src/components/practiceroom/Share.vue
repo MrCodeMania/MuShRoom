@@ -41,12 +41,13 @@
 </template>
 
 <script>
-import axios from 'axios'
+import Axios from 'axios'
+import Sha256 from '@/lib/sha256.js'
 
 export default {
     data() {
         return {
-            baseUrl:'',
+            roomNo:'',
             urls: [
                 {
                     name: "Master",
@@ -56,20 +57,21 @@ export default {
                     url: "http://i4a105.p.ssafy.io:8080/practiceroom/?room="
                 }
             ],
-            clicked: false
         };
     },
     created() {
         // 현재 URL을 저장
         // split해서 파라미터만 저장할지?
-        this.baseUrl = document.location.href;
+        console.log(Sha256("url")); // sha256 test
+        this.roomNo = document.location.href.split('?')[1];
         this.getShareUrl();
     },
     methods: {
         // url 받아오는 메소드
+        
         getShareUrl() {
-          axios.get('',{
-            params:{url:this.baseUrl}
+          Axios.get('',{
+            params:{roomNo:this.baseUrl}
             }).then(res => {
               this.urls[0].url = res[0].data;
               this.urls[1].url = res[1].data;
