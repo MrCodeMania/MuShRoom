@@ -7,14 +7,14 @@ export default new Vuex.Store({
   state: {
     url: "",
     fileName: "",
-    myName:"여기에 이름",
+    myName: "이병희",
   },
   mutations: {
-    pushURL(state,e=""){
+    pushURL(state, e = "") {
       state.url = e;
     },
     pushName(state, name = "") {
-      state.fileName= name
+      state.fileName = name
     }
   },
   getters: {
