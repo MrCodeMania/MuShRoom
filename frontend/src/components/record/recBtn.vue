@@ -73,8 +73,6 @@ export default {
         return;
       }
       this.$store.commit("setRC", "stopMetro");
-      this.recorder.stop();
-      this.recordList = this.recorder.recordList();
     },
     _initRecorder() {
       return new Recorder({
@@ -118,6 +116,9 @@ export default {
       if (val === "startRecord") {
         console.log("RECBTN watch", val);
         this.recorder.start();
+      } else if (val === "stopRecord") {
+        this.recorder.stop();
+        this.recordList = this.recorder.recordList();
       }
     },
   },

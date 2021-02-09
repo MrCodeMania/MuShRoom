@@ -123,8 +123,7 @@ Vue.filter("volume", (value, mute) => {
   if (mute) {
     return "mute";
   }
-  const prefix = value > 0 ? "+" : "";
-  return `${prefix}${value}db`;
+  return `${value+24}db`;
 });
 
 export default {
@@ -173,28 +172,30 @@ export default {
       this.isStopped = true;
     },
     onRecordStop() {
-      if (this.beatIndex != this.beatsPerBar - 1) {
-        console.log("마지막 박자까지 가", this.beatIndex);
-        setTimeout(() => {
-          this.onStop();
-          console.log(Transport.seconds);
-        }, (1000 * 60) / (this.bpm + 20));
-      } else {
+      if (this.beatIndex == this.beatsPerBar - 1) {
         console.log("마지막 박자에 멈춰", this.beatIndex);
-        this.$store.commit("setRC", "");
+        this.$store.commit("setRC", "stopRecord");
         console.log("끝났어", this.recordStartState);
         Transport.stop();
         Transport.cancel(0);
         Transport.seconds = 0;
         this.beatIndex = 0;
         this.isStopped = true;
+        return;
       }
+      console.log("마지막 박자까지 가", this.beatIndex);
+      setTimeout(() => {
+        this.onRecordStop();
+      }, (1000 * 60) / (this.bpm + 20));
     },
 
     onVolumeDown() {
       this.mute = false;
       this.volume = Math.round(Math.max(this.volume - 3, -24));
       Destination.volume.value = this.volume;
+      if (this.volume == -24) {
+        Destination.mute = !this.mute;
+      }
     },
 
     onVolumeUp() {
@@ -209,6 +210,7 @@ export default {
     },
 
     createNoteSequence() {
+      var flag = 0
       const accentNote = "G2";
       const beatNote = "C2";
       const notes = [
@@ -220,6 +222,12 @@ export default {
           switch (note) {
             case accentNote:
               this.beatIndex = 0;
+              if (flag) {
+                console.log("왔고", this.recordStartState);
+                this.$store.commit("setRC", "startRecord");
+                console.log("변했어", this.recordStartState);
+                flag = 0
+              }
               accent.start(time);
               break;
             case beatNote:
@@ -228,9 +236,7 @@ export default {
                 this.beatIndex == this.beatsPerBar - 1 &&
                 this.recordStartState === "startMetro"
               ) {
-                console.log("왔고", this.recordStartState);
-                this.$store.commit("setRC", "startRecord");
-                console.log("변했어", this.recordStartState);
+                flag = 1
               }
               beat.start(time);
               break;
