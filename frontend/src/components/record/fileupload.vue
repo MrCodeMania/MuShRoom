@@ -49,6 +49,7 @@ export default {
             console.log("업로드 실패 ㅠㅠ", err);
           });
       }
+      this.files = undefined;
     },
   },
 };
