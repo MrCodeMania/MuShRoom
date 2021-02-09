@@ -51,7 +51,8 @@ public class FileController {
   }
 
   @GetMapping("/downloadFile/{fileName:.+}")
-  public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
+  public ResponseEntity<Resource> downloadFile(@PathVariable String fileName,
+      HttpServletRequest request) {
     // Load file as Resource
     Resource resource = fileStorageService.loadFileAsResource(fileName);
 
@@ -64,7 +65,7 @@ public class FileController {
     }
 
     // Fallback to the default content type if type could not be determined
-    if(contentType == null) {
+    if (contentType == null) {
       contentType = "application/octet-stream";
     }
 

@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class TestClass<T> {
+
   private String type;
   private Integer index;
   private T obj;
