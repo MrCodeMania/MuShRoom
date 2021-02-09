@@ -7,11 +7,11 @@
       class="d-flex align-center justify-center"
       height="100%">
       <v-btn
-      fab
-      text
+      icon
+      color="white"
       width="200" height="200" 
       x-large
-      :to="{ name: 'PracticeRoom' }">
+      @click="openModal">
       <v-img
       width="200"
       height="auto"
@@ -24,6 +24,7 @@
       </v-btn>
       </v-card>
     </div>
+    <MainModal :showModal="showModal" @close="closeModal"/>
     <Footer/>
   </div>
 </template>
@@ -32,17 +33,28 @@
 import Header from '@/components/common/Header.vue';
 import Footer from '@/components/common/Footer.vue';
 
+import MainModal from '@/components/MainModal.vue';
+
 export default {
   name: 'home',
   components: {
     Header,
-    Footer
+    Footer,
+    MainModal
   },
   data: function() {
     return {
-      img: require("@/assets/homebg.jpg"),
-      src: require("@/assets/mushroom.png")
+      src: require("@/assets/mushroom.png"),
+      showModal: false
     }
+  },
+  methods: {
+    openModal() {
+      this.showModal = true;
+    },
+    closeModal(close) {
+      this.showModal = close;
+    },
   }
 }
 </script>
@@ -51,7 +63,7 @@ export default {
 
 .home {
   width:100vw;
-  height: 100vh;
+  height: 72.8vh;
 }
 
 </style>

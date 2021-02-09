@@ -4,7 +4,7 @@ export function calculateLineHeadPosition (ev, element) {
     let pos = (ev.clientX - leftPosition) / progressWidth
   
     try {
-      if (!ev.target.className.match(/^ar\-line\-control/)) {
+      if (!ev.target.className.match(/^ar\\-line\\-control/)) {
         return
       }
     } catch (err) {

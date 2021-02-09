@@ -1,27 +1,33 @@
 <template>
-  <v-menu v-model="showMenu" absolute offset-y style="max-width: 600px">
-    <template v-slot:activator="{ on, attrs }">
-      <v-card
+  <div>
+    <v-card
       elevation="0"
       outlined
-      class="mx-auto mt-1" width="90%" v-bind="attrs" v-on="on">
-        <v-card-title>{{ fileData.fileName }}</v-card-title>
-        <v-card-text><Waveform :url="fileData.url" height="64" /></v-card-text>
-      </v-card>
-    </template>
-    <v-list>
-      <v-btn class="mx-2" fab dark color="indigo" @click="addThis"
-        ><v-icon dark> mdi-plus </v-icon></v-btn
-      >
-      <v-btn class="mx-2" fab dark color="error" @click="deleteThis"
-        ><v-icon dark>mdi-delete</v-icon></v-btn
-      >
-    </v-list>
-  </v-menu>
+      class="mx-auto mt-1"
+      width="90%"
+      height="100px"
+    >
+      <v-card-title width="50%" max-width="60px"
+        ><span class="title font-weight-medium ml-2">{{
+          fileData.fileName
+        }}</span>
+        <v-spacer></v-spacer>
+        <v-btn icon dark color="indigo" @click="addThis"
+          ><v-icon dark> mdi-plus </v-icon></v-btn
+        >
+        <v-btn class="mr-2 ml-1" icon dark color="error" @click="deleteThis"
+          ><v-icon dark>mdi-delete</v-icon></v-btn
+        >
+      </v-card-title>
+
+      <v-card-text class="none"
+        ><Waveform :url="fileData.downloadURL" height="64"
+      /></v-card-text>
+    </v-card>
+  </div>
 </template>
 <script>
 import Waveform from "../practiceroom/Waveform";
-
 export default {
   props: ["fileData"],
   components: {
@@ -29,22 +35,20 @@ export default {
   },
   data: () => ({
     showMenu: false,
-    fileform: "",
   }),
   methods: {
     deleteThis() {
-      this.$emit("delList", this.fileData.id);
+      this.$emit("delRecord", this.fileData.id);
     },
     addThis() {
-      this.$store.commit("pushURL", this.fileData.url);
-      this.$store.commit("pushName", this.fileData.fileName);
+      this.$emit("addRecord", this.fileData.id);
     },
-  },
-  created() {
-    this.fileform = this.fileData;
   },
 };
 </script>
 
 <style scoped >
+.none {
+  pointer-events: none;
+}
 </style>

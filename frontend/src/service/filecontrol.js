@@ -4,7 +4,7 @@ class sendfile{
     send(frm) {
         return http.post("/upload-file", frm, {
             headers: {
-                "Content-Type": "multipart/form-data",
+               "Content-Type": "multipart/form-data;"
               },
         })
     }

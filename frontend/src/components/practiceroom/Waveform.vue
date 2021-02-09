@@ -22,10 +22,17 @@ export default {
             }
         }
     },
-    mounted() {
-        this.player.on('ready', ()=>{
-            console.log('ready');
-        })
+    watch: {
+        url: function() {
+            this.player.on('ready', ()=>{
+                console.log('ready');
+            });
+            this.player.zoom(10);
+            this.player.on('seek', ()=>{
+                console.log(this.player.getCurrentTime().toFixed(2));
+                this.$emit('setTime', this.player.getCurrentTime().toFixed(2));
+            });
+        }
     },
     computed: {
         player() {

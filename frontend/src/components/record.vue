@@ -1,31 +1,32 @@
   <template>
   <div>
-    <v-sheet color="white" height="100" width="100%"
-    rounded>
-      <div class="align-self-center d-flex justify-space-around align-center">
-        <recordBtn class="mt-3" v-on:sendData="receiveData"></recordBtn>
-        <div>
-          <v-btn
-            width="50px"
-            height="50px"
-            class="text-none mb-5"
-            rounded
-            depressed
-            :loading="isSelecting"
-            @click="onButtonClick"
-            ><v-icon size="50px">mdi-file </v-icon></v-btn
-          >
-          <input
-            ref="uploader"
-            class="d-none"
-            type="file"
-            accept="audio/*"
-            @change="selectFile"
-          />
-        </div>
+    <v-sheet color="white" height="50" width="100%" rounded>
+      <div class="mt-5 mb-3 d-flex justify-space-around">
+        <v-btn text style="font-size: 1.5em;" :class="expand ? 'select' : 'not_select'" @click="expandChange(1)">record </v-btn>
+        <v-btn text style="font-size: 1.5em;" :class="expand2 ? 'select' : 'not_select'" @click="expandChange(2)">upload </v-btn>
       </div>
     </v-sheet>
-    <v-sheet color="white" height="100%" width="100%">
+    <v-expand-transition>
+      <v-card
+        v-show="expand"
+        mode="in-out"
+        height="130"
+        width="100%"
+        class="mx-auto"
+        ><recordBtn @sendData="receiveData" ref="recBtn"
+      /></v-card>
+    </v-expand-transition>
+    <v-expand-transition>
+      <v-card
+        v-show="expand2"
+        mode="out-in"
+        height="100"
+        width="100%"
+        class="mx-auto"
+        ><uploadBtn @sendData="receiveData"
+      /></v-card>
+    </v-expand-transition>
+    <v-sheet color="white" height="100%" width="100%" class="mt-3">
       <v-card
         elevation="0"
         class="overflow-y-auto"
@@ -35,92 +36,120 @@
       >
         <div v-for="(item, index) in records" :key="item.id">
           <recordCard
-            v-on:delList="delRecord"
+            v-on:delRecord="delRecord"
+            v-on:addRecord="addRecord"
             v-bind:fileData="records[index]"
           />
         </div>
       </v-card>
     </v-sheet>
   </div>
-</template>
+</template> 
 
 <script>
 import recordBtn from "./record/recordBtn";
+import uploadBtn from "./record/fileupload";
 import recordCard from "./record/Audiocard";
-import sendfile from "@/service/filecontrol";
-import UploaderPropsMixin from "@/mixins/uploader-props";
 export default {
-  mixins: [UploaderPropsMixin],
+  props: ['page'],
   data: () => {
     return {
-      isSelecting: false,
-      records: [],
-      files: [],
+      expand: false,
+      expand2: false, // expand data
       idx: 0,
     };
+  },
+  computed: {
+    records: function() {
+      return this.$store.getters.getRecords;
+    },
+  },
+  created() {
+    this.idx = this.records.length;
   },
   components: {
     recordCard,
     recordBtn,
+    uploadBtn,
   },
   methods: {
+    rec_expand_close() {
+      this.$refs.recBtn.expandInit();
+    },
+    expandChange(data) {
+      if (data === 1) this.rec_expand_close();
+      if (this.showExpand === true) {
+        if (this.expand == true && data === 1) {
+          this.expand = false;
+          this.showExpand = false;
+        } else if (this.expand === false && data === 1) {
+          this.expand = true;
+          this.expand2 = false;
+          this.showExpand = true;
+        } else if (this.expand2 === true && data === 2) {
+          this.expand2 = false;
+          this.showExpand = false;
+        } else if (this.expand2 === false && data == 2) {
+          this.expand2 = true;
+          this.expand = false;
+          this.showExpand = true;
+        }
+      } else {
+        if (data === 1) {
+          this.showExpand = true;
+          this.expand = true;
+        } else {
+          this.showExpand = true;
+          this.expand2 = true;
+        }
+      }
+    },
     addCard(data) {
-      this.records.push(data);
+      this.$store.commit('updateRecord', data);
     },
     receiveData(data) {
       data["id"] = this.idx;
       this.idx += 1;
+      console.log(data);
       this.addCard(data);
     },
-    selectFile(e) {
-      this.files = e.target.files[0];
-      this.upload();
-    },
-    upload() {
-      if (this.files === null) {
-        return;
-      }
-      const data = new FormData();
-      data.append("file", this.files);
-      sendfile
-        .send(data)
-        .then((result) => {
-          const returnData = { url: result.data.fileDownloadUri };
-          returnData["id"] = this.idx;
-          returnData["fileName"] = result.data.fileName;
-          this.idx += 1;
-          this.addCard(returnData);
-        })
-        .catch((err) => {
-          console.log("업로드 실패 ㅠㅠ", err);
-        });
-    },
-    onButtonClick() {
-      this.isSelecting = true;
-      window.addEventListener(
-        "focus",
-        () => {
-          this.isSelecting = false;
-        },
-        { once: true }
-      );
-
-      this.$refs.uploader.click();
-    },
-    delRecord(data) {
-      var idx = 0;
-      for (var i = 0; i < this.records.length; i++) {
-        if (this.records[i].id === data) {
+    delRecord(id) {
+      var idx = 0, len = this.records.length;
+      for (var i = 0; i < len; i++) {
+        if (this.records[i].id === id) {
           idx = i;
           break;
         }
       }
-      this.records.splice(idx, 1);
+      this.$store.commit('deleteRecord', idx);
     },
+    addRecord(id) {
+      var record = {}, len = this.records.length, page = this.page;
+      for (var i = 0; i < len; i++) {
+        if (this.records[i].id === id) {
+          record = this.records[i];
+          break;
+        }
+      }
+      this.$store.commit('addMusic', {
+          page, record
+        });
+    }
   },
 };
 </script>
 
 
-<style scoped lang="scss">
+<style>
+
+.select {
+  color: green !important;
+  font-size: 1.75em !important;
+}
+
+.not_select {
+  color: gray !important;
+}
+
+
 </style>
