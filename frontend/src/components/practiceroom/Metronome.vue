@@ -123,8 +123,7 @@ Vue.filter("volume", (value, mute) => {
   if (mute) {
     return "mute";
   }
-  const prefix = value > 0 ? "+" : "";
-  return `${prefix}${value}db`;
+  return `${value+24}db`;
 });
 
 export default {
@@ -194,6 +193,9 @@ export default {
       this.mute = false;
       this.volume = Math.round(Math.max(this.volume - 3, -24));
       Destination.volume.value = this.volume;
+      if (this.volume == -24) {
+        Destination.mute = !this.mute;
+      }
     },
 
     onVolumeUp() {
