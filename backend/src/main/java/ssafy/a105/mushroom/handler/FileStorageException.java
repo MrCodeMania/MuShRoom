@@ -1,6 +1,7 @@
 package ssafy.a105.mushroom.handler;
 
 public class FileStorageException extends RuntimeException {
+
   public FileStorageException(String message) {
     super(message);
   }
