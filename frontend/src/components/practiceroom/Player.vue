@@ -32,7 +32,7 @@
       </div>
 
       <div style="flex: 5">
-        <Waveform :url="url" height="64"></Waveform>
+        <Waveform :url="url" height="64" @setTime="setTime"></Waveform>
       </div>
 
       <!-- 이 부분부터 ReadOnly -->
@@ -46,7 +46,13 @@
       </div>
 
       <div style="flex: 1">
-        <v-icon class="ml-2" dense @click="sendDelete(n)"  v-if="status === 'Master'">mdi-delete</v-icon>
+        <v-icon
+          class="ml-2"
+          dense
+          @click="sendDelete(n)"
+          v-if="status === 'Master'"
+          >mdi-delete</v-icon
+        >
       </div>
     </div>
 
@@ -199,36 +205,46 @@ export default {
       isShow: 0,
       loopStart: 0.0,
       loopEnd: 0.0,
-      isExist: false,
       delay: 0,
       offset: 0,
       currentTime: 0,
+      createdAt: 0,
     };
   },
   created() {
     const player = new Tone.Player(this.url, () => {
+      this.createdAt = player.now();
       this.player = player;
+      console.log(player.toSeconds());
       this.player.onstop = () => {
+        console.log("player state: ", this.player.state);
         console.log(this.state);
         if (this.state == "stopped") {
           Tone.Transport.stop();
         } else if (this.state == "paused") {
           Tone.Transport.stop();
         } else {
-          // 기본적으로 종료되면 started로 넘어옴
-          this.stop();
+          // 재생 시간이 최대 시간 이후일 때 (정지)
+          if (
+            player.buffer.duration + player.context.lookAhead <
+            Tone.Transport.seconds
+          ) {
+            console.log("over!!");
+            this.stop();
+          }
         }
       };
     }).toDestination();
-    
+
     this.status = this.$store.state.status;
+    Tone.start(); // ...start()를 실행하기 위한 사전 작업
   },
   methods: {
     start() {
-      Tone.start(); // ...start()를 실행하기 위한 사전 작업
+      this.state = "started"; // delay를 줄 경우, player.state로 즉시 받아오면 stopped가 넘어옴
+      this.player.unsync();
       Tone.Transport.stop();
       Tone.Transport.cancel(); // clean objects
-
       this.player.sync().start(0);
 
       // now: Transport 생성 후 현재 시간
@@ -239,22 +255,18 @@ export default {
         now + Tone.Time(this.delay).toSeconds(),
         Tone.Time(this.offset).toSeconds() + this.currentTime
       );
-
-      this.state = "started"; // delay를 줄 경우, player.state로 즉시 받아오면 stopped가 넘어옴
-      this.isExist = false;
     },
     pause() {
       this.currentTime = Tone.Transport.seconds;
       this.state = "paused";
+      this.player.unsync();
       Tone.Transport.stop();
-      Tone.Transport.cancel();
     },
     stop() {
       this.currentTime = 0;
       this.state = "stopped";
+      this.player.unsync();
       Tone.Transport.stop();
-      Tone.Transport.cancel(); // clean objects
-      this.isExist = false;
     },
     changeDistortion(value) {
       this.distortion.object.distortion = value;
@@ -295,18 +307,22 @@ export default {
       this.player.loopEnd = this.loopEnd;
     },
     addToTransport() {
-      if (this.isExist) return;
-
-      Tone.start();
-      this.player.sync().start();
-      this.isExist = true;
-      // Tone.Transport.start(); // play
+      this.player.unsync();
+      this.player.sync().start(0);
     },
     sendDelete(n) {
+      this.player.unsync();
+      this.player.dispose();
       this.$emit("deleteMusic", n);
     },
     setTime(sec) {
       console.log("Player set time: ", sec);
+      this.player.unsync();
+
+      this.currentTime = sec;
+      if (this.state == "started") {
+        this.start();
+      }
     },
   },
 };

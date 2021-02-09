@@ -28,7 +28,14 @@
     >
       <v-card class="d-flex justify-start" elevation="0">
         <!-- 페이지 생성, 삭제 -->
-        <v-btn v-if="status === 'Master'" fab text height="50px" :disabled="length == 5" @click="addPage">
+        <v-btn
+          v-if="status === 'Master'"
+          fab
+          text
+          height="50px"
+          :disabled="length == 5"
+          @click="addPage"
+        >
           <v-icon large> mdi-card-plus </v-icon>
         </v-btn>
         <v-btn
@@ -81,8 +88,8 @@ export default {
       scrollInvoked: 0,
     };
   },
-  created(){
-      this.status = this.$store.state.status;
+  created() {
+    this.status = this.$store.state.status;
   },
   methods: {
     addMusicList(tempTitle) {
@@ -120,6 +127,7 @@ export default {
     },
     musicStopButton() {
       console.log("stop");
+      Tone.Transport.cancel(0);
       Tone.Transport.stop();
       this.play = false;
     },
