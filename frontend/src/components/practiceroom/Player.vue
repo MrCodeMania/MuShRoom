@@ -91,7 +91,6 @@
                   id="myRange"
                   v-on:input="changeDistortion(distortion.value)"
                 />
-                <button v-on:click="delDistortion()">del</button>
               </div>
             </td>
           </tr>
@@ -112,7 +111,6 @@
                   id="myRange"
                   v-on:input="changeGain(gain.value)"
                 />
-                <button v-on:click="delGain()">del</button>
               </div>
             </td>
           </tr>
@@ -234,6 +232,14 @@ export default {
           }
         }
       };
+
+      const gain = new Tone.Gain(0).toDestination();
+      this.gain.object = gain;
+      this.player.connect(gain);
+
+      const distortion = new Tone.Distortion(0).toDestination();
+      this.distortion.object = distortion;
+      this.player.connect(distortion);
     }).toDestination();
 
     this.status = this.$store.state.status;
@@ -277,24 +283,6 @@ export default {
     },
     changeGain(value) {
       this.gain.object.gain.value = value;
-    },
-    addGain() {
-      const gain = new Tone.Gain(0).toDestination();
-      this.gain.object = gain;
-      this.player.connect(gain);
-    },
-    addDistortion() {
-      const distortion = new Tone.Distortion(0).toDestination();
-      this.distortion.object = distortion;
-      this.player.connect(distortion);
-    },
-    delGain() {
-      this.player.disconnect(this.gain.object);
-      this.gain.object = null;
-    },
-    delDistortion() {
-      this.player.disconnect(this.distortion.object);
-      this.distortion.object = null;
     },
     toggleDropdown() {
       this.isShow ^= 1;
