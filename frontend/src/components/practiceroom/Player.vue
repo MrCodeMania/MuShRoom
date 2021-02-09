@@ -212,6 +212,24 @@ export default {
     
     this.status = this.$store.state.status;
   },
+  watch: {
+    music: function() {
+      const player = new Tone.Player(this.music.url, () => {
+      this.player = player;
+      this.player.onstop = () => {
+        console.log(this.state);
+        if (this.state == "stopped") {
+          Tone.Transport.stop();
+        } else if (this.state == "paused") {
+          Tone.Transport.stop();
+        } else {
+          // 기본적으로 종료되면 started로 넘어옴
+          this.stop();
+        }
+      };
+    }).toDestination();
+    }
+  },
   methods: {
     start() {
       Tone.start(); // ...start()를 실행하기 위한 사전 작업
@@ -304,11 +322,6 @@ export default {
       console.log("Player set time: ", sec);
     },
   },
-  watch: {
-    music: function() {
-      console.log(this.music.fileName);
-    }
-  }
 };
 </script>
 

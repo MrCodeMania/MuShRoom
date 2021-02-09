@@ -12,7 +12,7 @@ export default new Vuex.Store({
       musicBoard: [{  //  왼쪽 컴포넌트
         idx: Number,
         list: [{  // 추가된 음악 리스트
-          id: Number,
+          id: String,
           url: String,
           fileName: String,
           timestamp: String,
@@ -64,7 +64,7 @@ export default new Vuex.Store({
     //  recordBoard에서 musicBoard으로 음악 추가
     addMusic(state, { page, record }) {
       state.data.musicBoard[page - 1].list.push({
-        id: ++state.data.musicBoard[page - 1].idx,
+        id: ++state.data.musicBoard[page - 1].idx+record.downloadURL,
         url: record.downloadURL,
         fileName: record.fileName,
         timestamp: '',
