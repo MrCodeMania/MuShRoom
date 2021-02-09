@@ -287,16 +287,17 @@ export default {
       if (this.isExist) return;
 
       Tone.start();
-      this.player.sync().start();
+      this.player.sync().start(0);
       this.isExist = true;
       // Tone.Transport.start(); // play
     },
-    sendDelete() {
-      if(!this.isExist) return;
-
+    removeFromTransport(){
       this.currentTime = 0;
       this.player.unsync();
       this.isExist = false;
+    },
+    sendDelete() {
+      this.removeFromTransport();
       this.$emit("deleteMusic", this.n);
     },
     setTime(sec) {
@@ -304,11 +305,8 @@ export default {
     },
   },
   watch: {
-    music() {
-      let page = this.page, music = this.music
-      this.$store.commit('updateMusic', {
-        page, music
-      });
+    music: function() {
+      console.log(this.music.fileName);
     }
   }
 };

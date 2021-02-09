@@ -1,4 +1,3 @@
-import { Time } from 'tone';
 import Vue from 'vue'
 import Vuex from 'vuex'
 
@@ -16,7 +15,7 @@ export default new Vuex.Store({
           id: Number,
           url: String,
           fileName: String,
-          timestamp: Time,
+          timestamp: String,
           distortion: {
             object: Object,
             value: Number
@@ -82,7 +81,6 @@ export default new Vuex.Store({
           value: 0,
         }
       });
-      console.log(state.data.musicBoard[page - 1].list);
     },
     // player에서 바꾼 option update
     updateMusic(state, {page, music}) {
@@ -92,19 +90,16 @@ export default new Vuex.Store({
     deleteMusic(state, { page, idx }) {
       state.data.musicBoard[page - 1].list.splice(idx, 1);
       // state.data.musicBoard[page-1].list.splice(idx, 1);
-      console.log(state.data.musicBoard[page - 1].list);
     },
     //  musicBoard에 페이지 추가
     addPage(state, pageIdx) {
       state.data.musicBoard.splice(pageIdx, 0, {
         idx: 0, list: []
       });
-      console.log(state.data.musicBoard);
     },
     //  musicBoard에서 페이지 삭제
     removePage(state, pageIdx) {
       state.data.musicBoard.splice(pageIdx-1, 1);
-      console.log(state.data.musicBoard);
     },
     pushStatus(state, status){
       state.status = status;
@@ -128,6 +123,8 @@ export default new Vuex.Store({
     },
     // return page 번호와 일치하는 musicBoard
     getBoard: (state) => (page) => {
+      console.log(page - 1);
+      console.log(state.data.musicBoard[page-1].list);
       return state.data.musicBoard[page-1].list;
     },
     getRC(state) {

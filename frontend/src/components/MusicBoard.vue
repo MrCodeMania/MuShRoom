@@ -79,7 +79,7 @@ export default {
     };
   },
   created(){
-      this.status = this.$store.state.status;
+    this.status = this.$store.state.status;
   },
   computed: {
     getURL() {
@@ -92,6 +92,14 @@ export default {
       return this.$store.getters.getPageLength;
     }
   },
+  watch: {
+    page: function() {
+      this.$refs.player.forEach((el) => {
+        el.removeFromTransport();
+      });
+      console.log(this.music);
+    }
+  },
   methods: {
     downloadButton() {
       console.log("download");
@@ -101,7 +109,6 @@ export default {
       // console.log(MusicDummies);
     },
     musicPlayButton() {
-      console.log(this.$refs);
       if (this.play) {
         Tone.Transport.pause();
       } else {
