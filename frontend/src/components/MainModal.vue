@@ -17,7 +17,7 @@
                         <div>
                             <label>링크: </label><input style="width: 20em;" class="input" ref="link" :value="address">
                         </div>
-                        <v-btn @click="copy">복사</v-btn>
+                        <v-btn @click="copy"><v-icon>mdi-content-copy</v-icon></v-btn>
                     </v-card-text>
                     <v-spacer></v-spacer>
                     <v-card-actions class="card-actions pb-4">

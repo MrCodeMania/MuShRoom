@@ -1,5 +1,6 @@
 <template>
     <v-menu
+        left
         open-on-hover="open-on-hover"
         top="top"
         offset-x="offset-x"
@@ -10,6 +11,7 @@
                 dark="dark"
                 v-bind="attrs"
                 v-on="on">
+                <v-icon class="pr-2">mdi-share-variant</v-icon>
                 Share
             </v-btn>
         </template>

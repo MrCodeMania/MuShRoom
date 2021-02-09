@@ -12,6 +12,7 @@
       :src="logo"
       @click="toMain">
     </v-img>
+    <v-spacer></v-spacer>
     <div v-if="isRoom">
         <Share/>
     </div>
