@@ -4,15 +4,19 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
-import org.bson.types.ObjectId;
+import ssafy.a105.mushroom.vo.MultiId;
 
-// ObjectId를 String으로 출력하기 위한 Curton Serializer
-public class CustomObjectIdSerializer extends JsonSerializer<ObjectId> {
+public class CustomObjectIdSerializer extends JsonSerializer<MultiId> {
 
   @Override
-  public void serialize(ObjectId id, JsonGenerator gen,
+  public void serialize(MultiId id, JsonGenerator gen,
       SerializerProvider serializerProvider) throws IOException {
 
-    gen.writeString(id.toString());
+    gen.writeStartObject();
+    gen.writeFieldName("masterId");
+    gen.writeString(id.getMasterId());
+    gen.writeFieldName("slaveId");
+    gen.writeString(id.getSlaveId());
+    gen.writeEndObject();
   }
 }
