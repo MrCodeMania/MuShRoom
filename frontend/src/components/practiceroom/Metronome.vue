@@ -53,20 +53,18 @@
     <v-card-text class="d-flex align-center pa-0"> </v-card-text>
     <v-card-actions>
       <v-btn
-        fab
-        small
-        elevation="0"
-        color="amber lighten-1"
+        icon
+        large
+        color="black"
         v-if="isPlaying()"
         @click="onStop"
       >
         <v-icon>mdi-stop</v-icon>
       </v-btn>
       <v-btn
-        fab
-        small
-        elevation="0"
-        color="amber lighten-1"
+        icon
+        large
+        color="black"
         v-else
         @click="onStart"
       >
@@ -76,28 +74,25 @@
       <div>
         {{ volume | volume(mute) }}
         <v-btn
-          fab
-          small
-          elevation="0"
-          color="amber lighten-1"
+          icon
+          large
+          color="black"
           @click="onVolumeDown"
         >
-          <v-icon>mdi-volume-medium</v-icon>
+          <v-icon>mdi-volume-minus</v-icon>
         </v-btn>
         <v-btn
-          fab
-          small
-          elevation="0"
-          color="amber lighten-1"
+          icon
+          large
+          color="black"
           @click="onVolumeUp"
         >
-          <v-icon>mdi-volume-high</v-icon>
+          <v-icon>mdi-volume-plus</v-icon>
         </v-btn>
         <v-btn
-          fab
-          small
-          elevation="0"
-          color="amber lighten-1"
+          icon
+          large
+          :color="mute ? 'black': '' "
           @click="onVolumeMute"
         >
           <v-icon>mdi-volume-off</v-icon>

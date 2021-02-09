@@ -21,10 +21,14 @@
             class="d-flex align-end"
           >
             <v-container
-              class="text-center
-            align-end"
-            >
-              <v-btn fab small color="amber lighten-4" :disabled="page == 1" @click="moveLeft()">
+            class="text-center
+            align-end">
+              <v-btn
+              fab
+              icon 
+              color="black"
+              :disabled="page == 1"
+              @click="moveLeft()">
                 <v-icon>
                   mdi-chevron-left
                 </v-icon>
@@ -33,12 +37,11 @@
                 {{ page }}/{{ length }}
               </v-card>
               <v-btn
-                fab
-                small
-                color="amber lighten-4"
-                :disabled="page == 5 || page == length"
-                @click="moveRight()"
-              >
+              fab
+              icon 
+              color="black"
+              :disabled="page == 5 || page == length"
+              @click="moveRight()">
                 <v-icon>
                   mdi-chevron-right
                 </v-icon>

@@ -1,6 +1,6 @@
 package ssafy.a105.mushroom.controller;
 
-import org.bson.types.ObjectId;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ssafy.a105.mushroom.repository.MainRepository;
+import ssafy.a105.mushroom.service.MainService;
 import ssafy.a105.mushroom.vo.DataDTO;
 
 @CrossOrigin(origins = "*")
@@ -17,21 +17,27 @@ import ssafy.a105.mushroom.vo.DataDTO;
 public class SimpleController {
 
   @Autowired
-  private MainRepository mainRepository;
+  private final MainService mainService;
 
+  public SimpleController(MainService mainService) {
+    this.mainService = mainService;
+  }
+
+  @GetMapping("/data")
+  public ResponseEntity<List<DataDTO>> getAllData() {
+    return new ResponseEntity<>(mainService.getAllData(), HttpStatus.OK);
+  }
+
+  // 새로운 방 생성
   @PostMapping("/data")
   public ResponseEntity<DataDTO> insertData() {
-    DataDTO data = new DataDTO();
-    mainRepository.save(data);
-    return new ResponseEntity<>(data, HttpStatus.OK);
+    return new ResponseEntity<>(mainService.makeData(), HttpStatus.OK);
   }
 
   @GetMapping("/data/{id}")
-  public ResponseEntity<DataDTO> getOneData(@PathVariable ObjectId id) {
-    DataDTO data = mainRepository.findById(id).orElseThrow(() ->
-        new IllegalArgumentException("not exist")
-    );
-
-    return new ResponseEntity<>(data, HttpStatus.OK);
+  public ResponseEntity<DataDTO> getOneData(@PathVariable String id) {
+    return new ResponseEntity<>(mainService.getOneData(id), HttpStatus.OK);
   }
+
+
 }

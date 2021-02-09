@@ -2,8 +2,8 @@
   <div>
     <v-sheet color="white" height="50" width="100%" rounded>
       <div class="mt-5 mb-3 d-flex justify-space-around">
-        <v-btn @click="expandChange(1)">record </v-btn>
-        <v-btn @click="expandChange(2)">upload </v-btn>
+        <v-btn text style="font-size: 1.5em;" :class="expand ? 'select' : 'not_select'" @click="expandChange(1)">record </v-btn>
+        <v-btn text style="font-size: 1.5em;" :class="expand2 ? 'select' : 'not_select'" @click="expandChange(2)">upload </v-btn>
       </div>
     </v-sheet>
     <v-expand-transition>
@@ -141,4 +141,15 @@ export default {
 
 
 <style>
+
+.select {
+  color: green !important;
+  font-size: 1.75em !important;
+}
+
+.not_select {
+  color: gray !important;
+}
+
+
 </style>
