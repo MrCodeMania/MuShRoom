@@ -3,6 +3,7 @@ package ssafy.a105.mushroom.vo;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.EmbeddedId;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,7 +16,12 @@ public class DataDTO {
 
   @JsonSerialize(using = CustomObjectIdSerializer.class)
   @MongoId
-  ObjectId id;
+  @EmbeddedId
+  private MultiId id;
   List<Music> musicList = new ArrayList<>();
   List<Record> recordList = new ArrayList<>();
+
+  public DataDTO(MultiId id) {
+    this.id = id;
+  }
 }

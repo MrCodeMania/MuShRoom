@@ -25,7 +25,7 @@ public class SocketController {
   @SendTo("/socket/music/send/{id}") // /send로 메시지를 반환합니다.
   // SocketHandler는 1) /receive에서 메시지를 받고, /send로 메시지를 보내줍니다.
   // 정의한 SocketVO를 1) 인자값, 2) 반환값으로 사용합니다.
-  public TestClass<Music> socketHandler(@DestinationVariable ObjectId id, TestClass<Music> obj) {
+  public TestClass<Music> socketHandler(@DestinationVariable String id, TestClass<Music> obj) {
     // 생성자로 반환값을 생성합니다.
     DataDTO data = mainRepository.findById(id).orElseThrow(() -> {
       return new IllegalArgumentException("not exist");
