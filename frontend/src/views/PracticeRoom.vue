@@ -28,8 +28,8 @@
             align-end">
               <v-btn
               fab
-              small
-              color="amber lighten-4"
+              icon 
+              color="black"
               :disabled="page == 1"
               @click="moveLeft()">
                 <v-icon>
@@ -44,8 +44,8 @@
               </v-card>
               <v-btn
               fab
-              small
-              color="amber lighten-4"
+              icon 
+              color="black"
               :disabled="page == 5 || page == length"
               @click="moveRight()">
                 <v-icon>

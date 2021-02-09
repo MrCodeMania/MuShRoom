@@ -7,26 +7,29 @@
             v-if="this.state == 'paused' || this.state == 'stopped'"
             class="ml-3 mr-3 pa-1"
             style="min-width: 5px"
+            icon color="black"
             :disabled="player == null"
             v-on:click="start()"
           >
-            <v-icon dense>mdi-play</v-icon>
+            <v-icon>mdi-play</v-icon>
           </v-btn>
           <v-btn
             v-else
             class="ml-3 mr-3 pa-1"
             style="min-width: 5px"
+            icon color="black"
             :disabled="player == null"
             v-on:click="pause()"
           >
-            <v-icon dense>mdi-pause</v-icon>
+            <v-icon>mdi-pause</v-icon>
           </v-btn>
           <v-btn
             class="ml-0 mr-3 pa-1"
             style="min-width: 5px"
+            icon color="black"
             v-on:click="stop()"
           >
-            <v-icon dense>mdi-stop</v-icon>
+            <v-icon>mdi-stop</v-icon>
           </v-btn>
         </div>
       </div>
@@ -39,14 +42,16 @@
 
       <div class="ml-3" style="flex: 1" v-if="status === 'Master'">
         <!-- dropdown button -->
-        <v-btn v-on:click="toggleDropdown()">
+        <v-btn icon color="black" v-on:click="toggleDropdown()">
           <v-icon v-if="isShow == 0">mdi-chevron-down</v-icon>
           <v-icon v-else>mdi-chevron-up</v-icon>
         </v-btn>
       </div>
 
       <div style="flex: 1">
-        <v-icon class="ml-2" dense @click="sendDelete(n)"  v-if="status === 'Master'">mdi-delete</v-icon>
+        <v-btn icon color="black" class="ml-2" @click="sendDelete(n)"  v-if="status === 'Master'">
+          <v-icon>mdi-delete</v-icon>
+        </v-btn>
       </div>
     </div>
 
