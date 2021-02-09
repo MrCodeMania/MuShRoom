@@ -208,6 +208,7 @@ export default {
     },
 
     createNoteSequence() {
+      var flag = 0
       const accentNote = "G2";
       const beatNote = "C2";
       const notes = [
@@ -219,6 +220,12 @@ export default {
           switch (note) {
             case accentNote:
               this.beatIndex = 0;
+              if (flag) {
+                console.log("왔고", this.recordStartState);
+                this.$store.commit("setRC", "startRecord");
+                console.log("변했어", this.recordStartState);
+                flag = 0
+              }
               accent.start(time);
               break;
             case beatNote:
@@ -227,9 +234,7 @@ export default {
                 this.beatIndex == this.beatsPerBar - 1 &&
                 this.recordStartState === "startMetro"
               ) {
-                console.log("왔고", this.recordStartState);
-                this.$store.commit("setRC", "startRecord");
-                console.log("변했어", this.recordStartState);
+                flag = 1
               }
               beat.start(time);
               break;
