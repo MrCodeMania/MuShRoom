@@ -173,22 +173,21 @@ export default {
       this.isStopped = true;
     },
     onRecordStop() {
-      if (this.beatIndex != this.beatsPerBar - 1) {
-        console.log("마지막 박자까지 가", this.beatIndex);
-        setTimeout(() => {
-          this.onStop();
-          console.log(Transport.seconds);
-        }, (1000 * 60) / (this.bpm + 20));
-      } else {
+      if (this.beatIndex == this.beatsPerBar - 1) {
         console.log("마지막 박자에 멈춰", this.beatIndex);
-        this.$store.commit("setRC", "");
+        this.$store.commit("setRC", "stopRecord");
         console.log("끝났어", this.recordStartState);
         Transport.stop();
         Transport.cancel(0);
         Transport.seconds = 0;
         this.beatIndex = 0;
         this.isStopped = true;
+        return;
       }
+      console.log("마지막 박자까지 가", this.beatIndex);
+      setTimeout(() => {
+        this.onRecordStop();
+      }, (1000 * 60) / (this.bpm + 20));
     },
 
     onVolumeDown() {
