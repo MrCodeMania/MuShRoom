@@ -18,11 +18,11 @@
         <v-btn class="mr-2 ml-1" icon dark color="error" @click="deleteThis"
           ><v-icon dark>mdi-delete</v-icon></v-btn
         >
-
       </v-card-title>
-      
 
-      <v-card-text><Waveform :url="downloadURL" height="64" /></v-card-text>
+      <v-card-text class="none"
+        ><Waveform :url="downloadURL" height="64"
+      /></v-card-text>
     </v-card>
   </div>
 </template>
@@ -55,4 +55,7 @@ export default {
 </script>
 
 <style scoped >
+.none {
+  pointer-events: none;
+}
 </style>
