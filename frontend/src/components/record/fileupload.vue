@@ -14,7 +14,7 @@
         flat
       >
       </v-file-input
-      ><v-btn width="10%" class="mt-5 ml-2" @click="upload"
+      ><v-btn icon color="black" large class="mt-5 ml-2" @click="upload"
         ><v-icon>mdi-plus-circle</v-icon></v-btn
       >
     </v-sheet>

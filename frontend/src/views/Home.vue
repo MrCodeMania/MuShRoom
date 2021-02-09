@@ -7,8 +7,8 @@
       class="d-flex align-center justify-center"
       height="100%">
       <v-btn
-      fab
-      text
+      icon
+      color="white"
       width="200" height="200" 
       x-large
       @click="openModal">

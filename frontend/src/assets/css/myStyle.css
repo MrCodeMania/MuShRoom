@@ -1,7 +1,7 @@
-html {
-    height: 100%;
+.negative {
+    color: gray !important;
 }
 
-.test {
-    background-color: rgb(196, 44, 44);
+.positive {
+    color: green !important;
 }

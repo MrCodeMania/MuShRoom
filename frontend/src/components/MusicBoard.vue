@@ -28,14 +28,15 @@
     >
       <v-card class="d-flex justify-start" elevation="0">
         <!-- 페이지 생성, 삭제 -->
-        <v-btn v-if="status === 'Master'" fab text height="50px" :disabled="length == 5" @click="addPage">
+        <v-btn v-if="status === 'Master'" class="musicboard_btn ml-5" icon color="black" large :disabled="length == 5" @click="addPage">
           <v-icon large> mdi-card-plus </v-icon>
         </v-btn>
         <v-btn
           v-if="status === 'Master'"
-          fab
-          text
-          height="50px"
+          icon
+          class="musicboard_btn"
+          color="black"
+          large
           :disabled="length == 1"
           @click="removePage"
         >
@@ -44,19 +45,19 @@
       </v-card>
       <!-- <v-btn height="50px" text @click="addMusicList">Test </v-btn> -->
       <v-card class="d-flex justify-end" elevation="0">
-        <v-btn fab height="50px" text @click="downloadButton">
-          <v-icon dark large>mdi-download-circle</v-icon>
+        <v-btn class="musicboard_btn" icon color="black" large @click="downloadButton">
+          <v-icon dark large>mdi-download</v-icon>
         </v-btn>
-        <v-btn fab height="50px" text @click="musicPlayButton">
+        <v-btn class="musicboard_btn" icon color="black" large @click="musicPlayButton">
           <div v-if="!play">
-            <v-icon dark large>mdi-arrow-right-drop-circle</v-icon>
+            <v-icon dark large>mdi-play</v-icon>
           </div>
           <div v-else>
-            <v-icon dark large>mdi-pause-circle</v-icon>
+            <v-icon dark large>mdi-pause</v-icon>
           </div>
         </v-btn>
-        <v-btn fab height="50px" text @click="musicStopButton">
-          <v-icon dark large>mdi-stop-circle</v-icon>
+        <v-btn class="musicboard_btn mr-5" icon color="black" large @click="musicStopButton">
+          <v-icon dark large>mdi-stop</v-icon>
         </v-btn>
       </v-card>
     </v-card>
@@ -163,4 +164,9 @@ export default {
 </script>
 
 <style>
+
+.musicboard_btn {
+  margin: 10px 5px 0px;
+}
+
 </style>
