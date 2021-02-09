@@ -36,7 +36,8 @@
       >
         <div v-for="(item, index) in records" :key="item.id">
           <recordCard
-            v-on:delList="delRecord"
+            v-on:delRecord="delRecord"
+            v-on:addRecord="addRecord"
             v-bind:fileData="records[index]"
           />
         </div>
@@ -50,13 +51,21 @@ import recordBtn from "./record/recordBtn";
 import uploadBtn from "./record/fileupload";
 import recordCard from "./record/Audiocard";
 export default {
+  props: ['page'],
   data: () => {
     return {
       expand: false,
       expand2: false, // expand data
-      records: [], // 업로드하거나 녹음한거 리스트
-      idx: 0, //레코드 리스트의 번호
+      idx: 0,
     };
+  },
+  computed: {
+    records: function() {
+      return this.$store.getters.getRecords;
+    },
+  },
+  created() {
+    this.idx = this.records.length;
   },
   components: {
     recordCard,
@@ -96,7 +105,7 @@ export default {
       }
     },
     addCard(data) {
-      this.records.push(data);
+      this.$store.commit('updateRecord', data);
     },
     receiveData(data) {
       data["id"] = this.idx;
@@ -104,18 +113,28 @@ export default {
       console.log(data);
       this.addCard(data);
     },
-
-    delRecord(data) {
-      //삭제
-      var idx = 0;
-      for (var i = 0; i < this.records.length; i++) {
-        if (this.records[i].id === data) {
+    delRecord(id) {
+      var idx = 0, len = this.records.length;
+      for (var i = 0; i < len; i++) {
+        if (this.records[i].id === id) {
           idx = i;
           break;
         }
       }
-      this.records.splice(idx, 1);
+      this.$store.commit('deleteRecord', idx);
     },
+    addRecord(id) {
+      var record = {}, len = this.records.length, page = this.page;
+      for (var i = 0; i < len; i++) {
+        if (this.records[i].id === id) {
+          record = this.records[i];
+          break;
+        }
+      }
+      this.$store.commit('addMusic', {
+          page, record
+        });
+    }
   },
 };
 </script>

@@ -21,7 +21,7 @@
       </v-card-title>
 
       <v-card-text class="none"
-        ><Waveform :url="downloadURL" height="64"
+        ><Waveform :url="fileData.downloadURL" height="64"
       /></v-card-text>
     </v-card>
   </div>
@@ -35,21 +35,14 @@ export default {
   },
   data: () => ({
     showMenu: false,
-    downloadURL: "",
-    fileName: "",
   }),
   methods: {
     deleteThis() {
-      this.$emit("delList", this.fileData.id);
+      this.$emit("delRecord", this.fileData.id);
     },
     addThis() {
-      this.$store.commit("pushURL", this.downloadURL);
-      this.$store.commit("pushName", this.fileName);
+      this.$emit("addRecord", this.fileData.id);
     },
-  },
-  created() {
-    this.downloadURL = this.fileData.downloadURL;
-    this.fileName = this.fileData.fileName;
   },
 };
 </script>
