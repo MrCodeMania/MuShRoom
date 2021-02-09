@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
-import org.bson.types.ObjectId;
 import ssafy.a105.mushroom.vo.MultiId;
 
 public class CustomObjectIdSerializer extends JsonSerializer<MultiId> {

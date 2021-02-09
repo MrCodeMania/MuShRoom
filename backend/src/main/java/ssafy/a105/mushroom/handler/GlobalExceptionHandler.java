@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
   private NotificationManager notificationManager;
 
   @ExceptionHandler(Exception.class)
-  public ResponseEntity globalException(Exception e, HttpServletRequest req) {
+  public ResponseEntity<ErrorMessage> globalException(Exception e, HttpServletRequest req) {
     e.printStackTrace();
     notificationManager.sendNotification(e, req.getRequestURI(), getParams(req));
 
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
 
   // 일반적으로 Param이 잘못되었을 때 발생하는 ErrorException
   @ExceptionHandler(HttpMessageNotReadableException.class)
-  public ResponseEntity wrongParamException(Exception e, HttpServletRequest req) {
+  public ResponseEntity<ErrorMessage> wrongParamException(Exception e, HttpServletRequest req) {
     e.printStackTrace();
     notificationManager.sendNotification(e, req.getRequestURI(), getParams(req));
 

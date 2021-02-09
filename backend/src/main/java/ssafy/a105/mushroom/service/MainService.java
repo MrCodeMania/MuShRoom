@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import ssafy.a105.mushroom.repository.MainRepository;
 import ssafy.a105.mushroom.vo.DataDTO;
 import ssafy.a105.mushroom.vo.MultiId;
+import ssafy.a105.mushroom.vo.Music;
+import ssafy.a105.mushroom.vo.Record;
 
 @Service
 public class MainService {
@@ -49,6 +51,67 @@ public class MainService {
     return mainRepository.findByIdMasterIdOrIdSlaveId(id, id)
         .orElseThrow(() -> new IllegalArgumentException("doc not exist"));
   }
+
+  public List<Music> insertMusic(String id, Integer index, Music music) {
+    DataDTO data = getOneData(id);
+    List<Music> musicList = data.getMusicList();
+    musicList.add(index, music);
+    data.setMusicList(musicList);
+    mainRepository.save(data);
+
+    return musicList;
+  }
+
+  public List<Music> deleteMusic(String id, Integer index) {
+    DataDTO data = getOneData(id);
+    List<Music> musicList = data.getMusicList();
+    musicList.remove(index.intValue());
+    data.setMusicList(musicList);
+    mainRepository.save(data);
+
+    return musicList;
+  }
+
+  public List<Music> updateMusic(String id, Integer index, Music music) {
+    DataDTO data = getOneData(id);
+    List<Music> musicList = data.getMusicList();
+    musicList.set(index, music);
+    data.setMusicList(musicList);
+    mainRepository.save(data);
+
+    return musicList;
+  }
+
+  public List<Record> insertRecord(String id, Integer index, Record record) {
+    DataDTO data = getOneData(id);
+    List<Record> recordList = data.getRecordList();
+    recordList.add(index, record);
+    data.setRecordList(recordList);
+    mainRepository.save(data);
+
+    return recordList;
+  }
+
+  public List<Record> deleteRecord(String id, Integer index) {
+    DataDTO data = getOneData(id);
+    List<Record> recordList = data.getRecordList();
+    recordList.remove(index.intValue());
+    data.setRecordList(recordList);
+    mainRepository.save(data);
+
+    return recordList;
+  }
+
+  public List<Record> updateRecord(String id, Integer index, Record record) {
+    DataDTO data = getOneData(id);
+    List<Record> recordList = data.getRecordList();
+    recordList.set(index, record);
+    data.setRecordList(recordList);
+    mainRepository.save(data);
+
+    return recordList;
+  }
+
 
   public String makeRandomString() {
     int leftLimit = 48; // 0

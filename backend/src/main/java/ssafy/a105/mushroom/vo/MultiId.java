@@ -8,6 +8,7 @@ import lombok.Data;
 @Embeddable
 @Data
 public class MultiId implements Serializable {
+
   private String masterId;
   private String slaveId;
 
@@ -17,5 +18,6 @@ public class MultiId implements Serializable {
     this.slaveId = slaveId;
   }
 
-  public MultiId() {}
+  public MultiId() {
+  }
 }

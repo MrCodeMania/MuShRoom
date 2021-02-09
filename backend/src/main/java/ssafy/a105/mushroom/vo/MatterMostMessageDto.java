@@ -13,12 +13,10 @@ import lombok.ToString;
 
 public class MatterMostMessageDto {
 
-  private MatterMostMessageDto() {
-  }
+  private MatterMostMessageDto() {}
 
   @Getter
   public static class Attachments {
-
     private Props props;
     private List<Attachment> attachments;
 
@@ -46,7 +44,6 @@ public class MatterMostMessageDto {
   @Builder
   @ToString
   public static class Attachment {
-
     private String channel;
 
     private String pretext;
@@ -69,8 +66,7 @@ public class MatterMostMessageDto {
       this.title = e.getClass().getSimpleName();
       StringBuilder sb = new StringBuilder(text);
 
-      sb.append("**Error Message**").append('\n').append('\n').append("```").append(e.getMessage())
-          .append("```")
+      sb.append("**Error Message**").append('\n').append('\n').append("```").append(e.getMessage()).append("```")
           .append('\n').append('\n');
 
       this.text = sb.toString();
@@ -92,8 +88,7 @@ public class MatterMostMessageDto {
       this.addExceptionInfo(e, uri);
       StringBuilder sb = new StringBuilder(text);
 
-      sb.append("**Parameters**").append('\n').append('\n').append(params).append('\n')
-          .append('\n');
+      sb.append("**Parameters**").append('\n').append('\n').append(params).append('\n').append('\n');
 
       this.text = sb.toString();
       return this;
@@ -104,7 +99,6 @@ public class MatterMostMessageDto {
   @Getter
   @NoArgsConstructor
   public static class Props {
-
     private String card;
 
     public Props(Exception e) {
