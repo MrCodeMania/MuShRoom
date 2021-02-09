@@ -15,7 +15,9 @@
             fileData.fileName
           }}</span></v-card-title
         >
-        <v-card-text><Waveform :url="downloadURL" height="64" /></v-card-text>
+        <v-card-text id="none"
+          ><Waveform class="none" :url="downloadURL" height="64"
+        /></v-card-text>
       </v-card>
     </template>
     <v-list>
@@ -57,4 +59,7 @@ export default {
 </script>
 
 <style scoped >
+.none {
+  pointer-events: none;
+}
 </style>
