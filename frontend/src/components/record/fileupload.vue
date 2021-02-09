@@ -1,17 +1,23 @@
 <template>
-  <div class="d-flex align-center" width="100%">
-    <v-file-input
-      v-model="files"
-      color="deep-purple accent-4"
-      class="mt-5"
-      multiple
-      accept="audio/*"
-      outlined
-      hide-details
-      :show-size="1000"
-    >
-    </v-file-input
-    ><v-btn class="mt-5" @click="upload">추가하기</v-btn>
+  <div class="mx-auto align-center d-flex justify-center">
+    <v-sheet width="80%" class="d-flex align-center">
+      <v-file-input
+        v-model="files"
+        color="deep-purple accent-4"
+        class="mt-5"
+        multiple
+        accept="audio/*"
+        outlined
+        hide-details
+        full-width
+        :show-size="1000"
+        flat
+      >
+      </v-file-input
+      ><v-btn width="10%" class="mt-5 ml-2" @click="upload"
+        ><v-icon>mdi-plus-circle</v-icon></v-btn
+      >
+    </v-sheet>
   </div>
 </template>
 <script>
@@ -22,7 +28,7 @@ export default {
     files: undefined,
   }),
   methods: {
-    upload() {
+    async upload() {
       if (this.files === undefined) {
         return;
       }
@@ -32,7 +38,7 @@ export default {
         date = getYyyyMmDdMmSsToString(date);
         const file = { fileName: "", downloadURL: "" };
         data.append("file", this.files[i]);
-        sendfile
+        await sendfile
           .send(data)
           .then((result) => {
             file["fileName"] = result.data.fileName;

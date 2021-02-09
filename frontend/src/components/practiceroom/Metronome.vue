@@ -109,6 +109,7 @@
 
 <script>
 import Vue from "vue";
+import { mapState } from "vuex";
 import { Player, Sequence, Transport, start, Destination } from "tone";
 
 const accent = new Player(
@@ -171,24 +172,24 @@ export default {
       this.beatIndex = 0;
       this.isStopped = true;
     },
-
-    // onRecordStop() {
-    // onStop() {
-    //   if (this.beatIndex != this.beatsPerBar -1) {
-    //     console.log("마지막 박자까지 가", this.beatIndex)
-    //     setTimeout(() => {
-    //       this.onStop();
-    //       console.log(Transport.seconds)
-    //     }, 1000*60/(this.bpm+20))
-    //   } else {
-    //     console.log("마지막 박자에 멈춰", this.beatIndex)
-    //     Transport.stop();
-    //     Transport.cancel(0);
-    //     Transport.seconds = 0;
-    //     this.beatIndex = 0;
-    //     this.isStopped = true;
-    //   }
-    // },
+    onRecordStop() {
+      if (this.beatIndex != this.beatsPerBar - 1) {
+        console.log("마지막 박자까지 가", this.beatIndex);
+        setTimeout(() => {
+          this.onStop();
+          console.log(Transport.seconds);
+        }, (1000 * 60) / (this.bpm + 20));
+      } else {
+        console.log("마지막 박자에 멈춰", this.beatIndex);
+        this.$store.commit("setRC", "");
+        console.log("끝났어", this.recordStartState);
+        Transport.stop();
+        Transport.cancel(0);
+        Transport.seconds = 0;
+        this.beatIndex = 0;
+        this.isStopped = true;
+      }
+    },
 
     onVolumeDown() {
       this.mute = false;
@@ -223,6 +224,14 @@ export default {
               break;
             case beatNote:
               this.beatIndex += 1;
+              if (
+                this.beatIndex == this.beatsPerBar - 1 &&
+                this.recordStartState === "startMetro"
+              ) {
+                console.log("왔고", this.recordStartState);
+                this.$store.commit("setRC", "startRecord");
+                console.log("변했어", this.recordStartState);
+              }
               beat.start(time);
               break;
             default:
@@ -269,11 +278,11 @@ export default {
     },
     getRC(val) {
       if (val === "startMetro") {
+        this.onStart();
         console.log("METRO watched", val);
-        //this.recordStart();
       } else if (val === "stopMetro") {
         console.log("METRO watched", val);
-        //   this.onStop();
+        this.onRecordStop();
       }
     },
   },
@@ -285,6 +294,7 @@ export default {
     getRC() {
       return this.$store.getters.getRC;
     },
+    ...mapState(["recordStartState"]),
   },
 
   mounted() {
