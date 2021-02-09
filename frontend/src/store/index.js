@@ -38,7 +38,7 @@ export default new Vuex.Store({
       }]
     },
     status:"",
-    recordStartState: false,
+    recordStartState: "",
   },
   mutations: {
     pushURL(state, e = "") {

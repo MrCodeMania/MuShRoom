@@ -1,7 +1,6 @@
 package ssafy.a105.mushroom.vo;
 
 import java.util.Date;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
