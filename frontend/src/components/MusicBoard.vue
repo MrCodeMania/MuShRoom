@@ -11,7 +11,7 @@
       <ul class="px-auto pt-2">
         <Player
           v-for="(item, idx) in music"
-          :key="idx"
+          :key="item.id"
           :n="idx"
           :page="page"
           :music="item"
@@ -28,10 +28,11 @@
     >
       <v-card class="d-flex justify-start" elevation="0">
         <!-- 페이지 생성, 삭제 -->
-        <v-btn fab text height="50px" :disabled="length == 5" @click="addPage">
+        <v-btn v-if="status === 'Master'" fab text height="50px" :disabled="length == 5" @click="addPage">
           <v-icon large> mdi-card-plus </v-icon>
         </v-btn>
         <v-btn
+          v-if="status === 'Master'"
           fab
           text
           height="50px"
@@ -76,6 +77,9 @@ export default {
       play: false,
       scrollInvoked: 0,
     };
+  },
+  created(){
+      this.status = this.$store.state.status;
   },
   computed: {
     getURL() {

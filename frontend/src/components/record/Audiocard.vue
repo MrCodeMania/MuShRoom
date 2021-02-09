@@ -10,8 +10,12 @@
         v-bind="attrs"
         v-on="on"
       >
-        <v-card-title>{{ fileData.fileName }}</v-card-title>
-        <v-card-text><Waveform :url="fileData.url" height="64" /></v-card-text>
+        <v-card-title width="50%" max-width="60px"
+          ><span class="title font-weight-light">{{
+            fileData.fileName
+          }}</span></v-card-title
+        >
+        <v-card-text><Waveform :url="fileData.downloadURL" height="64" /></v-card-text>
       </v-card>
     </template>
     <v-list>
@@ -26,7 +30,6 @@
 </template>
 <script>
 import Waveform from "../practiceroom/Waveform";
-
 export default {
   props: ["fileData"],
   components: {

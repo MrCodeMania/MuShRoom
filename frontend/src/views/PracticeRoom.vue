@@ -77,9 +77,15 @@
         </v-row>
 
         <!-- 파일 목록 -->
-        <v-row no-gutters style="height:70vh">
-          <v-card elevation="0" width="100%" height="100%">
-            <Record :page="page" />
+        <v-row 
+        v-if="status === 'Master'"
+        no-gutters
+        style="height:70vh">
+          <v-card
+          elevation="0"
+          width="100%"
+          height="100%">
+            <Record :page="page"/>
           </v-card>
         </v-row>
       </v-col>
@@ -102,6 +108,15 @@ export default {
   },
   created() {
     this.$store.commit('setData');
+
+    // Status 저장
+
+    // URL을 읽거나 DB에서 받거나
+    // Status를 얻은 뒤, vuex에 저장
+    this.$store.commit("pushStatus", "Master");
+    //this.$store.commit("pushStatus", "ReadOnly");
+    
+    this.status = this.$store.state.status;
   },
   data() {
     return {

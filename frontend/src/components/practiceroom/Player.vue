@@ -35,7 +35,9 @@
         <Waveform :url="music.url" height="64"></Waveform>
       </div>
 
-      <div class="ml-3" style="flex: 1">
+      <!-- 이 부분부터 ReadOnly -->
+
+      <div class="ml-3" style="flex: 1" v-if="status === 'Master'">
         <!-- dropdown button -->
         <v-btn v-on:click="toggleDropdown()">
           <v-icon v-if="isShow == 0">mdi-chevron-down</v-icon>
@@ -44,7 +46,7 @@
       </div>
 
       <div style="flex: 1">
-        <v-icon class="ml-2" dense v-on:click="sendDelete()">mdi-delete</v-icon>
+        <v-icon class="ml-2" dense v-on:click="sendDelete()"  v-if="status === 'Master'">mdi-delete</v-icon>
       </div>
     </div>
 
@@ -207,6 +209,8 @@ export default {
         }
       };
     }).toDestination();
+    
+    this.status = this.$store.state.status;
   },
   methods: {
     start() {
@@ -288,6 +292,11 @@ export default {
       // Tone.Transport.start(); // play
     },
     sendDelete() {
+      if(!this.isExist) return;
+
+      this.currentTime = 0;
+      this.player.unsync();
+      this.isExist = false;
       this.$emit("deleteMusic", this.n);
     },
     setTime(sec) {

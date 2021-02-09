@@ -13,7 +13,7 @@
         height="130"
         width="100%"
         class="mx-auto"
-        ><recordBtn @sendData="receiveData"
+        ><recordBtn @sendData="receiveData" ref="recBtn"
       /></v-card>
     </v-expand-transition>
     <v-expand-transition>
@@ -44,7 +44,7 @@
       </v-card>
     </v-sheet>
   </div>
-</template>
+</template> 
 
 <script>
 import recordBtn from "./record/recordBtn";
@@ -54,10 +54,8 @@ export default {
   props: ['page'],
   data: () => {
     return {
-      showExpand: false,
       expand: false,
       expand2: false, // expand data
-      files: [],
       idx: 0,
     };
   },
@@ -75,7 +73,11 @@ export default {
     uploadBtn,
   },
   methods: {
+    rec_expand_close() {
+      this.$refs.recBtn.expandInit();
+    },
     expandChange(data) {
+      if (data === 1) this.rec_expand_close();
       if (this.showExpand === true) {
         if (this.expand == true && data === 1) {
           this.expand = false;
@@ -138,5 +140,5 @@ export default {
 </script>
 
 
-<style scoped lang="scss">
+<style>
 </style>

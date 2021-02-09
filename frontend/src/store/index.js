@@ -11,6 +11,7 @@ export default new Vuex.Store({
     myName: "여기에 이름",
     data: { // 연습실이 갖는 전체 데이터
       musicBoard: [{  //  왼쪽 컴포넌트
+        idx: Number,
         list: [{  // 추가된 음악 리스트
           id: Number,
           url: String,
@@ -32,13 +33,15 @@ export default new Vuex.Store({
       }],
       recordBoard: [{ // 오른쪽 컴포넌트
         id: Number,
-        url: String,
+        downloadURL: String,
         fileName: String,
       }]
-    }
+    },
+    status:"",
+    recordStartState: ""
   },
   mutations: {
-    pushURL(state,e=""){
+    pushURL(state, e = "") {
       state.url = e;
     },
     pushName(state, name = "") {
@@ -47,7 +50,7 @@ export default new Vuex.Store({
     //  새로고침 시 data 초기화
     setData(state) {
       state.data = {
-        musicBoard: [{ list: [] }],
+        musicBoard: [{ idx: 0, list: [] }],
         recordBoard: []
       };
     },
@@ -62,7 +65,8 @@ export default new Vuex.Store({
     //  recordBoard에서 musicBoard으로 음악 추가
     addMusic(state, { page, record }) {
       state.data.musicBoard[page - 1].list.push({
-        url: record.url,
+        id: ++state.data.musicBoard[page - 1].idx,
+        url: record.downloadURL,
         fileName: record.fileName,
         timestamp: '',
         distortion: {
@@ -93,7 +97,7 @@ export default new Vuex.Store({
     //  musicBoard에 페이지 추가
     addPage(state, pageIdx) {
       state.data.musicBoard.splice(pageIdx, 0, {
-        list: []
+        idx: 0, list: []
       });
       console.log(state.data.musicBoard);
     },
@@ -101,6 +105,13 @@ export default new Vuex.Store({
     removePage(state, pageIdx) {
       state.data.musicBoard.splice(pageIdx-1, 1);
       console.log(state.data.musicBoard);
+    },
+    pushStatus(state, status){
+      state.status = status;
+      console.log(state.status);
+    },
+    setRC(state, start="") {
+      state.recordStartState = start
     }
   },
   getters: {
@@ -119,6 +130,9 @@ export default new Vuex.Store({
     getBoard: (state) => (page) => {
       return state.data.musicBoard[page-1].list;
     },
+    getRC(state) {
+      return state.recordStartState;
+    }
   },
   actions: {
   },

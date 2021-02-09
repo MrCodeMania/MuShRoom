@@ -32,7 +32,7 @@ export default {
   props: {
     attempts: { type: Number },
     time: { type: Number },
-    bitRate: { type: Number, default: 128 },
+    bitRate: { type: Number, default: 192 },
     sampleRate: { type: Number, default: 44100 },
 
     micFailed: { type: Function },
@@ -64,19 +64,16 @@ export default {
       }
 
       if (!this.isRecording || (this.isRecording && this.isPause)) {
-        setTimeout(
-          function () {
-            console.log("녹음시작!");
-            this.recorder.start();
-          }.bind(this),
-          3000
-        );
+        // this.$store.commit("setRC", "startMetro");
+        console.log("메트로놈으로 시작신호 보냄");
+        this.recorder.start(); // 메트로놈 연동시에는 주석처리
       }
     },
     stopRecorder() {
       if (!this.isRecording) {
         return;
       }
+      this.$store.commit("setRC", "stopMetro");
       this.recorder.stop();
       this.recordList = this.recorder.recordList();
     },
@@ -111,6 +108,18 @@ export default {
         this.stopRecorder();
       }
       return convertTimeMMSS(this.recorder.duration);
+    },
+    getRC() {
+      return this.$store.getters.getRC;
+    },
+  },
+
+  watch: {
+    getRC(val) {
+      if (val === "startRecord") {
+        console.log("RECBTN watch", val);
+        this.recorder.start();
+      }
     },
   },
 };
