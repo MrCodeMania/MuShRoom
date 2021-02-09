@@ -95,10 +95,11 @@ export default {
   },
   watch: {
     page: function() {
-      this.$refs.player.forEach((el) => {
-        el.removeFromTransport();
-      });
-      console.log(this.music);
+      if (this.$refs.player) {
+        this.$refs.player.forEach((el) => {
+          el.removeFromTransport();
+        });
+      }
     }
   },
   methods: {
@@ -136,11 +137,9 @@ export default {
     },
     deleteMusic(id) {
       let page = this.page, idx = id;
-      console.log(idx);
       this.$store.commit('deleteMusic', {
             page, idx
           });
-        // this.music.splice(i, 1).list;
     },
     addPage() {
       this.$store.commit('addPage', this.page);

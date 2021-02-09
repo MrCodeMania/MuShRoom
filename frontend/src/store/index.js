@@ -63,8 +63,8 @@ export default new Vuex.Store({
     },
     //  recordBoard에서 musicBoard으로 음악 추가
     addMusic(state, { page, record }) {
-      state.data.musicBoard[page - 1].list.push({
-        id: ++state.data.musicBoard[page - 1].idx+record.downloadURL,
+      state.data.musicBoard[page].list.push({
+        id: ++state.data.musicBoard[page].idx+record.downloadURL,
         url: record.downloadURL,
         fileName: record.fileName,
         timestamp: '',
@@ -84,22 +84,21 @@ export default new Vuex.Store({
     },
     // player에서 바꾼 option update
     updateMusic(state, {page, music}) {
-      state.data.musicBoard[page - 1].list.splice(music.id, 1, music);
+      state.data.musicBoard[page].list.splice(music.id, 1, music);
     },
     // musicBoard에서 음악 삭제
     deleteMusic(state, { page, idx }) {
-      state.data.musicBoard[page - 1].list.splice(idx, 1);
-      // state.data.musicBoard[page-1].list.splice(idx, 1);
+      state.data.musicBoard[page].list.splice(idx, 1);
     },
     //  musicBoard에 페이지 추가
     addPage(state, pageIdx) {
-      state.data.musicBoard.splice(pageIdx, 0, {
+      state.data.musicBoard.splice(pageIdx+1, 0, {
         idx: 0, list: []
       });
     },
     //  musicBoard에서 페이지 삭제
     removePage(state, pageIdx) {
-      state.data.musicBoard.splice(pageIdx-1, 1);
+      state.data.musicBoard.splice(pageIdx, 1);
     },
     pushStatus(state, status){
       state.status = status;
@@ -123,9 +122,7 @@ export default new Vuex.Store({
     },
     // return page 번호와 일치하는 musicBoard
     getBoard: (state) => (page) => {
-      console.log(page - 1);
-      console.log(state.data.musicBoard[page-1].list);
-      return state.data.musicBoard[page-1].list;
+      return state.data.musicBoard[page].list;
     },
     getRC(state) {
       return state.recordStartState;
