@@ -1,6 +1,7 @@
 <template>
-  <v-main style="background-color: #FFECB3">
-    <Header />
+  <v-main
+  class="main-color">
+    <Header/>
 
     <!-- 부모 row -->
     <v-row no-gutters>
@@ -72,11 +73,12 @@
         <v-row 
         v-if="status === 'Master'"
         no-gutters
-        style="height:70vh">
+        style="height:72vh">
           <v-card
           elevation="0"
           width="100%"
-          height="100%">
+          height="100%"
+          class="component-color">
             <Record :page="page"/>
           </v-card>
         </v-row>
