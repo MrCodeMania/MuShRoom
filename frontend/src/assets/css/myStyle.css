@@ -11,3 +11,23 @@
     border-color: black;
     border-radius: 12px !important;
   }
+
+
+.nav-color {
+    background-color: #161929 !important;
+    /* background-color: #222F3D !important; */
+}
+
+.component-color {
+    background-color: #CBCACC !important;
+    /* background-color: #D7C9B2 !important; */
+}
+
+.main-color {
+    background-color: #7992A9 !important;
+    /* background-color: #6E8CAE !important; */
+}
+
+.smallcomponent-color {
+    background-color: #83AAD2 !important;
+}

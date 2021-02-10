@@ -1,15 +1,15 @@
 <template>
-  <v-card class="musicBoard" elevation="0" width="100%" height="100%">
+  <v-card class="musicBoard component-color" elevation="0" width="100%" height="100%">
     <v-card
       id="musicListId"
-      class="musicList overflow-y-auto"
+      class="musicList overflow-y-auto component-color"
       min-height="70vh"
       max-height="70vh"
       v-scroll.self="onScroll"
       elevation="0"
     >
       <Player
-        class="ma-3 border"
+        class="ma-3 border smallcomponent-color"
         v-for="item in music"
         v-bind:key="item.id"
         v-bind:title="item.title"
@@ -21,11 +21,11 @@
     </v-card>
     <v-divider></v-divider>
     <v-card
-      class="buttonBar d-flex justify-space-between"
+      class="buttonBar d-flex justify-space-between component-color"
       elevation="0"
       width="100%"
     >
-      <v-card class="d-flex justify-start" elevation="0">
+      <v-card class="d-flex justify-start component-color" elevation="0">
         <!-- 페이지 생성, 삭제 -->
         <v-btn v-if="status === 'Master'" class="musicboard_btn ml-5" icon color="black" large :disabled="length == 5" @click="addPage">
           <v-icon large> mdi-card-plus </v-icon>
@@ -43,8 +43,8 @@
         </v-btn>
       </v-card>
       <!-- <v-btn height="50px" text @click="addMusicList">Test </v-btn> -->
-      <v-card class="d-flex justify-end" elevation="0">
-        <v-btn class="musicboard_btn" icon color="black" large @click="downloadButton">
+      <v-card class="d-flex justify-end component-color" elevation="0">
+        <v-btn class="musicboard_btn pt-2" icon color="black" large @click="downloadButton">
           <v-icon dark large>mdi-download</v-icon>
         </v-btn>
         <v-btn class="musicboard_btn" icon color="black" large @click="musicPlayButton">

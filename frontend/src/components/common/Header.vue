@@ -1,6 +1,6 @@
 <template>
   <v-app-bar
-  color="light-green lighten-1"
+  color="nav-color"
   tile
   flat
   rounded
