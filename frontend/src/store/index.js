@@ -10,31 +10,10 @@ export default new Vuex.Store({
     myName: "여기에 이름",
     data: { // 연습실이 갖는 전체 데이터
       musicBoard: [{  //  왼쪽 컴포넌트
-        idx: Number,
-        list: [{  // 추가된 음악 리스트
-          id: String,
-          url: String,
-          fileName: String,
-          timestamp: String,
-          distortion: {
-            object: Object,
-            value: Number
-          },
-          volume: {
-            object: Object,
-            value: Number
-          },
-          gain: {
-            object: Object,
-            value: Number
-          },
-        }]
+        idx: 0,
+        list: [] // 추가된 음악 리스트
       }],
-      recordBoard: [{ // 오른쪽 컴포넌트
-        id: Number,
-        downloadURL: String,
-        fileName: String,
-      }]
+      recordBoard: [] // 오른쪽 컴포넌트
     },
     status:"",
     recordStartState: "",
