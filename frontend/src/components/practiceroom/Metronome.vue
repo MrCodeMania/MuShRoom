@@ -28,7 +28,7 @@
             flat
             solo
             type="number"
-            background-color="#7992A9 "
+            background-color="#CBCACC "
             style="max-width: 100px; width: auto; font-size: 2em"
           ></v-text-field>
         </div>
@@ -42,7 +42,7 @@
             flat
             solo
             type="number"
-            background-color="#7992A9 "
+            background-color="#CBCACC "
             single-line
             style="max-width: 80px; width: auto; font-size: 2em"
             hint="Beats/bar"

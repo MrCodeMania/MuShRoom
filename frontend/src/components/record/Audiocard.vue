@@ -18,11 +18,11 @@
         <v-btn class="mr-2 ml-1" icon dark color="error" @click="deleteThis"
           ><v-icon dark>mdi-delete</v-icon></v-btn
         >
-
       </v-card-title>
-      
 
-      <v-card-text><Waveform :url="downloadURL" height="64" /></v-card-text>
+      <v-card-text class="none"
+        ><Waveform :url="fileData.downloadURL" height="64"
+      /></v-card-text>
     </v-card>
   </div>
 </template>
@@ -35,24 +35,20 @@ export default {
   },
   data: () => ({
     showMenu: false,
-    downloadURL: "",
-    fileName: "",
   }),
   methods: {
     deleteThis() {
-      this.$emit("delList", this.fileData.id);
+      this.$emit("delRecord", this.fileData.id);
     },
     addThis() {
-      this.$store.commit("pushURL", this.downloadURL);
-      this.$store.commit("pushName", this.fileName);
+      this.$emit("addRecord", this.fileData.id);
     },
-  },
-  created() {
-    this.downloadURL = this.fileData.downloadURL;
-    this.fileName = this.fileData.fileName;
   },
 };
 </script>
 
 <style scoped >
+.none {
+  pointer-events: none;
+}
 </style>
