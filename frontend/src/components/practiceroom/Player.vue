@@ -32,9 +32,9 @@
           <v-icon>mdi-stop</v-icon>
         </v-btn>
       </div>
-        
+
       <div class="" style="flex: 10; background-color: blue;">
-        <Waveform :url="url" height="64"></Waveform>
+        <Waveform :url="music.url" height="64"></Waveform>
       </div>
 
       <!-- 이 부분부터 ReadOnly -->
@@ -46,6 +46,12 @@
         </v-btn>
       </div>
 
+
+      <div style="flex: 1">
+        <v-btn icon color="black" class="ml-2" @click="sendDelete()"  v-if="status === 'Master'">
+          <v-icon>mdi-delete</v-icon>
+        </v-btn>
+      </div>
     </div>
 
     <div>
@@ -60,6 +66,7 @@
                 min="-30"
                 max="20"
                 step="0.01"
+<<<<<<< frontend/src/components/practiceroom/Player.vue
                 v-model="volume.value"
                 class="slider ml-2"
                 name="volume"
@@ -162,27 +169,15 @@ import Waveform from "./Waveform.vue";
 export default {
   name: "Player",
   props: {
-    title: String,
-    url: String,
-    n: Number,
+    page: Number,
+    music: Object,
+    n: Number
   },
   components: {
     Waveform,
   },
   data() {
     return {
-      distortion: {
-        object: null,
-        value: 0,
-      },
-      volume: {
-        object: null,
-        value: -5,
-      },
-      gain: {
-        object: null,
-        value: 0,
-      },
       player: null,
       state: "stopped",
       isShow: 0,
@@ -195,7 +190,7 @@ export default {
     };
   },
   created() {
-    const player = new Tone.Player(this.url, () => {
+    const player = new Tone.Player(this.music.url, () => {
       this.player = player;
       this.player.onstop = () => {
         console.log(this.state);
@@ -211,6 +206,24 @@ export default {
     }).toDestination();
     
     this.status = this.$store.state.status;
+  },
+  watch: {
+    music: function() {
+      const player = new Tone.Player(this.music.url, () => {
+      this.player = player;
+      this.player.onstop = () => {
+        console.log(this.state);
+        if (this.state == "stopped") {
+          Tone.Transport.stop();
+        } else if (this.state == "paused") {
+          Tone.Transport.stop();
+        } else {
+          // 기본적으로 종료되면 started로 넘어옴
+          this.stop();
+        }
+      };
+    }).toDestination();
+    }
   },
   methods: {
     start() {
@@ -246,32 +259,32 @@ export default {
       this.isExist = false;
     },
     changeDistortion(value) {
-      this.distortion.object.distortion = value;
+      this.music.distortion.object.distortion = value;
     },
     changeVolume(value) {
       this.player.volume.value = value;
       console.log(this.player.volume.value);
     },
     changeGain(value) {
-      this.gain.object.gain.value = value;
+      this.music.gain.object.gain.value = value;
     },
     addGain() {
       const gain = new Tone.Gain(0).toDestination();
-      this.gain.object = gain;
+      this.music.gain.object = gain;
       this.player.connect(gain);
     },
     addDistortion() {
       const distortion = new Tone.Distortion(0).toDestination();
-      this.distortion.object = distortion;
+      this.music.distortion.object = distortion;
       this.player.connect(distortion);
     },
     delGain() {
-      this.player.disconnect(this.gain.object);
-      this.gain.object = null;
+      this.player.disconnect(this.music.gain.object);
+      this.music.gain.object = null;
     },
     delDistortion() {
-      this.player.disconnect(this.distortion.object);
-      this.distortion.object = null;
+      this.player.disconnect(this.music.distortion.object);
+      this.music.distortion.object = null;
     },
     toggleDropdown() {
       this.isShow ^= 1;
@@ -287,12 +300,18 @@ export default {
       if (this.isExist) return;
 
       Tone.start();
-      this.player.sync().start();
+      this.player.sync().start(0);
       this.isExist = true;
       // Tone.Transport.start(); // play
     },
-    sendDelete(n) {
-      this.$emit("deleteMusic", n);
+    removeFromTransport(){
+      this.currentTime = 0;
+      this.player.unsync();
+      this.isExist = false;
+    },
+    sendDelete() {
+      this.removeFromTransport();
+      this.$emit("deleteMusic", this.n);
     },
     setTime(sec) {
       console.log("Player set time: ", sec);

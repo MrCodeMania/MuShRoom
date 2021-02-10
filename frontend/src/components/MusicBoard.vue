@@ -8,16 +8,16 @@
       v-scroll.self="onScroll"
       elevation="0"
     >
-      <Player
-        class="ma-3 border smallcomponent-color"
-        v-for="item in music"
-        v-bind:key="item.id"
-        v-bind:title="item.title"
-        v-bind:url="item.url"
-        v-bind:options="item.options"
-        @deleteMusic="deleteMusic(item.id)"
-        ref="player"
-      />
+        <Player
+          class="ma-3 border smallcomponent-color"
+          v-for="(item, idx) in music"
+          :key="item.id"
+          :n="idx"
+          :page="page"
+          :music="item"
+          @deleteMusic="deleteMusic"
+          ref="player"
+        />
     </v-card>
     <v-divider></v-divider>
     <v-card
@@ -68,31 +68,40 @@ import Player from "./practiceroom/Player";
 import * as Tone from "tone";
 
 export default {
-  props: ["pageData", "length", "page"],
+  props: ["page"],
   components: {
     Player,
   },
   data() {
     return {
-      times: 0, // id 증진 넘버
-      musicURL: "",
-      music: this.pageData,
       play: false,
       scrollInvoked: 0,
     };
   },
   created(){
-      this.status = this.$store.state.status;
+    this.status = this.$store.state.status;
+  },
+  computed: {
+    getURL() {
+      return this.$store.getters.getURL;
+    },
+    music: function() {
+      return this.$store.getters.getBoard(this.page);
+    },
+    length: function() {
+      return this.$store.getters.getPageLength;
+    }
+  },
+  watch: {
+    page: function() {
+      if (this.$refs.player) {
+        this.$refs.player.forEach((el) => {
+          el.removeFromTransport();
+        });
+      }
+    }
   },
   methods: {
-    addMusicList(tempTitle) {
-      this.music.push({
-        id: this.times++,
-        title: tempTitle,
-        url: this.musicURL,
-      });
-      console.log(this.times);
-    },
     downloadButton() {
       console.log("download");
 
@@ -101,7 +110,6 @@ export default {
       // console.log(MusicDummies);
     },
     musicPlayButton() {
-      console.log(this.$refs);
       if (this.play) {
         Tone.Transport.pause();
       } else {
@@ -126,37 +134,19 @@ export default {
     onScroll() {
       this.scrollInvoked++;
     },
-    deleteMusic(n) {
-      console.log(n);
-      for (let i = 0; i < this.music.length; i++)
-        if (this.music[i].id == n) this.music.splice(i, 1);
+    deleteMusic(id) {
+      let page = this.page, idx = id;
+      this.$store.commit('deleteMusic', {
+            page, idx
+          });
     },
     addPage() {
-      console.log("add");
-      this.$emit("add", this.music);
+      this.$store.commit('addPage', this.page);
+      this.$emit("add");
     },
     removePage() {
+      this.$store.commit('removePage', this.page);
       this.$emit("remove");
-    },
-  },
-  computed: {
-    getURL() {
-      return this.$store.getters.getURL;
-    },
-  },
-  watch: {
-    getURL(val) {
-      if (val[0] === "") return;
-      console.log("watched", val);
-      this.musicURL = val[0];
-      this.addMusicList(val[1]);
-      this.$store.commit("pushURL", "", "");
-    },
-    pageData() {
-      this.music = this.pageData;
-    },
-    page() {
-      this.times = this.music.length;
     },
   },
 };
