@@ -17,7 +17,7 @@ public class DataDTO {
   @MongoId
   @EmbeddedId
   private MultiId id;
-  List<Music> musicList = new ArrayList<>();
+  List<MusicPage> musicPageList = new ArrayList<>();
   List<Record> recordList = new ArrayList<>();
 
   public DataDTO(MultiId id) {

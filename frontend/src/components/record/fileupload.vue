@@ -1,23 +1,14 @@
 <template>
-  <div class="mx-auto align-center d-flex justify-center" style="background-color: green !important;">
-    <v-sheet width="80%" class="d-flex align-center" style="background-color: yellow !important;">
-      <v-file-input
-        v-model="files"
-        color="deep-purple accent-4"
-        class="mt-5"
+  <div class="mx-auto align-center d-flex justify-center">
+    <v-sheet width="80%" class="d-flex align-center">
+      <input
+        ref="uploader"
+        type="file"
+        class="d-none"
         multiple
         accept="audio/*"
-        outlined
-        hide-details
-        full-width
-        :show-size="1000"
-        flat
-      >
-      </v-file-input
-      ><v-btn icon color="black" large class="mt-5 ml-2" @click="upload"
-        ><v-icon large>mdi-plus-circle</v-icon></v-btn
-      >
-    </v-sheet>
+        @change="onFileChanged"
+    /></v-sheet>
   </div>
 </template>
 <script>
@@ -28,6 +19,15 @@ export default {
     files: undefined,
   }),
   methods: {
+    onFileChanged(e) {
+      this.files = e.target.files;
+      console.log(this.files);
+      this.upload();
+    },
+    inputClick() {
+      this.files = "";
+      this.$refs.uploader.click();
+    },
     async upload() {
       if (this.files === undefined) {
         return;
