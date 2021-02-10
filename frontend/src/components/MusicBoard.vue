@@ -8,18 +8,6 @@
       v-scroll.self="onScroll"
       elevation="0"
     >
-<<<<<<< HEAD
-      <Player
-        class="ma-3 border smallcomponent-color"
-        v-for="(item, idx) in music"
-        :key="item.id"
-        :n="idx"
-        :page="page"
-        :music="item"
-        @deleteMusic="deleteMusic"
-        ref="player"
-      />
-=======
         <Player
           class="ma-3 border smallcomponent-color"
           v-for="(item, idx) in music"
@@ -30,7 +18,6 @@
           @deleteMusic="deleteMusic"
           ref="player"
         />
->>>>>>> 5d0d1ab13293df3e07f532b87eb56a7a8c3cb21d
     </v-card>
     <v-divider></v-divider>
     <v-card
