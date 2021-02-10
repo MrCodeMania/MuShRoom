@@ -2,7 +2,7 @@
   <v-card
     class="d-flex flex-column justify-space-between"
     id="metronome"
-    color="amber lighten-1"
+    color="component-color"
     elevation="0"
     width="100%"
     height="100%"
@@ -28,7 +28,7 @@
             flat
             solo
             type="number"
-            background-color="amber lighten-1"
+            background-color="#CBCACC "
             style="max-width: 100px; width: auto; font-size: 2em"
           ></v-text-field>
         </div>
@@ -42,7 +42,7 @@
             flat
             solo
             type="number"
-            background-color="amber lighten-1"
+            background-color="#CBCACC "
             single-line
             style="max-width: 80px; width: auto; font-size: 2em"
             hint="Beats/bar"
@@ -59,7 +59,7 @@
         v-if="isPlaying()"
         @click="onStop"
       >
-        <v-icon>mdi-stop</v-icon>
+        <v-icon large>mdi-stop</v-icon>
       </v-btn>
       <v-btn
         icon
@@ -68,7 +68,7 @@
         v-else
         @click="onStart"
       >
-        <v-icon>mdi-play</v-icon>
+        <v-icon large>mdi-play</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
       <div>
@@ -79,7 +79,7 @@
           color="black"
           @click="onVolumeDown"
         >
-          <v-icon>mdi-volume-minus</v-icon>
+          <v-icon large>mdi-volume-minus</v-icon>
         </v-btn>
         <v-btn
           icon
@@ -87,7 +87,7 @@
           color="black"
           @click="onVolumeUp"
         >
-          <v-icon>mdi-volume-plus</v-icon>
+          <v-icon large>mdi-volume-plus</v-icon>
         </v-btn>
         <v-btn
           icon
@@ -95,7 +95,7 @@
           :color="mute ? 'black': '' "
           @click="onVolumeMute"
         >
-          <v-icon>mdi-volume-off</v-icon>
+          <v-icon large>mdi-volume-off</v-icon>
         </v-btn>
       </div>
     </v-card-actions>
@@ -244,18 +244,7 @@ export default {
       );
     },
 
-    countDowntimer() {
-      if (this.startTime > 0) {
-        setTimeout(() => {
-          this.startTime -= 1;
-          console.log(this.startTime);
-          this.countDowntimer();
-        }, 1000);
-      } else {
-        this.startTime = 4;
-        // console.log(this.startTime)
-      }
-    },
+
   },
 
   watch: {
