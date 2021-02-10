@@ -1,5 +1,6 @@
 <template>
   <div>
+      <div id="container"></div>
       <vue-wave-surfer 
         ref="waveform"
         :src="url"
@@ -9,16 +10,25 @@
 </template>
 
 <script>
+import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 export default {
-    props: ['url', 'height'],
+    props: ['url', 'height', 'mouse', 'audioCtx'],
     data() {
         return {
             options: {
                 barWidth: 2,
-                normalize: true,
+                normalize: false,
                 cursorColor: '#00ff0000',
                 scrollParent: false,
-                height: this.height
+                height: this.height,
+                interact: this.mouse,
+                audioContext: this.audioCtx,
+                plugins: [
+                    Timeline.create({
+                        container: "#container",
+                        secondaryFontColor: '#000'
+                    })
+                ]
             }
         }
     },
