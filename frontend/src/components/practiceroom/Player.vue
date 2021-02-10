@@ -6,7 +6,7 @@
       <v-btn
         icon
         color="gray"
-        @click="sendDelete(n)"
+        @click="sendDelete()"
         v-if="status === 'Master'"
       >
         <v-icon>mdi-close</v-icon>

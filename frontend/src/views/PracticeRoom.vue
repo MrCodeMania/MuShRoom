@@ -12,7 +12,7 @@
       flex-shrink-0
       pa-4"
       >
-        <!-- 페이지 확인, 넘기기 -->
+        <!-- 뮤직 보드 상단 페이징 탭 -->
         <v-row no-gutters style="height:80vh;">
           <v-card
             elevation="0"
@@ -20,28 +20,62 @@
             width="100%"
             color="#00ff0000">
             <v-tabs
-            background-color="#00ff0000"
-            slider-color="black"
-            color="white"
-            v-model="page">
+              dark
+              hide-slider
+              background-color="#00ff0000"
+              v-model="page">
               <v-tab
-                class="rounded-t"
-                style="background-color: grey;"
+                class="rounded-t pa-0 divider"
+                :class="page==i-1 ? 'nav-color' : 'selected'"
                 v-for="i in range"
                 :key="i">
-                  {{ i }}
+                <v-card
+                  height="48px"
+                  elevation="0"
+                  color="#00ff0000">
+                    <v-btn
+                      class="tab_btn"
+                      width="2"
+                      height="2"
+                      dark
+                      icon
+                      :disabled="length==1"
+                      @click="removePage()">
+                      <v-icon
+                        v-if="length!=1"
+                        x-small>
+                        mdi-close
+                      </v-icon>
+                    </v-btn>
+                  <v-text-field
+                    background-color="#00ff0000"
+                    flat
+                    class="tab_textfield"
+                    solo
+                    :placeholder="i.toString()">
+                    </v-text-field>
+                </v-card>
               </v-tab>
+
+            <!-- 페이지 추가 버튼 -->
+            <v-btn
+            class="d-line-block ml-1 mt-1"
+            icon
+            v-if="length<5"
+            @click="addPage()">
+              <v-icon>
+                mdi-plus
+              </v-icon>
+            </v-btn>
             </v-tabs>
             <v-tabs-items v-model="page"
-            class="rounded-tr">
+            class="rounded-tr nav-color">
               <v-tab-item
-              v-for="i in range"
-              :key="i"
-              :transition="false" :reverse-transition="false">
+                v-for="i in range"
+                :key="i"
+                :transition="false" :reverse-transition="false">
                 <v-card elevation="0" width="100%" height="100%">
-                  <MusicBoard :page="page" 
-                  v-on:add="moveRight"
-                  v-on:remove="moveLeft"/>
+                  <MusicBoard :page="page"/>
                 </v-card>
                 </v-tab-item>
             </v-tabs-items>
@@ -102,7 +136,7 @@ export default {
     Record,
   },
   created() {
-    // Status를 vuex에 저장
+   // Status를 vuex에 저장
 
     this.code = document.location.href.split('=')[1];
 
@@ -123,12 +157,13 @@ export default {
   },
   data() {
     return {
-      page: 0, //  현재 페이지
-      status
+      page: 0, //  현재 페이지,
+      status,
+      pageNames: []  // 페이지 이름,
     };
   },
   computed: {
-    length: function() {
+    length: function() {  // 전체 페이지 수
       return this.$store.getters.getPageLength;
     },
     range() {
@@ -147,8 +182,47 @@ export default {
     moveRight() {
       this.page = this.page == 4 ? 4 : this.page + 1;
     },
+    //  페이지 추가
+    addPage() {
+      this.$store.commit('addPage', this.page);
+      this.moveRight();
+    },
+    // 페이지 삭제
+    removePage() {
+      this.$store.commit('removePage', this.page);
+      this.moveLeft();
+    },
   },
 };
 </script>
 
-<style></style>
+<style>
+.tab_textfield input::placeholder {
+  color: white !important;
+}
+
+.tab_textfield input {
+  width: 55px; 
+  height: 5px;
+  color: white !important;
+}
+
+.tab_textfield .v-input__slot {
+  min-height: 30px;
+}
+
+.tab_btn {
+  margin-top: 10px;
+  margin-left: 59px;
+}
+
+.divider {
+  border-right: 1px solid #161929;
+  /* border-bottom: 1px solid white; */
+}
+
+.selected {
+  background-color: #3c4d5d;
+}
+
+</style>
