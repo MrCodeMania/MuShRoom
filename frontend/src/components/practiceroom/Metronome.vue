@@ -244,18 +244,7 @@ export default {
       );
     },
 
-    countDowntimer() {
-      if (this.startTime > 0) {
-        setTimeout(() => {
-          this.startTime -= 1;
-          console.log(this.startTime);
-          this.countDowntimer();
-        }, 1000);
-      } else {
-        this.startTime = 4;
-        // console.log(this.startTime)
-      }
-    },
+
   },
 
   watch: {

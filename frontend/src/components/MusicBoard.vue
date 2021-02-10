@@ -8,17 +8,16 @@
       v-scroll.self="onScroll"
       elevation="0"
     >
-      <ul class="px-auto pt-2">
-        <Player
-          v-for="item in music"
-          v-bind:key="item.id"
-          v-bind:title="item.title"
-          v-bind:url="item.url"
-          v-bind:options="item.options"
-          @deleteMusic="deleteMusic(item.id)"
-          ref="player"
-        />
-      </ul>
+      <Player
+        class="ma-3 border"
+        v-for="item in music"
+        v-bind:key="item.id"
+        v-bind:title="item.title"
+        v-bind:url="item.url"
+        v-bind:options="item.options"
+        @deleteMusic="deleteMusic(item.id)"
+        ref="player"
+      />
     </v-card>
     <v-divider></v-divider>
     <v-card
@@ -168,5 +167,7 @@ export default {
 .musicboard_btn {
   margin: 10px 5px 0px;
 }
+
+
 
 </style>

@@ -1,46 +1,44 @@
 <template>
   <div>
-    <div class="d-flex align-center">
-      <div class="border d-flex align-center" style="flex: 1">
-        <div class="d-flex">
-          <v-btn
-            v-if="this.state == 'paused' || this.state == 'stopped'"
-            class="ml-3 mr-3 pa-1"
-            style="min-width: 5px"
-            icon color="black"
-            :disabled="player == null"
-            v-on:click="start()"
-          >
-            <v-icon>mdi-play</v-icon>
-          </v-btn>
-          <v-btn
-            v-else
-            class="ml-3 mr-3 pa-1"
-            style="min-width: 5px"
-            icon color="black"
-            :disabled="player == null"
-            v-on:click="pause()"
-          >
-            <v-icon>mdi-pause</v-icon>
-          </v-btn>
-          <v-btn
-            class="ml-0 mr-3 pa-1"
-            style="min-width: 5px"
-            icon color="black"
-            v-on:click="stop()"
-          >
-            <v-icon>mdi-stop</v-icon>
-          </v-btn>
-        </div>
+    <div class="d-flex file-title">
+      <p class="file-name">{{title}}</p>
+      <v-spacer></v-spacer>
+      <v-btn icon color="gray" @click="sendDelete(n)" v-if="status === 'Master'">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </div>
+    <div class="d-flex align-center mx-3 border">
+      <div>
+        <v-btn
+          v-if="this.state == 'paused' || this.state == 'stopped'"
+          icon color="black"
+          :disabled="player == null"
+          v-on:click="start()"
+        >
+          <v-icon>mdi-play</v-icon>
+        </v-btn>
+        <v-btn
+          v-else
+          icon color="black"
+          :disabled="player == null"
+          v-on:click="pause()"
+        >
+          <v-icon>mdi-pause</v-icon>
+        </v-btn>
+        <v-btn
+          icon color="black"
+          v-on:click="stop()"
+        >
+          <v-icon>mdi-stop</v-icon>
+        </v-btn>
       </div>
-
-      <div style="flex: 5">
+        
+      <div class="" style="flex: 10; background-color: blue;">
         <Waveform :url="url" height="64"></Waveform>
       </div>
 
       <!-- 이 부분부터 ReadOnly -->
-
-      <div class="ml-3" style="flex: 1" v-if="status === 'Master'">
+      <div class="ml-3 mr-3" v-if="status === 'Master'">
         <!-- dropdown button -->
         <v-btn icon color="black" v-on:click="toggleDropdown()">
           <v-icon v-if="isShow == 0">mdi-chevron-down</v-icon>
@@ -48,127 +46,112 @@
         </v-btn>
       </div>
 
-      <div style="flex: 1">
-        <v-btn icon color="black" class="ml-2" @click="sendDelete(n)"  v-if="status === 'Master'">
-          <v-icon>mdi-delete</v-icon>
-        </v-btn>
-      </div>
     </div>
 
-    <div class="ml-5">
-      <v-simple-table :hidden="isShow == 0">
-        <tbody>
-          <tr>
-            <td>Volume</td>
-            <td>
+    <div>
+      <v-sheet style="margin: 0px 75.5px 0px 87px;" height="auto" :hidden="isShow == 0">
+        <v-card>
+
+          <div class="pa-4 d-flex justify-space-around">
+            <div>
+              <label for="volume">Volume:</label>
               <input
                 type="range"
                 min="-30"
                 max="20"
                 step="0.01"
                 v-model="volume.value"
-                class="slider"
-                id="myRange"
+                class="slider ml-2"
+                name="volume"
+                id="volume"
                 v-on:input="changeVolume(volume.value)"
               />
-            </td>
-          </tr>
-          <tr>
-            <td>Distortion</td>
-            <td>
-              <div v-if="distortion.object == null">
-                <button v-on:click="addDistortion()">add dist</button>
-              </div>
-              <div v-else>
-                <input
-                  type="range"
-                  min="0"
-                  max="5"
-                  step="0.01"
-                  v-model="distortion.value"
-                  class="slider"
-                  id="myRange"
-                  v-on:input="changeDistortion(distortion.value)"
-                />
-                <button v-on:click="delDistortion()">del</button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Gain</td>
-            <td>
-              <div v-if="gain.object == null">
-                <button v-on:click="addGain()">add gain</button>
-              </div>
-              <div v-else>
-                <input
-                  type="range"
-                  min="0"
-                  max="10"
-                  step="0.01"
-                  v-model="gain.value"
-                  class="slider"
-                  id="myRange"
-                  v-on:input="changeGain(gain.value)"
-                />
-                <button v-on:click="delGain()">del</button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Loop</td>
-            <td>
-              <!-- loop check box -->
-              <v-checkbox v-on:change="toggleLoop($event)"></v-checkbox>
-            </td>
-          </tr>
-          <tr>
-            <td>LoopStart</td>
-            <td>
+            </div>
+            <div>
+              <label for="distortion">Distortion:</label>
+              <input
+                type="range"
+                min="0"
+                max="5"
+                step="0.01"
+                v-model="distortion.value"
+                class="slider ml-2"
+                name="distortion"
+                id="distortion"
+                v-on:input="changeDistortion(distortion.value)"
+              />
+            </div>
+            <div>
+              <label for="gain">Gain:</label>
+              <input
+                type="range"
+                min="0"
+                max="10"
+                step="0.01"
+                v-model="gain.value"
+                class="slider ml-2"
+                name="gain"
+                id="gain"
+                v-on:input="changeGain(gain.value)"
+              />
+            </div>
+          </div>
+
+          <v-divider></v-divider>
+
+          <div class="pa-4 d-flex justify-space-around">
+            <div class="d-flex align-center">
+              <label for="loop">Loop</label>
+              <v-checkbox id="loop" name="loop" class="ml-2" v-on:change="toggleLoop($event)"></v-checkbox>
+            </div>
+            <div class="d-flex align-center">
+              <p class="align-self-center pt-3">LoopStart: </p>
               <v-text-field
-                type="number"
-                label="Start Time"
-                v-model="loopStart"
-                v-on:change="setLoopTime()"
-              ></v-text-field>
-            </td>
-          </tr>
-          <tr>
-            <td>LoopEnd</td>
-            <td>
-              <v-text-field
+                class="ml-2"
                 type="number"
                 label="End Time"
                 v-model="loopEnd"
                 v-on:change="setLoopTime()"
               ></v-text-field>
-            </td>
-          </tr>
-          <!-- temp start -->
-          <tr>
-            <td>Delay</td>
-            <td>
+            </div>
+            <div class="d-flex align-center">
+              <p class="align-self-center pt-3">LoopEnd: </p>
               <v-text-field
+                class="ml-2"
                 type="number"
                 label="Delay Time (단위: note)"
                 v-model="delay"
               ></v-text-field>
-            </td>
-          </tr>
-          <tr>
-            <td>StartAt</td>
-            <td>
+            </div>
+          </div>
+
+          <v-divider></v-divider>
+
+          <div class="pa-4 d-flex justify-space-around">
+            <div class="d-flex">
+              <p class="align-self-center pt-3">Delay: </p>
               <v-text-field
+                class="ml-2"
                 type="number"
-                label="Start Time (단위: note)"
+                label="Delay Time (단위: note)"
+                v-model="delay"
+              ></v-text-field>
+            </div>
+            <div class="d-flex">
+              <p class="align-self-center pt-3">StartAt: </p>
+              <v-text-field
+                class="ml-2"
+                type="number"
+                label="Delay Time (단위: note)"
                 v-model="offset"
               ></v-text-field>
-            </td>
-          </tr>
-          <!-- temp end -->
-        </tbody>
-      </v-simple-table>
+            </div>
+          </div>
+
+        </v-card>
+      </v-sheet>
     </div>
+    <v-divider class="mt-3"></v-divider>
   </div>
 </template>
 
@@ -179,6 +162,7 @@ import Waveform from "./Waveform.vue";
 export default {
   name: "Player",
   props: {
+    title: String,
     url: String,
     n: Number,
   },
@@ -318,4 +302,16 @@ export default {
 </script>
 
 <style>
+
+.file-title {
+  padding: 5px 5px 0px 15px;
+  margin: 0px !important;
+}
+
+.file-name{
+  font-size: 1.5em;
+  color: balck;
+  margin: 0px !important;
+}
+
 </style>

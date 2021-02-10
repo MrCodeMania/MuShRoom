@@ -5,3 +5,9 @@
 .positive {
     color: green !important;
 }
+
+.border {
+    border: solid;
+    border-color: black;
+    border-radius: 12px !important;
+  }
