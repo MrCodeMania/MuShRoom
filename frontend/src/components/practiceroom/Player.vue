@@ -3,7 +3,12 @@
     <div class="d-flex file-title">
       <p class="file-name">{{ music.fileName }}</p>
       <v-spacer></v-spacer>
-      <v-btn icon color="gray" @click="sendDelete()" v-if="status === 'Master'">
+      <v-btn
+        icon
+        color="gray"
+        @click="sendDelete()"
+        v-if="status === 'Master'"
+      >
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </div>
@@ -11,7 +16,8 @@
       <div>
         <v-btn
           v-if="this.state == 'paused' || this.state == 'stopped'"
-          icon color="black"
+          icon
+          color="black"
           :disabled="player == null"
           v-on:click="start()"
         >
@@ -19,22 +25,27 @@
         </v-btn>
         <v-btn
           v-else
-          icon color="black"
+          icon
+          color="black"
           :disabled="player == null"
           v-on:click="pause()"
         >
           <v-icon>mdi-pause</v-icon>
         </v-btn>
-        <v-btn
-          icon color="black"
-          v-on:click="stop()"
-        >
+        <v-btn icon color="black" v-on:click="stop()">
           <v-icon>mdi-stop</v-icon>
         </v-btn>
       </div>
 
-      <div class="" style="flex: 10; background-color: blue;">
-        <Waveform :url="music.url" height="64" mouse="true" timeline="true" :idx="idx"></Waveform>
+      <div class="" style="flex: 10; background-color: blue">
+        <Waveform
+          :url="music.url"
+          height="64"
+          mouse="true"
+          timeline="true"
+          :idx="idx"
+          @setTime="setTime"
+        ></Waveform>
       </div>
 
       <!-- 이 부분부터 ReadOnly -->
@@ -45,13 +56,15 @@
           <v-icon v-else>mdi-chevron-up</v-icon>
         </v-btn>
       </div>
-
     </div>
 
     <div>
-      <v-sheet style="margin: 0px 75.5px 0px 87px;" height="auto" :hidden="isShow == 0">
+      <v-sheet
+        style="margin: 0px 75.5px 0px 87px"
+        height="auto"
+        :hidden="isShow == 0"
+      >
         <v-card>
-
           <div class="pa-4 d-flex justify-space-around">
             <div>
               <label for="volume">Volume:</label>
@@ -60,7 +73,7 @@
                 min="-30"
                 max="20"
                 step="0.01"
-                v-model="music.volume.value"
+                v-model="music.volume"
                 class="slider ml-2"
                 name="volume"
                 id="volume"
@@ -102,10 +115,25 @@
           <div class="pa-4 d-flex justify-space-around">
             <div class="d-flex align-center">
               <label for="loop">Loop</label>
-              <v-checkbox id="loop" name="loop" class="ml-2" v-on:change="toggleLoop($event)"></v-checkbox>
+              <v-checkbox
+                id="loop"
+                name="loop"
+                class="ml-2"
+                v-on:change="toggleLoop($event)"
+              ></v-checkbox>
             </div>
             <div class="d-flex align-center">
-              <p class="align-self-center pt-3">LoopStart: </p>
+              <p class="align-self-center pt-3">LoopStart:</p>
+              <v-text-field
+                class="ml-2"
+                type="number"
+                label="Start Time"
+                v-model="loopStart"
+                v-on:change="setLoopTime()"
+              ></v-text-field>
+            </div>
+            <div class="d-flex align-center">
+              <p class="align-self-center pt-3">LoopEnd:</p>
               <v-text-field
                 class="ml-2"
                 type="number"
@@ -114,22 +142,13 @@
                 v-on:change="setLoopTime()"
               ></v-text-field>
             </div>
-            <div class="d-flex align-center">
-              <p class="align-self-center pt-3">LoopEnd: </p>
-              <v-text-field
-                class="ml-2"
-                type="number"
-                label="Delay Time (단위: note)"
-                v-model="delay"
-              ></v-text-field>
-            </div>
           </div>
 
           <v-divider></v-divider>
 
           <div class="pa-4 d-flex justify-space-around">
             <div class="d-flex">
-              <p class="align-self-center pt-3">Delay: </p>
+              <p class="align-self-center pt-3">Delay:</p>
               <v-text-field
                 class="ml-2"
                 type="number"
@@ -138,16 +157,15 @@
               ></v-text-field>
             </div>
             <div class="d-flex">
-              <p class="align-self-center pt-3">StartAt: </p>
+              <p class="align-self-center pt-3">StartAt:</p>
               <v-text-field
                 class="ml-2"
                 type="number"
-                label="Delay Time (단위: note)"
+                label="Start Time (단위: note)"
                 v-model="offset"
               ></v-text-field>
             </div>
           </div>
-
         </v-card>
       </v-sheet>
     </div>
@@ -165,7 +183,7 @@ export default {
     page: Number,
     music: Object,
     n: Number,
-    idx: Number
+    idx: Number,
   },
   components: {
     Waveform,
@@ -184,43 +202,51 @@ export default {
     };
   },
   created() {
-    const player = new Tone.Player(this.music.url, () => {
-      this.player = player;
-      this.player.onstop = () => {
-        console.log(this.state);
-        if (this.state == "stopped") {
-          Tone.Transport.stop();
-        } else if (this.state == "paused") {
-          Tone.Transport.stop();
-        } else {
-          // 기본적으로 종료되면 started로 넘어옴
-          this.stop();
-        }
-      };
-    }).toDestination();
-    
-    this.status = this.$store.state.status;
+    this.constructor();
   },
   watch: {
-    music: function() {
-      const player = new Tone.Player(this.music.url, () => {
-      this.player = player;
-      this.player.onstop = () => {
-        console.log(this.state);
-        if (this.state == "stopped") {
-          Tone.Transport.stop();
-        } else if (this.state == "paused") {
-          Tone.Transport.stop();
-        } else {
-          // 기본적으로 종료되면 started로 넘어옴
-          this.stop();
-        }
-      };
-    }).toDestination();
-    }
+    music: function () {
+      if (this.player) this.player.dispose();
+      this.constructor();
+    },
   },
   methods: {
+    constructor() {
+      const player = new Tone.Player(this.music.url, () => {
+        this.player = player;
+        this.player.onstop = () => {
+          console.log(this.state);
+          if (this.state == "stopped") {
+            Tone.Transport.stop();
+          } else if (this.state == "paused") {
+            Tone.Transport.stop();
+          } else {
+            // 재생 시간이 최대 시간 이후일 때 (정지)
+            if (
+              player.buffer.duration + player.context.lookAhead <
+              Tone.Transport.seconds
+            ) {
+              console.log("over!!");
+              this.stop();
+            }
+          }
+        };
+
+        const gain = new Tone.Gain(0).toDestination();
+        this.music.gain.object = gain;
+        this.player.connect(gain);
+
+        const distortion = new Tone.Distortion(0).toDestination();
+        this.music.distortion.object = distortion;
+        this.player.connect(distortion);
+      }).toDestination();
+
+      this.status = this.$store.state.status;
+      Tone.start(); // ...start()를 실행하기 위한 사전 작업
+    },
     start() {
+      this.state = "started"; // delay를 줄 경우, player.state로 즉시 받아오면 stopped가 넘어옴
+      this.player.unsync();
       Tone.start(); // ...start()를 실행하기 위한 사전 작업
       Tone.Transport.stop();
       Tone.Transport.cancel(); // clean objects
@@ -235,22 +261,18 @@ export default {
         now + Tone.Time(this.delay).toSeconds(),
         Tone.Time(this.offset).toSeconds() + this.currentTime
       );
-
-      this.state = "started"; // delay를 줄 경우, player.state로 즉시 받아오면 stopped가 넘어옴
-      this.isExist = false;
     },
     pause() {
       this.currentTime = Tone.Transport.seconds;
       this.state = "paused";
+      this.player.unsync();
       Tone.Transport.stop();
-      Tone.Transport.cancel();
     },
     stop() {
       this.currentTime = 0;
       this.state = "stopped";
+      this.player.unsync();
       Tone.Transport.stop();
-      Tone.Transport.cancel(); // clean objects
-      this.isExist = false;
     },
     changeDistortion(value) {
       this.music.distortion.object.distortion = value;
@@ -261,24 +283,6 @@ export default {
     },
     changeGain(value) {
       this.music.gain.object.gain.value = value;
-    },
-    addGain() {
-      const gain = new Tone.Gain(0).toDestination();
-      this.music.gain.object = gain;
-      this.player.connect(gain);
-    },
-    addDistortion() {
-      const distortion = new Tone.Distortion(0).toDestination();
-      this.music.distortion.object = distortion;
-      this.player.connect(distortion);
-    },
-    delGain() {
-      this.player.disconnect(this.music.gain.object);
-      this.music.gain.object = null;
-    },
-    delDistortion() {
-      this.player.disconnect(this.music.distortion.object);
-      this.music.distortion.object = null;
     },
     toggleDropdown() {
       this.isShow ^= 1;
@@ -291,40 +295,40 @@ export default {
       this.player.loopEnd = this.loopEnd;
     },
     addToTransport() {
-      if (this.isExist) return;
-
-      Tone.start();
+      this.player.unsync();
       this.player.sync().start(0);
-      this.isExist = true;
-      // Tone.Transport.start(); // play
     },
-    removeFromTransport(){
+    removeFromTransport() {
       this.currentTime = 0;
       this.player.unsync();
-      this.isExist = false;
     },
     sendDelete() {
-      this.removeFromTransport();
+      this.player.unsync();
+      this.player.dispose();
       this.$emit("deleteMusic", this.n);
     },
     setTime(sec) {
       console.log("Player set time: ", sec);
+      this.player.unsync();
+
+      this.currentTime = sec;
+      if (this.state == "started") {
+        this.start();
+      }
     },
   },
 };
 </script>
 
 <style>
-
 .file-title {
   padding: 5px 5px 0px 15px;
   margin: 0px !important;
 }
 
-.file-name{
+.file-name {
   font-size: 1.5em;
   color: balck;
   margin: 0px !important;
 }
-
 </style>
