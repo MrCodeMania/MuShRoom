@@ -46,7 +46,11 @@ public class MainService {
       }
     }
 
+    // 기본 페이지 등록
     DataDTO data = new DataDTO(new MultiId(masterId, slaveId));
+    List<MusicPage> musicPageList = data.getMusicPageList();
+    musicPageList.add(new MusicPage());
+    data.setMusicPageList(musicPageList);
     mainRepository.save(data);
 
     return data;
