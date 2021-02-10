@@ -67,6 +67,9 @@
 import recordBtn from "./record/recordBtn";
 import uploadBtn from "./record/fileupload";
 import recordCard from "./record/Audiocard";
+import Stomp from 'webstomp-client'
+import SockJS from 'sockjs-client'
+
 export default {
   props: ["page"],
   data: () => {
@@ -83,6 +86,10 @@ export default {
   },
   created() {
     this.idx = this.records.length;
+    
+    this.code = document.location.href.split('=')[1];
+
+    this.connect();
   },
   components: {
     recordCard,
@@ -90,6 +97,34 @@ export default {
     uploadBtn,
   },
   methods: {
+    send(msg) {
+      if (this.stompClient && this.stompClient.connected) {
+        this.stompClient.send("/socket/record/"+this.code+"/receive", JSON.stringify(msg));        
+      }
+    },
+     connect() {
+      const serverURL = "http://i4a105.p.ssafy.io:8080/";
+      let socket = new SockJS(serverURL);
+      this.stompClient = Stomp.over(socket);
+      this.stompClient.connect(
+        {},
+        frame => {
+          // 소켓 연결 성공
+          this.connected = true;
+          console.log('소켓 연결 성공', frame);
+
+          this.stompClient.subscribe("/socket/record/"+this.code+"/send", res => {
+            console.log('구독으로 받은 메시지 입니다.');
+            console.log(JSON.parse(res.body));
+          });
+        },
+        error => {
+          // 소켓 연결 실패
+          console.log('소켓 연결 실패', error);
+          this.connected = false;
+        }
+      );
+    },
     rec_expand_close() {
       this.$refs.recBtn.expandInit();
     },
@@ -110,7 +145,8 @@ export default {
       }
     },
     addCard(data) {
-      this.$store.commit("updateRecord", data);
+      this.$store.commit('updateRecord', data);
+      this.send({type:"add", index: this.idx - 1, obj: {url : data["downloadURL"], fileName : data["fileName"]}});
     },
     receiveData(data) {
       data["id"] = this.idx;
@@ -127,7 +163,8 @@ export default {
           break;
         }
       }
-      this.$store.commit("deleteRecord", idx);
+      this.$store.commit('deleteRecord', idx);
+      this.send({type: "delete", index: idx});
     },
     addRecord(id) {
       var record = {},
@@ -139,11 +176,14 @@ export default {
           break;
         }
       }
-      this.$store.commit("addMusic", {
-        page,
-        record,
-      });
-    },
+      this.$store.commit('addMusic', {
+          page, record
+        });
+
+      // Page별 MusicList 소켓 완료되면 test
+      // this.send({type:"add", index: this.idx - 1, obj: {url : data["downloadURL"], fileName : data["fileName"]}}, data);
+    }
+    
   },
 };
 </script>
