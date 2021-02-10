@@ -1,9 +1,21 @@
   <template>
   <div>
     <v-sheet color="white" height="50" width="100%" rounded>
-      <div class="mt-5 mb-3 d-flex justify-space-around ">
-        <v-btn text style="font-size: 1.5em;" :class="expand ? 'select' : 'not_select'" @click="expandChange(1)">record </v-btn>
-        <v-btn text style="font-size: 1.5em;" :class="expand2 ? 'select' : 'not_select'" @click="expandChange(2)">upload </v-btn>
+      <div class="mt-5 mb-3 d-flex justify-space-around">
+        <v-btn
+          text
+          style="font-size: 1.5em"
+          :class="expand ? 'select' : 'not_select'"
+          @click="expandChange(1)"
+          >record
+        </v-btn>
+        <v-btn
+          text
+          style="font-size: 1.5em"
+          :class="expand2 ? 'select' : 'not_select'"
+          @click="expandChange(2)"
+          >upload
+        </v-btn>
       </div>
     </v-sheet>
     <v-expand-transition>
@@ -20,13 +32,18 @@
       <v-card
         v-show="expand2"
         mode="out-in"
-        height="100"
+        height="0"
         width="100%"
         class="mx-auto"
-        ><uploadBtn @sendData="receiveData"
+        ><uploadBtn @sendData="receiveData" ref="fileupload"
       /></v-card>
     </v-expand-transition>
-    <v-sheet color="white" height="100%" width="100%" class="mt-3 component-color">
+    <v-sheet
+      color="white"
+      height="100%"
+      width="100%"
+      class="mt-3 component-color"
+    >
       <v-card
         elevation="0"
         class="overflow-y-auto"
@@ -54,7 +71,7 @@ import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 
 export default {
-  props: ['page'],
+  props: ["page"],
   data: () => {
     return {
       expand: false,
@@ -63,7 +80,7 @@ export default {
     };
   },
   computed: {
-    records: function() {
+    records: function () {
       return this.$store.getters.getRecords;
     },
   },
@@ -111,32 +128,20 @@ export default {
     rec_expand_close() {
       this.$refs.recBtn.expandInit();
     },
+    file_upload_open() {
+      this.$refs.fileupload.inputClick();
+    },
     expandChange(data) {
       if (data === 1) this.rec_expand_close();
-      if (this.showExpand === true) {
-        if (this.expand == true && data === 1) {
-          this.expand = false;
-          this.showExpand = false;
-        } else if (this.expand === false && data === 1) {
-          this.expand = true;
-          this.expand2 = false;
-          this.showExpand = true;
-        } else if (this.expand2 === true && data === 2) {
-          this.expand2 = false;
-          this.showExpand = false;
-        } else if (this.expand2 === false && data == 2) {
-          this.expand2 = true;
-          this.expand = false;
-          this.showExpand = true;
-        }
-      } else {
-        if (data === 1) {
-          this.showExpand = true;
-          this.expand = true;
-        } else {
-          this.showExpand = true;
-          this.expand2 = true;
-        }
+      if (data === 2) this.file_upload_open();
+
+      if (data == 1) {
+        this.expand = !this.expand;
+        this.expand2 = false;
+      }
+      if (data == 2) {
+        this.expand = false;
+        this.expand2 = true;
       }
     },
     addCard(data) {
@@ -150,7 +155,8 @@ export default {
       this.addCard(data);
     },
     delRecord(id) {
-      var idx = 0, len = this.records.length;
+      var idx = 0,
+        len = this.records.length;
       for (var i = 0; i < len; i++) {
         if (this.records[i].id === id) {
           idx = i;
@@ -161,7 +167,9 @@ export default {
       this.send({type: "delete", index: idx});
     },
     addRecord(id) {
-      var record = {}, len = this.records.length, page = this.page;
+      var record = {},
+        len = this.records.length,
+        page = this.page;
       for (var i = 0; i < len; i++) {
         if (this.records[i].id === id) {
           record = this.records[i];
@@ -182,7 +190,6 @@ export default {
 
 
 <style>
-
 .select {
   color: green !important;
   font-size: 1.75em !important;
@@ -191,6 +198,4 @@ export default {
 .not_select {
   color: gray !important;
 }
-
-
 </style>
