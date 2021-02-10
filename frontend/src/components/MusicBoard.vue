@@ -1,8 +1,8 @@
 <template>
-  <v-card class="musicBoard component-color" elevation="0" width="100%" height="100%">
+  <v-card class="musicBoard nav-color" elevation="0" width="100%" height="100%">
     <v-card
       id="musicListId"
-      class="musicList overflow-y-auto component-color"
+      class="musicList overflow-y-auto nav-color"
       min-height="70vh"
       max-height="70vh"
       v-scroll.self="onScroll"
@@ -17,38 +17,20 @@
           :music="item"
           @deleteMusic="deleteMusic"
           ref="player"
-          :idx="idx"
         />
     </v-card>
-    <v-divider></v-divider>
+    <v-divider dark></v-divider>
     <v-card
-      class="buttonBar d-flex justify-space-between component-color"
+      class="buttonBar d-flex nav-color"
       elevation="0"
       width="100%"
     >
-      <v-card class="d-flex justify-start component-color" elevation="0">
-        <!-- 페이지 생성, 삭제 -->
-        <v-btn v-if="status === 'Master'" class="musicboard_btn ml-5" icon color="black" large :disabled="length == 5" @click="addPage">
-          <v-icon large> mdi-card-plus </v-icon>
-        </v-btn>
-        <v-btn
-          v-if="status === 'Master'"
-          icon
-          class="musicboard_btn"
-          color="black"
-          large
-          :disabled="length == 1"
-          @click="removePage"
-        >
-          <v-icon large> mdi-card-minus </v-icon>
-        </v-btn>
-      </v-card>
-      <!-- <v-btn height="50px" text @click="addMusicList">Test </v-btn> -->
-      <v-card class="d-flex justify-end component-color" elevation="0">
-        <v-btn class="musicboard_btn pt-2" icon color="black" large @click="downloadButton">
+      <v-spacer></v-spacer>
+      <v-card class="d-flex justify-end nav-color" elevation="0">
+        <v-btn class="musicboard_btn pt-2" icon dark large @click="downloadButton">
           <v-icon dark large>mdi-download</v-icon>
         </v-btn>
-        <v-btn class="musicboard_btn" icon color="black" large @click="musicPlayButton">
+        <v-btn class="musicboard_btn" icon dark large @click="musicPlayButton">
           <div v-if="!play">
             <v-icon dark large>mdi-play</v-icon>
           </div>
@@ -56,7 +38,7 @@
             <v-icon dark large>mdi-pause</v-icon>
           </div>
         </v-btn>
-        <v-btn class="musicboard_btn mr-5" icon color="black" large @click="musicStopButton">
+        <v-btn class="musicboard_btn mr-5" icon dark large @click="musicStopButton">
           <v-icon dark large>mdi-stop</v-icon>
         </v-btn>
       </v-card>
@@ -140,14 +122,6 @@ export default {
       this.$store.commit('deleteMusic', {
             page, idx
           });
-    },
-    addPage() {
-      this.$store.commit('addPage', this.page);
-      this.$emit("add");
-    },
-    removePage() {
-      this.$store.commit('removePage', this.page);
-      this.$emit("remove");
     },
   },
 };
