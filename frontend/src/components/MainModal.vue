@@ -32,19 +32,17 @@
 
 <script>
 export default {
-    props: ['showModal'],
-    data() {
-        return {
-            address: "http://mushroom.com/123483750",
-        }
-    },
+    props: ['showModal', 'address'],
     methods: {
         close() {
-            this.$emit('close', false);
+            this.$emit('close', false, false);
         },
         enter() {
-            this.$emit('close', false);
-            this.$router.push({ name: 'PracticeRoom'})
+            this.$emit('close', false, true);
+            // master code
+            console.log(this.address.split('=')[1]);
+            // address push
+            this.$router.push({ name: 'PracticeRoom', query: {shareUrl: this.address.split('=')[1]}});
         },
         copy() {
             this.$refs.link.select();

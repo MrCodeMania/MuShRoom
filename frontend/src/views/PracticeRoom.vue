@@ -92,6 +92,7 @@ import Header from '@/components/common/Header.vue';
 import Metronome from '@/components/practiceroom/Metronome.vue';
 import MusicBoard from '@/components/MusicBoard.vue';
 import Record from '@/components/record.vue';
+import axios from '@/service/axios.service.js';
 
 export default {
   components: {
@@ -101,20 +102,29 @@ export default {
     Record,
   },
   created() {
-    this.$store.commit('setData');
+    // Status를 vuex에 저장
 
-    // Status 저장
+    this.code = document.location.href.split('=')[1];
 
-    // URL을 읽거나 DB에서 받거나
-    // Status를 얻은 뒤, vuex에 저장
-    this.$store.commit("pushStatus", "Master");
-    //this.$store.commit("pushStatus", "ReadOnly");
-    
-    this.status = this.$store.state.status;
+    axios.get("/data/" + this.code).then(res => {
+      
+    this.$store.commit("pushShareUrl", [res.data.id.masterId, res.data.id.slaveId]);
+
+    if(this.code === res.data.id.masterId)
+      this.$store.commit("pushStatus", "Master");
+    else
+      this.$store.commit("pushStatus", "Slave");
+
+    this.status = this.$store.state.status; 
+
+    // 받아온 res에서 뮤직보드, 레코드보드 불러오기 해야함
+    console.log(res.data.recordList);
+    });
   },
   data() {
     return {
       page: 0, //  현재 페이지
+      status
     };
   },
   computed: {
