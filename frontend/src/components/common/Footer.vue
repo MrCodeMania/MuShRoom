@@ -1,7 +1,7 @@
 <template>
     <v-footer padless height="100">
         <v-card class="text-center"
-        color="light-green lighten-1"
+        color="nav-color"
         tile
         width="100%">
             <v-img
@@ -11,7 +11,7 @@
             class="d-inline-block">
             </v-img>
             <v-card-text class="pt-0 font-weight-bold">
-                <span v-for="name in team" :key="name">
+                <span style="color: white" v-for="name in team" :key="name">
                     {{ name }}
                 </span>
             </v-card-text>

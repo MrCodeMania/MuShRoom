@@ -17,12 +17,12 @@
                         <div>
                             <label>링크: </label><input style="width: 20em;" class="input" ref="link" :value="address">
                         </div>
-                        <v-btn @click="copy"><v-icon>mdi-content-copy</v-icon></v-btn>
+                        <v-btn icon large @click="copy"><v-icon>mdi-content-copy</v-icon></v-btn>
                     </v-card-text>
                     <v-spacer></v-spacer>
                     <v-card-actions class="card-actions pb-4">
-                        <v-btn @click="close" >취소</v-btn>
-                        <v-btn @click="enter" >입장하기</v-btn>
+                        <v-btn class="negative" text @click="close" >취소</v-btn>
+                        <v-btn class="positive" text @click="enter" >입장하기</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -32,19 +32,17 @@
 
 <script>
 export default {
-    props: ['showModal'],
-    data() {
-        return {
-            address: "http://mushroom.com/123483750",
-        }
-    },
+    props: ['showModal', 'address'],
     methods: {
         close() {
-            this.$emit('close', false);
+            this.$emit('close', false, false);
         },
         enter() {
-            this.$emit('close', false);
-            this.$router.push({ name: 'PracticeRoom'})
+            this.$emit('close', false, true);
+            // master code
+            console.log(this.address.split('=')[1]);
+            // address push
+            this.$router.push({ name: 'PracticeRoom', query: {shareUrl: this.address.split('=')[1]}});
         },
         copy() {
             this.$refs.link.select();

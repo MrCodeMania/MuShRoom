@@ -1,82 +1,62 @@
 <template>
   <v-main
-  style="background-color: #FFECB3">
+  class="main-color">
     <Header/>
 
     <!-- 부모 row -->
-    <v-row
-    no-gutters>
-
+    <v-row no-gutters>
       <!-- 왼쪽 컴포넌트들 -->
-      <v-col cols="8"
-      class="flex-grow-0 
+      <v-col
+        cols="8"
+        class="flex-grow-0 
       flex-shrink-0
-      pa-4">
-      
+      pa-4"
+      >
         <!-- 페이지 확인, 넘기기 -->
-        <v-row
-        no-gutters
-        style="height:10vh;">
+        <v-row no-gutters style="height:80vh;">
           <v-card
-          color="amber lighten-4"
-          elevation="0"
-          height="100%"
-          width="100%"
-          class="d-flex align-end">
-            <v-container
-            class="text-center
-            align-end">
-              <v-btn
-              fab
-              small
-              color="amber lighten-4"
-              :disabled="page == 1"
-              @click="moveLeft()">
-                <v-icon>
-                  mdi-chevron-left
-                </v-icon>
-              </v-btn>
-              <v-card 
-              elevation="0"
-              outlined
-              class="d-inline-block pa-2 mx-1">
-                {{page}}/{{length}}
-              </v-card>
-              <v-btn
-              fab
-              small
-              color="amber lighten-4"
-              :disabled="page == 5 || page == length"
-              @click="moveRight()">
-                <v-icon>
-                  mdi-chevron-right
-                </v-icon>
-              </v-btn>
-            </v-container>
+            elevation="0"
+            height="100%"
+            width="100%"
+            color="#00ff0000">
+            <v-tabs
+            background-color="#00ff0000"
+            slider-color="black"
+            color="white"
+            v-model="page">
+              <v-tab
+                class="rounded-t"
+                style="background-color: grey;"
+                v-for="i in range"
+                :key="i">
+                  {{ i }}
+              </v-tab>
+            </v-tabs>
+            <v-tabs-items v-model="page"
+            class="rounded-tr">
+              <v-tab-item
+              v-for="i in range"
+              :key="i"
+              :transition="false" :reverse-transition="false">
+                <v-card elevation="0" width="100%" height="100%">
+                  <MusicBoard :page="page" 
+                  v-on:add="moveRight"
+                  v-on:remove="moveLeft"/>
+                </v-card>
+                </v-tab-item>
+            </v-tabs-items>
           </v-card>
         </v-row>
 
-        <!-- 녹음부스 -->
-        <v-row
-        no-gutters
-        style="height:80vh">
-          <v-card
-          elevation="0"
-          width="100%"
-          height="100%">
-            <MusicBoard :pageData="pageData" :length="length"
-            v-on:add="addPage" v-on:remove="removePage"
-            :page="page"
-            />
-          </v-card>
-        </v-row>
       </v-col>
 
       <!-- 오른쪽 컴포넌트들 -->
-      <v-col cols="4"
-      class="flex-grow-0 
+      <v-col
+        cols="4"
+        class="flex-grow-0 
       flex-shrink-0
-      pa-4">
+      pa-4"
+      >
         <!-- 매트로놈 -->
         <v-row
         no-gutters
@@ -93,106 +73,82 @@
         <v-row 
         v-if="status === 'Master'"
         no-gutters
-        style="height:70vh">
+        style="height:72vh">
           <v-card
           elevation="0"
           width="100%"
-          height="100%">
-            <Record/>
+          height="100%"
+          class="component-color">
+            <Record :page="page"/>
           </v-card>
         </v-row>
       </v-col>
     </v-row>
-
-    <Footer/>
   </v-main>
 </template>
 
 <script>
 import Header from '@/components/common/Header.vue';
-import Footer from '@/components/common/Footer.vue';
 import Metronome from '@/components/practiceroom/Metronome.vue';
 import MusicBoard from '@/components/MusicBoard.vue';
 import Record from '@/components/record.vue';
+import axios from '@/service/axios.service.js';
 
 export default {
   components: {
     Header,
-    Footer,
     Metronome,
     MusicBoard,
-    Record
+    Record,
+  },
+  created() {
+    // Status를 vuex에 저장
+
+    this.code = document.location.href.split('=')[1];
+
+    axios.get("/data/" + this.code).then(res => {
+      
+    this.$store.commit("pushShareUrl", [res.data.id.masterId, res.data.id.slaveId]);
+
+    if(this.code === res.data.id.masterId)
+      this.$store.commit("pushStatus", "Master");
+    else
+      this.$store.commit("pushStatus", "Slave");
+
+    this.status = this.$store.state.status; 
+
+    // 받아온 res에서 뮤직보드, 레코드보드 불러오기 해야함
+    console.log(res.data.recordList);
+    });
   },
   data() {
     return {
-      page: 1,  //  현재 페이지
-      length: 1, // 전체 페이지 수
-      pageList: [  // 페이지 리스트
-        [] // 저장된 데이터
-      ],
-      pageData: [],  // 현재 페이지 데이터
+      page: 0, //  현재 페이지
+      status
+    };
+  },
+  computed: {
+    length: function() {
+      return this.$store.getters.getPageLength;
+    },
+    range() {
+      let pages = [];
+      for(let i=1;i<=this.length;i++)
+        pages.push(i);
+      return pages;
     }
   },
-  created(){
-    // Status 저장
-
-    // URL을 읽거나 DB에서 받거나
-    // Status를 얻은 뒤, vuex에 저장
-    this.$store.commit("pushStatus", "Master");
-    //this.$store.commit("pushStatus", "ReadOnly");
-    
-    this.status = this.$store.state.status;
-  },
   methods: {
-    //  페이지 저장
-    savePage(data){
-      this.pageList.forEach((obj, idx) => {
-        if(idx == this.page-1)
-          obj.data = data;
-      });
-    },
-    //  페이지 불러오기
-    findPage() {
-      this.pageList.forEach((obj, idx) => {
-        if(idx == this.page-1)
-          this.pageData = obj.data;
-      });
-    },
     //  페이지 왼쪽 이동
     moveLeft() {
-      this.savePage(this.pageData);
-      this.page -= 1;
-      this.findPage();
+      this.page = this.page == 0 ? 0 : this.page - 1;
     },
     //  페이지 오른쪽 이동
     moveRight() {
-      this.savePage(this.pageData);
-      this.page += 1;
-      this.findPage();
-    },
-    //  페이지 생성
-    addPage(data){
-      this.savePage(data);
-      this.length += 1;
-      this.page += 1;
-      this.pageList.push({page: this.page, data: []});
-      this.findPage();
-    },
-    // 페이지 삭제
-    removePage(){
-      this.pageList.forEach((obj, idx) => {
-        if(idx == this.page-1)
-          this.pageList.splice(idx, 1);
-      })
-      this.length -= 1;
-      if(this.page != 1)
-        this.page -= 1;
-      this.findPage();
+      this.page = this.page == 4 ? 4 : this.page + 1;
     },
   },
-}
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

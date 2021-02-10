@@ -8,6 +8,7 @@ import ssafy.a105.mushroom.repository.MainRepository;
 import ssafy.a105.mushroom.vo.DataDTO;
 import ssafy.a105.mushroom.vo.MultiId;
 import ssafy.a105.mushroom.vo.Music;
+import ssafy.a105.mushroom.vo.MusicPage;
 import ssafy.a105.mushroom.vo.Record;
 
 @Service
@@ -18,6 +19,14 @@ public class MainService {
 
   public MainService(MainRepository mainRepository) {
     this.mainRepository = mainRepository;
+  }
+
+  public DataDTO deleteData(String id) {
+    DataDTO data = mainRepository.findByIdMasterIdOrIdSlaveId(id, id).orElseThrow(() ->
+        new IllegalArgumentException("not exist"));
+    mainRepository.delete(data);
+
+    return data;
   }
 
   public DataDTO makeData() {
@@ -37,7 +46,11 @@ public class MainService {
       }
     }
 
+    // 기본 페이지 등록
     DataDTO data = new DataDTO(new MultiId(masterId, slaveId));
+    List<MusicPage> musicPageList = data.getMusicPageList();
+    musicPageList.add(new MusicPage());
+    data.setMusicPageList(musicPageList);
     mainRepository.save(data);
 
     return data;
@@ -52,31 +65,86 @@ public class MainService {
         .orElseThrow(() -> new IllegalArgumentException("doc not exist"));
   }
 
-  public List<Music> insertMusic(String id, Integer index, Music music) {
+  public List<MusicPage> insertMusicPage(String id, Integer index, MusicPage musicPage) {
     DataDTO data = getOneData(id);
-    List<Music> musicList = data.getMusicList();
+    List<MusicPage> musicPageList = data.getMusicPageList();
+    musicPageList.add(index, musicPage);
+    data.setMusicPageList(musicPageList);
+    mainRepository.save(data);
+
+    return musicPageList;
+  }
+
+  public List<MusicPage> deleteMusicPage(String id, Integer index) {
+    DataDTO data = getOneData(id);
+    List<MusicPage> musicPageList = data.getMusicPageList();
+    musicPageList.remove(index.intValue());
+    data.setMusicPageList(musicPageList);
+    mainRepository.save(data);
+
+    return musicPageList;
+  }
+
+  public List<MusicPage> updateMusicPage(String id, Integer index, MusicPage musicPage) {
+    DataDTO data = getOneData(id);
+    List<MusicPage> musicPageList = data.getMusicPageList();
+    musicPage.setMusicList(musicPageList.get(index).getMusicList());
+    musicPageList.set(index, musicPage);
+    data.setMusicPageList(musicPageList);
+    mainRepository.save(data);
+
+    return musicPageList;
+  }
+
+
+  public List<Music> insertMusic(String id, Integer pageNum, Integer index, Music music) {
+    DataDTO data = getOneData(id);
+    List<MusicPage> musicPageList = data.getMusicPageList();
+    MusicPage musicPage = musicPageList.get(pageNum);
+    List<Music> musicList = musicPage.getMusicList();
     musicList.add(index, music);
-    data.setMusicList(musicList);
+    musicPage.setMusicList(musicList);
+    musicPageList.set(pageNum, musicPage);
+
+    data.setMusicPageList(musicPageList);
     mainRepository.save(data);
 
     return musicList;
   }
 
-  public List<Music> deleteMusic(String id, Integer index) {
+  public List<Music> deleteMusic(String id, Integer pageNum, Integer index) {
     DataDTO data = getOneData(id);
-    List<Music> musicList = data.getMusicList();
+    List<MusicPage> musicPageList = data.getMusicPageList();
+    MusicPage musicPage = musicPageList.get(pageNum);
+    List<Music> musicList = musicPage.getMusicList();
     musicList.remove(index.intValue());
-    data.setMusicList(musicList);
+    musicPage.setMusicList(musicList);
+    musicPageList.set(pageNum, musicPage);
+
+    data.setMusicPageList(musicPageList);
     mainRepository.save(data);
 
     return musicList;
   }
 
-  public List<Music> updateMusic(String id, Integer index, Music music) {
+  public List<Music> updateMusic(String id, Integer pageNum, Integer index, Music music) {
     DataDTO data = getOneData(id);
-    List<Music> musicList = data.getMusicList();
+    List<MusicPage> musicPageList = data.getMusicPageList();
+    MusicPage musicPage = musicPageList.get(pageNum);
+    List<Music> musicList = musicPage.getMusicList();
+
+    Music before = musicList.get(index);
+    music.setDistortion(before.getDistortion());
+    music.setFileName(before.getFileName());
+    music.setGain(before.getGain());
+    music.setUrl(before.getUrl());
+    music.setVolume(before.getVolume());
+
     musicList.set(index, music);
-    data.setMusicList(musicList);
+    musicPage.setMusicList(musicList);
+    musicPageList.set(pageNum, musicPage);
+
+    data.setMusicPageList(musicPageList);
     mainRepository.save(data);
 
     return musicList;

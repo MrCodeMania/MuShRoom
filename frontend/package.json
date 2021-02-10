@@ -10,13 +10,15 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "sockjs-client": "^1.5.0",
     "tone": "^14.7.77",
     "vue": "^2.6.11",
     "vue-audio-recorder": "^3.0.1",
     "vue-router": "^3.5.1",
     "vue-wave-surfer": "^1.0.1",
     "vuetify": "^2.4.3",
-    "vuex": "^3.6.2"
+    "vuex": "^3.6.2",
+    "webstomp-client": "^1.2.6"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
