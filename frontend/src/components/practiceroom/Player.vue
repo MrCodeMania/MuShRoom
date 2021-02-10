@@ -92,7 +92,7 @@
                 class="slider ml-2"
                 name="gain"
                 id="gain"
-                v-on:input="changeGain(musicgain.value)"
+                v-on:input="changeGain(music.gain.value)"
               />
             </div>
           </div>
