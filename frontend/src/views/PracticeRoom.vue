@@ -4,7 +4,7 @@
     <Header/>
 
     <!-- 부모 row -->
-    <v-row no-gutters>
+    <v-row no-gutters >
       <!-- 왼쪽 컴포넌트들 -->
       <v-col
         cols="8"
@@ -13,7 +13,7 @@
       pa-4"
       >
         <!-- 페이지 확인, 넘기기 -->
-        <v-row no-gutters style="height:80vh;">
+        <v-row no-gutters style="height:70vh;">
           <v-card
             elevation="0"
             height="100%"
@@ -72,8 +72,7 @@
         <!-- 파일 목록 -->
         <v-row 
         v-if="status === 'Master'"
-        no-gutters
-        style="height:72vh">
+        no-gutters style="height:72vh;">
           <v-card
           elevation="0"
           width="100%"

@@ -1,9 +1,9 @@
 <!--지금은 이걸 사용합니다.-->
 <template>
   <div>
-    <div width="80px">
+    <div width="80px" >
       <recBtn
-        style="border: none"
+        style="border: none;"
         ref="recorder"
         :after-recording="setRecorded"
         :before-recording="startRecord"
@@ -11,7 +11,7 @@
       />
       <v-expand-transition>
         <div class="mx-auto">
-          <v-card v-show="expand" mode="in-out" width="100%" class="mt-n1">
+          <v-card v-show="expand" mode="in-out" width="100%" class="mt-n1" style="background-color: purple !important;">
             <div class="d-flex align-center justify-center">
               <v-sheet width="80%" class="d-flex align-center justify-center">
                 <v-text-field
@@ -21,8 +21,8 @@
                   solo
                   hide-details
                 ></v-text-field>
-                <v-btn @click="upload" class="ml-2"
-                  ><v-icon>mdi-plus-circle</v-icon></v-btn
+                <v-btn icon large color="black" @click="upload" class="ml-2"
+                  ><v-icon large>mdi-plus-circle</v-icon></v-btn
                 >
               </v-sheet>
             </div>

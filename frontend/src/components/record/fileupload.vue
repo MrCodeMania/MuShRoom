@@ -1,6 +1,6 @@
 <template>
-  <div class="mx-auto align-center d-flex justify-center">
-    <v-sheet width="80%" class="d-flex align-center">
+  <div class="mx-auto align-center d-flex justify-center" style="background-color: green !important;">
+    <v-sheet width="80%" class="d-flex align-center" style="background-color: yellow !important;">
       <v-file-input
         v-model="files"
         color="deep-purple accent-4"
@@ -15,7 +15,7 @@
       >
       </v-file-input
       ><v-btn icon color="black" large class="mt-5 ml-2" @click="upload"
-        ><v-icon>mdi-plus-circle</v-icon></v-btn
+        ><v-icon large>mdi-plus-circle</v-icon></v-btn
       >
     </v-sheet>
   </div>

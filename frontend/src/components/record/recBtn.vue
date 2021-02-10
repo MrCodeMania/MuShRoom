@@ -1,6 +1,6 @@
 <template>
   <div class="ar">
-    <div class="ar-content">
+    <div class="ar-content" style="background-color: green !important;">
       <div class="ar-recorder mt-3">
         <icon-button
           class="ar-icon ar-icon__lg"

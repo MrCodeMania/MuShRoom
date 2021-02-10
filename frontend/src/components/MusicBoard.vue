@@ -3,10 +3,9 @@
     <v-card
       id="musicListId"
       class="musicList overflow-y-auto component-color"
-      min-height="70vh"
-      max-height="70vh"
       v-scroll.self="onScroll"
       elevation="0"
+      height="70vh"
     >
         <Player
           class="ma-3 border smallcomponent-color"
@@ -24,6 +23,7 @@
       class="buttonBar d-flex justify-space-between component-color"
       elevation="0"
       width="100%"
+      height="8vh"
     >
       <v-card class="d-flex justify-start component-color" elevation="0">
         <!-- 페이지 생성, 삭제 -->
