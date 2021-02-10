@@ -3,7 +3,7 @@
     <div class="d-flex file-title">
       <p class="file-name">{{ music.fileName }}</p>
       <v-spacer></v-spacer>
-      <v-btn icon color="gray" @click="sendDelete(n)" v-if="status === 'Master'">
+      <v-btn icon color="gray" @click="sendDelete()" v-if="status === 'Master'">
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </div>
