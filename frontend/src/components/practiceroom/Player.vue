@@ -32,9 +32,9 @@
           <v-icon>mdi-stop</v-icon>
         </v-btn>
       </div>
-        
-      <div style="flex: 10; background-color: blue;">
-        <Waveform :url="music.url"></Waveform>
+
+      <div class="" style="flex: 10; background-color: blue;">
+        <Waveform :url="music.url" height="64"></Waveform>
       </div>
 
       <!-- 이 부분부터 ReadOnly -->
