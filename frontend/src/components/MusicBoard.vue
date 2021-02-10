@@ -17,6 +17,7 @@
           :music="item"
           @deleteMusic="deleteMusic"
           ref="player"
+          :idx="idx"
         />
     </v-card>
     <v-divider></v-divider>

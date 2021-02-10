@@ -34,7 +34,7 @@
       </div>
 
       <div class="" style="flex: 10; background-color: blue;">
-        <Waveform :url="music.url" height="64"></Waveform>
+        <Waveform :url="music.url" height="64" mouse="true" timeline="true" :idx="idx"></Waveform>
       </div>
 
       <!-- 이 부분부터 ReadOnly -->
@@ -164,7 +164,8 @@ export default {
   props: {
     page: Number,
     music: Object,
-    n: Number
+    n: Number,
+    idx: Number
   },
   components: {
     Waveform,
