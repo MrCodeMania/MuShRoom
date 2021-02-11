@@ -1,66 +1,43 @@
-  <template>
-  <div>
-    <v-sheet color="white" height="50" width="100%" rounded>
-      <div class="mt-5 mb-3 d-flex justify-space-around">
-        <v-btn
-          text
-          style="font-size: 1.5em"
-          :class="expand ? 'select' : 'not_select'"
-          @click="expandChange(1)"
-          >record
-        </v-btn>
-        <v-btn
-          text
-          style="font-size: 1.5em"
-          :class="expand2 ? 'select' : 'not_select'"
-          @click="expandChange(2)"
-          >upload
-        </v-btn>
+<template>
+  <v-card class="musicBoard component-color" elevation="0" width="100%" height="100%">
+    <v-card elevation="0">
+      <div class="py-3 d-flex justify-space-around component-color">
+        <v-btn text style="font-size: 1.5em;" :class="expand ? 'select' : 'not-select'" @click="expandChange(1)">record </v-btn>
+        <v-btn text style="font-size: 1.5em;" :class="expand2 ? 'select' : 'not-select'" @click="expandChange(2)">upload </v-btn>
       </div>
-    </v-sheet>
-    <v-expand-transition>
-      <v-card
-        v-show="expand"
-        mode="in-out"
-        height="130"
-        width="100%"
-        class="mx-auto"
-        ><recordBtn @sendData="receiveData" ref="recBtn"
-      /></v-card>
-    </v-expand-transition>
-    <v-expand-transition>
-      <v-card
-        v-show="expand2"
-        mode="out-in"
-        height="0"
-        width="100%"
-        class="mx-auto"
-        ><uploadBtn @sendData="receiveData" ref="fileupload"
-      /></v-card>
-    </v-expand-transition>
-    <v-sheet
-      color="white"
-      height="100%"
-      width="100%"
-      class="mt-3 component-color"
-    >
-      <v-card
-        elevation="0"
-        class="overflow-y-auto"
-        width="100%"
-        height="100%"
-        max-height="50vh"
-      >
-        <div v-for="(item, index) in records" :key="item.id">
-          <recordCard
-            v-on:delRecord="delRecord"
-            v-on:addRecord="addRecord"
-            v-bind:fileData="records[index]"
-          />
-        </div>
-      </v-card>
-    </v-sheet>
-  </div>
+      <v-expand-transition>
+        <v-card
+          style="background-color: red; position: absolute; z-index:99;"
+          v-show="expand"
+          mode="in-out"
+          height="auto"
+          width="100%"
+          class="mx-auto"
+          ><recordBtn @sendData="receiveData" ref="recBtn"
+        /></v-card>
+      </v-expand-transition>
+      <v-expand-transition>
+        <v-card
+          v-show="expand2"
+          mode="out-in"
+          height="0"
+          width="100%"
+          class="mx-auto"
+          ><uploadBtn @sendData="receiveData" ref="fileupload"
+        /></v-card>
+      </v-expand-transition>
+    </v-card>
+    <v-divider></v-divider>
+    
+    <v-card height="88%" class="overflow-y-auto component-color" v-scroll.self="onScroll">
+        <recordCard
+          v-for="(item, index) in records" :key="item.id"
+          v-on:delRecord="delRecord"
+          v-on:addRecord="addRecord"
+          v-bind:fileData="records[index]"
+        />
+    </v-card>
+  </v-card>
 </template> 
 
 <script>
@@ -77,6 +54,7 @@ export default {
       expand: false,
       expand2: false, // expand data
       idx: 0,
+      scrollInvoked: 0,
     };
   },
   computed: {
@@ -144,6 +122,7 @@ export default {
         this.expand2 = true;
       }
     },
+
     addCard(data) {
       this.$store.commit('updateRecord', data);
       this.send({type:"add", index: this.idx - 1, obj: {url : data["downloadURL"], fileName : data["fileName"]}});
@@ -153,6 +132,7 @@ export default {
       this.idx += 1;
       console.log(data);
       this.addCard(data);
+      this.expand2 = false;
     },
     delRecord(id) {
       var idx = 0,
@@ -179,11 +159,14 @@ export default {
       this.$store.commit('addMusic', {
           page, record
         });
-
       // Page별 MusicList 소켓 완료되면 test
       // this.send({type:"add", index: this.idx - 1, obj: {url : data["downloadURL"], fileName : data["fileName"]}}, data);
-    }
     
+    },
+    onScroll() {
+      this.scrollInvoked++;
+    },
+
   },
 };
 </script>
@@ -195,7 +178,7 @@ export default {
   font-size: 1.75em !important;
 }
 
-.not_select {
+.not-select {
   color: gray !important;
 }
 </style>

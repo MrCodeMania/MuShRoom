@@ -7,6 +7,7 @@
       max-height="70vh"
       v-scroll.self="onScroll"
       elevation="0"
+      height="70vh"
     >
         <Player
           class="ma-3 border smallcomponent-color"
@@ -24,6 +25,7 @@
       class="buttonBar d-flex nav-color"
       elevation="0"
       width="100%"
+      height="8vh"
     >
       <v-spacer></v-spacer>
       <v-card class="d-flex justify-end nav-color" elevation="0">
