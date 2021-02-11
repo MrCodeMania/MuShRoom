@@ -11,18 +11,20 @@
       />
       <v-expand-transition>
         <div class="mx-auto">
-          <v-card v-show="expand" mode="in-out" width="100%" class="mt-n1 px-8 d-flex component-color">
-            <v-text-field
-              background-color="#D7C9B2"
-              v-model="inputFileName"
-              :rules="filenameRules"
-              label="파일이름"
-              solo
-              hide-details
-            ></v-text-field>
-            <v-btn icon large color="black" @click="upload" class="ml-2"
-              ><v-icon large>mdi-plus-circle</v-icon></v-btn
-            >
+          <v-card v-show="expand" mode="in-out" width="100%" class="mt-n1 d-flex justify-center component-color">
+              <v-sheet width="80%" class="d-flex align-center justify-center component-color">
+                <v-text-field
+                  background-color="#D7C9B2"
+                  v-model="inputFileName"
+                  :rules="filenameRules"
+                  label="파일이름"
+                  solo
+                  hide-details
+                ></v-text-field>
+                <v-btn icon large @click="upload" class="ml-2"
+                  ><v-icon large>mdi-plus-circle</v-icon></v-btn
+                >
+              </v-sheet>
           </v-card>
         </div>
       </v-expand-transition>
