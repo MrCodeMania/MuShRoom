@@ -10,7 +10,7 @@
           style="background-color: red; position: absolute; z-index:99;"
           v-show="expand"
           mode="in-out"
-          height="130"
+          height="auto"
           width="100%"
           class="mx-auto"
           ><recordBtn @sendData="receiveData" ref="recBtn"
