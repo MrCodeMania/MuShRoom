@@ -20,7 +20,10 @@
 
 .component-color {
     background-color: #CBCACC !important;
-    /* background-color: #D7C9B2 !important; */
+}
+
+.component-color2 {
+    background-color: #D7C9B2 !important;
 }
 
 .main-color {
