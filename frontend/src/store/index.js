@@ -17,6 +17,7 @@ export default new Vuex.Store({
     },
     status:"",
     recordStartState: "",
+    idx: 0
   },
   mutations: {
     pushURL(state, e = "") {
@@ -43,7 +44,7 @@ export default new Vuex.Store({
     //  recordBoard에서 musicBoard으로 음악 추가
     addMusic(state, { page, record }) {
       state.data.musicBoard[page].list.push({
-        id: ++state.data.musicBoard[page].idx+record.downloadURL,
+        id: ++state.idx+record.downloadURL,
         url: record.downloadURL,
         fileName: record.fileName,
         timestamp: '',

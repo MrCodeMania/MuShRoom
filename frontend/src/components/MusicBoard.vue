@@ -3,11 +3,10 @@
     <v-card
       id="musicListId"
       class="musicList overflow-y-auto nav-color"
-      min-height="70vh"
-      max-height="70vh"
+      min-height="73vh"
+      max-height="73vh"
       v-scroll.self="onScroll"
       elevation="0"
-      height="70vh"
     >
         <Player
           class="ma-3 border smallcomponent-color"
