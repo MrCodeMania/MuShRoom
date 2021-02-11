@@ -3,7 +3,7 @@
     <v-card
       elevation="0"
       outlined
-      class="mx-auto mt-1"
+      class="mx-auto mt-2 smallcomponent-color"
       width="90%"
       height="100px"
     >
@@ -13,16 +13,15 @@
         }}</span>
         <v-spacer></v-spacer>
         <v-btn icon dark color="indigo" @click="addThis"
-          ><v-icon dark> mdi-plus </v-icon></v-btn
+          ><v-icon>mdi-plus </v-icon></v-btn
         >
         <v-btn class="mr-2 ml-1" icon dark color="error" @click="deleteThis"
-          ><v-icon dark>mdi-delete</v-icon></v-btn
+          ><v-icon>mdi-delete</v-icon></v-btn
         >
       </v-card-title>
 
-      <v-card-text class="none"
-        ><Waveform :url="fileData.downloadURL" height="64"
-      /></v-card-text>
+      <Waveform  class="mx-auto none" style="background-color: blue" :url="fileData.downloadURL" height="60"
+      />
     </v-card>
   </div>
 </template>
