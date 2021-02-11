@@ -39,7 +39,7 @@ export default class {
     }
 
     this.beforeRecording && this.beforeRecording('start recording')
-
+  
     navigator.mediaDevices
              .getUserMedia(constraints)
              .then(this._micCaptured.bind(this))
@@ -103,13 +103,34 @@ export default class {
     return this.records.slice(-1).pop()
   }
 
-  _micCaptured (stream) {
+  _micCaptured(stream) {
+    var filter;
+    var compressor;
     this.context    = new(window.AudioContext || window.webkitAudioContext)()
     this.duration   = this._duration
-    this.input      = this.context.createMediaStreamSource(stream)
+    //compressor
+    compressor = this.context.createDynamicsCompressor();
+    compressor.threshold.value = -50;
+    compressor.knee.value = 40;
+    compressor.ratio.value = 12;
+    compressor.reduction.value = -20;
+    compressor.attack.value = 0;
+    compressor.release.value = 0.25;
+    ////
+    filter
+    filter = this.context.createBiquadFilter();
+    filter.Q.value = 8.30;
+    filter.frequency.value = 355;
+    filter.gain.value = 3.0;
+    filter.type = 'bandpass';
+    filter.connect(compressor);
+
+    this.input = this.context.createMediaStreamSource(stream)
     this.processor  = this.context.createScriptProcessor(this.bufferSize, 1, 1)
     this.stream     = stream
-
+    console.log(compressor, filter);
+    console.log(this.input);
+    
     this.processor.onaudioprocess = (ev) => {
       const sample = ev.inputBuffer.getChannelData(0)
       let sum = 0.0
