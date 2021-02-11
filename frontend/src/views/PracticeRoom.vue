@@ -99,7 +99,7 @@
           elevation="0"
           width="100%"
           height="100%">
-            <Metronome/>
+            <MetronomeV2/>
           </v-card>
         </v-row>
 
@@ -123,7 +123,8 @@
 
 <script>
 import Header from '@/components/common/Header.vue';
-import Metronome from '@/components/practiceroom/Metronome.vue';
+// import Metronome from '@/components/practiceroom/Metronome.vue';
+import MetronomeV2 from '@/components/MetronomeBody.vue';
 import MusicBoard from '@/components/MusicBoard.vue';
 import Record from '@/components/record.vue';
 import axios from '@/service/axios.service.js';
@@ -131,9 +132,10 @@ import axios from '@/service/axios.service.js';
 export default {
   components: {
     Header,
-    Metronome,
+    // Metronome,
     MusicBoard,
     Record,
+    MetronomeV2
   },
   created() {
    // Status를 vuex에 저장
