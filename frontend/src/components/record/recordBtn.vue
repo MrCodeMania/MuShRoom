@@ -11,8 +11,8 @@
       />
       <v-expand-transition>
         <div class="mx-auto">
-          <v-card v-show="expand" mode="in-out" width="100%" class="mt-n1 d-flex justify-center component-color">
-              <v-sheet width="80%" class="d-flex align-center justify-center component-color">
+          <v-card v-show="expand" mode="in-out" width="100%" class="mt-n1 component-color">
+              <v-sheet width="80%" class="d-flex align-center mx-auto justify-center component-color">
                 <v-text-field
                   background-color="#D7C9B2"
                   v-model="inputFileName"
