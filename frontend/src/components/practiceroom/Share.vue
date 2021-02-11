@@ -5,7 +5,6 @@
         top="top"
         offset-x="offset-x"
         :close-on-content-click="false">
-        <v-btn>asd</v-btn>
         <template v-slot:activator="{ on, attrs }">
             <v-btn
                 color="primary"
