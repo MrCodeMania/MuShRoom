@@ -11,7 +11,7 @@
       />
       <v-expand-transition>
         <div class="mx-auto">
-          <v-card v-show="expand" mode="in-out" width="100%" class="mt-n1" style="background-color: purple !important;">
+          <v-card v-show="expand" mode="in-out" width="100%" class="mt-n1">
             <div class="d-flex align-center justify-center">
               <v-sheet width="80%" class="d-flex align-center justify-center">
                 <v-text-field
