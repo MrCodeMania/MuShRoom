@@ -1,8 +1,9 @@
 <template>
   <div class="ar">
-    <div class="ar-content">
+    <div class="ar-content component-color">
       <div class="ar-recorder mt-3">
         <icon-button
+          style="background-color: #D7C9B2;"
           class="ar-icon ar-icon__lg"
           :name="iconButtonType"
           :class="{
