@@ -1,4 +1,4 @@
-import Mp3Encoder from './mp3-encoder'
+
 import WavEncoder from './wav-encoder'
 import { convertTimeMMSS } from './utils'
 
@@ -48,9 +48,7 @@ export default class {
     this.isPause     = false
     this.isRecording = true
 
-    if (this._isMp3() && !this.lameEncoder) {
-      this.lameEncoder = new Mp3Encoder(this.encoderOptions)
-    }
+ 
   }
 
   stop () {
@@ -64,9 +62,10 @@ export default class {
     if (this._isMp3()) {
       record = this.lameEncoder.finish()
     } else {
+      console.log(123);
       let wavEncoder = new WavEncoder({
         bufferSize : this.bufferSize,
-        sampleRate : this.encoderOptions.sampleRate,
+        sampleRate : this.input.context.sampleRate||this.encoderOptions.sampleRate,
         samples    : this.wavSamples
       })
       record = wavEncoder.finish()
