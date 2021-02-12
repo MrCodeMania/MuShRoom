@@ -12,13 +12,13 @@
       flex-shrink-0
       pa-4"
       >
-        <!-- 뮤직 보드 상단 페이징 탭 -->
         <v-row no-gutters style="height:80vh;">
           <v-card
             elevation="0"
             height="100%"
             width="100%"
             color="#00ff0000">
+            <!-- 뮤직 보드 상단 페이징 탭 -->
             <v-tabs
               dark
               hide-slider
@@ -26,62 +26,64 @@
               v-model="page">
               <v-tab
                 class="rounded-t pa-0 divider"
-                :class="page==i-1 ? 'nav-color' : 'selected'"
+                :class="page==i-1 ? 'nav-color' : 'others'"
                 v-for="i in range"
                 :key="i">
                 <v-card
-                  height="48px"
+                height="48px"
                   elevation="0"
                   color="#00ff0000">
-                    <v-btn
-                      class="tab_btn"
-                      width="2"
-                      height="2"
-                      dark
-                      icon
-                      :disabled="length==1"
-                      @click="removePage()">
-                      <v-icon
-                        v-if="length!=1"
-                        x-small>
-                        mdi-close
-                      </v-icon>
-                    </v-btn>
+                  <!-- 페이지 삭제 버튼 -->
+                  <v-btn
+                    class="tab_btn"
+                    width="2"
+                    height="2"
+                    dark
+                    icon
+                    :disabled="length==1"
+                    @click="removePage()">
+                    <v-icon
+                      v-if="length!=1"
+                      x-small>
+                      mdi-close
+                    </v-icon>
+                  </v-btn>
+                  <!-- 페이지 이름 -->
                   <v-text-field
+                    v-model="pageNames[i-1]"
                     background-color="#00ff0000"
                     flat
                     class="tab_textfield"
-                    solo
-                    :placeholder="i.toString()">
-                    </v-text-field>
+                    solo>
+                  </v-text-field>
                 </v-card>
               </v-tab>
-
-            <!-- 페이지 추가 버튼 -->
-            <v-btn
-            class="d-line-block ml-1 mt-1"
-            icon
-            v-if="length<5"
-            @click="addPage()">
-              <v-icon>
-                mdi-plus
-              </v-icon>
-            </v-btn>
+              <!-- 페이지 추가 버튼 -->
+              <v-btn
+                class="d-line-block ml-1 mt-1"
+                icon
+                v-if="length<5"
+                @click="addPage()">
+                <v-icon>
+                  mdi-plus
+                </v-icon>
+              </v-btn>
             </v-tabs>
-            <v-tabs-items v-model="page"
-            class="rounded-tr nav-color">
+            <v-tabs-items
+              v-model="page"
+              class="rounded-tr nav-color">
               <v-tab-item
                 v-for="i in range"
                 :key="i"
                 :transition="false" :reverse-transition="false">
+                <!-- 뮤직 보드 -->
                 <v-card elevation="0" width="100%" height="100%">
                   <MusicBoard :page="page"/>
                 </v-card>
-                </v-tab-item>
+              </v-tab-item>
             </v-tabs-items>
           </v-card>
         </v-row>
-
       </v-col>
 
       <!-- 오른쪽 컴포넌트들 -->
@@ -160,7 +162,7 @@ export default {
     return {
       page: 0, //  현재 페이지,
       status,
-      pageNames: []  // 페이지 이름,
+      pageNames: ['','','','','']  // 페이지 이름,
     };
   },
   computed: {
@@ -218,11 +220,11 @@ export default {
 }
 
 .divider {
-  border-right: 1px solid #161929;
+  border-right: 1px solid black;
   /* border-bottom: 1px solid white; */
 }
 
-.selected {
+.others {
   background-color: #3c4d5d;
 }
 
