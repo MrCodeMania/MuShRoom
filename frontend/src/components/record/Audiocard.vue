@@ -50,4 +50,9 @@ export default {
 .none {
   pointer-events: none;
 }
+
+.v-card__subtitle, .v-card__text, .v-card__title {
+    padding: 0px;
+}
+
 </style>

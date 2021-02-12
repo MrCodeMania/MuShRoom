@@ -182,7 +182,7 @@ export default {
   props: {
     page: Number,
     music: Object,
-    n: Number,
+    n: Number
   },
   components: {
     Waveform,
