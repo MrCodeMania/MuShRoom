@@ -1,8 +1,8 @@
 <template>
   <v-fade-transition>
     <v-avatar
-      :color="beatIndex ? 'grey' : 'brown darken-1'"
-      :style="isPlaying ? { animationDuration: animationDuration } : ''"
+      :color="beatIndex ? '#78909C' : '#DD2C00'"
+      :style="isPlaying ? { animationDuration: animationDuration } : 'background-color: #868488 !important;'"
       class="v-avatar--metronome"
       size="50"
       rounded="circle"
