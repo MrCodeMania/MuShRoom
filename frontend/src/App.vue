@@ -14,3 +14,13 @@ export default {
   name: 'App',
 };
 </script>
+
+<style>
+@font-face {
+  font-family: 12롯데마트드림;
+  src: local(※), url('/fonts/12롯데마트드림Bold.tff') format('truetype');
+}
+#app {
+  font-family: '12롯데마트드림Bold', sans-serif;
+}
+</style>
