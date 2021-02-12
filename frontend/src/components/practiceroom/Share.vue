@@ -16,7 +16,7 @@
             </v-btn>
         </template>
 
-        <v-list v-if="status === 'Master'">
+        <v-list v-if="status == 'Master'">
             <v-list-item v-for="item in urls" :key="item.name">
                 <v-list-item-content>
                     <v-list-item-title style="font-size:20pt; font-weight:bold;">{{ item.name }}</v-list-item-title>
@@ -67,8 +67,6 @@
 </template>
 
 <script>
-// import Axios from 'axios'
-import Sha256 from '@/lib/sha256.js'
 
 export default {
     data() {
@@ -92,23 +90,17 @@ export default {
         };
     },
     created() {
-        console.log(Sha256("1-master")); // sha256 test
+       this.status = this.$store.state.status;
 
-        this.getShareUrl();
-        
-        this.status = this.$store.state.status;
+        if(this.status === "Master")
+        {
+            this.urls[0].url = "http://i4a105.p.ssafy.io:8080/practiceroom?shareUrl=" + this.$store.state.shareUrl[0];
+            this.urls[1].url = "http://i4a105.p.ssafy.io:8080/practiceroom?shareUrl=" + this.$store.state.shareUrl[1];
+        }
+        else
+            this.readOnlyUrls[0].url = "http://i4a105.p.ssafy.io:8080/practiceroom?shareUrl=" + this.$store.state.shareUrl[1];
     },
     methods: {
-        // url 받아오는 메소드
-        // 아직 DB 없음
-        getShareUrl() {
-          // Axios.get('',{
-          //   params:{roomNo:this.baseUrl}
-          //   }).then(res => {
-          //     this.urls[0].url = res[0].data;
-          //     this.urls[1].url = res[1].data;
-          //   })
-        },
         copyShareUrl(name) {
             let copied = this.$refs.textToCopy;
             if (name === "Master") {

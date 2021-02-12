@@ -50,6 +50,8 @@
 <script>
 import Player from "./practiceroom/Player";
 import * as Tone from "tone";
+import Stomp from 'webstomp-client'
+import SockJS from 'sockjs-client'
 
 export default {
   props: ["page"],
@@ -60,10 +62,16 @@ export default {
     return {
       play: false,
       scrollInvoked: 0,
+      code : "",
+      status
     };
   },
   created(){
     this.status = this.$store.state.status;
+    
+    this.code = document.location.href.split('=')[1];
+
+    this.connect();
   },
   computed: {
     getURL() {
@@ -86,12 +94,41 @@ export default {
     }
   },
   methods: {
+    send(type, msg) {
+      console.log(msg);
+      if(type == "music")
+          this.musicStompClient.send("/socket/music/" + this.code + "/" + this.page + "/receive", JSON.stringify(msg),{});        
+    },
+    connect() {
+      const serverURL = "http://i4a105.p.ssafy.io:8080/";
+
+      let musicSocket = new SockJS(serverURL);
+      this.musicStompClient = Stomp.over(musicSocket);
+      this.musicStompClient.connect(
+        {},
+        frame => {
+          // 소켓 연결 성공
+          this.connected = true;
+          console.log('뮤직보드 소켓 연결 성공', frame);
+
+          this.musicStompClient.subscribe("/socket/music/" + this.code + "/" + this.page + "/send", res => {
+            const resBody = JSON.parse(res.body);
+            
+            console.log(resBody);
+
+            if(resBody["type"] == "delete")
+                this.$store.commit('deleteMusic', {page : this.page, idx: resBody["id"]});
+          });
+        },
+        error => {
+          // 소켓 연결 실패
+          console.log('뮤직보드 소켓 연결 실패', error);
+          this.connected = false;
+        }
+      );
+    },
     downloadButton() {
       console.log("download");
-
-      // let a = new MusicDummy();
-      // MusicDummies.push(a);
-      // console.log(MusicDummies);
     },
     musicPlayButton() {
       if (this.play) {
@@ -119,10 +156,11 @@ export default {
       this.scrollInvoked++;
     },
     deleteMusic(id) {
-      let page = this.page, idx = id;
-      this.$store.commit('deleteMusic', {
-            page, idx
-          });
+      console.log("i = ", id);
+      console.log("id = ", this.music[id].id);
+      
+      this.send("music", {type: "delete", index: id, obj: {url : this.music[id]["downloadURL"], fileName : this.music[id]["fileName"]}});
+        
     },
   },
 };

@@ -12,11 +12,13 @@ export default new Vuex.Store({
       musicBoard: [{ //  왼쪽 컴포넌트
         idx: 0,
         list: [] // 추가된 음악 리스트
-      }],
+      },
+    ],
       recordBoard: [] // 오른쪽 컴포넌트
     },
     status: "",
     recordStartState: "",
+    shareUrl:[],
     idx: 0
   },
   mutations: {
@@ -24,7 +26,7 @@ export default new Vuex.Store({
       state.url = e;
     },
     pushName(state, name = "") {
-      state.fileName = name
+      state.fileName = name;
     },
     //  새로고침 시 data 초기화
     setData(state) {
@@ -50,7 +52,8 @@ export default new Vuex.Store({
       record
     }) {
       state.data.musicBoard[page].list.push({
-        id: ++state.idx + record.downloadURL,
+        id: state.data.musicBoard[page].idx++,
+        // id: ++state.idx + record.downloadURL,
         url: record.downloadURL,
         fileName: record.fileName,
         timestamp: '',
@@ -85,6 +88,7 @@ export default new Vuex.Store({
       idx
     }) {
       state.data.musicBoard[page].list.splice(idx, 1);
+      state.data.musicBoard[page].idx--;
     },
     //  musicBoard에 페이지 추가
     addPage(state, pageIdx) {
@@ -101,6 +105,10 @@ export default new Vuex.Store({
       state.status = status;
       console.log(state.status);
     },
+    pushShareUrl(state, shareUrl){
+      state.shareUrl = shareUrl;
+    },
+
     setRC(state, start = "") {
       state.recordStartState = start
     }
