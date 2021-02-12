@@ -59,10 +59,6 @@ export default class {
 
     let record = null
 
-    if (this._isMp3()) {
-      record = this.lameEncoder.finish()
-    } else {
-      console.log(123);
       let wavEncoder = new WavEncoder({
         bufferSize : this.bufferSize,
         sampleRate : this.input.context.sampleRate||this.encoderOptions.sampleRate,
@@ -70,7 +66,7 @@ export default class {
       })
       record = wavEncoder.finish()
       this.wavSamples = []
-    }
+    
 
     record.duration = convertTimeMMSS(this.duration)
     this.records.push(record)
@@ -104,60 +100,55 @@ export default class {
   }
 
   _micCaptured(stream) {
-    var filter;
-    var compressor;
     this.context    = new(window.AudioContext || window.webkitAudioContext)()
     this.duration   = this._duration
-    //compressor
-    compressor = this.context.createDynamicsCompressor();
-    compressor.threshold.value = -50;
-    compressor.knee.value = 40;
-    compressor.ratio.value = 12;
-    compressor.reduction.value = -20;
-    compressor.attack.value = 0;
-    compressor.release.value = 0.25;
-    ////
-    filter
-    filter = this.context.createBiquadFilter();
-    filter.Q.value = 8.30;
-    filter.frequency.value = 355;
-    filter.gain.value = 3.0;
-    filter.type = 'bandpass';
-    filter.connect(compressor);
-
+ 
     this.input = this.context.createMediaStreamSource(stream)
     this.processor  = this.context.createScriptProcessor(this.bufferSize, 1, 1)
     this.stream     = stream
-    console.log(compressor, filter);
-    console.log(this.input);
     
     this.processor.onaudioprocess = (ev) => {
       const sample = ev.inputBuffer.getChannelData(0)
       let sum = 0.0
-
-      if (this._isMp3()) {
-        this.lameEncoder.encode(sample)
-      } else {
-        this.wavSamples.push(new Float32Array(sample))
-      }
-
+      this.wavSamples.push(new Float32Array(sample))
+      
       for (let i = 0; i < sample.length; ++i) {
         sum += sample[i] * sample[i]
       }
-
       this.duration = parseFloat(this._duration) + parseFloat(this.context.currentTime.toFixed(2))
       this.volume = Math.sqrt(sum / sample.length).toFixed(2)
     }
-
+    this.noisefilter();
     this.input.connect(this.processor)
     this.processor.connect(this.context.destination)
+    //console.log(this.input);
   }
-
+  noisefilter()
+  {
+       //compressor
+       //var noiseSupperssion = navigator.mediaDevices.getSupportedConstraints();
+       //console.log(noiseSupperssion);
+       var compressor = this.context.createDynamicsCompressor();
+       compressor.threshold.value = -50;
+       compressor.knee.value = 40;
+       compressor.ratio.value = 12;
+       compressor.attack.value = 0;
+       compressor.release.value = 0.25;
+       //console.log(compressor);
+   
+       var filter = this.context.createBiquadFilter();
+       filter.Q.value = 8.30;
+       filter.frequency.value = 355;
+       filter.gain.value = 3.0;
+       filter.type = 'bandpass';
+       filter.connect(compressor);
+       //console.log(filter);
+       ////
+       this.input.connect(filter);
+  }
   _micError (error) {
     this.micFailed && this.micFailed(error)
   }
 
-  _isMp3 () {
-    return this.format.toLowerCase() === 'mp3'
-  }
+
 }
