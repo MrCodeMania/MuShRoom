@@ -9,28 +9,32 @@ export default new Vuex.Store({
     fileName: "",
     myName: "여기에 이름",
     data: { // 연습실이 갖는 전체 데이터
-      musicBoard: [{  //  왼쪽 컴포넌트
+      musicBoard: [{ //  왼쪽 컴포넌트
         idx: 0,
         list: [] // 추가된 음악 리스트
       },
     ],
       recordBoard: [] // 오른쪽 컴포넌트
     },
-    status:"",
+    status: "",
     recordStartState: "",
     shareUrl:[],
+    idx: 0
   },
   mutations: {
     pushURL(state, e = "") {
       state.url = e;
     },
     pushName(state, name = "") {
-      state.fileName= name
+      state.fileName = name;
     },
     //  새로고침 시 data 초기화
     setData(state) {
       state.data = {
-        musicBoard: [{ idx: 0, list: [] }],
+        musicBoard: [{
+          idx: 0,
+          list: []
+        }],
         recordBoard: []
       };
     },
@@ -43,9 +47,13 @@ export default new Vuex.Store({
       state.data.recordBoard.splice(idx, 1);
     },
     //  recordBoard에서 musicBoard으로 음악 추가
-    addMusic(state, { page, record }) {
+    addMusic(state, {
+      page,
+      record
+    }) {
       state.data.musicBoard[page].list.push({
         id: state.data.musicBoard[page].idx++,
+        // id: ++state.idx + record.downloadURL,
         url: record.downloadURL,
         fileName: record.fileName,
         timestamp: '',
@@ -60,36 +68,48 @@ export default new Vuex.Store({
         gain: {
           object: null,
           value: 0,
+        },
+        reverb: {
+          object: null,
+          value: 0,
         }
       });
     },
     // player에서 바꾼 option update
-    updateMusic(state, {page, music}) {
+    updateMusic(state, {
+      page,
+      music
+    }) {
       state.data.musicBoard[page].list.splice(music.id, 1, music);
     },
     // musicBoard에서 음악 삭제
-    deleteMusic(state, { page, idx }) {
+    deleteMusic(state, {
+      page,
+      idx
+    }) {
       state.data.musicBoard[page].list.splice(idx, 1);
       state.data.musicBoard[page].idx--;
     },
     //  musicBoard에 페이지 추가
     addPage(state, pageIdx) {
-      state.data.musicBoard.splice(pageIdx+1, 0, {
-        idx: 0, list: []
+      state.data.musicBoard.splice(pageIdx + 1, 0, {
+        idx: 0,
+        list: []
       });
     },
     //  musicBoard에서 페이지 삭제
     removePage(state, pageIdx) {
       state.data.musicBoard.splice(pageIdx, 1);
     },
-    pushStatus(state, status){
+    pushStatus(state, status) {
       state.status = status;
       console.log(state.status);
     },
     pushShareUrl(state, shareUrl){
       state.shareUrl = shareUrl;
     },
-    setRC(state, start="") {
+
+    setRC(state, start = "") {
       state.recordStartState = start
     }
   },
@@ -113,8 +133,6 @@ export default new Vuex.Store({
       return state.recordStartState;
     }
   },
-  actions: {
-  },
-  modules: {
-  }
+  actions: {},
+  modules: {}
 })
