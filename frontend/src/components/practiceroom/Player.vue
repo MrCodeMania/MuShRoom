@@ -43,7 +43,7 @@
           height="64"
           mouse="true"
           timeline="true"
-          :idx="idx"
+          :idx="n"
           @setTime="setTime"
         ></Waveform>
       </div>
@@ -182,8 +182,7 @@ export default {
   props: {
     page: Number,
     music: Object,
-    n: Number,
-    idx: Number,
+    n: Number
   },
   components: {
     Waveform,
