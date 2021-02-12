@@ -39,45 +39,50 @@
       <PlayControlBtn :isPlaying="isPlaying()" @start="onStart" @stop="onStop"/>
       <v-spacer></v-spacer>
       <!-- <VolumeBtn :mute="mute" :volume="volume" @volumeDown="onVolumeDown" @volumeUp="onVolumeUp" @volumeMute="onVolumeMute" @changeBySlide="onChangeBySlide"/> -->
-    <div class="d-flex align-center">
-    {{ volume | volume(mute) }}
-    <v-btn
-    icon
-    large
-    color="black"
-    @click="onVolumeDown"
-    class="volume-btn"
-    >
-    <v-icon large>mdi-volume-minus</v-icon>
-    </v-btn>
-    <v-slider
-      color="brown darken-1"
-      class="pt-5 volume-slider"
-      track-color="grey"
-      v-model="volume"
-      max="50"
-      min="-50"
-      style="width: 150px !important;"
-      @change="onChangeBySlide"
-    ></v-slider>
-    <v-btn
-    icon
-    large
-    color="black"
-    @click="onVolumeUp"
-    class="volume-btn"
-    >
-    <v-icon large>mdi-volume-plus</v-icon>
-    </v-btn>
-    <v-btn
-    icon
-    large
-    :color="mute ? 'black': '' "
-    @click="onVolumeMute"
-    >
-    <v-icon large>mdi-volume-off</v-icon>
-    </v-btn>
-  </div>
+      <div class="d-flex align-center">
+
+        <v-btn
+          icon
+          large
+          color="black"
+          :disabled="isMute()"
+          @click="onVolumeDown"
+          class="volume-btn"
+        >
+        <v-icon >mdi-volume-minus</v-icon>
+        </v-btn>
+        <v-btn
+          icon
+          large
+          color="black"
+          :disabled="isMaxVolume()"
+          @click="onVolumeUp"
+          class="volume-btn"
+        >
+        <v-icon >mdi-volume-plus</v-icon>
+        </v-btn>
+        <v-btn
+          icon
+          color="black"
+          @click="onVolumeMute"
+          class="volume-slider"
+        >
+        <v-icon v-if="volume == -50 || mute">mdi-volume-mute</v-icon>
+        <v-icon v-else-if="volume > -50 && volume <= 0">mdi-volume-medium</v-icon>
+        <v-icon v-else>mdi-volume-high</v-icon>
+        </v-btn>
+        <v-slider
+            color="brown darken-1"
+            class="pt-5 volume-slider general-slider"
+            track-color="grey"
+            v-model="volume"
+            max="50"
+            min="-50"
+            style="width: 150px !important;"
+            @change="onChangeBySlide"
+        ></v-slider>
+        <p class="volume-number">{{ volume | volume(mute) }}</p>
+      </div>
     </v-card>
   </v-card>
 </template>
@@ -101,7 +106,7 @@ const beat = new Player(
 
 Vue.filter("volume", (value, mute) => {
   if (mute) {
-    return "mute";
+    return "0";
   }
   return `${value+50}`;
 });
@@ -136,6 +141,20 @@ export default {
         return false;
       }
       return true;
+    },
+
+    isMute() {
+      if (this.mute) {
+        return true;
+      }
+      return false;
+    },
+
+    isMaxVolume() {
+      if (this.volume == 50) {
+        return true;
+      }
+      return false;
     },
 
     onStart() {
@@ -183,7 +202,8 @@ export default {
       this.volume = Math.round(Math.max(this.volume - 5, -50));
       Destination.volume.value = this.volume/2;
       if (this.volume == -50) {
-        Destination.mute = !this.mute;
+        this.mute = !this.mute
+        Destination.mute = this.mute;
       }
     },
 
@@ -191,6 +211,11 @@ export default {
       this.mute = false;
       this.volume = Math.round(Math.min(this.volume + 5, 50));
       Destination.volume.value = this.volume/2;
+    },
+
+    onVolumeMute() {
+      this.mute = !this.mute;
+      Destination.mute = this.mute;
     },
 
     onChangeBySlide() {
@@ -201,11 +226,6 @@ export default {
       if (this.volume == -50) {
         Destination.mute = !this.mute;
       }
-    },
-
-    onVolumeMute() {
-      this.mute = !this.mute;
-      Destination.mute = this.mute;
     },
 
     decrease(point) {
@@ -376,5 +396,17 @@ export default {
     display: none !important;
   }
 }
+
+.showVolumeBtn {
+  display: none !important;
+}
+
+.volume-number {
+  font-size: 25px;
+  font-weight: 600;
+  padding-top: 12px;
+  width: 60px;
+}
+
 
 </style>

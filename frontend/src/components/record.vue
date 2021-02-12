@@ -3,7 +3,7 @@
     <v-card elevation="0">
       <div class="py-3 d-flex justify-space-around component-color">
         <v-btn text style="font-size: 1.5em;" :class="expand ? 'select' : 'not-select'" @click="expandChange(1)">record </v-btn>
-        <v-btn text style="font-size: 1.5em;" :class="expand2 ? 'select' : 'not-select'" @click="expandChange(2)">upload </v-btn>
+        <v-btn text style="font-size: 1.5em;" :class="expand2 ? 'not-select' : 'not-select'" @click="expandChange(2)">upload </v-btn>
       </div>
       <v-expand-transition>
         <v-card
@@ -166,7 +166,6 @@ export default {
     onScroll() {
       this.scrollInvoked++;
     },
-
   },
 };
 </script>
