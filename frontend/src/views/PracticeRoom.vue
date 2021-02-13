@@ -6,7 +6,7 @@
     <v-row no-gutters>
       <!-- 왼쪽 컴포넌트들 -->
       <v-col cols="8" class="flex-grow-0 flex-shrink-0 pa-4">
-        <v-row no-gutters style="height: 80vh">
+        <v-row no-gutters style="height: 100vh">
           <v-card elevation="0" height="100%" width="100%" color="#00ff0000">
             <!-- 뮤직 보드 상단 페이징 탭 -->
             <v-tabs
@@ -93,6 +93,18 @@
         </v-row>
       </v-col>
     </v-row>
+    <v-btn
+    class="chat-btn"
+    dark
+    icon
+    @click="showChat()"
+    v-if="!openChat">
+      <v-icon
+      dark>
+        mdi-chat
+      </v-icon>
+    </v-btn>
+    <Chat :openChat="openChat" @closeChat="closeChat"/>
   </v-main>
 </template>
 
@@ -104,6 +116,7 @@ import Record from "@/components/record.vue";
 import axios from "@/service/axios.service.js";
 import Stomp from 'webstomp-client';
 import SockJS from 'sockjs-client';
+import Chat from '@/components/chat/Chat.vue';
 //import * as Tone from "tone";
 
 export default {
@@ -113,6 +126,7 @@ export default {
     MetronomeV2,
     MusicBoard,
     Record,
+    Chat
   },
   created() {
     // Status를 vuex에 저장
@@ -126,6 +140,7 @@ export default {
       page: 0, //  현재 페이지,
       status,
       pageNames: ["", "", "", "", ""], // 페이지 이름,
+      openChat: false
     };
   },
   computed: {
@@ -268,6 +283,12 @@ export default {
       this.moveLeft();
       this.send("deletePage");
     },
+    showChat(){
+      this.openChat = true;
+    },
+    closeChat(){
+      this.openChat = false;
+    }
   },
 };
 </script>
@@ -299,5 +320,12 @@ export default {
 
 .others {
   background-color: #3c4d5d;
+}
+
+.chat-btn {
+  display: flex;
+  position: fixed;
+  left: 50px;
+  bottom: 8vh;
 }
 </style>
