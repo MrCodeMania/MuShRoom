@@ -3,7 +3,7 @@
     <v-btn
       icon
       large
-      color="black"
+      color="white"
       v-if="isPlaying"
       @click="stop"
     >
@@ -12,7 +12,7 @@
     <v-btn
       icon
       large
-      color="black"
+      color="white"
       v-else
       @click="start"
     >

@@ -22,7 +22,7 @@
 }
 
 .component-color2 {
-  background-color: #d7c9b2 !important;
+  background-color: #36322c !important;
 }
 
 .main-color {
@@ -66,3 +66,17 @@ body {
     linear-gradient(-225deg, #2cd8d5 0%, #6b8dd6 48%, #8e37d7 100%);
   height: 100%;
 }
+
+
+
+/* p {
+    color: white;
+}
+
+span {
+    color: white;
+}
+
+label {
+    color : white
+} */

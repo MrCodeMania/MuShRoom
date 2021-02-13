@@ -59,7 +59,7 @@
         height="auto"
         :hidden="isShow == 0"
       >
-        <v-card>
+        <v-card class="component-color" style="border-radius: 0px;">
           <div class="pa-4 d-flex justify-space-around">
             <div>
               <label for="volume">Volume:</label>
