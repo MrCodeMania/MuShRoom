@@ -65,10 +65,10 @@ export default {
       this.showModal = close;
       if(!move) {
         console.log(this.address.toString().split('/')[3].split('=')[1]);
-        // delete api 생기면 추가할 것
-        // axios.delete("/data/" + this.address.toString().split('/')[3].split('=')[1]).then(res => {
-        //     console.log(res);
-        // });
+        
+        axios.delete("/data/" + this.address.toString().split('/')[3].split('=')[1]).then(res => {
+            console.log(res);
+        });
       }
     },
   }

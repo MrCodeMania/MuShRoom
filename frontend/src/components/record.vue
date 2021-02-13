@@ -3,7 +3,7 @@
     <v-card elevation="0">
       <div class="py-3 d-flex justify-space-around component-color">
         <v-btn text style="font-size: 1.5em;" :class="expand ? 'select' : 'not-select'" @click="expandChange(1)">record </v-btn>
-        <v-btn text style="font-size: 1.5em;" :class="expand2 ? 'select' : 'not-select'" @click="expandChange(2)">upload </v-btn>
+        <v-btn text style="font-size: 1.5em;" :class="expand2 ? 'not-select' : 'not-select'" @click="expandChange(2)">upload </v-btn>
       </div>
       <v-expand-transition>
         <v-card
@@ -44,8 +44,8 @@
 import recordBtn from "./record/recordBtn";
 import uploadBtn from "./record/fileupload";
 import recordCard from "./record/Audiocard";
-import Stomp from 'webstomp-client'
-import SockJS from 'sockjs-client'
+import Stomp from 'webstomp-client';
+import SockJS from 'sockjs-client';
 
 export default {
   props: ["page"],
@@ -53,7 +53,6 @@ export default {
     return {
       expand: false,
       expand2: false, // expand data
-      idx: 0,
       scrollInvoked: 0,
     };
   },
@@ -75,25 +74,59 @@ export default {
     uploadBtn,
   },
   methods: {
-    send(msg) {
-      if (this.stompClient && this.stompClient.connected) {
-        this.stompClient.send("/socket/record/"+this.code+"/receive", JSON.stringify(msg));        
-      }
+    send(type, msg) {
+      if(type == "record")
+        this.recordStompClient.send("/socket/record/" + this.code + "/receive", JSON.stringify(msg), {});      
+      else if(type == "music")
+        this.musicStompClient.send("/socket/music/" + this.code + "/" + this.page + "/receive", JSON.stringify(msg),{});        
+
     },
-     connect() {
+    connect() {
       const serverURL = "http://i4a105.p.ssafy.io:8080/";
-      let socket = new SockJS(serverURL);
-      this.stompClient = Stomp.over(socket);
-      this.stompClient.connect(
+      
+      let recordSocket = new SockJS(serverURL);
+      this.recordStompClient = Stomp.over(recordSocket);
+      this.recordStompClient.connect(
         {},
         frame => {
           // 소켓 연결 성공
           this.connected = true;
-          console.log('소켓 연결 성공', frame);
+          console.log('레코드 소켓 연결 성공', frame);
 
-          this.stompClient.subscribe("/socket/record/"+this.code+"/send", res => {
-            console.log('구독으로 받은 메시지 입니다.');
-            console.log(JSON.parse(res.body));
+          this.recordStompClient.subscribe("/socket/record/" + this.code + "/send", res => {
+            const resBody = JSON.parse(res.body);
+            
+            console.log(resBody);
+
+              if(resBody["type"] == "add")
+                this.$store.commit('updateRecord', {fileName : resBody["obj"]["fileName"], downloadURL : resBody["obj"]["url"], id: resBody["index"]});
+              if(resBody["type"] == "delete")
+                this.$store.commit('deleteRecord', resBody["id"]);
+          });
+        },
+        error => {
+          // 소켓 연결 실패
+          console.log('소켓 연결 실패', error);
+          this.connected = false;
+        }
+      );
+
+      let musicSocket = new SockJS(serverURL);
+      this.musicStompClient = Stomp.over(musicSocket);
+      this.musicStompClient.connect(
+        {},
+        frame => {
+          // 소켓 연결 성공
+          this.connected = true;
+          console.log('레코드 소켓 연결 성공', frame);
+
+          this.musicStompClient.subscribe("/socket/music/" + this.code + "/" + this.page + "/send", res => {
+            const resBody = JSON.parse(res.body);
+            
+            console.log(resBody);
+
+            if(resBody["type"] == "add")
+              this.$store.commit('addMusic', {page : this.page, record : {fileName : resBody["obj"]["fileName"], downloadURL : resBody["obj"]["url"], id: resBody["index"]}});
           });
         },
         error => {
@@ -103,6 +136,8 @@ export default {
         }
       );
     },
+
+    
     rec_expand_close() {
       this.$refs.recBtn.expandInit();
     },
@@ -124,49 +159,35 @@ export default {
     },
 
     addCard(data) {
-      this.$store.commit('updateRecord', data);
-      this.send({type:"add", index: this.idx - 1, obj: {url : data["downloadURL"], fileName : data["fileName"]}});
+      this.send("record", {type:"add", index: this.idx - 1, obj: {url : data["downloadURL"], fileName : data["fileName"]}});
     },
     receiveData(data) {
       data["id"] = this.idx;
       this.idx += 1;
-      console.log(data);
       this.addCard(data);
       this.expand2 = false;
     },
     delRecord(id) {
-      var idx = 0,
-        len = this.records.length;
+      let len = this.records.length;
       for (var i = 0; i < len; i++) {
         if (this.records[i].id === id) {
-          idx = i;
+          this.send("record", {type: "delete", index: i, obj: {url : this.records[i]["downloadURL"], fileName : this.records[i]["fileName"]}});
           break;
         }
       }
-      this.$store.commit('deleteRecord', idx);
-      this.send({type: "delete", index: idx});
     },
     addRecord(id) {
-      var record = {},
-        len = this.records.length,
-        page = this.page;
+      let len = this.records.length;
       for (var i = 0; i < len; i++) {
         if (this.records[i].id === id) {
-          record = this.records[i];
+          this.send("music", {type: "add", index: i, obj: {url : this.records[i]["downloadURL"], fileName : this.records[i]["fileName"]}});
           break;
         }
       }
-      this.$store.commit('addMusic', {
-          page, record
-        });
-      // Page별 MusicList 소켓 완료되면 test
-      // this.send({type:"add", index: this.idx - 1, obj: {url : data["downloadURL"], fileName : data["fileName"]}}, data);
-    
     },
     onScroll() {
       this.scrollInvoked++;
     },
-
   },
 };
 </script>

@@ -1,32 +1,28 @@
 <template>
     <v-container id="registerModal">
-        <v-row justify="center">
-            <v-dialog 
-            v-model="showModal"
-            max-width="500"
-            persistent>
-                <v-card
-                class="d-flex flex-column" 
-                height="24vh"
-                >
-                    <v-card-title class="card-title">
-                        <p>방 url</p>
-                    </v-card-title>
-                    <v-divider class="mx-2"></v-divider>
-                    <v-card-text class="pt-4 pl-8 d-flex justify-space-between align-center">
-                        <div>
-                            <label>링크: </label><input style="width: 20em;" class="input" ref="link" :value="address">
-                        </div>
-                        <v-btn icon large @click="copy"><v-icon>mdi-content-copy</v-icon></v-btn>
-                    </v-card-text>
-                    <v-spacer></v-spacer>
-                    <v-card-actions class="card-actions pb-4">
-                        <v-btn class="negative" text @click="close" >취소</v-btn>
-                        <v-btn class="positive" text @click="enter" >입장하기</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-        </v-row>
+        <v-dialog 
+        v-model="showModal"
+        max-width="500"
+        persistent>
+            <v-card
+            class="d-flex flex-column" 
+            height="auto"
+            >
+                <v-card-title class="card-title nav-color">
+                    <p>방 url</p>
+                </v-card-title>
+                <v-card-text class="pl-8 pt-2 d-flex justify-space-between align-center main-color">
+                    <div>
+                        <label>링크: </label><input style="width: 25em;" class="input" ref="link" :value="address">
+                    </div>
+                    <v-btn icon large color="black" @click="copy"><v-icon>mdi-content-copy</v-icon></v-btn>
+                </v-card-text>
+                <v-card-actions class="card-actions main-color">
+                    <v-btn class="negative" text @click="close" >취소</v-btn>
+                    <v-btn class="positive" text @click="enter" >입장하기</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 
@@ -57,14 +53,11 @@ export default {
 <style scoped lang="scss">
 
 .card-title {
-    position: relative;
-    background-color: rgb(236, 154, 45);
+    padding: 10px !important;
     height: 50px;
 }
 
 .card-title > p {
-    padding-top: 10px;
-    padding-left: 20px;
     color: white;
 }
 

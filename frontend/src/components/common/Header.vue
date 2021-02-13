@@ -30,9 +30,10 @@ export default {
         }
     },
     created(){
-        let Room = document.location.href.split('/');
+        let Room = document.location.href.split('/')[3];
         // 정확한 URL 나오면 수정 요망
-        if(Room[3] == 'practiceroom')
+        
+        if(Room.split('?')[0] == 'practiceroom')
             this.isRoom = true;
         else
             this.isRoom = false;
