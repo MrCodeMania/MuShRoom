@@ -132,14 +132,6 @@ public class MainService {
     List<MusicPage> musicPageList = data.getMusicPageList();
     MusicPage musicPage = musicPageList.get(pageNum);
     List<Music> musicList = musicPage.getMusicList();
-
-    Music before = musicList.get(index);
-    music.setDistortion(before.getDistortion());
-    music.setFileName(before.getFileName());
-    music.setGain(before.getGain());
-    music.setUrl(before.getUrl());
-    music.setVolume(before.getVolume());
-
     musicList.set(index, music);
     musicPage.setMusicList(musicList);
     musicPageList.set(pageNum, musicPage);
