@@ -100,7 +100,7 @@ export default {
           this.musicStompClient.send("/socket/music/" + this.code + "/" + this.page + "/receive", JSON.stringify(msg),{});        
     },
     connect() {
-      const serverURL = "http://i4a105.p.ssafy.io:8080/";
+      const serverURL = "https://musicshareroom.tk/api/";
 
       let musicSocket = new SockJS(serverURL);
       this.musicStompClient = Stomp.over(musicSocket);

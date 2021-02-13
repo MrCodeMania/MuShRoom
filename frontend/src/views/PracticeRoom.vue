@@ -219,7 +219,7 @@ export default {
       
     },
     connect() {
-      const serverURL = "http://i4a105.p.ssafy.io:8080/";
+      const serverURL = "https://musicshareroom.tk/api/";
       
       let musicPageSocket = new SockJS(serverURL);
       this.musicPageStompClient = Stomp.over(musicPageSocket);

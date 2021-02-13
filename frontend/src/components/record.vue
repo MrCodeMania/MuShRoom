@@ -81,7 +81,7 @@ export default {
 
     },
     connect() {
-      const serverURL = "http://i4a105.p.ssafy.io:8080/";
+      const serverURL = "https://musicshareroom.tk/api/";
       
       let recordSocket = new SockJS(serverURL);
       this.recordStompClient = Stomp.over(recordSocket);

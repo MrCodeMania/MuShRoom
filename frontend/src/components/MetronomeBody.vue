@@ -96,10 +96,10 @@ import { mapState } from "vuex";
 import { Player, Sequence, Transport, start, Destination } from "tone";
 
 const accent = new Player(
-  "http://i4a105.p.ssafy.io:8080/downloadFile/Ping%20Hi.wav"
+  "https://musicshareroom.tk/api/downloadFile/Ping%20Hi.wav"
 ).toDestination();
 const beat = new Player(
-  "http://i4a105.p.ssafy.io:8080/downloadFile/Ping%20Low.wav"
+  "https://musicshareroom.tk/api/downloadFile/Ping%20Low.wav"
 ).toDestination();
 
 
