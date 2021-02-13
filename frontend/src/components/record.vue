@@ -43,8 +43,8 @@
 import recordBtn from "./record/recordBtn";
 import uploadBtn from "./record/fileupload";
 import recordCard from "./record/Audiocard";
-import Stomp from 'webstomp-client'
-import SockJS from 'sockjs-client'
+import Stomp from 'webstomp-client';
+import SockJS from 'sockjs-client';
 
 export default {
   props: ["page"],
@@ -80,7 +80,7 @@ export default {
         this.musicStompClient.send("/socket/music/" + this.code + "/" + this.page + "/receive", JSON.stringify(msg),{});        
 
     },
-     connect() {
+    connect() {
       const serverURL = "http://i4a105.p.ssafy.io:8080/";
       
       let recordSocket = new SockJS(serverURL);
@@ -174,7 +174,6 @@ export default {
           break;
         }
       }
-      
     },
     addRecord(id) {
       let len = this.records.length;

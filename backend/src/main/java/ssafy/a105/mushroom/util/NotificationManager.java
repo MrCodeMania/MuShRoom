@@ -3,6 +3,7 @@ package ssafy.a105.mushroom.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,6 +12,7 @@ public class NotificationManager {
   private Logger log = LoggerFactory.getLogger(NotificationManager.class);
 
   @Autowired
+  @Lazy // 순환 관계 임시 방편
   private MatterMostSender mmSender;
 
   public void sendNotification(Exception e, String uri, String params) {

@@ -74,16 +74,16 @@ export default {
             roomNo:'',
             urls: [
                 {
-                    name: "Master",
+                    name: "Musician",
                     url: "http://i4a105.p.ssafy.io:8080/practiceroom/?room="
                 }, {
-                    name: "ReadOnly",
+                    name: "Audience",
                     url: "http://i4a105.p.ssafy.io:8080/practiceroom/?room="
                 }
             ],
             readOnlyUrls: [
                 {
-                    name: "ReadOnly",
+                    name: "Audience",
                     url: "http://i4a105.p.ssafy.io:8080/practiceroom/?room="
                 }
             ]

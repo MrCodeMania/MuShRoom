@@ -97,13 +97,13 @@
 </template>
 
 <script>
-import Stomp from 'webstomp-client'
-import SockJS from 'sockjs-client'
 import Header from "@/components/common/Header.vue";
 import MetronomeV2 from "@/components/MetronomeBody.vue";
 import MusicBoard from "@/components/MusicBoard.vue";
 import Record from "@/components/record.vue";
 import axios from "@/service/axios.service.js";
+import Stomp from 'webstomp-client';
+import SockJS from 'sockjs-client';
 
 export default {
   components: {
@@ -115,61 +115,9 @@ export default {
   },
   created() {
     // Status를 vuex에 저장
-
-    this.code = this.$route.query.shareUrl;
-
-    axios.get("/data/" + this.code).then((res) => {
-      this.$store.commit("pushShareUrl", [
-        res.data.id.masterId,
-        res.data.id.slaveId,
-      ]);
-
-      if (this.code === res.data.id.masterId)
-        this.$store.commit("pushStatus", "Master");
-      else this.$store.commit("pushStatus", "Slave");
-
-      this.status = this.$store.state.status;
-
-    // 받아온 res에서 뮤직보드, 레코드보드 불러오기 해야함
-    // 뮤직 보드 불러오기
-    console.log(res.data);
     
-    for(let i = 0; i < res.data.musicPageList.length; i++){
-      if(i > 0)
-        this.$store.commit('addPage', i)
-        
-      for(let j = 0; j < res.data.musicPageList[i].musicList.length; j++){
-        // 일단 한 번 넣고 수정한다
-        
-        this.$store.commit('addMusic', {page : i, record : { fileName: res.data.musicPageList[i].musicList[j].fileName, downloadURL: res.data.musicPageList[i].musicList[j].url, id:j}});
-
-        // 업데이트
-        this.$store.commit('updateMusic', {page : i, music : {id:j,
-          url: res.data.musicPageList[i].musicList[j].url,
-          fileName: res.data.musicPageList[i].musicList[j].fileName,
-          timestamp: res.data.musicPageList[i].musicList[j].timestamp,
-          distortion: {
-            object: null, value: res.data.musicPageList[i].musicList[j].distortion
-          },
-          volume: {
-            object: null, value: res.data.musicPageList[i].musicList[j].volume
-          },
-          gain: {
-            object: null, value: res.data.musicPageList[i].musicList[j].gain
-          }
-        }});
-      }
-    }
-    console.log("뮤직보드 불러오기 완료!");
-
-    //레코드 보드 불러오기
-    for(let i = 0; i < res.data.recordList.length; i++){
-      
-      this.$store.commit('updateRecord', {fileName: res.data.recordList[i].fileName, downloadURL: res.data.recordList[i].url, id: i})
-    }
-    console.log("레코드 불러오기 완료!");
-
-    });
+    this.init();
+    this.load();
   },
   data() {
     return {
@@ -186,20 +134,74 @@ export default {
     range() {
       let pages = [];
       for (let i = 1; i <= this.length; i++) pages.push(i);
-      return pages;
+        return pages;
     },
   },
   methods: {
-    send(type, msg) {
-      if(type == "musicPage")
-      {
-        if (this.musicPageStompClient && this.musicPageStompClient.connected && msg.type == "add") 
-          this.musicPageStompClient.send("/socket/music-page/" + this.code + "/receive", JSON.stringify(msg),{});        
-        
-        if (this.musicPageStompClient && this.musicPageStompClient.connected && msg.type == "delete") 
-          this.musicPageStompClient.send("/socket/music-page/" + this.code + "/receive", JSON.stringify(msg), {});        
-        
+    init() {
+
+      this.code = this.$route.query.shareUrl;
+      
+      // store에 있는 거 다 지워야함
+    },
+    load() {
+      axios.get("/data/" + this.code).then((res) => {
+      this.$store.commit("pushShareUrl", [
+        res.data.id.masterId,
+        res.data.id.slaveId,
+      ]);
+
+      if (this.code === res.data.id.masterId)
+        this.$store.commit("pushStatus", "Master");
+      else this.$store.commit("pushStatus", "Slave");
+
+      this.status = this.$store.state.status;
+
+      // 받아온 res에서 뮤직보드, 레코드보드 불러오기 해야함
+      // 뮤직 보드 불러오기
+      console.log(res.data);
+      
+      for(let i = 0; i < res.data.musicPageList.length; i++){
+        if(i > 0)
+          this.$store.commit('addPage', i)
+          
+        for(let j = 0; j < res.data.musicPageList[i].musicList.length; j++){
+          // 일단 한 번 넣고 수정한다
+          
+          this.$store.commit('addMusic', {page : i, record : { fileName: res.data.musicPageList[i].musicList[j].fileName, downloadURL: res.data.musicPageList[i].musicList[j].url, id:j}});
+
+          // 업데이트
+          this.$store.commit('updateMusic', {page : i, music : {id:j,
+            url: res.data.musicPageList[i].musicList[j].url,
+            fileName: res.data.musicPageList[i].musicList[j].fileName,
+            timestamp: res.data.musicPageList[i].musicList[j].timestamp,
+            distortion: {
+              object: null, value: res.data.musicPageList[i].musicList[j].distortion
+            },
+            volume: {
+              object: null, value: res.data.musicPageList[i].musicList[j].volume
+            },
+            gain: {
+              object: null, value: res.data.musicPageList[i].musicList[j].gain
+            }
+          }});
+        }
       }
+      console.log("뮤직보드 불러오기 완료!");
+
+      //레코드 보드 불러오기
+      for(let i = 0; i < res.data.recordList.length; i++)
+        this.$store.commit('updateRecord', {fileName: res.data.recordList[i].fileName, downloadURL: res.data.recordList[i].url, id: i})
+      
+      console.log("레코드 불러오기 완료!");
+
+      this.connect();
+
+    });
+    },
+    send() {
+      this.musicPageStompClient.send("/socket/music-page/" + this.code + "/receive", JSON.stringify({type:"add", index: this.page + 1, obj: {fileName:"", musicList:[]}}), {});        
+      
     },
     connect() {
       const serverURL = "http://i4a105.p.ssafy.io:8080/";
@@ -211,7 +213,7 @@ export default {
         frame => {
           // 소켓 연결 성공
           this.connected = true;
-          console.log('소켓 연결 성공', frame);
+          console.log('연습실 소켓 연결 성공', frame);
 
           this.musicPageStompClient.subscribe("/socket/music-page/" + this.code + "/send", res => {
             const resBody = JSON.parse(res.body);
@@ -219,9 +221,9 @@ export default {
             console.log(resBody);
 
               if(resBody["type"] == "add")
-                this.$store.commit('updateMusicPage', {fileName : resBody["obj"]["fileName"], downloadURL : resBody["obj"]["url"], id: resBody["index"]});
+                this.$store.commit("addPage", this.page);
               else if(resBody["type"] == "delete")
-                this.$store.commit('deleteMusicPage', resBody["id"]);
+                this.$store.commit("removePage", this.page);
           });
         },
         error => {
@@ -242,13 +244,16 @@ export default {
     },
     //  페이지 추가
     addPage() {
-      this.$store.commit("addPage", this.page);
       this.moveRight();
+      if(this.page < 4)
+        this.send();
+      
     },
-    // 페이지 삭제
+    // 페이지 삭제 추가해야함
     removePage() {
-      this.$store.commit("removePage", this.page);
       this.moveLeft();
+      // if(this.page > 0)
+      //   this.send();
     },
   },
 };

@@ -1,39 +1,73 @@
- .negative {
-    color: rgb(73, 73, 73) !important;
+.negative {
+  color: rgb(73, 73, 73) !important;
 }
 
 .positive {
-    color: green !important;
+  color: green !important;
 }
 
 .border {
-    border: solid;
-    border-color: black;
-    border-radius: 12px !important;
-  }
-
+  border: solid;
+  border-color: black;
+  border-radius: 12px !important;
+}
 
 .nav-color {
-    background-color: #161929 !important;
-    /* background-color: #222F3D !important; */
+  background-color: #161929 !important;
+  /* background-color: #222F3D !important; */
 }
 
 .component-color {
-    background-color: #636363 !important;
+  background-color: #cbcacc !important;
 }
 
 .component-color2 {
-    background-color: #3d3d3c !important;
+  background-color: #d7c9b2 !important;
 }
 
 .main-color {
-    background-color: #7992A9 !important;
-    /* background-color: #6E8CAE !important; */
+  background-color: #7992a9 !important;
+  /* background-color: #6E8CAE !important; */
 }
 
 .smallcomponent-color {
-    background-color: #83AAD2 !important;
+  background-color: #83aad2 !important;
 }
+
+html {
+  overflow-y: hidden !important;
+}
+
+body {
+  height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+} /* 스크롤 바 */
+
+::-webkit-scrollbar-track {
+  background-color: #161929;
+} /* 스크롤 바 밑의 배경 */
+
+::-webkit-scrollbar-thumb {
+  background: #d7c9b2;
+  border-radius: 10px;
+} /* 실질적 스크롤 바 */
+
+::-webkit-scrollbar-button {
+  display: none;
+} /* 스크롤 바 상 하단 버튼 */
+
+.home_background {
+  /* theme: black sea */
+  background-image: url('../note2.png'),
+    linear-gradient(-225deg, #2cd8d5 0%, #6b8dd6 48%, #8e37d7 100%);
+  height: 100%;
+}
+
+
 
 /* p {
     color: white;
