@@ -7,14 +7,15 @@
             indeterminate>
             </v-progress-circular>
         </div>
+        <div :class="isReady ? '' : 'hide'">
         <div v-show="timeline" :id="'container'+idx"></div>
         <vue-wave-surfer 
-        :class="isReady ? '' : 'hide'"
             ref="waveform"
             :src="url"
             :options="options"
         >
         </vue-wave-surfer>
+        </div>
   </div>
 </template>
 
@@ -57,7 +58,6 @@ export default {
     },
     // watch: {
     //     url: function() {
-    //         this.toggleReady();
     //         this.player.on('ready', ()=>{
     //             this.toggleReady();
     //             console.log('ready');

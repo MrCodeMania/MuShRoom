@@ -35,7 +35,11 @@
 }
 
 html {
-  overflow-y: auto !important;
+  overflow-y: hidden !important;
+}
+
+body {
+  height: 100%;
 }
 
 ::-webkit-scrollbar {
@@ -55,3 +59,10 @@ html {
 ::-webkit-scrollbar-button {
   display: none;
 } /* 스크롤 바 상 하단 버튼 */
+
+.home_background {
+  /* theme: black sea */
+  background-image: url('../note2.png'),
+    linear-gradient(-225deg, #2cd8d5 0%, #6b8dd6 48%, #8e37d7 100%);
+  height: 100%;
+}
