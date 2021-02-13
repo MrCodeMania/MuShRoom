@@ -66,7 +66,7 @@ export default {
         
         this.$store.commit("pushShareUrl", [res.data.id.masterId, res.data.id.slaveId]);
         // 서버 URL 바꿔야 한다
-        this.address = "http://i4a105.p.ssafy.io:8080/practiceroom?shareUrl=" + res.data.id.masterId;
+        this.address = "https://musicshareroom.tk/api/practiceroom?shareUrl=" + res.data.id.masterId;
       });
       
     },

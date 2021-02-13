@@ -54,16 +54,16 @@ export default {
             urls: [
                 {
                     name: "Musician",
-                    url: "http://i4a105.p.ssafy.io:8080/practiceroom/?room="
+                    url: "https://musicshareroom.tk/api/practiceroom/?room="
                 }, {
                     name: "Audience",
-                    url: "http://i4a105.p.ssafy.io:8080/practiceroom/?room="
+                    url: "https://musicshareroom.tk/api/practiceroom/?room="
                 }
             ],
             readOnlyUrls: [
                 {
                     name: "Audience",
-                    url: "http://i4a105.p.ssafy.io:8080/practiceroom/?room="
+                    url: "https://musicshareroom.tk/api/practiceroom/?room="
                 }
             ],
             copied: "",
@@ -74,11 +74,11 @@ export default {
 
         if(this.status === "Master")
         {
-            this.urls[0].url = "http://i4a105.p.ssafy.io:8080/practiceroom?shareUrl=" + this.$store.state.shareUrl[0];
-            this.urls[1].url = "http://i4a105.p.ssafy.io:8080/practiceroom?shareUrl=" + this.$store.state.shareUrl[1];
+            this.urls[0].url = "https://musicshareroom.tk/api/practiceroom?shareUrl=" + this.$store.state.shareUrl[0];
+            this.urls[1].url = "https://musicshareroom.tk/api/practiceroom?shareUrl=" + this.$store.state.shareUrl[1];
         }
         else
-            this.readOnlyUrls[0].url = "http://i4a105.p.ssafy.io:8080/practiceroom?shareUrl=" + this.$store.state.shareUrl[1];
+            this.readOnlyUrls[0].url = "https://musicshareroom.tk/api/practiceroom?shareUrl=" + this.$store.state.shareUrl[1];
     },
     methods: {
         copyShareUrl(name) {
