@@ -239,7 +239,7 @@ export default {
             }
           }
         };
-
+        console.log(this.music);
         player.volume.value = this.music.volume.value;
         const gain = new Tone.Gain(0).toDestination();
         this.music.gain.object = gain;

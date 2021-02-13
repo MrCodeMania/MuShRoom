@@ -81,6 +81,8 @@ export default new Vuex.Store({
       music
     }) {
       state.data.musicBoard[page].list.splice(music.id, 1, music);
+      console.log(music);
+      
     },
     // musicBoard에서 음악 삭제
     deleteMusic(state, {
@@ -100,6 +102,9 @@ export default new Vuex.Store({
     //  musicBoard에서 페이지 삭제
     removePage(state, pageIdx) {
       state.data.musicBoard.splice(pageIdx, 1);
+    },
+    updatePageName(state, pageIdx, pageName) {
+      state.data.musicBoard[pageIdx].pageName = pageName;
     },
     pushStatus(state, status) {
       state.status = status;

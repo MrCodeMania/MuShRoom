@@ -105,6 +105,7 @@ import Record from "@/components/record.vue";
 import axios from "@/service/axios.service.js";
 import Stomp from 'webstomp-client';
 import SockJS from 'sockjs-client';
+//import * as Tone from "tone";
 
 export default {
   components: {
@@ -119,6 +120,7 @@ export default {
     
     this.init();
     this.load();
+
   },
   data() {
     return {
@@ -144,6 +146,7 @@ export default {
       this.code = this.$route.query.shareUrl;
       
       // store에 있는 거 다 지워야함
+      this.$store.commit("setData");
     },
     load() {
       axios.get("/data/" + this.code).then((res) => {
@@ -172,18 +175,27 @@ export default {
           this.$store.commit('addMusic', {page : i, record : { fileName: res.data.musicPageList[i].musicList[j].fileName, downloadURL: res.data.musicPageList[i].musicList[j].url, id:j}});
 
           // 업데이트
-          this.$store.commit('updateMusic', {page : i, music : {id:j,
+          this.$store.commit('updateMusic', {page : i, music : {
+            id:j,
             url: res.data.musicPageList[i].musicList[j].url,
             fileName: res.data.musicPageList[i].musicList[j].fileName,
-            timestamp: res.data.musicPageList[i].musicList[j].timestamp,
+            timestamp: res.data.musicPageList[i].musicList[j].timestamp == null ? 0 : res.data.musicPageList[i].musicList[j].timestamp,
             distortion: {
-              object: null, value: res.data.musicPageList[i].musicList[j].distortion
+              object: null,
+              value: res.data.musicPageList[i].musicList[j].distortion
             },
             volume: {
-              object: null, value: res.data.musicPageList[i].musicList[j].volume
+              object: null,
+              value: res.data.musicPageList[i].musicList[j].volume
             },
             gain: {
-              object: null, value: res.data.musicPageList[i].musicList[j].gain
+              object: null,
+              value: res.data.musicPageList[i].musicList[j].gain
+            },
+            reverb: {
+              object: null,
+              value: 0
+              // value: res.data.musicPageList[i].musicList[j].reverb
             }
           }});
         }
@@ -198,10 +210,13 @@ export default {
 
       this.connect();
 
-    });
+      });
     },
-    send() {
-      this.musicPageStompClient.send("/socket/music-page/" + this.code + "/receive", JSON.stringify({type:"add", index: this.page + 1, obj: {fileName:"", musicList:[]}}), {});        
+    send(msg) {
+      if(msg == "addPage")
+        this.musicPageStompClient.send("/socket/music-page/" + this.code + "/receive", JSON.stringify({type:"add", index: this.page, obj: {pageName:"", musicList:[]}}), {});
+      else if(msg == "deletePage")
+        this.musicPageStompClient.send("/socket/music-page/" + this.code + "/receive", JSON.stringify({type:"delete", index: this.page, obj: {pageName:"", musicList:[]}}), {});
       
     },
     connect() {
@@ -222,7 +237,7 @@ export default {
             console.log(resBody);
 
               if(resBody["type"] == "add")
-                this.$store.commit("addPage", this.page);
+                this.$store.commit("addPage", this.page + 1);
               else if(resBody["type"] == "delete")
                 this.$store.commit("removePage", this.page);
           });
@@ -246,15 +261,13 @@ export default {
     //  페이지 추가
     addPage() {
       this.moveRight();
-      if(this.page < 4)
-        this.send();
+      this.send("addPage");
       
     },
     // 페이지 삭제 추가해야함
     removePage() {
       this.moveLeft();
-      // if(this.page > 0)
-      //   this.send();
+      this.send("deletePage");
     },
   },
 };
