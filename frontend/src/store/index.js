@@ -52,7 +52,7 @@ export default new Vuex.Store({
       record
     }) {
       state.data.musicBoard[page].list.push({
-        id: state.data.musicBoard[page].idx++,
+        id: state.idx++,
         // id: ++state.idx + record.downloadURL,
         url: record.downloadURL,
         fileName: record.fileName,
