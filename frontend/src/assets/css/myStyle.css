@@ -1,4 +1,4 @@
-.negative {
+ .negative {
     color: rgb(73, 73, 73) !important;
 }
 
@@ -19,11 +19,11 @@
 }
 
 .component-color {
-    background-color: #CBCACC !important;
+    background-color: #636363 !important;
 }
 
 .component-color2 {
-    background-color: #D7C9B2 !important;
+    background-color: #3d3d3c !important;
 }
 
 .main-color {
@@ -34,3 +34,15 @@
 .smallcomponent-color {
     background-color: #83AAD2 !important;
 }
+
+/* p {
+    color: white;
+}
+
+span {
+    color: white;
+}
+
+label {
+    color : white
+} */
