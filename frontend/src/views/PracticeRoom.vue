@@ -117,7 +117,6 @@ import axios from "@/service/axios.service.js";
 import Stomp from 'webstomp-client';
 import SockJS from 'sockjs-client';
 import Chat from '@/components/chat/Chat.vue';
-//import * as Tone from "tone";
 import Config from '@/store/config'
 
 export default {
@@ -209,8 +208,7 @@ export default {
             },
             reverb: {
               object: null,
-              value: 0
-              // value: res.data.musicPageList[i].musicList[j].reverb
+              value: res.data.musicPageList[i].musicList[j].reverb
             }
           }});
         }
@@ -226,44 +224,44 @@ export default {
       this.connect();
 
       });
-    },
-    send(msg) {
-      if(msg == "addPage")
-        this.musicPageStompClient.send("/socket/music-page/" + this.code + "/receive", JSON.stringify({type:"add", index: this.page, obj: {pageName:"", musicList:[]}}), {});
-      else if(msg == "deletePage")
-        this.musicPageStompClient.send("/socket/music-page/" + this.code + "/receive", JSON.stringify({type:"delete", index: this.page, obj: {pageName:"", musicList:[]}}), {});
-      
-    },
-    connect() {
-      const serverURL = Config.ServerURL;
-      
-      let musicPageSocket = new SockJS(serverURL);
-      this.musicPageStompClient = Stomp.over(musicPageSocket);
-      this.musicPageStompClient.connect(
-        {},
-        frame => {
-          // 소켓 연결 성공
-          this.connected = true;
-          console.log('연습실 소켓 연결 성공', frame);
+  },
+  send(msg) {
+    if(msg == "addPage")
+      this.musicPageStompClient.send("/socket/music-page/" + this.code + "/receive", JSON.stringify({type:"add", index: this.page, obj: {pageName:"", musicList:[]}}), {});
+    else if(msg == "deletePage")
+      this.musicPageStompClient.send("/socket/music-page/" + this.code + "/receive", JSON.stringify({type:"delete", index: this.page, obj: {pageName:"", musicList:[]}}), {});
+    
+  },
+  connect() {
+    const serverURL = Config.ServerURL;
+    
+    let musicPageSocket = new SockJS(serverURL);
+    this.musicPageStompClient = Stomp.over(musicPageSocket);
+    this.musicPageStompClient.connect(
+      {},
+      frame => {
+        // 소켓 연결 성공
+        this.connected = true;
+        console.log('연습실 소켓 연결 성공', frame);
 
-          this.musicPageStompClient.subscribe("/socket/music-page/" + this.code + "/send", res => {
-            const resBody = JSON.parse(res.body);
-            
-            console.log(resBody);
+        this.musicPageStompClient.subscribe("/socket/music-page/" + this.code + "/send", res => {
+          const resBody = JSON.parse(res.body);
+          
+          console.log(resBody);
 
-              if(resBody["type"] == "add")
-                this.$store.commit("addPage", this.page + 1);
-              else if(resBody["type"] == "delete")
-                this.$store.commit("removePage", this.page);
-          });
-        },
-        error => {
-          // 소켓 연결 실패
-          console.log('소켓 연결 실패', error);
-          this.connected = false;
-        }
-      );
-    },
+            if(resBody["type"] == "add")
+              this.$store.commit("addPage", this.page + 1);
+            else if(resBody["type"] == "delete")
+              this.$store.commit("removePage", this.page);
+        });
+      },
+      error => {
+        // 소켓 연결 실패
+        console.log('소켓 연결 실패', error); 
+        this.connected = false;
+      }
+    );
+  },
 
     //  페이지 왼쪽 이동
     moveLeft() {
