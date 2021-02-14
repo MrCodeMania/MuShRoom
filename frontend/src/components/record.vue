@@ -180,8 +180,9 @@ export default {
       let len = this.records.length;
       for (var i = 0; i < len; i++) {
         if (this.records[i].id === id) {
-          this.send("music", {type: "add", index: i, obj: {url : this.records[i]["downloadURL"], fileName : this.records[i]["fileName"],
-           distortion: 0,  gain: 0,  volume: 0}});
+         this.send("music", {type: "add", index: id, obj: {url : this.records[i]["downloadURL"], fileName : this.records[i]["fileName"],
+           distortion: 0,  gain: 0,  volume: 0, reverb: 0}});
+
           break;
         }
       }

@@ -169,7 +169,7 @@ export default {
         res.data.id.slaveId,
       ]);
 
-      if (this.code === res.data.id.masterId)
+      if (this.code == res.data.id.masterId)
         this.$store.commit("pushStatus", "Master");
       else this.$store.commit("pushStatus", "Slave");
 

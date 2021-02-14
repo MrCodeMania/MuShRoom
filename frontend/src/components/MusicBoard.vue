@@ -16,6 +16,7 @@
           :page="page"
           :music="item"
           @deleteMusic="deleteMusic"
+          @updateMusicOption="updateMusicOption"
           ref="player"
         />
     </v-card>
@@ -118,7 +119,31 @@ export default {
             console.log(resBody);
 
             if(resBody["type"] == "delete")
-                this.$store.commit('deleteMusic', {page : this.page, idx: resBody["id"]});
+                this.$store.commit('deleteMusic', {page : this.page, idx: resBody["index"]});
+            if(resBody["type"] == "update")
+                this.$store.commit('updateMusic', {page : this.page, music: {
+                  id: resBody["index"],
+                  url: resBody["obj"]["url"],
+                  fileName: resBody["obj"]["fileName"],
+                  timestamp: resBody["obj"]["timestamp"],
+                  distortion: {
+                    object: null,
+                    value: resBody["obj"]["distortion"],
+                  },
+                  volume: {
+                    object: null,
+                    value: resBody["obj"]["volume"],
+                  },
+                  gain: {
+                    object: null,
+                    value: resBody["obj"]["gain"],
+                  },
+                  reverb: {
+                    object: null,
+                    value: resBody["obj"]["reverb"],
+                  }
+                  }});
+
           });
         },
         error => {
@@ -157,12 +182,14 @@ export default {
       this.scrollInvoked++;
     },
     deleteMusic(id) {
-      console.log("i = ", id);
-      console.log("id = ", this.music[id].id);
-      
-      this.send("music", {type: "delete", index: id, obj: {url : this.music[id]["downloadURL"], fileName : this.music[id]["fileName"]}});
-        
+     this.send("music", {type: "delete", index: this.music[id].id, obj: {url : this.music[id].url, fileName : this.music[id].fileName}});
     },
+    updateMusicOption(id) {
+      console.log(this.music[id]);
+      console.log(id);
+      this.send("music", {type: "update", index: this.music[id].id, obj: {url : this.music[id].url, fileName : this.music[id].fileName,
+           volume: this.music[id].volume.value, distortion: this.music[id].distortion.value, gain: this.music[id].gain.value, reverb: this.music[id].reverb.value}});
+    }
   },
 };
 </script>
