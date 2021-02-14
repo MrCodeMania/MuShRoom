@@ -93,6 +93,18 @@
         </v-row>
       </v-col>
     </v-row>
+    <v-btn
+    class="chat-btn"
+    dark
+    icon
+    @click="showChat()"
+    v-if="!openChat">
+      <v-icon
+      dark>
+        mdi-chat
+      </v-icon>
+    </v-btn>
+    <Chat :openChat="openChat" @closeChat="closeChat"/>
   </v-main>
 </template>
 
@@ -104,6 +116,7 @@ import Record from "@/components/record.vue";
 import axios from "@/service/axios.service.js";
 import Stomp from 'webstomp-client';
 import SockJS from 'sockjs-client';
+import Chat from '@/components/chat/Chat.vue';
 import Config from '@/store/config'
 
 export default {
@@ -113,6 +126,7 @@ export default {
     MetronomeV2,
     MusicBoard,
     Record,
+    Chat
   },
   created() {
     // Status를 vuex에 저장
@@ -256,6 +270,12 @@ export default {
       this.moveLeft();
       this.send("deletePage");
     },
+    showChat(){
+      this.openChat = true;
+    },
+    closeChat(){
+      this.openChat = false;
+    }
   },
 };
 </script>
@@ -287,5 +307,12 @@ export default {
 
 .others {
   background-color: #3c4d5d;
+}
+
+.chat-btn {
+  display: flex;
+  position: fixed;
+  left: 50px;
+  bottom: 8vh;
 }
 </style>
