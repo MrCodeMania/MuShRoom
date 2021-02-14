@@ -1,5 +1,5 @@
 class Config {
-    static ServerURL = "http://musicshareroom.tk:8080"
+    static ServerURL = "https://musicshareroom.tk/api"
     static HostURL = "https://musicshareroom.tk"
 }
 
