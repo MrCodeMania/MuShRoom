@@ -291,15 +291,19 @@ export default {
     },
     changeDistortion(value) {
       this.music.distortion.object.distortion = value;
+      this.$emit('updateMusicOption', this.n);
     },
     changeVolume(value) {
       this.player.volume.value = value;
+      this.$emit('updateMusicOption', this.n);
     },
     changeGain(value) {
       this.music.gain.object.gain.value = value;
+      this.$emit('updateMusicOption', this.n);
     },
     changeReverb(value) {
       this.music.reverb.object.wet.value = value;
+      this.$emit('updateMusicOption', this.n);
     },
     toggleDropdown() {
       this.isShow ^= 1;

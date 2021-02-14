@@ -117,7 +117,6 @@ import axios from "@/service/axios.service.js";
 import Stomp from 'webstomp-client';
 import SockJS from 'sockjs-client';
 import Chat from '@/components/chat/Chat.vue';
-//import * as Tone from "tone";
 import Config from '@/store/config'
 
 export default {
@@ -131,46 +130,15 @@ export default {
   },
   created() {
     // Status를 vuex에 저장
-    
-    this.init();
-    this.load();
-
-  },
-  data() {
-    return {
-      page: 0, //  현재 페이지,
-      status,
-      pageNames: ["", "", "", "", ""], // 페이지 이름,
-      openChat: false
-    };
-  },
-  computed: {
-    length: function () {
-      // 전체 페이지 수
-      return this.$store.getters.getPageLength;
-    },
-    range() {
-      let pages = [];
-      for (let i = 1; i <= this.length; i++) pages.push(i);
-        return pages;
-    },
-  },
-  methods: {
-    init() {
-
-      this.code = this.$route.query.shareUrl;
+    this.code = this.$route.query.shareUrl;
       
-      // store에 있는 거 다 지워야함
-      this.$store.commit("setData");
-    },
-    load() {
-      axios.get("/data/" + this.code).then((res) => {
-      this.$store.commit("pushShareUrl", [
-        res.data.id.masterId,
-        res.data.id.slaveId,
-      ]);
+    // store에 있는 거 다 지워야함
+    this.$store.commit("setData");
 
-      if (this.code === res.data.id.masterId)
+    axios.get("/data/" + this.code).then((res) => {
+      this.$store.commit("pushShareUrl", [res.data.id.masterId, res.data.id.slaveId]);
+
+      if (this.code == res.data.id.masterId)
         this.$store.commit("pushStatus", "Master");
       else this.$store.commit("pushStatus", "Slave");
 
@@ -209,8 +177,7 @@ export default {
             },
             reverb: {
               object: null,
-              value: 0
-              // value: res.data.musicPageList[i].musicList[j].reverb
+              value: res.data.musicPageList[i].musicList[j].reverb
             }
           }});
         }
@@ -226,7 +193,26 @@ export default {
       this.connect();
 
       });
+  },
+  data() {
+    return {
+      page: 0, //  현재 페이지,
+      status,
+      pageNames: ["", "", "", "", ""], // 페이지 이름,
+    };
+  },
+  computed: {
+    length: function () {
+      // 전체 페이지 수
+      return this.$store.getters.getPageLength;
     },
+    range() {
+      let pages = [];
+      for (let i = 1; i <= this.length; i++) pages.push(i);
+        return pages;
+    },
+  },
+  methods: {
     send(msg) {
       if(msg == "addPage")
         this.musicPageStompClient.send("/socket/music-page/" + this.code + "/receive", JSON.stringify({type:"add", index: this.page, obj: {pageName:"", musicList:[]}}), {});
