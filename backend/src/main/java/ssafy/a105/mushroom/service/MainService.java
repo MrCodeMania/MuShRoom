@@ -23,7 +23,7 @@ public class MainService {
 
   public DataDTO deleteData(String id) {
     DataDTO data = mainRepository.findByIdMasterIdOrIdSlaveId(id, id).orElseThrow(() ->
-        new IllegalArgumentException("not exist"));
+        new IllegalArgumentException("Document does not exist"));
     mainRepository.delete(data);
 
     return data;
@@ -62,7 +62,7 @@ public class MainService {
 
   public DataDTO getOneData(String id) {
     return mainRepository.findByIdMasterIdOrIdSlaveId(id, id)
-        .orElseThrow(() -> new IllegalArgumentException("doc not exist"));
+        .orElseThrow(() -> new IllegalArgumentException("Document does not exist"));
   }
 
   public List<MusicPage> insertMusicPage(String id, Integer index, MusicPage musicPage) {

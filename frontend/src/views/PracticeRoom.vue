@@ -6,7 +6,7 @@
     <v-row no-gutters>
       <!-- 왼쪽 컴포넌트들 -->
       <v-col cols="8" class="flex-grow-0 flex-shrink-0 pa-4">
-        <v-row no-gutters style="height: 80vh">
+        <v-row no-gutters style="height: 100vh">
           <v-card elevation="0" height="100%" width="100%" color="#00ff0000">
             <!-- 뮤직 보드 상단 페이징 탭 -->
             <v-tabs
