@@ -166,6 +166,7 @@ export default {
       this.idx += 1;
       this.addCard(data);
       this.expand2 = false;
+      this.expand = false;
     },
     delRecord(id) {
       let len = this.records.length;
