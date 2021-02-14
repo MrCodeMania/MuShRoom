@@ -3,7 +3,7 @@
     <v-card
     light
     width="150px"
-    :class="msg.id==0 ? 'mine component-color' : 'others smallcomponent-color'"
+    :class="msg.id==id ? 'mine component-color' : 'others smallcomponent-color'"
     elevation="0">
         {{ msg.text }}
     </v-card>
@@ -11,7 +11,7 @@
 
 <script>
 export default {
-    props: ['msg']
+    props: ['msg', 'id']
 }
 </script>
 

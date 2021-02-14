@@ -25,7 +25,7 @@
             class="middle-area px-0 mx-auto">
                 <div v-for="(msg, idx) in msgList"
                 :key="idx">
-                    <Message :msg="msg"/>
+                    <Message :msg="msg" :id="id"/>
                 </div>
             </v-container>
             <v-divider></v-divider>
@@ -66,6 +66,9 @@
 
 <script>
 import Message from '@/components/chat/Message.vue';
+import Stomp from "webstomp-client";
+import SockJS from "sockjs-client";
+import Config from '@/store/config'
 
 export default {
     components: {
@@ -74,9 +77,14 @@ export default {
     props: ['openChat'],    // class 바인딩 바꿔줄 toggle 변수
     data() {
         return {
-            msgList: [{id: 1, text: '야'}], // 서버에서 불러올 채팅 리스트
+            msgList: [], // 서버에서 불러올 채팅 리스트
             sentence: '',   // 현재 입력 칸에 적힌 문장
+            roomCode: this.$route.query.shareUrl,
+            id: ''
         }
+    },
+    created() {
+        this.connect();
     },
     computed: {
         length() {  // 전체 리스트 길이
@@ -98,8 +106,39 @@ export default {
                 this.sentence = '';
                 return;
             }
-            this.msgList.push({id: 0, text: this.sentence});
+            this.stompClient.send("/socket/chat/"+this.roomCode+"/receive", JSON.stringify({id: this.id, message: this.sentence}));
             this.sentence = '';
+        },
+        receiveMessage(res) {
+            const resBody = JSON.parse(res.body);
+            console.log("Receive message: ", resBody);
+            this.msgList.push({id: resBody["id"], text: resBody["message"]});
+        },
+        connect() {
+            this.id = Date.now();
+            console.log(this.id);
+
+            // 서버 정보 등록
+            const serverURL = Config.ServerURL;
+            let socket = new SockJS(serverURL);
+            this.stompClient = Stomp.over(socket);
+            // 서버 연결 시도
+            console.log(`채팅 소켓 연결을 시도합니다. 서버 주소: ${serverURL}`);
+            this.stompClient.connect(
+                {},
+                (frame) => {
+                    // 소켓 연결 성공
+                    this.connected = true;
+                    console.log("채팅 소켓 연결 성공", frame);
+                    // recieve 콜백 등록
+                    this.stompClient.subscribe("/socket/chat/"+this.roomCode+"/send", this.receiveMessage);
+                },
+                (error) => {
+                // 소켓 연결 실패
+                console.log("채팅 소켓 연결 실패", error);
+                this.connected = false;
+                }
+            );
         },
     }
 }
