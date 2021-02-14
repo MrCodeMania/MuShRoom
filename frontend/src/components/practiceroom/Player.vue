@@ -3,12 +3,7 @@
     <div class="d-flex file-title">
       <p class="file-name">{{ music.fileName }}</p>
       <v-spacer></v-spacer>
-      <v-btn
-        icon
-        color="gray"
-        @click="sendDelete()"
-        v-if="status === 'Master'"
-      >
+      <v-btn icon color="gray" @click="sendDelete()" v-if="status === 'Master'">
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </div>
@@ -65,7 +60,7 @@
         height="auto"
         :hidden="isShow == 0"
       >
-        <v-card>
+        <v-card class="component-color" style="border-radius: 0px;">
           <div class="pa-4 d-flex justify-space-around">
             <div>
               <label for="volume">Volume:</label>
@@ -74,7 +69,7 @@
                 min="-30"
                 max="20"
                 step="0.01"
-                v-model="music.volume"
+                v-model="music.volume.value"
                 class="slider ml-2"
                 name="volume"
                 id="volume"
@@ -107,6 +102,20 @@
                 name="gain"
                 id="gain"
                 v-on:input="changeGain(music.gain.value)"
+              />
+            </div>
+            <div>
+              <label for="gain">Reverb:</label>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                v-model="music.reverb.value"
+                class="slider ml-2"
+                name="reverb"
+                id="reverb"
+                v-on:input="changeReverb(music.reverb.value)"
               />
             </div>
           </div>
@@ -231,14 +240,21 @@ export default {
             }
           }
         };
-
+        console.log(this.music);
+        player.volume.value = this.music.volume.value;
         const gain = new Tone.Gain(0).toDestination();
         this.music.gain.object = gain;
         this.player.connect(gain);
 
         const distortion = new Tone.Distortion(0).toDestination();
+        distortion.distortion = this.music.distortion.value;
         this.music.distortion.object = distortion;
         this.player.connect(distortion);
+
+        const reverb = new Tone.Reverb(1.5).toDestination();
+        reverb.wet.value = this.music.reverb.value;
+        this.music.reverb.object = reverb;
+        this.player.connect(reverb);
       }).toDestination();
 
       this.status = this.$store.state.status;
@@ -279,10 +295,12 @@ export default {
     },
     changeVolume(value) {
       this.player.volume.value = value;
-      console.log(this.player.volume.value);
     },
     changeGain(value) {
       this.music.gain.object.gain.value = value;
+    },
+    changeReverb(value) {
+      this.music.reverb.object.wet.value = value;
     },
     toggleDropdown() {
       this.isShow ^= 1;

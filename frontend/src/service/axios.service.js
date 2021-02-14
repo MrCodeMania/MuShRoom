@@ -1,7 +1,9 @@
 import axios from 'axios'
+import Config from '../store/config'
+
 export default axios.create({
-  baseURL: 'http://i4a105.p.ssafy.io:8080',
-   headers: {
+  baseURL: Config.ServerURL,
+  headers: {
     "Content-type": "application/json"
   }
 })

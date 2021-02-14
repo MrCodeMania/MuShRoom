@@ -6,6 +6,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import ssafy.a105.mushroom.service.MainService;
+import ssafy.a105.mushroom.vo.MessageDTO;
 import ssafy.a105.mushroom.vo.Music;
 import ssafy.a105.mushroom.vo.DataClass;
 import ssafy.a105.mushroom.vo.MusicPage;
@@ -70,4 +71,10 @@ public class SocketController {
     return obj;
   }
 
+  @MessageMapping("/socket/chat/{id}/receive")
+  @SendTo("/socket/chat/{id}/send")
+  public MessageDTO chatSocketHandler(@DestinationVariable String id, MessageDTO msg) {
+    System.out.println(msg);
+    return msg;
+  }
 }

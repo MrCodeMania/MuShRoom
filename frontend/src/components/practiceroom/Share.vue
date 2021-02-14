@@ -1,7 +1,6 @@
 <template>
     <v-menu
         left
-        open-on-hover="open-on-hover"
         top="top"
         offset-x="offset-x"
         :close-on-content-click="false">
@@ -9,6 +8,7 @@
             <v-btn
                 color="primary"
                 dark="dark"
+                @click="reset"
                 v-bind="attrs"
                 v-on="on">
                 <v-icon class="pr-2">mdi-share-variant</v-icon>
@@ -16,10 +16,12 @@
             </v-btn>
         </template>
 
-        <v-list v-if="status === 'Master'">
-            <v-list-item v-for="item in urls" :key="item.name">
-                <v-list-item-content>
-                    <v-list-item-title style="font-size:20pt; font-weight:bold;">{{ item.name }}</v-list-item-title>
+        <v-list class="component-color" width="20vw">
+            <v-list-item v-for="(item, idx) in filtered_urls" :key="idx">
+                <v-list-item-content style="padding: 0px !important;">
+                    <v-list-item-title style="font-size:12pt !important; font-weight:bold;">
+                        {{item.name}}
+                    </v-list-item-title>
                     <div class="share-component">
                         <input
                             class="share-url-input"
@@ -33,33 +35,10 @@
                             text="text"
                             class="share-url-button"
                             @click="copyShareUrl(item.name)">
-                            <v-icon dark="dark" large="large">mdi-content-copy</v-icon>
+                            <v-icon small>mdi-content-copy</v-icon>
                         </v-btn>
                     </div>
-                </v-list-item-content>
-            </v-list-item>
-        </v-list>
-
-        <v-list v-else>
-            <v-list-item v-for="item in readOnlyUrls" :key="item.name">
-                <v-list-item-content>
-                    <v-list-item-title style="font-size:20pt; font-weight:bold;">{{ item.name }}</v-list-item-title>
-                    <div class="share-component">
-                        <input
-                            class="share-url-input"
-                            v-model="item.url"
-                            type="text"
-                            readonly="readonly"
-                            ref="textToCopy">
-                        <v-btn
-                            fab="fab"
-                            tile="tile"
-                            text="text"
-                            class="share-url-button"
-                            @click="copyShareUrl(item.name)">
-                            <v-icon dark="dark" large="large">mdi-content-copy</v-icon>
-                        </v-btn>
-                    </div>
+                    <p v-if="copied === item.name" style="width: 12px; padding-left: 16px; font-size: 8px;">{{ item.name }} url copid on Clipboard!</p>
                 </v-list-item-content>
             </v-list-item>
         </v-list>
@@ -67,8 +46,7 @@
 </template>
 
 <script>
-// import Axios from 'axios'
-import Sha256 from '@/lib/sha256.js'
+import Config from '@/store/config'
 
 export default {
     data() {
@@ -76,40 +54,36 @@ export default {
             roomNo:'',
             urls: [
                 {
-                    name: "Master",
-                    url: "http://i4a105.p.ssafy.io:8080/practiceroom/?room="
+                    name: "Musician",
+                    url: Config.HostURL + "/practiceroom/?room="
                 }, {
-                    name: "ReadOnly",
-                    url: "http://i4a105.p.ssafy.io:8080/practiceroom/?room="
+                    name: "Audience",
+                    url: Config.HostURL + "/practiceroom/?room="
                 }
             ],
             readOnlyUrls: [
                 {
-                    name: "ReadOnly",
-                    url: "http://i4a105.p.ssafy.io:8080/practiceroom/?room="
+                    name: "Audience",
+                    url: Config.HostURL + "/practiceroom/?room="
                 }
-            ]
+            ],
+            copied: "",
         };
     },
     created() {
-        console.log(Sha256("1-master")); // sha256 test
-
-        this.getShareUrl();
-        
         this.status = this.$store.state.status;
+
+        if(this.status === "Master")
+        {
+            this.urls[0].url = Config.HostURL + "/practiceroom?shareUrl=" + this.$store.state.shareUrl[0];
+            this.urls[1].url = Config.HostURL + "/practiceroom?shareUrl=" + this.$store.state.shareUrl[1];
+        }
+        else
+            this.readOnlyUrls[0].url = Config.HostURL + "/practiceroom?shareUrl=" + this.$store.state.shareUrl[1];
     },
     methods: {
-        // url 받아오는 메소드
-        // 아직 DB 없음
-        getShareUrl() {
-          // Axios.get('',{
-          //   params:{roomNo:this.baseUrl}
-          //   }).then(res => {
-          //     this.urls[0].url = res[0].data;
-          //     this.urls[1].url = res[1].data;
-          //   })
-        },
         copyShareUrl(name) {
+            this.copied = name;
             let copied = this.$refs.textToCopy;
             if (name === "Master") {
                 console.log(this.urls[0].url);
@@ -122,26 +96,46 @@ export default {
                 copied[1].select()
                 document.execCommand("copy");
             }
+        },
+        reset() {
+            this.copied = "";
         }
-    }
+    },
+    computed: {
+        filtered_urls() {
+            if (this.status === "Master") {
+                return this.urls;
+            } else {
+                return this.urls;
+            }
+        },
+    },
 }
 </script>
 
 <style >
 .share-component {
     display: flex;
-    flex-wrap: nowrap;
     align-items: center;
+    height: 30px;
     border: 2px solid #bbbbbb;
+    margin-left: 4px;
 }
 .share-url-input {
+    background-color: white;
+    border: 2px solid #bbbbbb;
+    border-left: 0px;
     flex: 5;
-    font-size: 16pt;
-    padding: 15px 5px;
+    font-size: 12px;
+    height: 30px !important;
+    padding-left: 4px;
 }
 .share-url-button {
+    height: 30px !important;
+    width: 30px !important;
     flex: 1;
-    border-left: 2px solid #bbbbbb;
+    border-left: 4px solid #bbbbbb;
+    border: 2px solid #bbbbbb;
     background-color: #efefef;
 }
 </style>

@@ -12,7 +12,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+// import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +23,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ssafy.a105.mushroom.service.FileStorageService;
 import ssafy.a105.mushroom.vo.UploadFileResponse;
 
-@CrossOrigin(origins = "*")
+// @CrossOrigin(origins = "*")
 @RestController
 public class FileController {
 
@@ -37,9 +37,15 @@ public class FileController {
     String fileName = fileStorageService.storeFile(file);
 
     String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-        .path("/downloadFile/")
+        .path("/api/downloadFile/")
+        // .path("/downloadFile")
         .path(fileName)
         .toUriString();
+
+    if (fileDownloadUri.indexOf("https") < 0) {
+      fileDownloadUri = fileDownloadUri.replace("http", "https");
+    }
+    // fileDownloadUri = fileDownloadUri.replace("https", "http");
 
     return new UploadFileResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize());
   }

@@ -1,6 +1,6 @@
 <template>
   <v-card class="metronome-main nav-color" height="100%" width="100%" elevation="0">
-    <v-card class="d-flex pa-2 metronome-screen nav-color">
+    <v-card class="d-flex pa-2 metronome-screen" color="brown darken-4">
       <BeatIndicator :bpm="bpm" :beatIndex="beatIndex" :isPlaying="isPlaying()"/>
       <v-card class="d-flex ml-2 justify-space-around" height="100%" width="100%" color="#868488">
         <div class="d-flex-column pl-4">
@@ -21,13 +21,13 @@
         <div class="d-flex-column pr-4">
           <p class="metronome-now">{{ beatsPerBar }} <span class="metronome-label"> Beat </span> </p>
           <v-btn plain class="mt-n3 ml-n2 pl-2" 
-            icon color="black" @click="decrease('beat')" 
+            icon color="white" @click="decrease('beat')" 
             @mousedown="decreaseStart('beat')" 
             @mouseleave="decreaseEnd()" @mouseup="decreaseEnd()" 
             :disabled="isPlaying()"><v-icon>mdi-minus</v-icon>
           </v-btn>
           <v-btn plain class="mt-n3 pr-2" 
-            icon color="black" @click="increase('beat')" 
+            icon color="white" @click="increase('beat')" 
             @mousedown="increaseStart('beat')" 
             @mouseleave="increaseEnd()" @mouseup="increaseEnd()"
             :disabled="isPlaying()"><v-icon>mdi-plus</v-icon>
@@ -35,49 +35,54 @@
         </div>
       </v-card>
     </v-card>
-    <v-card class="d-flex align-center metronome-btn component-color">
+    <v-card class="d-flex align-center metronome-btn component-color2">
       <PlayControlBtn :isPlaying="isPlaying()" @start="onStart" @stop="onStop"/>
       <v-spacer></v-spacer>
       <!-- <VolumeBtn :mute="mute" :volume="volume" @volumeDown="onVolumeDown" @volumeUp="onVolumeUp" @volumeMute="onVolumeMute" @changeBySlide="onChangeBySlide"/> -->
-    <div class="d-flex align-center">
-    {{ volume | volume(mute) }}
-    <v-btn
-    icon
-    large
-    color="black"
-    @click="onVolumeDown"
-    class="volume-btn"
-    >
-    <v-icon large>mdi-volume-minus</v-icon>
-    </v-btn>
-    <v-slider
-      color="brown darken-1"
-      class="pt-5 volume-slider"
-      track-color="grey"
-      v-model="volume"
-      max="50"
-      min="-50"
-      style="width: 150px !important;"
-      @change="onChangeBySlide"
-    ></v-slider>
-    <v-btn
-    icon
-    large
-    color="black"
-    @click="onVolumeUp"
-    class="volume-btn"
-    >
-    <v-icon large>mdi-volume-plus</v-icon>
-    </v-btn>
-    <v-btn
-    icon
-    large
-    :color="mute ? 'black': '' "
-    @click="onVolumeMute"
-    >
-    <v-icon large>mdi-volume-off</v-icon>
-    </v-btn>
-  </div>
+      <div class="d-flex align-center">
+
+        <v-btn
+          icon
+          large
+          color="white"
+          :disabled="isMute()"
+          @click="onVolumeDown"
+          class="volume-btn"
+        >
+        <v-icon >mdi-volume-minus</v-icon>
+        </v-btn>
+        <v-btn
+          icon
+          large
+          color="white"
+          :disabled="isMaxVolume()"
+          @click="onVolumeUp"
+          class="volume-btn"
+        >
+        <v-icon >mdi-volume-plus</v-icon>
+        </v-btn>
+        <v-btn
+          icon
+          color="white"
+          @click="onVolumeMute"
+          class="volume-slider"
+        >
+        <v-icon v-if="volume == -50 || mute">mdi-volume-mute</v-icon>
+        <v-icon v-else-if="volume > -50 && volume <= 0">mdi-volume-medium</v-icon>
+        <v-icon v-else>mdi-volume-high</v-icon>
+        </v-btn>
+        <v-slider
+            color="brown darken-4"
+            class="pt-5 volume-slider general-slider"
+            track-color="grey"
+            v-model="volume"
+            max="50"
+            min="-50"
+            style="width: 150px !important;"
+            @change="onChangeBySlide"
+        ></v-slider>
+        <p class="volume-number">{{ volume | volume(mute) }}</p>
+      </div>
     </v-card>
   </v-card>
 </template>
@@ -86,22 +91,23 @@
 import Vue from "vue";
 import BeatIndicator from "@/components/metronome/BeatIndicator.vue";
 import PlayControlBtn from "@/components/metronome/PlayControlBtn.vue";
+import Config from '@/store/config'
 
 import { mapState } from "vuex";
 import { Player, Sequence, Transport, start, Destination } from "tone";
 
 const accent = new Player(
-  "http://i4a105.p.ssafy.io:8080/downloadFile/Ping%20Hi.wav"
+  Config.ServerURL + "/downloadFile/Ping%20Hi.wav"
 ).toDestination();
 const beat = new Player(
-  "http://i4a105.p.ssafy.io:8080/downloadFile/Ping%20Low.wav"
+  Config.ServerURL + "/downloadFile/Ping%20Low.wav"
 ).toDestination();
 
 
 
 Vue.filter("volume", (value, mute) => {
   if (mute) {
-    return "mute";
+    return "0";
   }
   return `${value+50}`;
 });
@@ -127,6 +133,7 @@ export default {
       isStopped: true,
 
       volume: 0,
+      saveVolume: 0,
       mute: false,
     };
   },
@@ -136,6 +143,20 @@ export default {
         return false;
       }
       return true;
+    },
+
+    isMute() {
+      if (this.mute) {
+        return true;
+      }
+      return false;
+    },
+
+    isMaxVolume() {
+      if (this.volume == 50) {
+        return true;
+      }
+      return false;
     },
 
     onStart() {
@@ -183,7 +204,8 @@ export default {
       this.volume = Math.round(Math.max(this.volume - 5, -50));
       Destination.volume.value = this.volume/2;
       if (this.volume == -50) {
-        Destination.mute = !this.mute;
+        this.mute = !this.mute
+        Destination.mute = this.mute;
       }
     },
 
@@ -191,6 +213,18 @@ export default {
       this.mute = false;
       this.volume = Math.round(Math.min(this.volume + 5, 50));
       Destination.volume.value = this.volume/2;
+    },
+
+    onVolumeMute() {
+      if(!this.mute) {
+        this.saveVolume = this.volume;
+        this.volume = -50;
+      } else {
+        this.volume = this.saveVolume;
+      }
+      this.mute = !this.mute;
+      Destination.mute = this.mute;
+
     },
 
     onChangeBySlide() {
@@ -201,11 +235,6 @@ export default {
       if (this.volume == -50) {
         Destination.mute = !this.mute;
       }
-    },
-
-    onVolumeMute() {
-      this.mute = !this.mute;
-      Destination.mute = this.mute;
     },
 
     decrease(point) {
@@ -376,5 +405,17 @@ export default {
     display: none !important;
   }
 }
+
+.showVolumeBtn {
+  display: none !important;
+}
+
+.volume-number {
+  font-size: 25px;
+  font-weight: 600;
+  padding-top: 12px;
+  width: 60px;
+}
+
 
 </style>
