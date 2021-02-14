@@ -52,6 +52,7 @@ import Player from "./practiceroom/Player";
 import * as Tone from "tone";
 import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
+import Config from '@/store/config'
 
 export default {
   props: ["page"],
@@ -100,7 +101,7 @@ export default {
           this.musicStompClient.send("/socket/music/" + this.code + "/" + this.page + "/receive", JSON.stringify(msg),{});        
     },
     connect() {
-      const serverURL = "https://musicshareroom.tk/api/";
+      const serverURL = Config.ServerURL;
 
       let musicSocket = new SockJS(serverURL);
       this.musicStompClient = Stomp.over(musicSocket);

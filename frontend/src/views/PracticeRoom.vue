@@ -118,6 +118,7 @@ import Stomp from 'webstomp-client';
 import SockJS from 'sockjs-client';
 import Chat from '@/components/chat/Chat.vue';
 //import * as Tone from "tone";
+import Config from '@/store/config'
 
 export default {
   components: {
@@ -234,7 +235,7 @@ export default {
       
     },
     connect() {
-      const serverURL = "https://musicshareroom.tk/api/";
+      const serverURL = Config.ServerURL;
       
       let musicPageSocket = new SockJS(serverURL);
       this.musicPageStompClient = Stomp.over(musicPageSocket);

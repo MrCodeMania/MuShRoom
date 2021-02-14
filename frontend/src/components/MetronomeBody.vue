@@ -91,15 +91,16 @@
 import Vue from "vue";
 import BeatIndicator from "@/components/metronome/BeatIndicator.vue";
 import PlayControlBtn from "@/components/metronome/PlayControlBtn.vue";
+import Config from '@/store/config'
 
 import { mapState } from "vuex";
 import { Player, Sequence, Transport, start, Destination } from "tone";
 
 const accent = new Player(
-  "https://musicshareroom.tk/api/downloadFile/Ping%20Hi.wav"
+  Config.ServerURL + "/downloadFile/Ping%20Hi.wav"
 ).toDestination();
 const beat = new Player(
-  "https://musicshareroom.tk/api/downloadFile/Ping%20Low.wav"
+  Config.ServerURL + "/downloadFile/Ping%20Low.wav"
 ).toDestination();
 
 

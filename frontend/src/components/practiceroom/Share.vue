@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import Config from '@/store/config'
 
 export default {
     data() {
@@ -54,16 +55,16 @@ export default {
             urls: [
                 {
                     name: "Musician",
-                    url: "https://musicshareroom.tk/api/practiceroom/?room="
+                    url: Config.HostURL + "/practiceroom/?room="
                 }, {
                     name: "Audience",
-                    url: "https://musicshareroom.tk/api/practiceroom/?room="
+                    url: Config.HostURL + "/practiceroom/?room="
                 }
             ],
             readOnlyUrls: [
                 {
                     name: "Audience",
-                    url: "https://musicshareroom.tk/api/practiceroom/?room="
+                    url: Config.HostURL + "/practiceroom/?room="
                 }
             ],
             copied: "",
@@ -74,11 +75,11 @@ export default {
 
         if(this.status === "Master")
         {
-            this.urls[0].url = "https://musicshareroom.tk/api/practiceroom?shareUrl=" + this.$store.state.shareUrl[0];
-            this.urls[1].url = "https://musicshareroom.tk/api/practiceroom?shareUrl=" + this.$store.state.shareUrl[1];
+            this.urls[0].url = Config.HostURL + "/practiceroom?shareUrl=" + this.$store.state.shareUrl[0];
+            this.urls[1].url = Config.HostURL + "/practiceroom?shareUrl=" + this.$store.state.shareUrl[1];
         }
         else
-            this.readOnlyUrls[0].url = "https://musicshareroom.tk/api/practiceroom?shareUrl=" + this.$store.state.shareUrl[1];
+            this.readOnlyUrls[0].url = Config.HostURL + "/practiceroom?shareUrl=" + this.$store.state.shareUrl[1];
     },
     methods: {
         copyShareUrl(name) {
