@@ -12,13 +12,12 @@ export default new Vuex.Store({
       musicBoard: [{ //  왼쪽 컴포넌트
         idx: 0,
         list: [] // 추가된 음악 리스트
-      },
-    ],
+      }, ],
       recordBoard: [] // 오른쪽 컴포넌트
     },
     status: "",
     recordStartState: "",
-    shareUrl:[],
+    shareUrl: [],
     idx: 0
   },
   mutations: {
@@ -82,7 +81,7 @@ export default new Vuex.Store({
     }) {
       state.data.musicBoard[page].list.splice(music.id, 1, music);
       console.log(music);
-      
+
     },
     // musicBoard에서 음악 삭제
     deleteMusic(state, {
@@ -110,7 +109,7 @@ export default new Vuex.Store({
       state.status = status;
       console.log(state.status);
     },
-    pushShareUrl(state, shareUrl){
+    pushShareUrl(state, shareUrl) {
       state.shareUrl = shareUrl;
     },
 

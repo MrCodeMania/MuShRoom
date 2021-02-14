@@ -45,6 +45,7 @@ import uploadBtn from "./record/fileupload";
 import recordCard from "./record/Audiocard";
 import Stomp from 'webstomp-client';
 import SockJS from 'sockjs-client';
+import Config from '@/store/config'
 
 export default {
   props: ["page"],
@@ -81,7 +82,7 @@ export default {
 
     },
     connect() {
-      const serverURL = "https://musicshareroom.tk/api/";
+      const serverURL = Config.ServerURL;
       
       let recordSocket = new SockJS(serverURL);
       this.recordStompClient = Stomp.over(recordSocket);

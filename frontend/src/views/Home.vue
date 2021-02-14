@@ -43,6 +43,7 @@ import Header from '@/components/common/Header.vue';
 import Footer from '@/components/common/Footer.vue';
 import MainModal from '@/components/MainModal.vue';
 import axios from '@/service/axios.service.js';
+import Config from '@/store/config'
 
 export default {
   name: 'home',
@@ -66,7 +67,7 @@ export default {
         
         this.$store.commit("pushShareUrl", [res.data.id.masterId, res.data.id.slaveId]);
         // 서버 URL 바꿔야 한다
-        this.address = "https://musicshareroom.tk/api/practiceroom?shareUrl=" + res.data.id.masterId;
+        this.address = Config.HostURL + "/practiceroom?shareUrl=" + res.data.id.masterId;
       });
       
     },
