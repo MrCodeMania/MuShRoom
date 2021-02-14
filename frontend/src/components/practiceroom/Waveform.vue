@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="background-color: #555">
       <div v-show="timeline" :id="'container'+idx"></div>
       <vue-wave-surfer 
         ref="waveform"
@@ -12,16 +12,16 @@
 <script>
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 export default {
-    props: ['url', 'height', 'mouse', 'audioCtx', 'timeline', 'idx'],
+    props: ['url', 'height', 'mouse', 'audioCtx', 'timeline', 'idx', 'full'],
     data() {
         return {
             options: {
-                barWidth: 2,
+                // barWidth: 2,
                 normalize: false,
                 cursorColor: '#00ff0000',
-                progressColor: '#555', //color of waveform behind the cursor
+                progressColor: '#fff', //color of waveform behind the cursor
                 waveColor: '#999', //color of waveform after the cursor
-                scrollParent: false,
+                scrollParent: this.full,
                 height: this.height,
                 interact: this.mouse,
                 audioContext: this.audioCtx,
@@ -38,7 +38,7 @@ export default {
         this.player.on('ready', ()=>{
             console.log('ready');
         });
-        this.player.zoom(10);
+        // this.player.zoom(10);
         this.player.on('seek', ()=>{
             console.log(this.player.getCurrentTime().toFixed(2));
             this.$emit('setTime', this.player.getCurrentTime().toFixed(2));
