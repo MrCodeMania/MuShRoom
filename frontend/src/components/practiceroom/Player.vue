@@ -276,6 +276,7 @@ export default {
         now + Tone.Time(this.delay).toSeconds(),
         Tone.Time(this.offset).toSeconds() + this.currentTime
       );
+      document.getElementById(``)
     },
     pause() {
       this.currentTime = Tone.Transport.seconds;
