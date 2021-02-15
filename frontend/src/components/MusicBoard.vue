@@ -11,7 +11,7 @@
         <Player
           class="ma-8 border smallcomponent-color"
           v-for="(item, idx) in music"
-          :key="item.id"
+          :key="idx"
           :n="idx"
           :page="page"
           :music="item"
@@ -76,14 +76,14 @@ export default {
     this.connect();
   },
   computed: {
-    getURL() {
-      return this.$store.getters.getURL;
+    getURL() {  
+      return this.$store.getters.getURL;  
     },
     music: function() {
       return this.$store.getters.getBoard(this.page);
     },
     length: function() {
-      return this.$store.getters.getPageLength;
+      return this.$store.state.pageLen;
     }
   },
   watch: {
@@ -113,38 +113,40 @@ export default {
           this.connected = true;
           console.log('뮤직보드 소켓 연결 성공', frame);
 
-          this.musicStompClient.subscribe("/socket/music/" + this.code + "/" + this.page + "/send", res => {
-            const resBody = JSON.parse(res.body);
-            
-            console.log(resBody);
+          for(let i = 0; i < 5; i++)
+          {
+            console.log(i);
+            this.musicStompClient.subscribe("/socket/music/" + this.code + "/" + i + "/send", res => {
+              const resBody = JSON.parse(res.body);
+              
+              if(resBody["type"] == "delete")
+                  this.$store.commit('deleteMusic', {page : i, idx: resBody["index"]});
+              if(resBody["type"] == "update")
+                  this.$store.commit('updateMusic', {page : i, music: {
+                    id: resBody["index"],
+                    url: resBody["obj"]["url"],
+                    fileName: resBody["obj"]["fileName"],
+                    timestamp: resBody["obj"]["timestamp"],
+                    distortion: {
+                      object: null,
+                      value: resBody["obj"]["distortion"],
+                    },
+                    volume: {
+                      object: null,
+                      value: resBody["obj"]["volume"],
+                    },
+                    gain: {
+                      object: null,
+                      value: resBody["obj"]["gain"],
+                    },
+                    reverb: {
+                      object: null,
+                      value: resBody["obj"]["reverb"],
+                    }
+                    }});
 
-            if(resBody["type"] == "delete")
-                this.$store.commit('deleteMusic', {page : this.page, idx: resBody["index"]});
-            if(resBody["type"] == "update")
-                this.$store.commit('updateMusic', {page : this.page, music: {
-                  id: resBody["index"],
-                  url: resBody["obj"]["url"],
-                  fileName: resBody["obj"]["fileName"],
-                  timestamp: resBody["obj"]["timestamp"],
-                  distortion: {
-                    object: null,
-                    value: resBody["obj"]["distortion"],
-                  },
-                  volume: {
-                    object: null,
-                    value: resBody["obj"]["volume"],
-                  },
-                  gain: {
-                    object: null,
-                    value: resBody["obj"]["gain"],
-                  },
-                  reverb: {
-                    object: null,
-                    value: resBody["obj"]["reverb"],
-                  }
-                  }});
-
-          });
+            });
+          }
         },
         error => {
           // 소켓 연결 실패
@@ -182,12 +184,12 @@ export default {
       this.scrollInvoked++;
     },
     deleteMusic(id) {
-     this.send("music", {type: "delete", index: this.music[id].id, obj: {url : this.music[id].url, fileName : this.music[id].fileName}});
+     this.send("music", {type: "delete", index: id, obj: {url : this.music[id].url, fileName : this.music[id].fileName}});
     },
     updateMusicOption(id) {
       console.log(this.music[id]);
       console.log(id);
-      this.send("music", {type: "update", index: this.music[id].id, obj: {url : this.music[id].url, fileName : this.music[id].fileName,
+      this.send("music", {type: "update", index: id, obj: {url : this.music[id].url, fileName : this.music[id].fileName,
            volume: this.music[id].volume.value, distortion: this.music[id].distortion.value, gain: this.music[id].gain.value, reverb: this.music[id].reverb.value}});
     }
   },
