@@ -32,13 +32,14 @@
         </v-btn>
       </div>
 
-      <div class="" style="flex: 10; background-color: blue">
+      <div class="" style="flex: 10">
         <Waveform
           :url="music.url"
           height="64"
           mouse="true"
           timeline="true"
           :idx="n"
+          full="false"
           @setTime="setTime"
         ></Waveform>
       </div>
