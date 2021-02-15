@@ -27,7 +27,14 @@
               {{ describe[nowPage][0] }}
             </div>
 
-            <v-btn color="indigo" outlined fab small @click="changeHelpState">
+            <v-btn
+              color="indigo"
+              outlined
+              fab
+              small
+              @click="changeHelpState"
+              text
+            >
               <v-icon>mdi-close-thick</v-icon>
             </v-btn>
           </div>
@@ -48,7 +55,7 @@
                 >이전</v-btn
               >
               <v-btn
-                :disabled="nowPage === maxPage"
+                :disabled="nowPage === 2"
                 small
                 color="indigo"
                 @click="next"
@@ -105,9 +112,7 @@ export default {
     },
   },
   mounted() {
-    //this.box = document.getElementsByClassName("con");
-    //console.log(this.box);
-    // this.share.$;
+    this.maxPage = this.describe.length;
   },
   computed: {
     showState() {
