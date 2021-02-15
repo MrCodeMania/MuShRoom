@@ -8,7 +8,7 @@
       height="100px"
     >
       <v-card-title width="50%" max-width="60px"
-        ><span class="title font-weight-medium ml-2">{{
+        ><span class="ml-2 medium">{{
           fileData.fileName
         }}</span>
         <v-spacer></v-spacer>

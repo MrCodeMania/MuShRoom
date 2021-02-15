@@ -198,11 +198,11 @@ export default {
 
 <style>
 .select {
-  color: green !important;
+  color: red !important;
   font-size: 1.75em !important;
 }
 
 .not-select {
-  color: gray !important;
+  color: white !important;
 }
 </style>

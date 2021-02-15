@@ -32,7 +32,7 @@
 }
 
 .smallcomponent-color {
-  background-color: #555 !important;
+  background-color: #2d2f3e !important;
   /* background-color: #6E8CAE !important; */
 }
 
@@ -71,7 +71,7 @@ body {
 
 
 
-/* p {
+p {
     color: white;
 }
 
@@ -79,6 +79,10 @@ span {
     color: white;
 }
 
-label {
-    color : white
-} */
+.medium {
+  font-size: 16px !important;
+}
+
+.large {
+  font-size: 20px !important;
+}

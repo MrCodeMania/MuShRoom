@@ -1,7 +1,7 @@
 <template>
   <div id="player">
     <div class="d-flex file-title">
-      <p class="file-name pb-2">{{ music.fileName }}</p>
+      <p class="file-name pb-2 medium">{{ music.fileName }}</p>
       <v-spacer></v-spacer>
       <v-btn icon color="white" @click="sendDelete()" v-if="status === 'Master'">
         <v-icon>mdi-close</v-icon>
@@ -128,7 +128,7 @@
               <v-checkbox
                 id="loop"
                 name="loop"
-                class="ml-1 mt-0 pt-6"
+                class="ml-1 mt-2 pt-6"
                 v-on:change="toggleLoop($event)"
               ></v-checkbox>
             </div>

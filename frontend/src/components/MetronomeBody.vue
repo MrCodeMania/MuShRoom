@@ -39,27 +39,6 @@
       <PlayControlBtn :isPlaying="isPlaying()" @start="onStart" @stop="onStop"/>
       <v-spacer></v-spacer>
       <div class="d-flex align-center">
-
-        <v-btn
-          icon
-          large
-          color="white"
-          :disabled="isMute()"
-          @click="onVolumeDown"
-          class="volume-btn"
-        >
-        <v-icon >mdi-volume-minus</v-icon>
-        </v-btn>
-        <v-btn
-          icon
-          large
-          color="white"
-          :disabled="isMaxVolume()"
-          @click="onVolumeUp"
-          class="volume-btn"
-        >
-        <v-icon >mdi-volume-plus</v-icon>
-        </v-btn>
         <v-btn
           icon
           color="white"
@@ -72,7 +51,7 @@
         </v-btn>
         <v-slider
           color="white"
-          class="pt-5 volume-slider"
+          class="pt-5"
           track-color="grey darken-2"
           v-model="volume"
           max="50"
@@ -196,22 +175,6 @@ export default {
       setTimeout(() => {
         this.onRecordStop();
       }, (1000 * 60) / (this.bpm + 20));
-    },
-
-    onVolumeDown() {
-      this.mute = false;
-      this.volume = Math.round(Math.max(this.volume - 5, -50));
-      Destination.volume.value = this.volume/2;
-      if (this.volume == -50) {
-        this.mute = !this.mute
-        Destination.mute = this.mute;
-      }
-    },
-
-    onVolumeUp() {
-      this.mute = false;
-      this.volume = Math.round(Math.min(this.volume + 5, 50));
-      Destination.volume.value = this.volume/2;
     },
 
     onVolumeMute() {
@@ -390,19 +353,6 @@ export default {
 .metronome-btn {
     border-radius: 0px 0px 3px 3px!important;
     height: 30%
-}
-
-
-@media all and (max-width: 1100px){
-  .volume-slider {
-    display: none !important;
-  }
-}
-
-@media all and (min-width: 1100px){
-  .volume-btn {
-    display: none !important;
-  }
 }
 
 .showVolumeBtn {

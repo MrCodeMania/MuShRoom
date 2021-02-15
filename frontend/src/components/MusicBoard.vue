@@ -9,7 +9,7 @@
       elevation="0"
     >
         <Player
-          class="ma-3 border smallcomponent-color"
+          class="ma-8 border smallcomponent-color"
           v-for="(item, idx) in music"
           :key="item.id"
           :n="idx"
@@ -30,18 +30,18 @@
       <v-spacer></v-spacer>
       <v-card class="d-flex justify-end nav-color" elevation="0">
         <v-btn class="musicboard_btn pt-2" icon dark large @click="downloadButton">
-          <v-icon dark large>mdi-download</v-icon>
+          <v-icon dark size="30px">mdi-download</v-icon>
         </v-btn>
-        <v-btn class="musicboard_btn" icon dark large @click="musicPlayButton">
+        <v-btn class="musicboard_btn mx-n2" icon dark large @click="musicPlayButton">
           <div v-if="!play">
-            <v-icon dark large>mdi-play</v-icon>
+            <v-icon dark size="30px">mdi-play</v-icon>
           </div>
           <div v-else>
-            <v-icon dark large>mdi-pause</v-icon>
+            <v-icon dark size="30px">mdi-pause</v-icon>
           </div>
         </v-btn>
         <v-btn class="musicboard_btn mr-5" icon dark large @click="musicStopButton">
-          <v-icon dark large>mdi-stop</v-icon>
+          <v-icon dark size="30px">mdi-stop</v-icon>
         </v-btn>
       </v-card>
     </v-card>
