@@ -1,18 +1,37 @@
 <template>
   <v-app-bar
-  color="#00ff0000"
+  color="black"
   tile
   flat
+  class="pt-2 pb-1"
   rounded
   height="auto"
   >
-    <v-img
+    <v-btn
+      text       
       max-width="180"
-      height="50"
-      :src="logo"
+      height="50" 
       @click="toMain">
-    </v-img>
+      <v-img
+        max-width="180"
+        height="50"
+        :src="logo">
+      </v-img>
+    </v-btn>
     <v-spacer></v-spacer>
+    <v-btn
+    dark
+    text
+    @click="showChat()"
+    v-if="!openChat">
+      <v-icon
+      class="pr-2"
+      dark>
+        mdi-chat
+      </v-icon>
+      Chat
+    </v-btn>
+    <span style="color: white;">|</span>
     <Share/>
   </v-app-bar>
 </template>
@@ -21,6 +40,9 @@
 import Share from '../practiceroom/Share.vue'
 export default {
     components: { Share },
+    props: {
+      openChat: Boolean
+    },
     data() {
         return {
             logo: require('@/assets/tmpLogo.png'),
@@ -29,6 +51,10 @@ export default {
     methods: {
         toMain() {
             this.$router.push({name : 'Home'})
+        },
+
+        showChat() {
+          this.$emit("showChat");
         }
     }
 

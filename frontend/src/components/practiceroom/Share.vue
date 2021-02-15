@@ -7,8 +7,9 @@
         :close-on-content-click="false">
         <template v-slot:activator="{ on, attrs }">
             <v-btn
-                color="primary"
+                color="white"
                 dark="dark"
+                text
                 @click="reset"
                 v-bind="attrs"
                 v-on="on">
@@ -55,7 +56,8 @@ export default {
     data() {
         return {
             roomNo:'',
-            isRoom : false
+            isRoom : false,
+            copied: '',
         };
     },
     created() {

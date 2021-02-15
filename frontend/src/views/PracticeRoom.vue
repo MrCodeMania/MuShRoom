@@ -1,9 +1,9 @@
 <template>
   <v-main class="main-color">
-    <Header />
+    <Header :openChat="openChat" @showChat="showChat" />
 
     <!-- 부모 row -->
-    <v-row no-gutters>
+    <v-row no-gutters class="mx-auto" style="width: 1200px !important;">
       <!-- 왼쪽 컴포넌트들 -->
       <v-col cols="8" class="flex-grow-0 flex-shrink-0 pa-4">
         <v-row no-gutters style="height: 100vh">
@@ -52,7 +52,7 @@
                 v-if="length < 5"
                 @click="addPage()"
               >
-                <v-icon> mdi-plus </v-icon>
+                <v-icon size="30px"> mdi-plus </v-icon>
               </v-btn>
             </v-tabs>
             <v-tabs-items v-model="page" class="rounded-tr nav-color">
@@ -77,12 +77,12 @@
         <!-- 매트로놈 -->
         <v-row no-gutters style="height: 18vh">
           <v-card elevation="0" width="100%" height="100%">
-            <MetronomeV2 />
+            <Metronome />
           </v-card>
         </v-row>
 
         <!-- 파일 목록 -->
-        <v-row v-if="status === 'Master'" no-gutters style="height: 68vh">
+        <v-row v-if="status === 'Master'" no-gutters style="height: 62vh">
           <v-card
             elevation="0"
             width="100%"
@@ -93,7 +93,7 @@
         </v-row>
       </v-col>
     </v-row>
-    <v-btn
+    <!-- <v-btn
     class="chat-btn"
     dark
     icon
@@ -103,14 +103,14 @@
       dark>
         mdi-chat
       </v-icon>
-    </v-btn>
+    </v-btn> -->
     <Chat :openChat="openChat" @closeChat="closeChat"/>
   </v-main>
 </template>
 
 <script>
 import Header from "@/components/common/Header.vue";
-import MetronomeV2 from "@/components/MetronomeBody.vue";
+import Metronome from "@/components/MetronomeBody.vue";
 import MusicBoard from "@/components/MusicBoard.vue";
 import Record from "@/components/record.vue";
 import axios from "@/service/axios.service.js";
@@ -122,8 +122,7 @@ import Config from '@/store/config'
 export default {
   components: {
     Header,
-    // Metronome,
-    MetronomeV2,
+    Metronome,
     MusicBoard,
     Record,
     Chat
