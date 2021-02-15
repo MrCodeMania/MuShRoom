@@ -55,7 +55,8 @@ export default {
     data() {
         return {
             roomNo:'',
-            isRoom : false
+            isRoom : false,
+            copied: '',
         };
     },
     created() {

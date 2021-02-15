@@ -1,6 +1,6 @@
 <template>
   <v-card elevation="0" width="100%" height="98%">
-    <v-card elevation="0">
+    <v-card elevation="0" >
       <div class="py-3 d-flex justify-space-around nav-color">
         <v-btn text style="font-size: 1.5em;" :class="expand ? 'select' : 'not-select'" @click="expandChange(1)">record </v-btn>
         <v-btn text style="font-size: 1.5em;" :class="expand2 ? 'not-select' : 'not-select'" @click="expandChange(2)">upload </v-btn>

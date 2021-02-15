@@ -1,9 +1,9 @@
 <template>
   <div id="player">
     <div class="d-flex file-title">
-      <p class="file-name">{{ music.fileName }}</p>
+      <p class="file-name pb-2">{{ music.fileName }}</p>
       <v-spacer></v-spacer>
-      <v-btn icon color="gray" @click="sendDelete()" v-if="status === 'Master'">
+      <v-btn icon color="white" @click="sendDelete()" v-if="status === 'Master'">
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </div>
@@ -12,7 +12,7 @@
         <v-btn
           v-if="this.state == 'paused' || this.state == 'stopped'"
           icon
-          color="black"
+          color="white"
           :disabled="player == null"
           v-on:click="start()"
         >
@@ -21,13 +21,13 @@
         <v-btn
           v-else
           icon
-          color="black"
+          color="white"
           :disabled="player == null"
           v-on:click="pause()"
         >
           <v-icon>mdi-pause</v-icon>
         </v-btn>
-        <v-btn icon color="black" v-on:click="stop()">
+        <v-btn icon color="white" v-on:click="stop()">
           <v-icon>mdi-stop</v-icon>
         </v-btn>
       </div>
@@ -46,7 +46,7 @@
       <!-- 이 부분부터 ReadOnly -->
       <div class="ml-3 mr-3" v-if="status === 'Master'">
         <!-- dropdown button -->
-        <v-btn icon color="black" v-on:click="toggleDropdown()">
+        <v-btn icon color="white" v-on:click="toggleDropdown()">
           <v-icon v-if="isShow == 0">mdi-chevron-down</v-icon>
           <v-icon v-else>mdi-chevron-up</v-icon>
         </v-btn>
@@ -359,7 +359,7 @@ export default {
 }
 
 #player p {
-  color: black;
+  color: white;
   margin: 0px !important;
 }
 
