@@ -7,8 +7,10 @@
         :close-on-content-click="false">
         <template v-slot:activator="{ on, attrs }">
             <v-btn
-                color="primary"
+                color="white"
                 dark="dark"
+                text
+                @click="reset"
                 v-bind="attrs"
                 v-on="on">
                 <v-icon class="pr-2">mdi-share-variant</v-icon>

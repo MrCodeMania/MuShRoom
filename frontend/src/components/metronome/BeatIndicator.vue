@@ -6,7 +6,7 @@
       class="v-avatar--metronome"
       size="50"
       rounded="circle"
-      >{{ beatIndex + 1 }}</v-avatar
+      ><span style="color: white;">{{ beatIndex + 1 }}</span></v-avatar
     >
   </v-fade-transition>
 </template>

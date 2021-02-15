@@ -1,9 +1,9 @@
 <template>
   <v-main class="main-color">
-    <Header />
+    <Header :openChat="openChat" v-on:toggleChat="toggleChat" v-on:openModal="openModal" :hasNickName="hasNickName" :newChat="newChat"/>
 
     <!-- 부모 row -->
-    <v-row no-gutters>
+    <v-row no-gutters class="mx-auto" style="width: 1200px !important;">
       <!-- 왼쪽 컴포넌트들 -->
       <v-col cols="8" class="flex-grow-0 flex-shrink-0 pa-4">
         <v-row no-gutters style="height: 100vh">
@@ -53,7 +53,7 @@
                 v-if="length < 5"
                 @click="addPage()"
               >
-                <v-icon> mdi-plus </v-icon>
+                <v-icon size="30px"> mdi-plus </v-icon>
               </v-btn>
             </v-tabs>
             <v-tabs-items v-model="page" class="rounded-tr nav-color">
@@ -78,12 +78,12 @@
         <!-- 매트로놈 -->
         <v-row no-gutters style="height: 18vh">
           <v-card elevation="0" width="100%" height="100%">
-            <MetronomeV2 />
+            <Metronome />
           </v-card>
         </v-row>
 
         <!-- 파일 목록 -->
-        <v-row v-if="status === 'Master'" no-gutters style="height: 68vh">
+        <v-row v-if="status === 'Master'" no-gutters style="height: 62vh">
           <v-card
             elevation="0"
             width="100%"
@@ -94,24 +94,14 @@
         </v-row>
       </v-col>
     </v-row>
-    <v-btn
-    class="chat-btn"
-    dark
-    icon
-    @click="showChat()"
-    v-if="!openChat">
-      <v-icon
-      dark>
-        mdi-chat
-      </v-icon>
-    </v-btn>
-    <Chat :openChat="openChat" @closeChat="closeChat"/>
+    <Chat :openChat="openChat" @toggleChat="toggleChat" :nickName="nickName" @newChat="arriveNewChat"/>
+    <SetNickName :showModal="showModal" @close="closeModal" @setNickName="setNickName"/>
   </v-main>
 </template>
 
 <script>
 import Header from "@/components/common/Header.vue";
-import MetronomeV2 from "@/components/MetronomeBody.vue";
+import Metronome from "@/components/MetronomeBody.vue";
 import MusicBoard from "@/components/MusicBoard.vue";
 import Record from "@/components/record.vue";
 import axios from "@/service/axios.service.js";
@@ -119,15 +109,16 @@ import Stomp from 'webstomp-client';
 import SockJS from 'sockjs-client';
 import Chat from '@/components/chat/Chat.vue';
 import Config from '@/store/config';
+import SetNickName from '@/components/chat/SetNickName.vue';
 
 export default {
   components: {
     Header,
-    // Metronome,
-    MetronomeV2,
+    Metronome,
     MusicBoard,
     Record,
-    Chat
+    Chat,
+    SetNickName
   },
   created() {
     // Status를 vuex에 저장
@@ -141,6 +132,11 @@ export default {
       page: 0, //  현재 페이지,
       status,
       openChat: false
+      openChat: false,
+      showModal: false,
+      hasNickName: false,
+      nickName: '',
+      newChat: 0
     };
   },
   computed: {
@@ -160,7 +156,6 @@ export default {
   methods: {
     init() {
 
-      // store에 있는 거 다 지워야함
       this.$store.commit("setData");
 
       this.code = this.$route.query.shareUrl;
@@ -293,18 +288,41 @@ export default {
     addPage() {
       this.send("addPage");
     },
-    // 페이지 삭제 추가해야함
     removePage(i) {
       this.send("deletePage", i);
     },
     updatePageName(i){
       this.send("updatePageName", i);
+    }, 
+    // 채팅창 버튼 누르면 열고 닫는 toggle
+    toggleChat(){
+      if(!this.hasNickName)
+        return;
+
+      if(!this.openChat)
+        this.newChat = 0;
+      
+      this.openChat = !this.openChat;
     },
-    showChat(){
-      this.openChat = true;
+    // 닉네임 설정 모달
+    openModal() {
+      this.showModal = true;
     },
-    closeChat(){
-      this.openChat = false;
+    // 취소 눌렀을 때
+    closeModal() {
+      this.showModal = false;
+    },
+    // 채팅하기 눌렀을 때
+    setNickName(val) {
+      this.showModal = false;
+      this.hasNickName = true;
+      this.nickName = val;
+      this.toggleChat();
+    },
+    // 새로운 메세지가 왔을 때
+    arriveNewChat() {
+      if(!this.openChat)
+        this.newChat = this.newChat < 99 ? this.newChat+1 : this.newChat;
     }
   },
 };
@@ -339,10 +357,4 @@ export default {
   background-color: #3c4d5d;
 }
 
-.chat-btn {
-  display: flex;
-  position: fixed;
-  left: 50px;
-  bottom: 8vh;
-}
 </style>

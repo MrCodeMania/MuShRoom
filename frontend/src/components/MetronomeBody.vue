@@ -1,18 +1,18 @@
 <template>
   <v-card class="metronome-main nav-color" height="100%" width="100%" elevation="0">
-    <v-card class="d-flex pa-2 metronome-screen" color="brown darken-4">
+    <v-card class="d-flex pa-2 metronome-screen" color="blue-grey darken-4">
       <BeatIndicator :bpm="bpm" :beatIndex="beatIndex" :isPlaying="isPlaying()"/>
       <v-card class="d-flex ml-2 justify-space-around" height="100%" width="100%" color="#868488">
         <div class="d-flex-column pl-4">
           <p class="metronome-now">{{ bpm }} <span class="metronome-label"> BPM </span> </p>
           <v-btn plain class="mt-n3 pl-2" 
-            icon color="black" @click="decrease('bpm')" 
+            icon color="white" @click="decrease('bpm')" 
             @mousedown="decreaseStart('bpm')" 
             @mouseleave="decreaseEnd()"
             @mouseup="decreaseEnd()"><v-icon>mdi-minus</v-icon>
           </v-btn>
           <v-btn plain class="mt-n3 pr-2" 
-            icon color="black" @click="increase('bpm')" 
+            icon color="white" @click="increase('bpm')" 
             @mousedown="increaseStart('bpm')" 
             @mouseleave="increaseEnd()"
             @mouseup="increaseEnd()"><v-icon>mdi-plus</v-icon>
@@ -38,29 +38,7 @@
     <v-card class="d-flex align-center metronome-btn component-color2">
       <PlayControlBtn :isPlaying="isPlaying()" @start="onStart" @stop="onStop"/>
       <v-spacer></v-spacer>
-      <!-- <VolumeBtn :mute="mute" :volume="volume" @volumeDown="onVolumeDown" @volumeUp="onVolumeUp" @volumeMute="onVolumeMute" @changeBySlide="onChangeBySlide"/> -->
       <div class="d-flex align-center">
-
-        <v-btn
-          icon
-          large
-          color="white"
-          :disabled="isMute()"
-          @click="onVolumeDown"
-          class="volume-btn"
-        >
-        <v-icon >mdi-volume-minus</v-icon>
-        </v-btn>
-        <v-btn
-          icon
-          large
-          color="white"
-          :disabled="isMaxVolume()"
-          @click="onVolumeUp"
-          class="volume-btn"
-        >
-        <v-icon >mdi-volume-plus</v-icon>
-        </v-btn>
         <v-btn
           icon
           color="white"
@@ -72,14 +50,14 @@
         <v-icon v-else>mdi-volume-high</v-icon>
         </v-btn>
         <v-slider
-            color="brown darken-4"
-            class="pt-5 volume-slider general-slider"
-            track-color="grey"
-            v-model="volume"
-            max="50"
-            min="-50"
-            style="width: 150px !important;"
-            @change="onChangeBySlide"
+          color="white"
+          class="pt-5"
+          track-color="grey darken-2"
+          v-model="volume"
+          max="50"
+          min="-50"
+          style="width: 150px !important;"
+          @change="onChangeBySlide"
         ></v-slider>
         <p class="volume-number">{{ volume | volume(mute) }}</p>
       </div>
@@ -197,22 +175,6 @@ export default {
       setTimeout(() => {
         this.onRecordStop();
       }, (1000 * 60) / (this.bpm + 20));
-    },
-
-    onVolumeDown() {
-      this.mute = false;
-      this.volume = Math.round(Math.max(this.volume - 5, -50));
-      Destination.volume.value = this.volume/2;
-      if (this.volume == -50) {
-        this.mute = !this.mute
-        Destination.mute = this.mute;
-      }
-    },
-
-    onVolumeUp() {
-      this.mute = false;
-      this.volume = Math.round(Math.min(this.volume + 5, 50));
-      Destination.volume.value = this.volume/2;
     },
 
     onVolumeMute() {
@@ -391,19 +353,6 @@ export default {
 .metronome-btn {
     border-radius: 0px 0px 3px 3px!important;
     height: 30%
-}
-
-
-@media all and (max-width: 1100px){
-  .volume-slider {
-    display: none !important;
-  }
-}
-
-@media all and (min-width: 1100px){
-  .volume-btn {
-    display: none !important;
-  }
 }
 
 .showVolumeBtn {

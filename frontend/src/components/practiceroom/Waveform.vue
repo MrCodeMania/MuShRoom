@@ -1,37 +1,32 @@
 <template>
-  <div>
-        <div 
-            v-if="!isReady"
-            class="text-center py-2">
-            <v-progress-circular
-            indeterminate>
-            </v-progress-circular>
+    <div style="background-color: #555">
+        <div v-if="!isReady" class="text-center py-2">
+            <v-progress-circular indeterminate></v-progress-circular>
         </div>
         <div :class="isReady ? '' : 'hide'">
-        <div v-show="timeline" :id="'container'+idx"></div>
-        <vue-wave-surfer 
-            ref="waveform"
-            :src="url"
-            :options="options"
-        >
-        </vue-wave-surfer>
+            <div v-show="timeline" :id="'container'+idx"></div>
+            <vue-wave-surfer 
+                ref="waveform"
+                :src="url"
+                :options="options"
+            ></vue-wave-surfer>
         </div>
-  </div>
+    </div>
 </template>
 
 <script>
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 export default {
-    props: ['url', 'height', 'mouse', 'audioCtx', 'timeline', 'idx'],
+    props: ['url', 'height', 'mouse', 'audioCtx', 'timeline', 'idx', 'full'],
     data() {
         return {
             options: {
-                barWidth: 2,
+                // barWidth: 2,
                 normalize: false,
                 cursorColor: '#00ff0000',
-                progressColor: '#555', //color of waveform behind the cursor
+                progressColor: '#fff', //color of waveform behind the cursor
                 waveColor: '#999', //color of waveform after the cursor
-                scrollParent: false,
+                scrollParent: this.full,
                 height: this.height,
                 interact: this.mouse,
                 audioContext: this.audioCtx,
@@ -50,7 +45,7 @@ export default {
             this.toggleReady();
             console.log('ready');
         });
-        this.player.zoom(10);
+        // this.player.zoom(10);
         this.player.on('seek', ()=>{
             console.log(this.player.getCurrentTime().toFixed(2));
             this.$emit('setTime', this.player.getCurrentTime().toFixed(2));

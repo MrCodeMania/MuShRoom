@@ -1,6 +1,6 @@
 <template>
-  <v-card class="musicBoard component-color" elevation="0" width="100%" height="100%">
-    <v-card elevation="0">
+  <v-card elevation="0" width="100%" height="98%">
+    <v-card elevation="0" >
       <div class="py-3 d-flex justify-space-around nav-color">
         <v-btn text style="font-size: 1.5em;" :class="expand ? 'select' : 'not-select'" @click="expandChange(1)">record </v-btn>
         <v-btn text style="font-size: 1.5em;" :class="expand2 ? 'not-select' : 'not-select'" @click="expandChange(2)">upload </v-btn>
@@ -28,7 +28,7 @@
       </v-expand-transition>
     </v-card>
     <v-divider light></v-divider>
-    <v-card height="60vh" class="overflow-y-auto nav-color" style="border-radius: 0px 0px 3px 3px;" v-scroll.self="onScroll">
+    <v-card class="overflow-y-auto nav-color" style="height: inherit !important; border-radius: 0px 0px 3px 3px;" v-scroll.self="onScroll">
         <recordCard
           v-for="(item, index) in records" :key="item.id"
           v-on:delRecord="delRecord"
@@ -206,11 +206,11 @@ export default {
 
 <style>
 .select {
-  color: green !important;
+  color: red !important;
   font-size: 1.75em !important;
 }
 
 .not-select {
-  color: gray !important;
+  color: white !important;
 }
 </style>

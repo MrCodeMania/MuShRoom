@@ -8,7 +8,7 @@
       height="100px"
     >
       <v-card-title width="50%" max-width="60px"
-        ><span class="title font-weight-medium ml-2">{{
+        ><span class="ml-2 medium">{{
           fileData.fileName
         }}</span>
         <v-spacer></v-spacer>
@@ -20,8 +20,7 @@
         >
       </v-card-title>
 
-      <Waveform  class="mx-auto none" style="background-color: blue" :url="fileData.downloadURL" height="60"
-      />
+      <Waveform  class="mx-auto none" :url="fileData.downloadURL" height="60"/>
     </v-card>
   </div>
 </template>
