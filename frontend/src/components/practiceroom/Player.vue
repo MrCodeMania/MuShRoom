@@ -65,9 +65,9 @@
             <div>
               <p>Volume</p>
               <v-slider
-                color="brown darken-4"
+                color="white"
                 class="ml-2"
-                track-color="grey"
+                track-color="grey darken-2"
                 v-model="music.volume.value"
                 min="-30"
                 max="20"
@@ -79,9 +79,9 @@
             <div>
               <p>Distortion</p>
               <v-slider
-                color="brown darken-4"
+                color="white"
                 class="ml-2"
-                track-color="grey"
+                track-color="grey darken-2"
                 v-model="music.distortion.value"
                 min="0"
                 max="5"
@@ -93,9 +93,9 @@
             <div>
               <p>Gain</p>
               <v-slider
-                color="brown darken-4"
+                color="white"
                 class="ml-2"
-                track-color="grey"
+                track-color="grey darken-2"
                 v-model="music.gain.value"
                 min="0"
                 max="10"
@@ -107,9 +107,9 @@
             <div>
               <p>Reverb</p>              
               <v-slider
-                color="brown darken-4"
+                color="white"
                 class="ml-2 mb-n2"
-                track-color="grey"
+                track-color="grey darken-2"
                 v-model="music.reverb.value"
                 min="0"
                 max="1"
@@ -120,7 +120,7 @@
             </div>
           </div>
 
-          <v-divider></v-divider>
+          <v-divider style="background-color: white;"></v-divider>
 
           <div class="pa-3 d-flex justify-space-around">
             <div class="d-flex align-center">
@@ -128,6 +128,7 @@
               <v-checkbox
                 id="loop"
                 name="loop"
+                dark
                 class="ml-1 mt-2 pt-6"
                 v-on:change="toggleLoop($event)"
               ></v-checkbox>
@@ -137,6 +138,7 @@
               <v-text-field
                 class="ml-2"
                 type="number"
+                dark
                 style="width: 80px !important;"
                 label="Start Time"
                 v-model="loopStart"
@@ -148,6 +150,7 @@
               <v-text-field
                 class="ml-2"
                 type="number"
+                dark
                 style="width: 80px !important;"
                 label="End Time"
                 v-model="loopEnd"
@@ -156,7 +159,7 @@
             </div>
           </div>
 
-          <v-divider></v-divider>
+          <v-divider style="background-color: white;"></v-divider>
 
           <div class="pa-3 d-flex justify-space-around">
             <div class="d-flex">
@@ -164,6 +167,7 @@
               <v-text-field
                 class="ml-2"
                 type="number"
+                dark
                 style="width: 150px !important;"
                 label="Delay Time (단위: note)"
                 v-model="delay"
@@ -173,6 +177,7 @@
               <p class="align-self-center pt-3">StartAt:</p>
               <v-text-field
                 class="ml-2"
+                dark
                 type="number"
                 style="width: 150px !important;"
                 label="Start Time (단위: note)"
@@ -360,7 +365,6 @@ export default {
 }
 
 #player p {
-  color: white;
   margin: 0px !important;
 }
 

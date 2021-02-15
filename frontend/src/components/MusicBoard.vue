@@ -9,7 +9,7 @@
       elevation="0"
     >
         <Player
-          class="ma-8 border smallcomponent-color"
+          class="mx-8 mt-4 border smallcomponent-color"
           v-for="(item, idx) in music"
           :key="item.id"
           :n="idx"

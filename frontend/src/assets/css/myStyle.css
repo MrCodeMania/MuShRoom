@@ -14,12 +14,13 @@
 }
 
 .nav-color {
+  /* background-color: black !important; */
   background-color: #161929 !important;
-  /* background-color: #222F3D !important; */
 }
 
 .component-color {
-  background-color: #cbcacc !important;
+  background-color: rgb(48, 48, 48) !important;
+  /* background-color: #cbcacc !important; */
 }
 
 .component-color2 {
@@ -28,17 +29,16 @@
 
 .main-color {
   background-color: #7992a9 !important;
-  /* background-color: #6E8CAE !important; */
 }
 
 .smallcomponent-color {
+  /* background-color: white !important; */
   background-color: #2d2f3e !important;
-  /* background-color: #6E8CAE !important; */
 }
-
+/* 
 html {
   overflow-y: hidden !important;
-}
+} */
 
 body {
   height: 100%;
