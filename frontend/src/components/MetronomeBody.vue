@@ -72,14 +72,14 @@
         <v-icon v-else>mdi-volume-high</v-icon>
         </v-btn>
         <v-slider
-            color="brown darken-4"
-            class="pt-5 volume-slider general-slider"
-            track-color="grey"
-            v-model="volume"
-            max="50"
-            min="-50"
-            style="width: 150px !important;"
-            @change="onChangeBySlide"
+          color="brown darken-4"
+          class="pt-5 volume-slider"
+          track-color="grey"
+          v-model="volume"
+          max="50"
+          min="-50"
+          style="width: 150px !important;"
+          @change="onChangeBySlide"
         ></v-slider>
         <p class="volume-number">{{ volume | volume(mute) }}</p>
       </div>

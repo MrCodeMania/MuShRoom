@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="player">
     <div class="d-flex file-title">
       <p class="file-name">{{ music.fileName }}</p>
       <v-spacer></v-spacer>
@@ -55,79 +55,79 @@
 
     <div>
       <v-sheet
-        style="margin: 0px 75.5px 0px 87px"
+        style="margin: 0px 74px 0px 87px"
         height="auto"
         :hidden="isShow == 0"
       >
         <v-card class="component-color" style="border-radius: 0px;">
-          <div class="pa-4 d-flex justify-space-around">
+          <div class="px-3 pt-3 d-flex justify-space-around">
             <div>
-              <label for="volume">Volume:</label>
-              <input
-                type="range"
+              <p>Volume</p>
+              <v-slider
+                color="brown darken-4"
+                class="ml-2"
+                track-color="grey"
+                v-model="music.volume.value"
                 min="-30"
                 max="20"
                 step="0.01"
-                v-model="music.volume.value"
-                class="slider ml-2"
-                name="volume"
-                id="volume"
-                v-on:input="changeVolume(music.volume.value)"
-              />
+                style="width: 100px !important;"
+                @change="changeVolume(music.volume.value)"
+              ></v-slider>
             </div>
             <div>
-              <label for="distortion">Distortion:</label>
-              <input
-                type="range"
+              <p>Distortion</p>
+              <v-slider
+                color="brown darken-4"
+                class="ml-2"
+                track-color="grey"
+                v-model="music.distortion.value"
                 min="0"
                 max="5"
                 step="0.01"
-                v-model="music.distortion.value"
-                class="slider ml-2"
-                name="distortion"
-                id="distortion"
-                v-on:input="changeDistortion(music.distortion.value)"
-              />
+                style="width: 100px !important;"
+                @change="changeDistortion(music.distortion.value)"
+              ></v-slider>
             </div>
             <div>
-              <label for="gain">Gain:</label>
-              <input
-                type="range"
+              <p>Gain</p>
+              <v-slider
+                color="brown darken-4"
+                class="ml-2"
+                track-color="grey"
+                v-model="music.gain.value"
                 min="0"
                 max="10"
                 step="0.01"
-                v-model="music.gain.value"
-                class="slider ml-2"
-                name="gain"
-                id="gain"
-                v-on:input="changeGain(music.gain.value)"
-              />
+                style="width: 100px !important;"
+                @change="changeGain(music.gain.value)"
+              ></v-slider>
             </div>
             <div>
-              <label for="gain">Reverb:</label>
-              <input
-                type="range"
+              <p>Reverb</p>              
+              <v-slider
+                color="brown darken-4"
+                class="ml-2 mb-n2"
+                track-color="grey"
+                v-model="music.reverb.value"
                 min="0"
                 max="1"
                 step="0.01"
-                v-model="music.reverb.value"
-                class="slider ml-2"
-                name="reverb"
-                id="reverb"
-                v-on:input="changeReverb(music.reverb.value)"
-              />
+                style="width: 100px !important;"
+                @change="changeReverb(music.reverb.value)"
+              ></v-slider>
             </div>
           </div>
 
           <v-divider></v-divider>
 
-          <div class="pa-4 d-flex justify-space-around">
+          <div class="pa-3 d-flex justify-space-around">
             <div class="d-flex align-center">
-              <label for="loop">Loop</label>
+              <p class="align-self-center pt-3">Loop</p>
               <v-checkbox
                 id="loop"
                 name="loop"
-                class="ml-2"
+                class="ml-1 mt-0 pt-6"
                 v-on:change="toggleLoop($event)"
               ></v-checkbox>
             </div>
@@ -136,6 +136,7 @@
               <v-text-field
                 class="ml-2"
                 type="number"
+                style="width: 80px !important;"
                 label="Start Time"
                 v-model="loopStart"
                 v-on:change="setLoopTime()"
@@ -146,6 +147,7 @@
               <v-text-field
                 class="ml-2"
                 type="number"
+                style="width: 80px !important;"
                 label="End Time"
                 v-model="loopEnd"
                 v-on:change="setLoopTime()"
@@ -155,12 +157,13 @@
 
           <v-divider></v-divider>
 
-          <div class="pa-4 d-flex justify-space-around">
+          <div class="pa-3 d-flex justify-space-around">
             <div class="d-flex">
               <p class="align-self-center pt-3">Delay:</p>
               <v-text-field
                 class="ml-2"
                 type="number"
+                style="width: 150px !important;"
                 label="Delay Time (단위: note)"
                 v-model="delay"
               ></v-text-field>
@@ -170,6 +173,7 @@
               <v-text-field
                 class="ml-2"
                 type="number"
+                style="width: 150px !important;"
                 label="Start Time (단위: note)"
                 v-model="offset"
               ></v-text-field>
@@ -276,6 +280,7 @@ export default {
         now + Tone.Time(this.delay).toSeconds(),
         Tone.Time(this.offset).toSeconds() + this.currentTime
       );
+      document.getElementById(``)
     },
     pause() {
       this.currentTime = Tone.Transport.seconds;
@@ -348,4 +353,11 @@ export default {
   color: balck;
   margin: 0px !important;
 }
+
+#player p {
+  color: black;
+  margin: 0px !important;
+}
+
+
 </style>
