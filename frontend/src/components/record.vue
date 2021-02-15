@@ -101,10 +101,7 @@ export default {
               if(resBody["type"] == "add")
                 this.$store.commit('updateRecord', {fileName : resBody["obj"]["fileName"], downloadURL : resBody["obj"]["url"], id: resBody["index"]});
               if(resBody["type"] == "delete")
-              {
-                this.$store.commit('deleteRecord', resBody["index"]);
-                this.idx--;
-              }
+                this.$store.commit('deleteRecord', resBody["id"]);
           });
         },
         error => {
@@ -116,7 +113,6 @@ export default {
 
       let musicSocket = new SockJS(serverURL);
       this.musicStompClient = Stomp.over(musicSocket);
-      
       this.musicStompClient.connect(
         {},
         frame => {
@@ -124,18 +120,14 @@ export default {
           this.connected = true;
           console.log('레코드 소켓 연결 성공', frame);
 
-          for(let i = 0; i < 5; i++)
-          {
-            this.musicStompClient.subscribe("/socket/music/" + this.code + "/" + i + "/send", res => {
-              const resBody = JSON.parse(res.body);
-              
-              console.log(resBody);
-              console.log("page = ", i);  
+          this.musicStompClient.subscribe("/socket/music/" + this.code + "/" + this.page + "/send", res => {
+            const resBody = JSON.parse(res.body);
+            
+            console.log(resBody);
 
-              if(resBody["type"] == "add")
-                this.$store.commit('addMusic', {page : i, record : {fileName : resBody["obj"]["fileName"], downloadURL : resBody["obj"]["url"], id: resBody["index"]}});
-            });
-          }
+            if(resBody["type"] == "add")
+              this.$store.commit('addMusic', {page : this.page, record : {fileName : resBody["obj"]["fileName"], downloadURL : resBody["obj"]["url"], id: resBody["index"]}});
+          });
         },
         error => {
           // 소켓 연결 실패
@@ -167,11 +159,11 @@ export default {
     },
 
     addCard(data) {
-      this.send("record", {type:"add", index: this.idx, obj: {url : data["downloadURL"], fileName : data["fileName"]}});
-      this.idx += 1;
+      this.send("record", {type:"add", index: this.idx - 1, obj: {url : data["downloadURL"], fileName : data["fileName"]}});
     },
     receiveData(data) {
       data["id"] = this.idx;
+      this.idx += 1;
       this.addCard(data);
       this.expand2 = false;
       this.expand = false;
@@ -180,7 +172,7 @@ export default {
       let len = this.records.length;
       for (var i = 0; i < len; i++) {
         if (this.records[i].id === id) {
-          this.send("record", {type: "delete", index: i});
+          this.send("record", {type: "delete", index: i, obj: {url : this.records[i]["downloadURL"], fileName : this.records[i]["fileName"]}});
           break;
         }
       }
@@ -189,7 +181,7 @@ export default {
       let len = this.records.length;
       for (var i = 0; i < len; i++) {
         if (this.records[i].id === id) {
-         this.send("music", {type: "add", index: this.$store.state.data.musicBoard[this.page].idx, obj: {url : this.records[i]["downloadURL"], fileName : this.records[i]["fileName"],
+         this.send("music", {type: "add", index: id, obj: {url : this.records[i]["downloadURL"], fileName : this.records[i]["fileName"],
            distortion: 0,  gain: 0,  volume: 0, reverb: 0}});
 
           break;

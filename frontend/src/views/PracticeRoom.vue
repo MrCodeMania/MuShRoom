@@ -30,18 +30,17 @@
                     dark
                     icon
                     :disabled="length == 1"
-                    @click="removePage(i)"
+                    @click="removePage()"
                   >
                     <v-icon v-if="length != 1" x-small> mdi-close </v-icon>
                   </v-btn>
                   <!-- 페이지 이름 -->
                   <v-text-field
-                    v-model="pageNames.musicBoard[i-1].pageName"
+                    v-model="pageNames[i - 1]"
                     background-color="#00ff0000"
                     flat
                     class="tab_textfield"
                     solo
-                    @change="updatePageName(i)"
                   >
                   </v-text-field>
                 </v-card>
@@ -108,8 +107,10 @@ import axios from "@/service/axios.service.js";
 import Stomp from 'webstomp-client';
 import SockJS from 'sockjs-client';
 import Chat from '@/components/chat/Chat.vue';
-import Config from '@/store/config';
 import SetNickName from '@/components/chat/SetNickName.vue';
+
+//import * as Tone from "tone";
+import Config from '@/store/config'
 
 export default {
   components: {
@@ -131,7 +132,7 @@ export default {
     return {
       page: 0, //  현재 페이지,
       status,
-      openChat: false
+      pageNames: ["", "", "", "", ""], // 페이지 이름,
       openChat: false,
       showModal: false,
       hasNickName: false,
@@ -142,24 +143,21 @@ export default {
   computed: {
     length: function () {
       // 전체 페이지 수
-      return this.$store.state.pageLen;
+      return this.$store.getters.getPageLength;
     },
     range() {
       let pages = [];
       for (let i = 1; i <= this.length; i++) pages.push(i);
         return pages;
     },
-    pageNames() {
-      return this.$store.state.data;
-    }
   },
   methods: {
     init() {
 
-      this.$store.commit("setData");
-
       this.code = this.$route.query.shareUrl;
       
+      // store에 있는 거 다 지워야함
+      this.$store.commit("setData");
     },
     load() {
       axios.get("/data/" + this.code).then((res) => {
@@ -180,10 +178,8 @@ export default {
       
       for(let i = 0; i < res.data.musicPageList.length; i++){
         if(i > 0)
-          this.$store.commit('addPage', i - 1)
-        this.$store.commit('updatePageName',{pageIdx : i, pageName : res.data.musicPageList[i]["pageName"]});
-        this.pageNames[i] = res.data.musicPageList[i]["pageName"];
-
+          this.$store.commit('addPage', i)
+          
         for(let j = 0; j < res.data.musicPageList[i].musicList.length; j++){
           // 일단 한 번 넣고 수정한다
           
@@ -212,10 +208,7 @@ export default {
               value: res.data.musicPageList[i].musicList[j].reverb
             }
           }});
-          
-          this.$store.state.data.musicBoard[i].idx = j + 1;
         }
-        this.$store.state.pageLen = i + 1;
       }
       console.log("뮤직보드 불러오기 완료!");
 
@@ -226,15 +219,14 @@ export default {
       console.log("레코드 불러오기 완료!");
 
       this.connect();
+
       });
   },
-  send(msg, index) {
+  send(msg) {
     if(msg == "addPage")
-      this.musicPageStompClient.send("/socket/music-page/" + this.code + "/receive", JSON.stringify({type:"add", index: this.$store.state.pageLen, obj: {pageName:"New Page", musicList:[]}}), {});
+      this.musicPageStompClient.send("/socket/music-page/" + this.code + "/receive", JSON.stringify({type:"add", index: this.page, obj: {pageName:"", musicList:[]}}), {});
     else if(msg == "deletePage")
-      this.musicPageStompClient.send("/socket/music-page/" + this.code + "/receive", JSON.stringify({type:"delete", index: index - 1}), {});
-    else if(msg == "updatePageName")
-      this.musicPageStompClient.send("/socket/music-page/" + this.code + "/receive", JSON.stringify({type:"update", index: index - 1, obj: {pageName:this.pageNames.musicBoard[index-1].pageName, musicList:[]}}), {});
+      this.musicPageStompClient.send("/socket/music-page/" + this.code + "/receive", JSON.stringify({type:"delete", index: this.page, obj: {pageName:"", musicList:[]}}), {});
     
   },
   connect() {
@@ -255,17 +247,9 @@ export default {
           console.log(resBody);
 
             if(resBody["type"] == "add")
-            {
-              this.pageNames[this.length] = "New Page";
-              this.$store.commit("addPage", this.length); 
-            }
+              this.$store.commit("addPage", this.page + 1);
             else if(resBody["type"] == "delete")
-              this.$store.commit("removePage", resBody["index"]);
-            else if(resBody["type"] == "update")
-              this.$store.commit("updatePageName", {pageIdx : resBody["index"], pageName : resBody["obj"]["pageName"]});
-            
-            this.page = 0;
-            
+              this.$store.commit("removePage", this.page);
         });
       },
       error => {
@@ -286,13 +270,14 @@ export default {
     },
     //  페이지 추가
     addPage() {
+      this.moveRight();
       this.send("addPage");
+      
     },
-    removePage(i) {
-      this.send("deletePage", i);
-    },
-    updatePageName(i){
-      this.send("updatePageName", i);
+    // 페이지 삭제 추가해야함
+    removePage() {
+      this.moveLeft();
+      this.send("deletePage");
     }, 
     // 채팅창 버튼 누르면 열고 닫는 toggle
     toggleChat(){

@@ -55,15 +55,16 @@ import Config from '@/store/config'
 export default {
     data() {
         return {
+            roomNo:'',
             isRoom : false,
-            copied : ""
+            copied: '',
         };
     },
     created() {
         this.status = this.$store.state.status;
 
         this.loc = document.location.href.split('?');
-
+        console.log(this.loc);
         if(this.loc.length > 1)
             this.isRoom = true;
         else
@@ -71,14 +72,18 @@ export default {
     },
     methods: {
         copyShareUrl(name) {
-            this.copied = this.$refs.textToCopy;
+            this.copied = name;
+            let copied = this.$refs.textToCopy;
             if (name == "Musician") {
-                this.copied[0].select()
+                copied[0].select()
                 document.execCommand("copy");
             } else if (name == "Audience") {
-                this.copied[1].select()
+                copied[1].select()
                 document.execCommand("copy");
             }
+        },
+        reset() {
+            this.copied = "";
         }
     },
     computed: {
