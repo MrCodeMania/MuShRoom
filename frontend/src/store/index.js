@@ -30,10 +30,7 @@ export default new Vuex.Store({
     //  새로고침 시 data 초기화
     setData(state) {
       state.data = {
-        musicBoard: [{
-          idx: 0,
-          list: []
-        }],
+        musicBoard: [],
         recordBoard: []
       };
     },
