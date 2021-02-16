@@ -148,7 +148,7 @@
                 dark
                 style="width: 80px !important"
                 label="Start Time"
-                v-model="loopStart"
+                v-model.number="loopStart"
                 v-on:change="setLoopTime()"
               ></v-text-field>
             </div>
@@ -160,7 +160,7 @@
                 dark
                 style="width: 80px !important"
                 label="End Time"
-                v-model="loopEnd"
+                v-model.number="loopEnd"
                 v-on:change="setLoopTime()"
               ></v-text-field>
             </div>
@@ -229,6 +229,9 @@ export default {
   },
   created() {
     this.constructor();
+    setInterval(() => {
+      console.log(typeof this.loopStart);
+    }, 1000);
   },
   watch: {
     music: function () {
@@ -297,10 +300,16 @@ export default {
       document.getElementById(``);
 
       let interval = setInterval(() => {
-        if (Tone.Transport.seconds > 0)
-          this.$refs.waveform.setTime(Tone.Transport.seconds);
+        if (Tone.Transport.seconds > 0) {
+          if (this.player.loop) {
+            this.$refs.waveform.setTime(
+              (Tone.Transport.seconds % (this.loopStart - this.loopEnd)) +
+                this.loopStart
+            );
+          } else this.$refs.waveform.setTime(Tone.Transport.seconds);
+        }
         if (this.state != "started") clearInterval(interval);
-      }, 100);
+      }, 50);
     },
     pause() {
       this.currentTime = Tone.Transport.seconds;
