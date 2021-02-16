@@ -1,9 +1,9 @@
 <template>
   <div class="ar">
-    <div class="ar-content component-color">
-      <div class="ar-recorder mt-5">
+    <div class="ar-content pt-2 main-color">
+      <div class="ar-recorder__duration pr-3">{{ recordedTime }}</div>
+      <div class="ar-recorder">
         <icon-button
-          style="background-color: #d7c9b2"
           class="ar-icon ar-icon__lg"
           :name="iconButtonType"
           :class="{
@@ -18,7 +18,6 @@
           @click.native="stopRecorder"
         />
       </div>
-      <div class="ar-recorder__duration">{{ recordedTime }}</div>
     </div>
   </div>
 </template>
@@ -125,20 +124,40 @@ export default {
 </script>
 <style lang="scss">
 .ar {
-  width: 100%;
+  width: auto;
   font-family: "Roboto", sans-serif;
-  border-radius: 16px;
-  background-color: #fafafa;
-  box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.17);
+  border-radius: 0px;
   position: relative;
   box-sizing: content-box;
 
   &-content {
-    padding: 1px;
-    background-color: white;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
+  }
+
+  &-records {
+    padding-top: 1px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+
+    &__record {
+      padding: 0 10px;
+      margin: 0 auto;
+      line-height: 45px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #e8e8e8;
+      position: relative;
+
+      &--selected {
+        border: 1px solid #e8e8e8;
+        border-radius: 24px;
+        background-color: #ffffff;
+        margin-top: -1px;
+        padding: 0 34px;
+      }
+    }
   }
 
   &-recorder {
@@ -151,14 +170,14 @@ export default {
       color: #aeaeae;
       font-size: 32px;
       font-weight: 500;
-      margin-top: 20px;
-      margin-bottom: 16px;
+      margin-top: 3px;
     }
 
     &__stop {
       fill: white !important;
       background-color: #ff6b64 !important;
       position: absolute;
+      top:4px;
       width: 38px;
       height: 38px;
       display: none;

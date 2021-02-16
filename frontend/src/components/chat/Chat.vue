@@ -11,10 +11,10 @@
                 <v-spacer></v-spacer>
                 <v-btn 
                 icon
+                style="position: absolute; right: 5px; top: 5px;"
                 @click="closeChat()"
                 >
-                    <v-icon
-                    small>
+                    <v-icon>
                         mdi-close
                     </v-icon>
                 </v-btn>
@@ -172,7 +172,7 @@ export default {
     height: 500px;
     bottom: 20px;
     border: 1px solid white;
-    border-radius: 5px;
+    border-radius: 3px;
 }
 
 .middle-area {

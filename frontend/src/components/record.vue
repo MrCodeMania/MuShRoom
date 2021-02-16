@@ -1,8 +1,8 @@
 <template>
-  <v-card elevation="0" width="100%" height="100%">
+  <v-card elevation="0" width="100%" height="93%">
     <v-card
-      class="overflow-y-auto main-color-light"
-      style="height: inherit !important; border-radius: 3px 3px 0px 0px"
+      class="overflow-y-auto main-color-light "
+      style="height: inherit !important; border-radius: 0px;"
       v-scroll.self="onScroll"
     >
       <recordCard
@@ -14,28 +14,24 @@
       />
     </v-card>
     <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
-    <v-card elevation="0" class="main-color-light">
-      <div
-        class="py-3 d-flex justify-space-around"
-        style="border-radius: 0px 0px 3px 3px"
-      >
-        <v-btn
-          text
-          :class="expand ? 'select' : 'not-select'"
-          @click="showRecord = !showRecord"
-          ><v-icon>mdi-microphone-outline</v-icon>
-        </v-btn>
-        <v-btn
-          text
-          :class="expand2 ? 'not-select' : 'not-select'"
-          @click="file_upload_open"
-          ><v-icon>mdi-file-upload-outline</v-icon>
-        </v-btn>
-      </div>
-
+    <v-card elevation="0" height="15%" class="main-color-light d-flex align-center" style="border-radius: 0px;" >
+      <v-btn
+        icon
+        dark
+        class="mx-2"
+        @click="showRecord = !showRecord"
+        ><v-icon  size="26px">mdi-microphone</v-icon>
+      </v-btn>
+      <v-btn
+        icon
+        dark
+        @click="file_upload_open"
+        ><v-icon size="26px">mdi-file-upload</v-icon>
+      </v-btn>
       <recordBtn
         :showRecord="showRecord"
         @sendData="receiveData"
+        @closeRecord="closeRecord"
         ref="recBtn"
       />
       <UploadBtn @sendData="receiveData" ref="fileupload" />
@@ -220,18 +216,14 @@ export default {
     onScroll() {
       this.scrollInvoked++;
     },
+    closeRecord() {
+      this.showRecord = false;
+    }
   },
 };
 </script>
 
 
 <style>
-.select {
-  color: red !important;
-  font-size: 1.75em !important;
-}
 
-.not-select {
-  color: white !important;
-}
 </style>

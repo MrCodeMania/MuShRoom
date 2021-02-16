@@ -14,7 +14,7 @@
         <v-row no-gutters style="height: 1030px; max-height: 90vh;">
           <v-card elevation="0" height="100%" width="100%" color="#00ff0000">
                             <!-- 뮤직 보드 -->
-                <v-card elevation="0" width="100%" height="100%">
+                <v-card elevation="0" width="100%" height="100%" class="main-color-light">
                   <MusicBoard  />
                 </v-card>
           </v-card>
