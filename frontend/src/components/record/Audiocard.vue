@@ -5,6 +5,7 @@
       outlined
       class="mx-auto mt-2 smallcomponent-color"
       width="90%"
+      height="auto"
     >
       <v-card-title width="50%" max-width="60px"
         ><span class="ml-2 medium">{{
