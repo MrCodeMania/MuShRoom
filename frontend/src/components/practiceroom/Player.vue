@@ -38,6 +38,7 @@
           height="64"
           mouse="true"
           timeline="true"
+          :page="page"
           :idx="n"
           full="false"
           @setTime="setTime"
