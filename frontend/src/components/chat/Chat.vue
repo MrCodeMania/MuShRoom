@@ -4,7 +4,7 @@
     style="z-index: 99">
         <v-card
         dark
-        width="100%" height="100%" class="nav-color">
+        width="100%" height="100%" class="main-color">
             <!-- 채팅창 상단 -->
             <v-card-title>
                 실시간 채팅

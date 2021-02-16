@@ -1,25 +1,21 @@
-.nav-color {
-  /* background-color: black !important; */
+
+.main-color {
+  background-color: #1E1E1E !important;
+}
+
+.main-color-light {
   background-color: #252526 !important;
 }
 
 .component-color {
-  background-color: rgb(48, 48, 48) !important;
-  /* background-color: #cbcacc !important; */
-}
-
-.component-color2 {
-  background-color: #36322c !important;
-}
-
-.main-color {
-  background-color: #7992a9 !important;
+  background-color: #303030 !important;
 }
 
 .smallcomponent-color {
-  /* background-color: white !important; */
   background-color: #2d2d2d !important;
 }
+
+
 /* 
 html {
   overflow-y: hidden !important;
@@ -54,11 +50,17 @@ body {
 }
 
 p {
-  color: #ffffffbb;
+    color: #ffffffbb;
+    letter-spacing: 1px;
 }
 
 span {
-  color: #ffffffbb;
+    color: #ffffffbb;
+    letter-spacing: 1px;
+}
+
+.text-color {
+  color: #ffffffbb !important;
 }
 
 .medium {
