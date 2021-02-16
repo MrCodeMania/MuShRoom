@@ -14,19 +14,21 @@
       />
     </v-card>
     <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
-    <v-card elevation="0" class="main-color-light">
+    <v-card class="main-color-light">
       <div
         class="py-3 d-flex justify-space-around"
         style="border-radius: 0px 0px 3px 3px"
       >
         <v-btn
-          text
+          icon
+          dark
           :class="expand ? 'select' : 'not-select'"
           @click="showRecord = !showRecord"
           ><v-icon>mdi-microphone-outline</v-icon>
         </v-btn>
         <v-btn
-          text
+          icon
+          dark
           :class="expand2 ? 'not-select' : 'not-select'"
           @click="file_upload_open"
           ><v-icon>mdi-file-upload-outline</v-icon>

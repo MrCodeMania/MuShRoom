@@ -4,7 +4,7 @@
       <v-img max-width="180" height="50" :src="logo"> </v-img>
     </v-btn>
     <v-spacer></v-spacer>
-    <v-btn class="text-color" dark text plain @click="toggleChat()" :color="openChat ? 'grey' : 'white'">
+    <v-btn dark text plain @click="toggleChat()" :color="openChat ? '#ffffff66' : '#ffffffbb'">
       <div style="position: relative" class="pr-2">
         <v-card
           v-if="newChat > 0"

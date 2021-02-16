@@ -1,6 +1,5 @@
-
 .main-color {
-  background-color: #1E1E1E !important;
+  background-color: #1e1e1e !important;
 }
 
 .main-color-light {
@@ -25,45 +24,40 @@ body {
 }
 
 ::-webkit-scrollbar {
+  /* 스크롤 크기 */
   width: 5px;
   height: 5px;
 }
 
-/* 스크롤 바 */
-
 ::-webkit-scrollbar-track {
+  /* 스크롤 배경색 */
   background-color: #252526;
 }
 
-/* 스크롤 바 밑의 배경 */
-
 ::-webkit-scrollbar-thumb {
+  /* 스크롤 색 */
   background: #f0f0f0f1;
   border-radius: 10px;
 }
 
-/* 실질적 스크롤 바 */
-
 ::-webkit-scrollbar-button {
+  /* 스크롤 화살표 버튼 없앰 */
   display: none;
 }
 
-/* 스크롤 바 상 하단 버튼 */
-
 .home_background {
-  /* theme: black sea */
   background-color: #252526 !important;
   height: 100%;
 }
 
 p {
-    color: #ffffffbb;
-    letter-spacing: 1px;
+  color: #ffffffbb;
+  letter-spacing: 1px;
 }
 
 span {
-    color: #ffffffbb;
-    letter-spacing: 1px;
+  color: #ffffffbb;
+  letter-spacing: 1px;
 }
 
 .text-color {
@@ -79,5 +73,5 @@ span {
 }
 
 .Vue-Toastification__toast--default.custom-toast {
-  background-color: #101010BF;
+  background-color: #101010bf;
 }
