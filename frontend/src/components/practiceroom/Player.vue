@@ -135,7 +135,7 @@
               ></v-checkbox>
             </div>
             <div class="d-flex align-center">
-              <p class="align-self-center pt-3">LoopStart:</p>
+              <p class="align-self-center pt-3">Loop Start:</p>
               <v-text-field
                 class="ml-2"
                 type="number"
@@ -147,7 +147,7 @@
               ></v-text-field>
             </div>
             <div class="d-flex align-center">
-              <p class="align-self-center pt-3">LoopEnd:</p>
+              <p class="align-self-center pt-3">Loop End:</p>
               <v-text-field
                 class="ml-2"
                 type="number"

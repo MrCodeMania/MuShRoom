@@ -1,6 +1,7 @@
 <template>
     <v-container id="chat"
-    :class="openChat ? 'chat' : 'hide'">
+    :class="openChat ? 'chat' : 'hide'"
+    style="z-index: 99">
         <v-card
         dark
         width="100%" height="100%" class="nav-color">
