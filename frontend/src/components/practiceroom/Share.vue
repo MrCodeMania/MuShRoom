@@ -1,13 +1,15 @@
 <template>
-    <v-menu
+    <div v-if="isRoom">
+        <v-menu     
         left
         top="top"
         offset-x="offset-x"
         :close-on-content-click="false">
         <template v-slot:activator="{ on, attrs }">
             <v-btn
-                color="primary"
+                color="white"
                 dark="dark"
+                text
                 @click="reset"
                 v-bind="attrs"
                 v-on="on">
@@ -17,32 +19,34 @@
         </template>
 
         <v-list class="component-color" width="20vw">
-            <v-list-item v-for="(item, idx) in filtered_urls" :key="idx">
-                <v-list-item-content style="padding: 0px !important;">
-                    <v-list-item-title style="font-size:12pt !important; font-weight:bold;">
-                        {{item.name}}
-                    </v-list-item-title>
-                    <div class="share-component">
-                        <input
-                            class="share-url-input"
-                            v-model="item.url"
-                            type="text"
-                            readonly="readonly"
-                            ref="textToCopy">
-                        <v-btn
-                            fab="fab"
-                            tile="tile"
-                            text="text"
-                            class="share-url-button"
-                            @click="copyShareUrl(item.name)">
-                            <v-icon small>mdi-content-copy</v-icon>
-                        </v-btn>
-                    </div>
-                    <p v-if="copied === item.name" style="width: 12px; padding-left: 16px; font-size: 8px;">{{ item.name }} url copid on Clipboard!</p>
-                </v-list-item-content>
-            </v-list-item>
-        </v-list>
-    </v-menu>
+                <v-list-item v-for="(item, idx) in filtered_urls" :key="idx">
+                    <v-list-item-content style="padding: 0px !important;">
+                        <v-list-item-title style="font-size:12pt !important; font-weight:bold;">
+                            {{item.name}}
+                        </v-list-item-title>
+                        <div class="share-component">
+                            <input
+                                class="share-url-input"
+                                v-model="item.url"
+                                type="text"
+                                readonly="readonly"
+                                ref="textToCopy">
+                            <v-btn
+                                fab="fab"
+                                tile="tile"
+                                text="text"
+                                class="share-url-button"
+                                @click="copyShareUrl(item.name)">
+                                <v-icon small>mdi-content-copy</v-icon>
+                            </v-btn>
+                        </div>
+                        <p v-if="copied === item.name" style="width: 12px; padding-left: 16px; font-size: 8px;">{{ item.name }} url copid on Clipboard!</p>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list>
+        </v-menu>
+    </div>
+
 </template>
 
 <script>
@@ -52,47 +56,28 @@ export default {
     data() {
         return {
             roomNo:'',
-            urls: [
-                {
-                    name: "Musician",
-                    url: Config.HostURL + "/practiceroom/?room="
-                }, {
-                    name: "Audience",
-                    url: Config.HostURL + "/practiceroom/?room="
-                }
-            ],
-            readOnlyUrls: [
-                {
-                    name: "Audience",
-                    url: Config.HostURL + "/practiceroom/?room="
-                }
-            ],
-            copied: "",
+            isRoom : false,
+            copied: '',
         };
     },
     created() {
         this.status = this.$store.state.status;
 
-        if(this.status === "Master")
-        {
-            this.urls[0].url = Config.HostURL + "/practiceroom?shareUrl=" + this.$store.state.shareUrl[0];
-            this.urls[1].url = Config.HostURL + "/practiceroom?shareUrl=" + this.$store.state.shareUrl[1];
-        }
+        this.loc = document.location.href.split('?');
+        console.log(this.loc);
+        if(this.loc.length > 1)
+            this.isRoom = true;
         else
-            this.readOnlyUrls[0].url = Config.HostURL + "/practiceroom?shareUrl=" + this.$store.state.shareUrl[1];
+            this.isRoom = false;
     },
     methods: {
         copyShareUrl(name) {
             this.copied = name;
             let copied = this.$refs.textToCopy;
-            if (name === "Master") {
-                console.log(this.urls[0].url);
-                console.log(copied);
+            if (name == "Musician") {
                 copied[0].select()
                 document.execCommand("copy");
-            } else if (name === "ReadOnly") {
-                console.log(this.urls[1].url);
-                console.log(copied);
+            } else if (name == "Audience") {
                 copied[1].select()
                 document.execCommand("copy");
             }
@@ -103,10 +88,21 @@ export default {
     },
     computed: {
         filtered_urls() {
-            if (this.status === "Master") {
-                return this.urls;
+            if (this.$store.state.status == "Master") {
+                return [{
+                    name: "Musician",
+                    url: Config.HostURL + "/practiceroom/?shareUrl=" + this.$store.state.shareUrl[0]
+                }, {
+                    name: "Audience",
+                    url: Config.HostURL + "/practiceroom/?shareUrl=" + this.$store.state.shareUrl[1]
+                }];
+
             } else {
-                return this.urls;
+                return [{
+                    name: "Audience",
+                    url: Config.HostURL + "/practiceroom/?shareUrl=" + this.$store.state.shareUrl[1]
+                }];
+
             }
         },
     },

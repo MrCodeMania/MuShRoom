@@ -10,16 +10,16 @@ public class Music {
 
   private String url;
   private String fileName;
-  private Integer volume = 0;
-  private Integer distortion = 0;
-  private Integer gain = 0;
-  private Integer reverb = 0;
+  private Double volume = 0.0;
+  private Double distortion = 0.0;
+  private Double gain = 0.0;
+  private Double reverb = 0.0;
   @CreatedDate
   private Date timestamp;
 
   @Builder
-  public Music(String url, String fileName, Integer volume, Integer distortion, Integer gain,
-      Integer reverb) {
+  public Music(String url, String fileName, Double volume, Double distortion, Double gain,
+      Double reverb) {
     this.url = url;
     this.fileName = fileName;
     this.volume = volume;

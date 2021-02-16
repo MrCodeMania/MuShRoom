@@ -3,7 +3,9 @@
     <v-card
     light
     width="150px"
-    :class="msg.id==id ? 'mine component-color' : 'others smallcomponent-color'"
+    style="z-index: 99 !important;"
+    :class="msg.id==id ? 'mine component-color' : 'others main-color'"
+    class="px-2"
     elevation="0">
         {{ msg.text }}
     </v-card>

@@ -1,5 +1,5 @@
 <template>
-    <v-container id="chat" 
+    <v-container id="chat"
     :class="openChat ? 'chat' : 'hide'">
         <v-card
         dark
@@ -41,7 +41,8 @@
                         auto-grow
                         autofocus
                         @keyup.enter="sendMessage()"
-                        rows="1">
+                        rows="1"
+                        :prefix="prefix">
                         </v-textarea>
                     </v-col>
                     <!-- 전송 버튼 -->
@@ -74,21 +75,28 @@ export default {
     components: {
         Message
     },
-    props: ['openChat'],    // class 바인딩 바꿔줄 toggle 변수
+    props: [
+        'openChat', // class 바인딩 바꿔줄 toggle 변수
+        'nickName'  // prefix로 붙일 nickName
+    ],
     data() {
         return {
             msgList: [], // 서버에서 불러올 채팅 리스트
             sentence: '',   // 현재 입력 칸에 적힌 문장
             roomCode: this.$route.query.shareUrl,
-            id: ''
+            id: '',
         }
     },
     created() {
+        // 소켓 연결
         this.connect();
     },
     computed: {
         length() {  // 전체 리스트 길이
             return this.msgList.length;
+        },
+        prefix() {  // 말머리
+            return '[' + this.nickName + '] ';
         }
     },
     watch: {
@@ -99,20 +107,22 @@ export default {
     },
     methods: {
         closeChat(){    // PracticeRoom에서 openChat = false;
-            this.$emit('closeChat');
+            this.$emit('toggleChat');
         },
-        sendMessage: function() {   // 엔터 또는 전송버튼 누르면 list로 push (-> 서버로 전송하게 변경해야 함)
-            if(this.sentence.length == 1){
+        sendMessage: function() {   // 엔터 또는 전송버튼 누르면 서버로 전송
+            if(this.sentence.length == 1){  // 빈칸일 때 보내지 않음
                 this.sentence = '';
                 return;
             }
-            this.stompClient.send("/socket/chat/"+this.roomCode+"/receive", JSON.stringify({id: this.id, message: this.sentence}));
+            this.stompClient.send("/socket/chat/"+this.roomCode+"/receive", JSON.stringify({id: this.id, message: this.prefix+this.sentence}));
             this.sentence = '';
         },
         receiveMessage(res) {
             const resBody = JSON.parse(res.body);
             console.log("Receive message: ", resBody);
             this.msgList.push({id: resBody["id"], text: resBody["message"]});
+            if(!this.openChat)
+                this.$emit('newChat');
         },
         connect() {
             this.id = Date.now();

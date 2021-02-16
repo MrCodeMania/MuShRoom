@@ -7,7 +7,7 @@ export default new Vuex.Store({
   state: {
     url: "",
     fileName: "",
-    myName: "여기에 이름",
+    helpShow: false,
     data: { // 연습실이 갖는 전체 데이터
       musicBoard: [{ //  왼쪽 컴포넌트
         idx: 0,
@@ -21,6 +21,9 @@ export default new Vuex.Store({
     idx: 0
   },
   mutations: {
+    helpShowChange(state) {
+      state.helpShow = !state.helpShow;
+    },
     pushURL(state, e = "") {
       state.url = e;
     },
@@ -30,10 +33,7 @@ export default new Vuex.Store({
     //  새로고침 시 data 초기화
     setData(state) {
       state.data = {
-        musicBoard: [{
-          idx: 0,
-          list: []
-        }],
+        musicBoard: [],
         recordBoard: []
       };
     },
@@ -118,6 +118,9 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    getHelp(state) {
+      return state.helpShow;
+    },
     getURL(state) {
       return [state.url, state.fileName];
     },

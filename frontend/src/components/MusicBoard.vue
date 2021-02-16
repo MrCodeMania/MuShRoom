@@ -8,16 +8,17 @@
       v-scroll.self="onScroll"
       elevation="0"
     >
-        <Player
-          class="ma-3 border smallcomponent-color"
-          v-for="(item, idx) in music"
-          :key="item.id"
-          :n="idx"
-          :page="page"
-          :music="item"
-          @deleteMusic="deleteMusic"
-          ref="player"
-        />
+      <Player
+        class="ma-8 border smallcomponent-color"
+        v-for="(item, idx) in music"
+        :key="item.id"
+        :n="idx"
+        :page="page"
+        :music="item"
+        @deleteMusic="deleteMusic"
+        @updateMusicOption="updateMusicOption"
+        ref="player"
+      />
     </v-card>
     <v-divider dark></v-divider>
     <v-card
@@ -28,19 +29,37 @@
     >
       <v-spacer></v-spacer>
       <v-card class="d-flex justify-end nav-color" elevation="0">
-        <v-btn class="musicboard_btn pt-2" icon dark large @click="downloadButton">
-          <v-icon dark large>mdi-download</v-icon>
+        <v-btn
+          class="musicboard_btn pt-2"
+          icon
+          dark
+          large
+          @click="downloadButton"
+        >
+          <v-icon dark size="30px">mdi-download</v-icon>
         </v-btn>
-        <v-btn class="musicboard_btn" icon dark large @click="musicPlayButton">
+        <v-btn
+          class="musicboard_btn mx-n2"
+          icon
+          dark
+          large
+          @click="musicPlayButton"
+        >
           <div v-if="!play">
-            <v-icon dark large>mdi-play</v-icon>
+            <v-icon dark size="30px">mdi-play</v-icon>
           </div>
           <div v-else>
-            <v-icon dark large>mdi-pause</v-icon>
+            <v-icon dark size="30px">mdi-pause</v-icon>
           </div>
         </v-btn>
-        <v-btn class="musicboard_btn mr-5" icon dark large @click="musicStopButton">
-          <v-icon dark large>mdi-stop</v-icon>
+        <v-btn
+          class="musicboard_btn mr-5"
+          icon
+          dark
+          large
+          @click="musicStopButton"
+        >
+          <v-icon dark size="30px">mdi-stop</v-icon>
         </v-btn>
       </v-card>
     </v-card>
@@ -50,9 +69,9 @@
 <script>
 import Player from "./practiceroom/Player";
 import * as Tone from "tone";
-import Stomp from 'webstomp-client'
-import SockJS from 'sockjs-client'
-import Config from '@/store/config'
+import Stomp from "webstomp-client";
+import SockJS from "sockjs-client";
+import Config from "@/store/config";
 
 export default {
   props: ["page"],
@@ -63,14 +82,14 @@ export default {
     return {
       play: false,
       scrollInvoked: 0,
-      code : "",
-      status
+      code: "",
+      status,
     };
   },
-  created(){
+  created() {
     this.status = this.$store.state.status;
-    
-    this.code = document.location.href.split('=')[1];
+
+    this.code = document.location.href.split("=")[1];
 
     this.connect();
   },
@@ -78,27 +97,31 @@ export default {
     getURL() {
       return this.$store.getters.getURL;
     },
-    music: function() {
+    music: function () {
       return this.$store.getters.getBoard(this.page);
     },
-    length: function() {
+    length: function () {
       return this.$store.getters.getPageLength;
-    }
+    },
   },
   watch: {
-    page: function() {
+    page: function () {
       if (this.$refs.player) {
         this.$refs.player.forEach((el) => {
           el.removeFromTransport();
         });
       }
-    }
+    },
   },
   methods: {
     send(type, msg) {
       console.log(msg);
-      if(type == "music")
-          this.musicStompClient.send("/socket/music/" + this.code + "/" + this.page + "/receive", JSON.stringify(msg),{});        
+      if (type == "music")
+        this.musicStompClient.send(
+          "/socket/music/" + this.code + "/" + this.page + "/receive",
+          JSON.stringify(msg),
+          {}
+        );
     },
     connect() {
       const serverURL = Config.ServerURL;
@@ -107,23 +130,55 @@ export default {
       this.musicStompClient = Stomp.over(musicSocket);
       this.musicStompClient.connect(
         {},
-        frame => {
+        (frame) => {
           // 소켓 연결 성공
           this.connected = true;
-          console.log('뮤직보드 소켓 연결 성공', frame);
+          console.log("뮤직보드 소켓 연결 성공", frame);
 
-          this.musicStompClient.subscribe("/socket/music/" + this.code + "/" + this.page + "/send", res => {
-            const resBody = JSON.parse(res.body);
-            
-            console.log(resBody);
+          this.musicStompClient.subscribe(
+            "/socket/music/" + this.code + "/" + this.page + "/send",
+            (res) => {
+              const resBody = JSON.parse(res.body);
 
-            if(resBody["type"] == "delete")
-                this.$store.commit('deleteMusic', {page : this.page, idx: resBody["id"]});
-          });
+              console.log(resBody);
+
+              if (resBody["type"] == "delete")
+                this.$store.commit("deleteMusic", {
+                  page: this.page,
+                  idx: resBody["index"],
+                });
+              if (resBody["type"] == "update")
+                this.$store.commit("updateMusic", {
+                  page: this.page,
+                  music: {
+                    id: resBody["index"],
+                    url: resBody["obj"]["url"],
+                    fileName: resBody["obj"]["fileName"],
+                    timestamp: resBody["obj"]["timestamp"],
+                    distortion: {
+                      object: null,
+                      value: resBody["obj"]["distortion"],
+                    },
+                    volume: {
+                      object: null,
+                      value: resBody["obj"]["volume"],
+                    },
+                    gain: {
+                      object: null,
+                      value: resBody["obj"]["gain"],
+                    },
+                    reverb: {
+                      object: null,
+                      value: resBody["obj"]["reverb"],
+                    },
+                  },
+                });
+            }
+          );
         },
-        error => {
+        (error) => {
           // 소켓 연결 실패
-          console.log('뮤직보드 소켓 연결 실패', error);
+          console.log("뮤직보드 소켓 연결 실패", error);
           this.connected = false;
         }
       );
@@ -157,22 +212,32 @@ export default {
       this.scrollInvoked++;
     },
     deleteMusic(id) {
-      console.log("i = ", id);
-      console.log("id = ", this.music[id].id);
-      
-      this.send("music", {type: "delete", index: id, obj: {url : this.music[id]["downloadURL"], fileName : this.music[id]["fileName"]}});
-        
+      this.send("music", {
+        type: "delete",
+        index: id,
+        obj: { url: this.music[id].url, fileName: this.music[id].fileName },
+      });
+    },
+    updateMusicOption(id) {
+      this.send("music", {
+        type: "update",
+        index: id,
+        obj: {
+          url: this.music[id].url,
+          fileName: this.music[id].fileName,
+          volume: this.music[id].volume.value,
+          distortion: this.music[id].distortion.value,
+          gain: this.music[id].gain.value,
+          reverb: this.music[id].reverb.value,
+        },
+      });
     },
   },
 };
 </script>
 
 <style>
-
 .musicboard_btn {
   margin: 10px 5px 0px;
 }
-
-
-
 </style>

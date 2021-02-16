@@ -1,13 +1,25 @@
 <template>
-  <v-card class="musicBoard component-color" elevation="0" width="100%" height="100%">
+  <v-card elevation="0" width="100%" height="98%">
     <v-card elevation="0">
       <div class="py-3 d-flex justify-space-around nav-color">
-        <v-btn text style="font-size: 1.5em;" :class="expand ? 'select' : 'not-select'" @click="expandChange(1)">record </v-btn>
-        <v-btn text style="font-size: 1.5em;" :class="expand2 ? 'not-select' : 'not-select'" @click="expandChange(2)">upload </v-btn>
+        <v-btn
+          text
+          style="font-size: 1.5em"
+          :class="expand ? 'select' : 'not-select'"
+          @click="expandChange(1)"
+          >record
+        </v-btn>
+        <v-btn
+          text
+          style="font-size: 1.5em"
+          :class="expand2 ? 'not-select' : 'not-select'"
+          @click="expandChange(2)"
+          >upload
+        </v-btn>
       </div>
       <v-expand-transition>
         <v-card
-          style="position: absolute; z-index:99;"
+          style="position: absolute; z-index: 99"
           v-show="expand"
           mode="in-out"
           height="auto"
@@ -28,13 +40,18 @@
       </v-expand-transition>
     </v-card>
     <v-divider light></v-divider>
-    <v-card height="60vh" class="overflow-y-auto nav-color" style="border-radius: 0px 0px 3px 3px;" v-scroll.self="onScroll">
-        <recordCard
-          v-for="(item, index) in records" :key="item.id"
-          v-on:delRecord="delRecord"
-          v-on:addRecord="addRecord"
-          v-bind:fileData="records[index]"
-        />
+    <v-card
+      class="overflow-y-auto nav-color"
+      style="height: inherit !important; border-radius: 0px 0px 3px 3px"
+      v-scroll.self="onScroll"
+    >
+      <recordCard
+        v-for="(item, index) in records"
+        :key="item.id"
+        v-on:delRecord="delRecord"
+        v-on:addRecord="addRecord"
+        v-bind:fileData="records[index]"
+      />
     </v-card>
   </v-card>
 </template> 
@@ -43,9 +60,9 @@
 import recordBtn from "./record/recordBtn";
 import uploadBtn from "./record/fileupload";
 import recordCard from "./record/Audiocard";
-import Stomp from 'webstomp-client';
-import SockJS from 'sockjs-client';
-import Config from '@/store/config'
+import Stomp from "webstomp-client";
+import SockJS from "sockjs-client";
+import Config from "@/store/config";
 
 export default {
   props: ["page"],
@@ -63,8 +80,8 @@ export default {
   },
   created() {
     this.idx = this.records.length;
-    
-    this.code = document.location.href.split('=')[1];
+
+    this.code = document.location.href.split("=")[1];
 
     this.connect();
   },
@@ -75,38 +92,52 @@ export default {
   },
   methods: {
     send(type, msg) {
-      if(type == "record")
-        this.recordStompClient.send("/socket/record/" + this.code + "/receive", JSON.stringify(msg), {});      
-      else if(type == "music")
-        this.musicStompClient.send("/socket/music/" + this.code + "/" + this.page + "/receive", JSON.stringify(msg),{});        
-
+      if (type == "record")
+        this.recordStompClient.send(
+          "/socket/record/" + this.code + "/receive",
+          JSON.stringify(msg),
+          {}
+        );
+      else if (type == "music")
+        this.musicStompClient.send(
+          "/socket/music/" + this.code + "/" + this.page + "/receive",
+          JSON.stringify(msg),
+          {}
+        );
     },
     connect() {
       const serverURL = Config.ServerURL;
-      
+
       let recordSocket = new SockJS(serverURL);
       this.recordStompClient = Stomp.over(recordSocket);
       this.recordStompClient.connect(
         {},
-        frame => {
+        (frame) => {
           // 소켓 연결 성공
           this.connected = true;
-          console.log('레코드 소켓 연결 성공', frame);
+          console.log("레코드 소켓 연결 성공", frame);
 
-          this.recordStompClient.subscribe("/socket/record/" + this.code + "/send", res => {
-            const resBody = JSON.parse(res.body);
-            
-            console.log(resBody);
+          this.recordStompClient.subscribe(
+            "/socket/record/" + this.code + "/send",
+            (res) => {
+              const resBody = JSON.parse(res.body);
 
-              if(resBody["type"] == "add")
-                this.$store.commit('updateRecord', {fileName : resBody["obj"]["fileName"], downloadURL : resBody["obj"]["url"], id: resBody["index"]});
-              if(resBody["type"] == "delete")
-                this.$store.commit('deleteRecord', resBody["id"]);
-          });
+              console.log(resBody);
+
+              if (resBody["type"] == "add")
+                this.$store.commit("updateRecord", {
+                  fileName: resBody["obj"]["fileName"],
+                  downloadURL: resBody["obj"]["url"],
+                  id: resBody["index"],
+                });
+              if (resBody["type"] == "delete")
+                this.$store.commit("deleteRecord", resBody.index);
+            }
+          );
         },
-        error => {
+        (error) => {
           // 소켓 연결 실패
-          console.log('소켓 연결 실패', error);
+          console.log("소켓 연결 실패", error);
           this.connected = false;
         }
       );
@@ -115,29 +146,35 @@ export default {
       this.musicStompClient = Stomp.over(musicSocket);
       this.musicStompClient.connect(
         {},
-        frame => {
-          // 소켓 연결 성공
+        (frame) => {
+          // // 소켓 연결 성공
           this.connected = true;
-          console.log('레코드 소켓 연결 성공', frame);
-
-          this.musicStompClient.subscribe("/socket/music/" + this.code + "/" + this.page + "/send", res => {
-            const resBody = JSON.parse(res.body);
-            
-            console.log(resBody);
-
-            if(resBody["type"] == "add")
-              this.$store.commit('addMusic', {page : this.page, record : {fileName : resBody["obj"]["fileName"], downloadURL : resBody["obj"]["url"], id: resBody["index"]}});
-          });
+          console.log("레코드 소켓 연결 성공", frame);
+          this.musicStompClient.subscribe(
+            "/socket/music/" + this.code + "/" + this.page + "/send",
+            (res) => {
+              const resBody = JSON.parse(res.body);
+              console.log(resBody);
+              if (resBody["type"] == "add")
+                this.$store.commit("addMusic", {
+                  page: this.page,
+                  record: {
+                    fileName: resBody["obj"]["fileName"],
+                    downloadURL: resBody["obj"]["url"],
+                    id: resBody["index"],
+                  },
+                });
+            }
+          );
         },
-        error => {
+        (error) => {
           // 소켓 연결 실패
-          console.log('소켓 연결 실패', error);
+          console.log("소켓 연결 실패", error);
           this.connected = false;
         }
       );
     },
 
-    
     rec_expand_close() {
       this.$refs.recBtn.expandInit();
     },
@@ -159,19 +196,27 @@ export default {
     },
 
     addCard(data) {
-      this.send("record", {type:"add", index: this.idx - 1, obj: {url : data["downloadURL"], fileName : data["fileName"]}});
+      this.send("record", {
+        type: "add",
+        index: this.records.length,
+        obj: { url: data["downloadURL"], fileName: data["fileName"] },
+      });
     },
     receiveData(data) {
       data["id"] = this.idx;
       this.idx += 1;
       this.addCard(data);
       this.expand2 = false;
+      this.expand = false;
     },
     delRecord(id) {
       let len = this.records.length;
       for (var i = 0; i < len; i++) {
         if (this.records[i].id === id) {
-          this.send("record", {type: "delete", index: i, obj: {url : this.records[i]["downloadURL"], fileName : this.records[i]["fileName"]}});
+          this.send("record", {
+            type: "delete",
+            index: i,
+          });
           break;
         }
       }
@@ -180,8 +225,19 @@ export default {
       let len = this.records.length;
       for (var i = 0; i < len; i++) {
         if (this.records[i].id === id) {
-          this.send("music", {type: "add", index: i, obj: {url : this.records[i]["downloadURL"], fileName : this.records[i]["fileName"],
-           distortion: 0,  gain: 0,  volume: 0}});
+          this.send("music", {
+            type: "add",
+            index: this.$store.getters.getBoard(this.page).length,
+            obj: {
+              url: this.records[i]["downloadURL"],
+              fileName: this.records[i]["fileName"],
+              distortion: 0,
+              gain: 0,
+              volume: 0,
+              reverb: 0,
+            },
+          });
+
           break;
         }
       }
@@ -196,11 +252,11 @@ export default {
 
 <style>
 .select {
-  color: green !important;
+  color: red !important;
   font-size: 1.75em !important;
 }
 
 .not-select {
-  color: gray !important;
+  color: white !important;
 }
 </style>
