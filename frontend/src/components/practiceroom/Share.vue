@@ -20,7 +20,7 @@
             </v-btn>
         </template>
 
-        <v-list class="component-color" width="20vw">
+        <v-list class="component-color" width="300px">
                 <v-list-item v-for="(item, idx) in filtered_urls" :key="idx">
                     <v-list-item-content style="padding: 0px !important; margin-bottom: 5px;">
                         <v-list-item-title class="text-color" style="font-size:12pt !important; font-weight:bold;">
