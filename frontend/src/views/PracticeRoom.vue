@@ -283,6 +283,7 @@ export default {
           this.musicPageStompClient.subscribe(
             "/socket/music-page/" + this.code + "/send",
             (res) => {
+              this.$toasts.success("page toast");
               const resBody = JSON.parse(res.body);
 
               console.log(resBody);
