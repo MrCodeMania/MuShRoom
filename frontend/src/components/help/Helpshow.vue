@@ -2,87 +2,38 @@
   <v-overlay
     :absolute="true"
     :value="this.$store.getters.getHelp"
-    opacity="0.8"
+    opacity="0.1"
+    color="white"
     z-index="4"
   >
-    <div class="align-center d-flex">
-      <v-img
-        v-if="show"
-        transition="v-slide-y-transition"
-        dark
-        max-width="400"
-        max-height="400"
-        contain
-        :lazy-src="imgsrc[nowPage]"
-        :src="imgsrc[nowPage]"
-      ></v-img>
-
-      <div class="ml-4">
-        <v-card
-          elevation="20"
-          class="mx-auto"
-          min-width="300px"
-          max-width="500px"
-          color="white"
-          outlined
-        >
-          <div class="d-flex justify-space-between mt-2 ml-2 mr-2 align-center">
-            <div class="black--text" style="font-weight: bold; font-size: 20px">
-              {{ describe[nowPage][0] }}
-            </div>
-
-            <v-btn
-              color="indigo"
-              outlined
-              fab
-              small
-              @click="changeHelpState"
-              text
-            >
-              <v-icon color="red">mdi-close-thick</v-icon>
-            </v-btn>
-          </div>
-          <v-list-item three-line>
-            <v-list-item-content>
-              <v-list-item-subtitle class="black--text">
-                {{ describe[nowPage][1] }}
-              </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-          <div class="d-flex justify-end mb-3">
-            <div class="btn-group">
-              <v-btn
-                :disabled="nowPage === 0"
-                small
-                color="indigo  lighten-1"
-                @click="prev"
-                >이전</v-btn
-              >
-              <v-btn
-                v-if="nowPage !== maxPage"
-                :disabled="nowPage === maxPage"
-                small
-                color="indigo darken-4"
-                @click="next"
-                >다음</v-btn
-              >
-              <v-btn
-                v-if="nowPage === maxPage"
-                small
-                color="indigo darken-4"
-                @click="changeHelpState"
-                >종료</v-btn
-              >
-            </div>
-          </div>
-        </v-card>
-      </div>
-    </div>
+    <v-sheet color="1E1E1E" width="700" height="500" rounded>
+      <v-btn
+        id="exit"
+        color="indigo"
+        outlined
+        fab
+        small
+        @click="changeHelpState"
+        text
+      >
+        <v-icon color="red">mdi-close-thick</v-icon>
+      </v-btn>
+      <v-carousel height="500" hide-delimiters show-arrows-on-hover>
+        <v-carousel-item class="mt-3" v-for="(slide, i) in describe" :key="i">
+          <Helpview :describe="slide" :src="imgsrc[i]" />
+          <div class="d-flex justify-center">{{ i + 1 }}/{{ maxPage + 1 }}</div>
+        </v-carousel-item>
+      </v-carousel>
+    </v-sheet>
   </v-overlay>
 </template>
 
 <script>
+import Helpview from "./Helpview.vue";
 export default {
+  components: {
+    Helpview,
+  },
   data: () => ({
     show: true,
     nowPage: 0,
@@ -146,7 +97,10 @@ export default {
 </script>
 
 <style>
-#con {
+#exit {
   position: absolute;
+  z-index: 30;
+  top: 10px;
+  right: 10px;
 }
 </style>

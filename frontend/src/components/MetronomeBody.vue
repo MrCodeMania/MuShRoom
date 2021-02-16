@@ -1,5 +1,5 @@
 <template>
-  <v-card class="metronome-main main-color-light " height="100%" width="100%" elevation="0">
+  <v-card class="metronome-main main-color-light " height="100%" width="100%">
     <v-card class="d-flex pa-2 metronome-screen main-color-light ">
       <BeatIndicator :bpm="bpm" :beatIndex="beatIndex" :isPlaying="isPlaying()"/>
       <v-card class="d-flex ml-2 justify-space-around" style="border-radius: 0px;" height="100%" width="100%" color="#333333">
@@ -36,7 +36,9 @@
       </v-card>
     </v-card>
     <v-divider class="text-color"></v-divider>
-    <v-card class="d-flex align-center metronome-btn main-color-light ">
+    <v-card 
+    style="border-radius: 0px;"
+    class="d-flex align-center metronome-btn main-color-light ">
       <PlayControlBtn :isPlaying="isPlaying()" @start="onStart" @stop="onStop"/>
       <v-spacer></v-spacer>
       <div class="d-flex align-center">
@@ -345,7 +347,6 @@ export default {
 }
 
 .metronome-btn {
-    border-radius: 0px 0px 3px 3px!important;
     height: 30%
 }
 
