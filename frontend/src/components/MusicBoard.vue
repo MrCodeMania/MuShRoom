@@ -91,6 +91,7 @@ export default {
       if (this.$refs.player) {
         this.$refs.player.forEach((el) => {
           el.removeFromTransport();
+          console.log(123);
         });
       }
     }
@@ -119,6 +120,9 @@ export default {
             this.musicStompClient.subscribe("/socket/music/" + this.code + "/" + i + "/send", res => {
               const resBody = JSON.parse(res.body);
               
+              this.page = 0;
+              this.page = i;
+              
               if(resBody["type"] == "delete")
                   this.$store.commit('deleteMusic', {page : i, idx: resBody["index"]});
               if(resBody["type"] == "update")
@@ -144,7 +148,6 @@ export default {
                       value: resBody["obj"]["reverb"],
                     }
                     }});
-
             });
           }
         },
@@ -187,8 +190,6 @@ export default {
      this.send("music", {type: "delete", index: id, obj: {url : this.music[id].url, fileName : this.music[id].fileName}});
     },
     updateMusicOption(id) {
-      console.log(this.music[id]);
-      console.log(id);
       this.send("music", {type: "update", index: id, obj: {url : this.music[id].url, fileName : this.music[id].fileName,
            volume: this.music[id].volume.value, distortion: this.music[id].distortion.value, gain: this.music[id].gain.value, reverb: this.music[id].reverb.value}});
     }
