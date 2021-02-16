@@ -41,7 +41,6 @@
           height="64"
           mouse="true"
           timeline="true"
-          :page="page"
           :idx="n"
           full="false"
           @setTime="setTime"
@@ -203,7 +202,6 @@ import Waveform from "./Waveform.vue";
 export default {
   name: "Player",
   props: {
-    page: Number,
     music: Object,
     n: Number
   },

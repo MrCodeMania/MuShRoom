@@ -13,67 +13,10 @@
       <v-col cols="8" class="mx-auto flex-grow-0 flex-shrink-0 px-4 pt-4 pb-2">
         <v-row no-gutters style="height: auto">
           <v-card elevation="0" height="100%" width="100%" color="#00ff0000">
-            <!-- 뮤직 보드 상단 페이징 탭 -->
-            <v-tabs
-              dark
-              hide-slider
-              background-color="#00ff0000"
-              v-model="page"
-            >
-              <v-tab
-                class="rounded-t pa-0 divider"
-                :class="page == i - 1 ? 'nav-color' : 'others'"
-                v-for="i in range"
-                :key="i"
-              >
-                <v-card height="48px" elevation="0" color="#00ff0000">
-                  <!-- 페이지 삭제 버튼 -->
-                  <v-btn
-                    class="tab_btn"
-                    width="2"
-                    height="2"
-                    dark
-                    icon
-                    :disabled="length == 1"
-                    @click="removePage()"
-                  >
-                    <v-icon v-if="length != 1" x-small> mdi-close </v-icon>
-                  </v-btn>
-                  <!-- 페이지 이름 -->
-                  <v-text-field
-                    v-model="pageNames[i - 1]"
-                    background-color="#00ff0000"
-                    flat
-                    class="tab_textfield"
-                    solo
-                  >
-                  </v-text-field>
-                </v-card>
-              </v-tab>
-              <!-- 페이지 추가 버튼 -->
-              <v-btn
-                class="d-line-block ml-1 mt-1"
-                icon
-                light
-                v-if="length < 5"
-                @click="addPage()"
-              >
-                <v-icon size="30px"> mdi-plus </v-icon>
-              </v-btn>
-            </v-tabs>
-            <v-tabs-items v-model="page" class="rounded-tr nav-color">
-              <v-tab-item
-                v-for="i in range"
-                :key="i"
-                :transition="false"
-                :reverse-transition="false"
-              >
-                <!-- 뮤직 보드 -->
+                            <!-- 뮤직 보드 -->
                 <v-card elevation="0" width="100%" height="100%">
-                  <MusicBoard :page="page" />
+                  <MusicBoard  />
                 </v-card>
-              </v-tab-item>
-            </v-tabs-items>
           </v-card>
         </v-row>
       </v-col>
@@ -90,7 +33,7 @@
         <!-- 파일 목록 -->
         <v-row no-gutters style="height: 62.5vh">
           <v-card elevation="0" width="100%" height="100%">
-            <Record :page="page" />
+            <Record />
           </v-card>
         </v-row>
       </v-col>
@@ -116,13 +59,9 @@ import Metronome from "@/components/MetronomeBody.vue";
 import MusicBoard from "@/components/MusicBoard.vue";
 import Record from "@/components/record.vue";
 import axios from "@/service/axios.service.js";
-import Stomp from "webstomp-client";
-import SockJS from "sockjs-client";
 import Chat from "@/components/chat/Chat.vue";
 import SetNickName from "@/components/chat/SetNickName.vue";
 import Help from "@/components/help/Helpshow.vue";
-//import * as Tone from "tone";
-import Config from "@/store/config";
 
 export default {
   components: {
@@ -142,9 +81,7 @@ export default {
   },
   data() {
     return {
-      page: 0, //  현재 페이지,
       status,
-      pageNames: ["", "", "", "", ""], // 페이지 이름,
       openChat: false,
       showModal: false,
       hasNickName: false,
@@ -153,15 +90,6 @@ export default {
     };
   },
   computed: {
-    length: function () {
-      // 전체 페이지 수
-      return this.$store.getters.getPageLength;
-    },
-    range() {
-      let pages = [];
-      for (let i = 1; i <= this.length; i++) pages.push(i);
-      return pages;
-    },
   },
   methods: {
     init() {
@@ -186,52 +114,45 @@ export default {
         // 받아온 res에서 뮤직보드, 레코드보드 불러오기 해야함
         // 뮤직 보드 불러오기
 
-        for (let i = 0; i < res.data.musicPageList.length; i++) {
-          this.$store.commit("addPage", i);
-          this.pageNames[i] = res.data.musicPageList[i].pageName;
+       for (let i = 0; i < res.data.musicPageList[0].musicList.length; i++) {
+          // 일단 한 번 넣고 수정한다
 
-          for (let j = 0; j < res.data.musicPageList[i].musicList.length; j++) {
-            // 일단 한 번 넣고 수정한다
+          this.$store.commit("addMusic", {
+            record: {
+              fileName: res.data.musicPageList[0].musicList[i].fileName,
+              downloadURL: res.data.musicPageList[0].musicList[i].url,
+              id: i,
+            },
+          });
 
-            this.$store.commit("addMusic", {
-              page: i,
-              record: {
-                fileName: res.data.musicPageList[i].musicList[j].fileName,
-                downloadURL: res.data.musicPageList[i].musicList[j].url,
-                id: j,
+          // 업데이트
+          this.$store.commit("updateMusic", {
+            music: {
+              id: i,
+              url: res.data.musicPageList[0].musicList[i].url,
+              fileName: res.data.musicPageList[0].musicList[i].fileName,
+              timestamp:
+                res.data.musicPageList[0].musicList[i].timestamp == null
+                  ? 0
+                  : res.data.musicPageList[0].musicList[i].timestamp,
+              distortion: {
+                object: null,
+                value: res.data.musicPageList[0].musicList[i].distortion,
               },
-            });
-
-            // 업데이트
-            this.$store.commit("updateMusic", {
-              page: i,
-              music: {
-                id: j,
-                url: res.data.musicPageList[i].musicList[j].url,
-                fileName: res.data.musicPageList[i].musicList[j].fileName,
-                timestamp:
-                  res.data.musicPageList[i].musicList[j].timestamp == null
-                    ? 0
-                    : res.data.musicPageList[i].musicList[j].timestamp,
-                distortion: {
-                  object: null,
-                  value: res.data.musicPageList[i].musicList[j].distortion,
-                },
-                volume: {
-                  object: null,
-                  value: res.data.musicPageList[i].musicList[j].volume,
-                },
-                gain: {
-                  object: null,
-                  value: res.data.musicPageList[i].musicList[j].gain,
-                },
-                reverb: {
-                  object: null,
-                  value: res.data.musicPageList[i].musicList[j].reverb,
-                },
+              volume: {
+                object: null,
+                value: res.data.musicPageList[0].musicList[i].volume,
               },
-            });
-          }
+              gain: {
+                object: null,
+                value: res.data.musicPageList[0].musicList[i].gain,
+              },
+              reverb: {
+                object: null,
+                value: res.data.musicPageList[0].musicList[i].reverb,
+              },
+            },
+          });
         }
         console.log("뮤직보드 불러오기 완료!");
 
@@ -244,86 +165,7 @@ export default {
           });
 
         console.log("레코드 불러오기 완료!");
-
-        this.connect();
       });
-    },
-    send(msg) {
-      if (msg == "addPage")
-        this.musicPageStompClient.send(
-          "/socket/music-page/" + this.code + "/receive",
-          JSON.stringify({
-            type: "add",
-            index: this.page,
-            obj: { musicList: [] },
-          }),
-          {}
-        );
-      else if (msg == "deletePage")
-        this.musicPageStompClient.send(
-          "/socket/music-page/" + this.code + "/receive",
-          JSON.stringify({
-            type: "delete",
-            index: this.page,
-            obj: { musicList: [] },
-          }),
-          {}
-        );
-    },
-    connect() {
-      const serverURL = Config.ServerURL;
-
-      let musicPageSocket = new SockJS(serverURL);
-      this.musicPageStompClient = Stomp.over(musicPageSocket);
-      this.musicPageStompClient.connect(
-        {},
-        (frame) => {
-          // 소켓 연결 성공
-          this.connected = true;
-          console.log("연습실 소켓 연결 성공", frame);
-
-          this.musicPageStompClient.subscribe(
-            "/socket/music-page/" + this.code + "/send",
-            (res) => {
-              this.$toasts.success("page toast");
-              const resBody = JSON.parse(res.body);
-
-              console.log(resBody);
-
-              if (resBody["type"] == "add") {
-                this.$store.commit("addPage", this.page + 1);
-                this.pageNames[this.page + 1] =
-                  res.body.musicPageList[this.page + 1].pageName;
-              } else if (resBody["type"] == "delete")
-                this.$store.commit("removePage", this.page);
-            }
-          );
-        },
-        (error) => {
-          // 소켓 연결 실패
-          console.log("소켓 연결 실패", error);
-          this.connected = false;
-        }
-      );
-    },
-
-    //  페이지 왼쪽 이동
-    moveLeft() {
-      this.page = this.page == 0 ? 0 : this.page - 1;
-    },
-    //  페이지 오른쪽 이동
-    moveRight() {
-      this.page = this.page == 4 ? 4 : this.page + 1;
-    },
-    //  페이지 추가
-    addPage() {
-      this.moveRight();
-      this.send("addPage");
-    },
-    // 페이지 삭제 추가해야함
-    removePage() {
-      this.moveLeft();
-      this.send("deletePage");
     },
     // 채팅창 버튼 누르면 열고 닫는 toggle
     toggleChat() {

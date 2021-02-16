@@ -64,7 +64,6 @@ export default {
         this.status = this.$store.state.status;
 
         this.loc = document.location.href.split('?');
-        console.log(this.loc);
         if(this.loc.length > 1)
             this.isRoom = true;
         else
