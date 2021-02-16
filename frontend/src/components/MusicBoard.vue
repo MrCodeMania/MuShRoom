@@ -30,13 +30,13 @@
       <v-spacer></v-spacer>
       <v-card class="d-flex justify-end nav-color" elevation="0">
         <v-btn
-          class="musicboard_btn pt-2"
+          class="musicboard_btn pt-1"
           icon
           dark
           large
           @click="downloadButton"
         >
-          <v-icon dark size="30px">mdi-download</v-icon>
+          <v-icon dark size="26px">mdi-download</v-icon>
         </v-btn>
         <v-btn
           class="musicboard_btn mx-n2"

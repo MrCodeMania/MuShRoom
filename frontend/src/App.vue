@@ -22,5 +22,6 @@ export default {
 }
 #app {
   font-family: '12롯데마트드림Bold', sans-serif;
+  color: rgba(255, 255, 255, 0.733);
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div style="background-color: #555">
+    <div style="background-color: #3C3C3C">
         <div style="position: relative">
             <div v-show="timeline" :id="'container'+page+idx"></div>
             <vue-wave-surfer 
@@ -24,8 +24,8 @@ export default {
                 // barWidth: 2,
                 normalize: false,
                 cursorColor: '#00ff0000',
-                progressColor: '#fff', //color of waveform behind the cursor
-                waveColor: '#999', //color of waveform after the cursor
+                progressColor: '#FED134', //color of waveform behind the cursor
+                waveColor: '#00A2FF', //color of waveform after the cursor
                 scrollParent: this.full,
                 height: this.height,
                 interact: this.mouse,
@@ -33,7 +33,7 @@ export default {
                 plugins: [
                     Timeline.create({
                         container: "#container"+this.page+this.idx,
-                        secondaryFontColor: '#000'
+                        secondaryFontColor: '#ffffffbb'
                     })
                 ]
             },

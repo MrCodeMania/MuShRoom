@@ -7,12 +7,13 @@
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </div>
-    <div class="d-flex align-center mx-3 border">
+    <div class="d-flex align-center border">
       <div>
         <v-btn
           v-if="this.state == 'paused' || this.state == 'stopped'"
           icon
           color="white"
+          class="mt-4"
           :disabled="player == null"
           v-on:click="start()"
         >
@@ -21,19 +22,21 @@
         <v-btn
           v-else
           icon
+          class="mt-4"
           color="white"
           :disabled="player == null"
           v-on:click="pause()"
         >
           <v-icon>mdi-pause</v-icon>
         </v-btn>
-        <v-btn icon color="white" v-on:click="stop()">
+        <v-btn icon color="white" class="mt-4" v-on:click="stop()">
           <v-icon>mdi-stop</v-icon>
         </v-btn>
       </div>
 
       <div class="" style="flex: 10">
         <Waveform
+          :class="status === 'Master' ? '': 'mr-4'"
           :url="music.url"
           height="64"
           mouse="true"
@@ -48,7 +51,7 @@
       <!-- 이 부분부터 ReadOnly -->
       <div class="ml-3 mr-3" v-if="status === 'Master'">
         <!-- dropdown button -->
-        <v-btn icon color="white" v-on:click="toggleDropdown()">
+        <v-btn icon color="white" class="mt-4" v-on:click="toggleDropdown()">
           <v-icon v-if="isShow == 0">mdi-chevron-down</v-icon>
           <v-icon v-else>mdi-chevron-up</v-icon>
         </v-btn>
@@ -57,11 +60,11 @@
 
     <div>
       <v-sheet
-        style="margin: 0px 74px 0px 87px"
+        style="margin: 0px 72px 0px 84px; background-color: #00FF0000"
         height="auto"
         :hidden="isShow == 0"
       >
-        <v-card class="component-color" style="border-radius: 0px;">
+        <v-card style="background-color: #00FF0000; border-radius: 0px;">
           <div class="px-3 pt-3 d-flex justify-space-around">
             <div>
               <p>Volume</p>
@@ -121,7 +124,7 @@
             </div>
           </div>
 
-          <v-divider style="background-color: white;"></v-divider>
+          <v-divider style="background-color: rgba(255, 255, 255, 0.733);"></v-divider>
 
           <div class="pa-3 d-flex justify-space-around">
             <div class="d-flex align-center">
@@ -160,7 +163,7 @@
             </div>
           </div>
 
-          <v-divider style="background-color: white;"></v-divider>
+          <v-divider style="background-color: rgba(255, 255, 255, 0.733);"></v-divider>
 
           <div class="pa-3 d-flex justify-space-around">
             <div class="d-flex">

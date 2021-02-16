@@ -1,5 +1,5 @@
 <template>
-  <v-main>
+  <v-main style="background-color: #1E1E1E">
     <Header
       :openChat="openChat"
       v-on:toggleChat="toggleChat"
@@ -10,7 +10,7 @@
     <!-- 부모 row -->
     <v-row no-gutters class="mx-auto" style="width: 1100px !important">
       <!-- 왼쪽 컴포넌트들 -->
-      <v-col cols="8" class="flex-grow-0 flex-shrink-0 px-4 pt-4 pb-2">
+      <v-col cols="8" class="mx-auto flex-grow-0 flex-shrink-0 px-4 pt-4 pb-2">
         <v-row no-gutters style="height: auto">
           <v-card elevation="0" height="100%" width="100%" color="#00ff0000">
             <!-- 뮤직 보드 상단 페이징 탭 -->
@@ -79,16 +79,16 @@
       </v-col>
 
       <!-- 오른쪽 컴포넌트들 -->
-      <v-col cols="4" class="flex-grow-0 flex-shrink-0 px-4 pt-4 pb-1">
+      <v-col v-if="status === 'Master'" cols="4" class="flex-grow-0 flex-shrink-0 px-4 pt-4 pb-1">
         <!-- 매트로놈 -->
-        <v-row no-gutters style="height: 18vh">
+        <v-row no-gutters style="height: 130px">
           <v-card elevation="0" width="100%" height="100%">
             <Metronome />
           </v-card>
         </v-row>
 
         <!-- 파일 목록 -->
-        <v-row v-if="status === 'Master'" no-gutters style="height: 62.5vh">
+        <v-row no-gutters style="height: 62.5vh">
           <v-card elevation="0" width="100%" height="100%">
             <Record :page="page" />
           </v-card>

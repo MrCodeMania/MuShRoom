@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar color="black" tile flat class="pt-2 pb-1" rounded height="auto">
+  <v-app-bar tile flat class="pt-2 pb-1 nav-color" rounded height="auto">
     <v-btn text max-width="180" height="50" @click="toMain">
       <v-img max-width="180" height="50" :src="logo"> </v-img>
     </v-btn>
