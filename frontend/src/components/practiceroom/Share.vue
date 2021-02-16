@@ -1,9 +1,8 @@
 <template>
     <div v-if="isRoom">
         <v-menu     
-        left
-        top="top"
-        offset-x="offset-x"
+        bottom
+        offset-y
         :close-on-content-click="false">
         <template v-slot:activator="{ on, attrs }">
             <span style="color: white;">|</span>
@@ -21,8 +20,8 @@
 
         <v-list class="component-color" width="20vw">
                 <v-list-item v-for="(item, idx) in filtered_urls" :key="idx">
-                    <v-list-item-content style="padding: 0px !important;">
-                        <v-list-item-title style="font-size:12pt !important; font-weight:bold;">
+                    <v-list-item-content style="padding: 0px !important; margin-bottom: 5px;">
+                        <v-list-item-title style="font-size:12pt !important; font-weight:bold; color: #FBFBFB;">
                             {{item.name}}
                         </v-list-item-title>
                         <div class="share-component">
