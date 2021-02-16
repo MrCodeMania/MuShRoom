@@ -13,7 +13,6 @@ export default {
   methods: {
     changeHelpState() {
       this.$store.commit("helpShowChange");
-      console.log(this.$store.getters.getHelp);
     },
   },
 };

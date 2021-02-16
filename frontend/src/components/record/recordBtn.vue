@@ -74,7 +74,6 @@ export default {
       sendFileData.fileName = this.inputFileName;
       var date = new Date();
       date = getYyyyMmDdMmSsToString(date);
-      console.log(date);
       data.append(
         "file",
         this.file.blob,
@@ -86,7 +85,7 @@ export default {
           sendFileData.downloadURL = result.data.fileDownloadUri;
         })
         .catch((err) => {
-          console.log("녹음 파일 업로드 실패", err);
+          console.debug("녹음 파일 업로드 실패", err);
         });
       this.$emit("sendData", sendFileData);
       this.expand = false;
