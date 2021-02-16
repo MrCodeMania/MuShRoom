@@ -1,9 +1,23 @@
 <template>
   <v-card elevation="0" width="100%" height="98%">
-    <v-card elevation="0">
+    <v-card
+      class="overflow-y-auto main-color-light"
+      style="height: inherit !important; border-radius: 3px 3px 0px 0px"
+      v-scroll.self="onScroll"
+    >
+      <recordCard
+        v-for="(item, index) in records"
+        :key="item.id"
+        v-on:delRecord="delRecord"
+        v-on:addRecord="addRecord"
+        v-bind:fileData="records[index]"
+      />
+    </v-card>
+    <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
+    <v-card elevation="0" class="main-color-light">
       <div
-        class="py-3 d-flex justify-space-around nav-color"
-        style="border-radius: 0px"
+        class="py-3 d-flex justify-space-around"
+        style="border-radius: 0px 0px 3px 3px"
       >
         <v-btn
           text
@@ -25,20 +39,6 @@
         ref="recBtn"
       />
       <UploadBtn @sendData="receiveData" ref="fileupload" />
-    </v-card>
-    <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
-    <v-card
-      class="overflow-y-auto main-color-light "
-      style="height: inherit !important; border-radius: 0px 0px 3px 3px"
-      v-scroll.self="onScroll"
-    >
-      <recordCard
-        v-for="(item, index) in records"
-        :key="item.id"
-        v-on:delRecord="delRecord"
-        v-on:addRecord="addRecord"
-        v-bind:fileData="records[index]"
-      />
     </v-card>
   </v-card>
 </template> 
