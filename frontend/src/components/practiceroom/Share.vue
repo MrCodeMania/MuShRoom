@@ -1,9 +1,8 @@
 <template>
     <div v-if="isRoom">
         <v-menu     
-        left
-        top="top"
-        offset-x="offset-x"
+        bottom
+        offset-y
         :close-on-content-click="false">
         <template v-slot:activator="{ on, attrs }">
             <span style="color: white;">|</span>
