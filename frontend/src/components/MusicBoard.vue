@@ -3,7 +3,7 @@
     <v-card
       id="musicListId"
       class="musicList overflow-y-auto main-color-light "
-      height="940px"
+      height="970px"
       max-height="85vh"
       v-scroll.self="onScroll"
       elevation="0"
@@ -19,7 +19,7 @@
         ref="player"
       />
     </v-card>
-    <v-divider dark></v-divider>
+    <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
     <v-card
       class="buttonBar d-flex main-color-light "
       elevation="0"
