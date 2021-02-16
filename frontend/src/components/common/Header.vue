@@ -32,8 +32,7 @@
       </div>
       Chat
     </v-btn>
-    <span style="color: white">|</span>
-    <Share />
+    <Share/>
   </v-app-bar>
 </template>
 

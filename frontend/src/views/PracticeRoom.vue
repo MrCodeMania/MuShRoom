@@ -1,18 +1,19 @@
 <template>
-  <v-main class="main-color">
+  <v-main>
     <Header
       :openChat="openChat"
       v-on:toggleChat="toggleChat"
       v-on:openModal="openModal"
       :hasNickName="hasNickName"
       :newChat="newChat"
+      style="display: block; position: fixed; width: auto !important;"
     />
-
+    <div style="height:70px"></div>
     <!-- 부모 row -->
-    <v-row no-gutters class="mx-auto" style="width: 1200px !important">
+    <v-row no-gutters class="mx-auto" style="width: 1100px !important">
       <!-- 왼쪽 컴포넌트들 -->
-      <v-col cols="8" class="flex-grow-0 flex-shrink-0 pa-4">
-        <v-row no-gutters style="height: 100vh">
+      <v-col cols="8" class="flex-grow-0 flex-shrink-0 px-4 pt-4 pb-2">
+        <v-row no-gutters style="height: auto">
           <v-card elevation="0" height="100%" width="100%" color="#00ff0000">
             <!-- 뮤직 보드 상단 페이징 탭 -->
             <v-tabs
@@ -55,6 +56,7 @@
               <v-btn
                 class="d-line-block ml-1 mt-1"
                 icon
+                light
                 v-if="length < 5"
                 @click="addPage()"
               >
@@ -79,7 +81,7 @@
       </v-col>
 
       <!-- 오른쪽 컴포넌트들 -->
-      <v-col cols="4" class="flex-grow-0 flex-shrink-0 pa-4">
+      <v-col cols="4" class="flex-grow-0 flex-shrink-0 px-4 pt-4 pb-1">
         <!-- 매트로놈 -->
         <v-row no-gutters style="height: 18vh">
           <v-card elevation="0" width="100%" height="100%">
@@ -88,7 +90,7 @@
         </v-row>
 
         <!-- 파일 목록 -->
-        <v-row v-if="status === 'Master'" no-gutters style="height: 62vh">
+        <v-row v-if="status === 'Master'" no-gutters style="height: 63vh">
           <v-card elevation="0" width="100%" height="100%">
             <Record :page="page" />
           </v-card>
@@ -106,7 +108,6 @@
       @close="closeModal"
       @setNickName="setNickName"
     />
-    <Help />
   </v-main>
 </template>
 
@@ -120,7 +121,7 @@ import Stomp from "webstomp-client";
 import SockJS from "sockjs-client";
 import Chat from "@/components/chat/Chat.vue";
 import SetNickName from "@/components/chat/SetNickName.vue";
-import Help from "@/components/help/Helpshow.vue";
+
 //import * as Tone from "tone";
 import Config from "@/store/config";
 
@@ -132,7 +133,6 @@ export default {
     Record,
     Chat,
     SetNickName,
-    Help,
   },
   created() {
     // Status를 vuex에 저장
@@ -185,10 +185,10 @@ export default {
 
         // 받아온 res에서 뮤직보드, 레코드보드 불러오기 해야함
         // 뮤직 보드 불러오기
-        console.log(res.data);
 
         for (let i = 0; i < res.data.musicPageList.length; i++) {
-          if (i > 0) this.$store.commit("addPage", i);
+          this.$store.commit("addPage", i);
+          this.pageNames[i] = res.data.musicPageList[i].pageName;
 
           for (let j = 0; j < res.data.musicPageList[i].musicList.length; j++) {
             // 일단 한 번 넣고 수정한다
@@ -255,7 +255,7 @@ export default {
           JSON.stringify({
             type: "add",
             index: this.page,
-            obj: { pageName: "", musicList: [] },
+            obj: { musicList: [] },
           }),
           {}
         );
@@ -265,7 +265,7 @@ export default {
           JSON.stringify({
             type: "delete",
             index: this.page,
-            obj: { pageName: "", musicList: [] },
+            obj: { musicList: [] },
           }),
           {}
         );
@@ -289,9 +289,11 @@ export default {
 
               console.log(resBody);
 
-              if (resBody["type"] == "add")
+              if (resBody["type"] == "add") {
                 this.$store.commit("addPage", this.page + 1);
-              else if (resBody["type"] == "delete")
+                this.pageNames[this.page + 1] =
+                  res.body.musicPageList[this.page + 1].pageName;
+              } else if (resBody["type"] == "delete")
                 this.$store.commit("removePage", this.page);
             }
           );
