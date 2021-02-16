@@ -1,15 +1,17 @@
 <template>
     <div v-if="isRoom">
-        <v-menu     
+        <v-menu    
         bottom
         offset-y
         :close-on-content-click="false">
         <template v-slot:activator="{ on, attrs }">
-            <span style="color: white;">|</span>
+            <span class="text-color">|</span>
             <v-btn
-                color="white"
+                class="text-color"
                 dark="dark"
                 text
+                plain
+                :retain-focus-on-click="false"
                 @click="reset"
                 v-bind="attrs"
                 v-on="on">
@@ -134,4 +136,5 @@ export default {
     border: 2px solid #bbbbbb;
     background-color: #efefef;
 }
+
 </style>

@@ -58,10 +58,16 @@ body {
 
 p {
     color: #ffffffbb;
+    letter-spacing: 1px;
 }
 
 span {
     color: #ffffffbb;
+    letter-spacing: 1px;
+}
+
+.text-color {
+  color: #ffffffbb !important;
 }
 
 .medium {

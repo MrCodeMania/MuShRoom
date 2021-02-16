@@ -6,13 +6,13 @@
         <div class="d-flex-column pl-4">
           <p class="metronome-now">{{ bpm }} <span class="metronome-label"> BPM </span> </p>
           <v-btn plain class="mt-n3" 
-            icon color="white" @click="decrease('bpm')" 
+            icon dark @click="decrease('bpm')" 
             @mousedown="decreaseStart('bpm')" 
             @mouseleave="decreaseEnd()"
             @mouseup="decreaseEnd()"><v-icon>mdi-minus</v-icon>
           </v-btn>
           <v-btn plain class="mt-n3" 
-            icon color="white" @click="increase('bpm')" 
+            icon dark @click="increase('bpm')" 
             @mousedown="increaseStart('bpm')" 
             @mouseleave="increaseEnd()"
             @mouseup="increaseEnd()"><v-icon>mdi-plus</v-icon>
@@ -21,13 +21,13 @@
         <div class="d-flex-column pr-4">
           <p class="metronome-now">{{ beatsPerBar }} <span class="metronome-label"> Beat </span> </p>
           <v-btn plain class="mt-n3 ml-n2" 
-            icon color="white" @click="decrease('beat')" 
+            icon dark @click="decrease('beat')" 
             @mousedown="decreaseStart('beat')" 
             @mouseleave="decreaseEnd()" @mouseup="decreaseEnd()" 
             :disabled="isPlaying()"><v-icon>mdi-minus</v-icon>
           </v-btn>
           <v-btn plain class="mt-n3" 
-            icon color="white" @click="increase('beat')" 
+            icon dark @click="increase('beat')" 
             @mousedown="increaseStart('beat')" 
             @mouseleave="increaseEnd()" @mouseup="increaseEnd()"
             :disabled="isPlaying()"><v-icon>mdi-plus</v-icon>
@@ -42,16 +42,16 @@
       <div class="d-flex align-center">
         <v-btn
           icon
-          color="white"
+          dark
           @click="onVolumeMute"
           class="volume-slider"
         >
-        <v-icon v-if="volume == -50 || mute">mdi-volume-mute</v-icon>
-        <v-icon v-else-if="volume > -50 && volume <= 0">mdi-volume-medium</v-icon>
-        <v-icon v-else>mdi-volume-high</v-icon>
+          <v-icon v-if="volume == -50 || mute">mdi-volume-mute</v-icon>
+          <v-icon v-else-if="volume > -50 && volume <= 0">mdi-volume-medium</v-icon>
+          <v-icon v-else>mdi-volume-high</v-icon>
         </v-btn>
         <v-slider
-          color="white"
+          dark
           class="pt-5"
           track-color="grey darken-2"
           v-model="volume"
@@ -145,7 +145,6 @@ export default {
       if (this.isStopped) {
         start();
         const sequence = this.createNoteSequence();
-        console.log(sequence);
         sequence.start(0);
       }
       this.isStopped = false;
@@ -161,10 +160,8 @@ export default {
       this.isStopped = true;
     },
     onRecordStop() {
-      if (this.beatIndex == this.beatsPerBar - 1) {
-        console.log("마지막 박자에 멈춰", this.beatIndex);
+      if (this.beatIndex == 0) {
         this.$store.commit("setRC", "stopRecord");
-        console.log("끝났어", this.recordStartState);
         Transport.stop();
         Transport.cancel(0);
         Transport.seconds = 0;
@@ -172,7 +169,6 @@ export default {
         this.isStopped = true;
         return;
       }
-      console.log("마지막 박자까지 가", this.beatIndex);
       setTimeout(() => {
         this.onRecordStop();
       }, (1000 * 60) / (this.bpm + 20));
@@ -246,7 +242,6 @@ export default {
 
 
     createNoteSequence() {
-      var flag = 0
       const accentNote = "G2";
       const beatNote = "C2";
       const notes = [
@@ -258,12 +253,6 @@ export default {
           switch (note) {
             case accentNote:
               this.beatIndex = 0;
-              if (flag) {
-                console.log("왔고", this.recordStartState);
-                this.$store.commit("setRC", "startRecord");
-                console.log("변했어", this.recordStartState);
-                flag = 0
-              }
               accent.start(time);
               break;
             case beatNote:
@@ -272,7 +261,7 @@ export default {
                 this.beatIndex == this.beatsPerBar - 1 &&
                 this.recordStartState === "startMetro"
               ) {
-                flag = 1
+                this.$store.commit("setRC", "startRecord");
               }
               beat.start(time);
               break;
@@ -309,9 +298,7 @@ export default {
     getRC(val) {
       if (val === "startMetro") {
         this.onStart();
-        console.log("METRO watched", val);
       } else if (val === "stopMetro") {
-        console.log("METRO watched", val);
         this.onRecordStop();
       }
     },
