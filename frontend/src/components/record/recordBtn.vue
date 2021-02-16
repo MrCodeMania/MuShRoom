@@ -58,6 +58,8 @@ export default {
       this.inputFileName = "";
     },
     async upload() {
+      if (this.file === "") return;
+      if (this.file.blob === undefined) return;
       const sendFileData = {
         fileName: "",
         downloadURL: "",

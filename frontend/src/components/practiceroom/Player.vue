@@ -36,14 +36,16 @@
 
       <div class="" style="flex: 10">
         <Waveform
-          :class="status === 'Master' ? '': 'mr-4'"
+          :class="status === 'Master' ? '' : 'mr-4'"
           :url="music.url"
           height="64"
           mouse="true"
           timeline="true"
           :idx="n"
           full="false"
+          color="#00A2FF"
           @setTime="setTime"
+          ref="waveform"
         ></Waveform>
       </div>
 
@@ -59,11 +61,11 @@
 
     <div>
       <v-sheet
-        style="margin: 0px 72px 0px 84px; background-color: #00FF0000"
+        style="margin: 0px 72px 0px 84px; background-color: #00ff0000"
         height="auto"
         :hidden="isShow == 0"
       >
-        <v-card style="background-color: #00FF0000; border-radius: 0px;">
+        <v-card style="background-color: #00ff0000; border-radius: 0px">
           <div class="px-3 pt-3 d-flex justify-space-around">
             <div>
               <p>Volume</p>
@@ -75,7 +77,7 @@
                 min="-30"
                 max="20"
                 step="0.01"
-                style="width: 100px !important;"
+                style="width: 100px !important"
                 @change="changeVolume(music.volume.value)"
               ></v-slider>
             </div>
@@ -89,7 +91,7 @@
                 min="0"
                 max="5"
                 step="0.01"
-                style="width: 100px !important;"
+                style="width: 100px !important"
                 @change="changeDistortion(music.distortion.value)"
               ></v-slider>
             </div>
@@ -103,12 +105,12 @@
                 min="0"
                 max="10"
                 step="0.01"
-                style="width: 100px !important;"
+                style="width: 100px !important"
                 @change="changeGain(music.gain.value)"
               ></v-slider>
             </div>
             <div>
-              <p>Reverb</p>              
+              <p>Reverb</p>
               <v-slider
                 color="white"
                 class="ml-2 mb-n2"
@@ -117,13 +119,15 @@
                 min="0"
                 max="1"
                 step="0.01"
-                style="width: 100px !important;"
+                style="width: 100px !important"
                 @change="changeReverb(music.reverb.value)"
               ></v-slider>
             </div>
           </div>
 
-          <v-divider style="background-color: rgba(255, 255, 255, 0.733);"></v-divider>
+          <v-divider
+            style="background-color: rgba(255, 255, 255, 0.733)"
+          ></v-divider>
 
           <div class="pa-3 d-flex justify-space-around">
             <div class="d-flex align-center">
@@ -142,7 +146,7 @@
                 class="ml-2"
                 type="number"
                 dark
-                style="width: 80px !important;"
+                style="width: 80px !important"
                 label="Start Time"
                 v-model="loopStart"
                 v-on:change="setLoopTime()"
@@ -154,7 +158,7 @@
                 class="ml-2"
                 type="number"
                 dark
-                style="width: 80px !important;"
+                style="width: 80px !important"
                 label="End Time"
                 v-model="loopEnd"
                 v-on:change="setLoopTime()"
@@ -162,7 +166,9 @@
             </div>
           </div>
 
-          <v-divider style="background-color: rgba(255, 255, 255, 0.733);"></v-divider>
+          <v-divider
+            style="background-color: rgba(255, 255, 255, 0.733)"
+          ></v-divider>
 
           <div class="pa-3 d-flex justify-space-around">
             <div class="d-flex">
@@ -171,7 +177,7 @@
                 class="ml-2"
                 type="number"
                 dark
-                style="width: 150px !important;"
+                style="width: 150px !important"
                 label="Delay Time (단위: note)"
                 v-model="delay"
               ></v-text-field>
@@ -182,7 +188,7 @@
                 class="ml-2"
                 dark
                 type="number"
-                style="width: 150px !important;"
+                style="width: 150px !important"
                 label="Start Time (단위: note)"
                 v-model="offset"
               ></v-text-field>
@@ -203,7 +209,7 @@ export default {
   name: "Player",
   props: {
     music: Object,
-    n: Number
+    n: Number,
   },
   components: {
     Waveform,
@@ -288,7 +294,13 @@ export default {
         now + Tone.Time(this.delay).toSeconds(),
         Tone.Time(this.offset).toSeconds() + this.currentTime
       );
-      document.getElementById(``)
+      document.getElementById(``);
+
+      let interval = setInterval(() => {
+        if (Tone.Transport.seconds > 0)
+          this.$refs.waveform.setTime(Tone.Transport.seconds);
+        if (this.state != "started") clearInterval(interval);
+      }, 100);
     },
     pause() {
       this.currentTime = Tone.Transport.seconds;
@@ -297,6 +309,7 @@ export default {
       Tone.Transport.stop();
     },
     stop() {
+      this.$refs.waveform.setTime(0);
       this.currentTime = 0;
       this.state = "stopped";
       this.player.unsync();
@@ -304,19 +317,19 @@ export default {
     },
     changeDistortion(value) {
       this.music.distortion.object.distortion = value;
-      this.$emit('updateMusicOption', this.n);
+      this.$emit("updateMusicOption", this.n);
     },
     changeVolume(value) {
       this.player.volume.value = value;
-      this.$emit('updateMusicOption', this.n);
+      this.$emit("updateMusicOption", this.n);
     },
     changeGain(value) {
       this.music.gain.object.gain.value = value;
-      this.$emit('updateMusicOption', this.n);
+      this.$emit("updateMusicOption", this.n);
     },
     changeReverb(value) {
       this.music.reverb.object.wet.value = value;
-      this.$emit('updateMusicOption', this.n);
+      this.$emit("updateMusicOption", this.n);
     },
     toggleDropdown() {
       this.isShow ^= 1;
@@ -369,6 +382,4 @@ export default {
 #player p {
   margin: 0px !important;
 }
-
-
 </style>

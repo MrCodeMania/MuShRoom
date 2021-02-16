@@ -13,7 +13,7 @@
           @click.native="startRecorder"
         />
         <icon-button
-          class="ar-icon ar-icon__sm ar-recorder__stop"
+          class="ar-icon ar-icon__lg ar-recorder__stop"
           name="stop"
           @click.native="stopRecorder"
         />
@@ -181,20 +181,6 @@ export default {
       width: 38px;
       height: 38px;
       display: none;
-    }
-
-    &__time-limit {
-      position: absolute;
-      color: #aeaeae;
-      font-size: 12px;
-      top: 128px;
-    }
-
-    &__records-limit {
-      position: absolute;
-      color: #aeaeae;
-      font-size: 13px;
-      top: 78px;
     }
   }
 }
