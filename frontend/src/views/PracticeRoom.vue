@@ -6,9 +6,9 @@
       v-on:openModal="openModal"
       :hasNickName="hasNickName"
       :newChat="newChat"
-      style="display: block; position: fixed; width: auto !important;"
+      style="display: block; position: fixed; width: auto !important"
     />
-    <div style="height:70px"></div>
+    <div style="height: 70px"></div>
     <!-- 부모 row -->
     <v-row no-gutters class="mx-auto" style="width: 1100px !important">
       <!-- 왼쪽 컴포넌트들 -->
@@ -285,6 +285,7 @@ export default {
           this.musicPageStompClient.subscribe(
             "/socket/music-page/" + this.code + "/send",
             (res) => {
+              this.$toasts.success("page toast");
               const resBody = JSON.parse(res.body);
 
               console.log(resBody);

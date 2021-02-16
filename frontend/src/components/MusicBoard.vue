@@ -8,17 +8,17 @@
       v-scroll.self="onScroll"
       elevation="0"
     >
-        <Player
-          class="mx-8 mt-4 border smallcomponent-color"
-          v-for="(item, idx) in music"
-          :key="item.id"
-          :n="idx"
-          :page="page"
-          :music="item"
-          @deleteMusic="deleteMusic"
-          @updateMusicOption="updateMusicOption"
-          ref="player"
-        />
+      <Player
+        class="mx-8 mt-4 border smallcomponent-color"
+        v-for="(item, idx) in music"
+        :key="item.id"
+        :n="idx"
+        :page="page"
+        :music="item"
+        @deleteMusic="deleteMusic"
+        @updateMusicOption="updateMusicOption"
+        ref="player"
+      />
     </v-card>
     <v-divider dark></v-divider>
     <v-card
@@ -142,12 +142,15 @@ export default {
 
               console.log(resBody);
 
-              if (resBody["type"] == "delete")
+              if (resBody["type"] == "delete") {
+                this.$toasts.success("musicboard toast");
                 this.$store.commit("deleteMusic", {
                   page: this.page,
                   idx: resBody["index"],
                 });
-              if (resBody["type"] == "update")
+              }
+              if (resBody["type"] == "update") {
+                this.$toasts.success("musicboard toast");
                 this.$store.commit("updateMusic", {
                   page: this.page,
                   music: {
@@ -173,6 +176,7 @@ export default {
                     },
                   },
                 });
+              }
             }
           );
         },
