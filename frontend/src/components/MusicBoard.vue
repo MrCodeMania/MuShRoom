@@ -71,6 +71,7 @@ import * as Tone from "tone";
 import Stomp from "webstomp-client";
 import SockJS from "sockjs-client";
 import Config from "@/store/config";
+import options from "@/store/option";
 
 export default {
   components: {
@@ -126,13 +127,13 @@ export default {
               const resBody = JSON.parse(res.body);
 
               if (resBody["type"] == "delete") {
-                this.$toasts.success("musicboard toast");
+                this.$toast("musicboard toast", options);
                 this.$store.commit("deleteMusic", {
                   idx: resBody["index"],
                 });
               }
               if (resBody["type"] == "update") {
-                this.$toasts.success("musicboard toast");
+                this.$toast("musicboard toast", options);
                 this.$store.commit("updateMusic", {
                   music: {
                     id: resBody["index"],

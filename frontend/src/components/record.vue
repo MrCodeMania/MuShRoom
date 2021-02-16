@@ -50,6 +50,7 @@ import recordCard from "./record/Audiocard";
 import Stomp from "webstomp-client";
 import SockJS from "sockjs-client";
 import Config from "@/store/config";
+import options from "@/store/option";
 
 export default {
   data: () => {
@@ -66,6 +67,7 @@ export default {
     },
   },
   created() {
+    console.log("option", options);
     this.idx = this.records.length;
 
     this.code = document.location.href.split("=")[1];
@@ -107,7 +109,7 @@ export default {
           this.recordStompClient.subscribe(
             "/socket/record/" + this.code + "/send",
             (res) => {
-              this.$toasts.success("record toast");
+              this.$toast("record toast", options);
               const resBody = JSON.parse(res.body);
 
               if (resBody["type"] == "add")
@@ -141,7 +143,7 @@ export default {
             (res) => {
               const resBody = JSON.parse(res.body);
               if (resBody["type"] == "add") {
-                this.$toasts.success("music toast");
+                this.$toast("music toast", options);
                 this.$store.commit("addMusic", {
                   record: {
                     fileName: resBody["obj"]["fileName"],
