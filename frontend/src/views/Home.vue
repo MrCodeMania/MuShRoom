@@ -16,7 +16,7 @@
         color="#00ff0000"
         width="200" height="200" 
         x-large
-        @click="openModal">
+        @click="createRoom">
           <v-img
           width="200"
           height="auto"
@@ -33,7 +33,6 @@
         </v-avatar>
       </v-card>
     </div>
-    <MainModal :showModal="showModal" :address="address" @close="closeModal"/>
     <Footer/>
   </div>
 </template>
@@ -41,7 +40,6 @@
 <script>
 import Header from '@/components/common/Header.vue';
 import Footer from '@/components/common/Footer.vue';
-import MainModal from '@/components/MainModal.vue';
 import axios from '@/service/axios.service.js';
 import Config from '@/store/config'
 
@@ -50,7 +48,7 @@ export default {
   components: {
     Header,
     Footer,
-    MainModal
+    // MainModal
   },
   data: function() {
     return {
@@ -60,26 +58,15 @@ export default {
     }
   },
   methods: {
-    openModal() {
-      this.showModal = true;
+    createRoom() {
       axios.post("/data").then(res => {
         console.log([res.data.id.masterId, res.data.id.slaveId]);
         
         this.$store.commit("pushShareUrl", [res.data.id.masterId, res.data.id.slaveId]);
         // 서버 URL 바꿔야 한다
         this.address = Config.HostURL + "/practiceroom?shareUrl=" + res.data.id.masterId;
-      });
-      
-    },
-    closeModal(close, move) {
-      this.showModal = close;
-      if(!move) {
-        console.log(this.address.toString().split('/')[3].split('=')[1]);
-        
-        axios.delete("/data/" + this.address.toString().split('/')[3].split('=')[1]).then(res => {
-            console.log(res);
-        });
-      }
+        this.$router.push({ name: 'PracticeRoom', query: {shareUrl: this.address.split('=')[1]}});
+      });     
     },
   }
 }
