@@ -32,7 +32,7 @@ export default {
                 audioContext: this.audioCtx,
                 plugins: [
                     Timeline.create({
-                        container: "#container" + String(this.idx),
+                        container: "#container" + this.idx,
                         secondaryFontColor: '#000'
                     })
                 ]
