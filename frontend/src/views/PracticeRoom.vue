@@ -1,18 +1,19 @@
 <template>
-  <v-main class="main-color">
+  <v-main>
     <Header
       :openChat="openChat"
       v-on:toggleChat="toggleChat"
       v-on:openModal="openModal"
       :hasNickName="hasNickName"
       :newChat="newChat"
+      style="display: block; position: fixed; width: auto !important;"
     />
-
+    <div style="height:70px"></div>
     <!-- 부모 row -->
-    <v-row no-gutters class="mx-auto" style="width: 1200px !important">
+    <v-row no-gutters class="mx-auto" style="width: 1100px !important">
       <!-- 왼쪽 컴포넌트들 -->
-      <v-col cols="8" class="flex-grow-0 flex-shrink-0 pa-4">
-        <v-row no-gutters style="height: 100vh">
+      <v-col cols="8" class="flex-grow-0 flex-shrink-0 px-4 pt-4 pb-2">
+        <v-row no-gutters style="height: auto">
           <v-card elevation="0" height="100%" width="100%" color="#00ff0000">
             <!-- 뮤직 보드 상단 페이징 탭 -->
             <v-tabs
@@ -55,6 +56,7 @@
               <v-btn
                 class="d-line-block ml-1 mt-1"
                 icon
+                light
                 v-if="length < 5"
                 @click="addPage()"
               >
@@ -79,7 +81,7 @@
       </v-col>
 
       <!-- 오른쪽 컴포넌트들 -->
-      <v-col cols="4" class="flex-grow-0 flex-shrink-0 pa-4">
+      <v-col cols="4" class="flex-grow-0 flex-shrink-0 px-4 pt-4 pb-1">
         <!-- 매트로놈 -->
         <v-row no-gutters style="height: 18vh">
           <v-card elevation="0" width="100%" height="100%">
@@ -88,7 +90,7 @@
         </v-row>
 
         <!-- 파일 목록 -->
-        <v-row v-if="status === 'Master'" no-gutters style="height: 62vh">
+        <v-row v-if="status === 'Master'" no-gutters style="height: 63vh">
           <v-card elevation="0" width="100%" height="100%">
             <Record :page="page" />
           </v-card>

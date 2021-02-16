@@ -6,6 +6,7 @@
         offset-x="offset-x"
         :close-on-content-click="false">
         <template v-slot:activator="{ on, attrs }">
+            <span style="color: white;">|</span>
             <v-btn
                 color="white"
                 dark="dark"
