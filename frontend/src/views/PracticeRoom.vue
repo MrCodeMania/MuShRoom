@@ -6,7 +6,9 @@
       v-on:openModal="openModal"
       :hasNickName="hasNickName"
       :newChat="newChat"
+      style="display: block; position: fixed; width: auto !important"
     />
+    <div style="height: 70px"></div>
     <!-- 부모 row -->
     <v-row no-gutters class="mx-auto" style="width: 1100px !important">
       <!-- 왼쪽 컴포넌트들 -->
@@ -106,6 +108,7 @@
       @close="closeModal"
       @setNickName="setNickName"
     />
+    <Help />
   </v-main>
 </template>
 
@@ -119,7 +122,7 @@ import Stomp from "webstomp-client";
 import SockJS from "sockjs-client";
 import Chat from "@/components/chat/Chat.vue";
 import SetNickName from "@/components/chat/SetNickName.vue";
-
+import Help from "@/components/help/Helpshow.vue";
 //import * as Tone from "tone";
 import Config from "@/store/config";
 
@@ -131,6 +134,7 @@ export default {
     Record,
     Chat,
     SetNickName,
+    Help,
   },
   created() {
     // Status를 vuex에 저장

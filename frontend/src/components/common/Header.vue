@@ -32,14 +32,16 @@
       </div>
       Chat
     </v-btn>
-    <Share/>
+    <Helpbtn />
+    <Share />
   </v-app-bar>
 </template>
 
 <script>
 import Share from "../practiceroom/Share.vue";
+import Helpbtn from "../help/HelpBtn.vue";
 export default {
-  components: { Share },
+  components: { Share, Helpbtn },
   props: ["openChat", "hasNickName", "newChat"],
   data() {
     return {
