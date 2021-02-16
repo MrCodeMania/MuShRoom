@@ -116,13 +116,10 @@ export default {
 
           for(let i = 0; i < 5; i++)
           {
-            console.log(i);
             this.musicStompClient.subscribe("/socket/music/" + this.code + "/" + i + "/send", res => {
               const resBody = JSON.parse(res.body);
               
-              this.page = 0;
-              this.page = i;
-              
+              console.log(i);
               if(resBody["type"] == "delete")
                   this.$store.commit('deleteMusic', {page : i, idx: resBody["index"]});
               if(resBody["type"] == "update")
@@ -148,6 +145,9 @@ export default {
                       value: resBody["obj"]["reverb"],
                     }
                     }});
+              
+              this.page = 0;
+              this.page = i;
             });
           }
         },
@@ -187,7 +187,7 @@ export default {
       this.scrollInvoked++;
     },
     deleteMusic(id) {
-     this.send("music", {type: "delete", index: id, obj: {url : this.music[id].url, fileName : this.music[id].fileName}});
+      this.send("music", {type: "delete", index: this.music[id].id, obj: {url : this.music[id].url, fileName : this.music[id].fileName}});
     },
     updateMusicOption(id) {
       this.send("music", {type: "update", index: id, obj: {url : this.music[id].url, fileName : this.music[id].fileName,

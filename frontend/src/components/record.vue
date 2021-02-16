@@ -197,7 +197,7 @@ export default {
       for (var i = 0; i < len; i++) {
         if (this.records[i].id === id) {
          this.send("music", {type: "add", index: this.$store.state.data.musicBoard[this.page].idx, obj: {url : this.records[i]["downloadURL"], fileName : this.records[i]["fileName"],
-           distortion: 0,  gain: 0,  volume: 0, reverb: 0}});
+         timestamp: new Date().getTime(), distortion: 0,  gain: 0,  volume: 0, reverb: 0}});
 
           break;
         }

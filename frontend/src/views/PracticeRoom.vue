@@ -192,7 +192,7 @@ export default {
             id:j,
             url: res.data.musicPageList[i].musicList[j].url,
             fileName: res.data.musicPageList[i].musicList[j].fileName,
-            timestamp: res.data.musicPageList[i].musicList[j].timestamp == null ? 0 : res.data.musicPageList[i].musicList[j].timestamp,
+            timestamp: res.data.musicPageList[i].musicList[j].timestamp,
             distortion: {
               object: null,
               value: res.data.musicPageList[i].musicList[j].distortion
