@@ -14,7 +14,7 @@
         <v-row no-gutters style="height: 1030px; max-height: 90vh;">
           <v-card elevation="0" height="100%" width="100%" color="#00ff0000">
                             <!-- 뮤직 보드 -->
-                <v-card elevation="0" width="100%" height="100%">
+                <v-card elevation="0" width="100%" height="100%" color="#00ff0000">
                   <MusicBoard  />
                 </v-card>
           </v-card>
@@ -25,14 +25,14 @@
       <v-col v-if="status === 'Master'" cols="4" class="flex-grow-0 flex-shrink-0 px-4 pt-4 pb-1">
         <!-- 매트로놈 -->
         <v-row no-gutters style="height: 130px">
-          <v-card elevation="0" width="100%" height="100%">
+          <v-card elevation="0" width="100%" height="100%" color="#00ff0000">
             <Metronome />
           </v-card>
         </v-row>
 
         <!-- 파일 목록 -->
         <v-row no-gutters style="height: 830px; max-height: 70vh;">
-          <v-card elevation="0" width="100%" height="100%">
+          <v-card elevation="0" width="100%" height="100%" color="#00ff0000">
             <Record />
           </v-card>
         </v-row>

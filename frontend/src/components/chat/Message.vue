@@ -2,16 +2,16 @@
     <!-- id 값에 따라 채팅 칸 위치, 색 달라짐 -->
     <div>
         <div 
-        style="width: 150px;"
+        style="width: 150px; font-size: 14px;"
         :class="msg.id==id ? 'myInfo text-right':'yourInfo'">
             {{ msg.nickName }}
         </div>
         <v-card
         light
         width="150px"
-        style="z-index: 99 !important;"
         :class="msg.id==id ? 'mine' : 'others'"
         class="px-2"
+        style="font-size: 14px;"
         elevation="0">
             {{ msg.text }}
         </v-card>
