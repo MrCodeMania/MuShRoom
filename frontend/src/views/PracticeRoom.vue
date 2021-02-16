@@ -90,7 +90,7 @@
         </v-row>
 
         <!-- 파일 목록 -->
-        <v-row v-if="status === 'Master'" no-gutters style="height: 63vh">
+        <v-row v-if="status === 'Master'" no-gutters style="height: 62.5vh">
           <v-card elevation="0" width="100%" height="100%">
             <Record :page="page" />
           </v-card>
@@ -287,6 +287,7 @@ export default {
           this.musicPageStompClient.subscribe(
             "/socket/music-page/" + this.code + "/send",
             (res) => {
+              this.$toasts.success("page toast");
               const resBody = JSON.parse(res.body);
 
               console.log(resBody);

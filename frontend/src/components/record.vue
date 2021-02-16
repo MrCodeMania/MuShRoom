@@ -120,6 +120,7 @@ export default {
           this.recordStompClient.subscribe(
             "/socket/record/" + this.code + "/send",
             (res) => {
+              this.$toasts.success("record toast");
               const resBody = JSON.parse(res.body);
 
               console.log(resBody);
@@ -155,7 +156,8 @@ export default {
             (res) => {
               const resBody = JSON.parse(res.body);
               console.log(resBody);
-              if (resBody["type"] == "add")
+              if (resBody["type"] == "add") {
+                this.$toasts.success("music toast");
                 this.$store.commit("addMusic", {
                   page: this.page,
                   record: {
@@ -164,6 +166,7 @@ export default {
                     id: resBody["index"],
                   },
                 });
+              }
             }
           );
         },
