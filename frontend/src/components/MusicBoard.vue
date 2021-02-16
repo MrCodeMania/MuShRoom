@@ -9,7 +9,7 @@
       elevation="0"
     >
       <Player
-        class="mx-8 mt-4 border smallcomponent-color"
+        class="mx-8 mt-4 smallcomponent-color"
         v-for="(item, idx) in music"
         :key="item.id"
         :n="idx"
@@ -27,7 +27,7 @@
       height="8vh"
     >
       <v-spacer></v-spacer>
-      <v-card class="d-flex justify-end main-color-light " elevation="0">
+      <v-card class="d-flex align-center justify-end main-color-light " elevation="0">
         <v-btn
           class="musicboard_btn pt-1"
           icon
@@ -222,7 +222,5 @@ export default {
 </script>
 
 <style>
-.musicboard_btn {
-  margin: 10px 5px 0px;
-}
+
 </style>

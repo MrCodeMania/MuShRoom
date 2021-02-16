@@ -1,36 +1,35 @@
 <template>
-  <v-container class="record" style="z-index: 100" v-show="showRecord">
-    <div width="80px">
-      <recBtn
-        style="border: none"
-        ref="recorder"
-        :after-recording="setRecorded"
-        :before-recording="startRecord"
-        :bit-rate="192"
-        :sampleRate="44100"
-      />
-      <div class="mx-auto">
-        <v-card mode="in-out" width="100%" class="mt-n1 component-color">
-          <v-sheet
-            width="80%"
-            class="d-flex align-center mx-auto justify-center component-color"
-          >
-            <v-text-field
-              background-color="#D7C9B2"
-              v-model="inputFileName"
-              :rules="filenameRules"
-              label="파일이름"
-              solo
-              hide-details
-            ></v-text-field>
-            <v-btn icon large @click="upload" class="ml-2"
-              ><v-icon large>mdi-plus-circle</v-icon></v-btn
-            >
-          </v-sheet>
-        </v-card>
-      </div>
-    </div>
-  </v-container>
+  <v-card class="record main-color d-flex flex-column" style="z-index: 100" v-if="showRecord">
+    <recBtn
+      style="border: none"
+      ref="recorder"
+      :after-recording="setRecorded"
+      :before-recording="startRecord"
+      :bit-rate="192"
+      :sampleRate="44100"
+    />
+    <v-spacer></v-spacer>
+    <v-card elevation="0" width="80%" class="d-flex mb-4 ml-11 align-center main-color">
+      <v-text-field
+        dark
+        v-model="inputFileName"
+        :rules="filenameRules"
+        label="파일이름"
+        hide-details
+      ></v-text-field>
+      <v-btn icon dark @click="upload" class="mt-3 mx-2"
+        ><v-icon size="30px">mdi-plus</v-icon></v-btn
+      >
+    </v-card>
+    <v-btn 
+      icon
+      dark
+      style="position: absolute; right: 5px; top: 5px;"
+      @click="closeRecord"
+    >
+      <v-icon> mdi-close </v-icon>
+    </v-btn>
+  </v-card>
 </template>
 <script>
 import recBtn from "./recBtn.vue";
@@ -51,6 +50,10 @@ export default {
     };
   },
   methods: {
+    closeRecord() {
+      console.log(this.showRecord)
+      this.$emit('closeRecord')
+    },
     expandInit() {
       this.inputFileName = "";
     },
@@ -119,13 +122,13 @@ export default {
 <style scoped>
 .record {
   padding: 0;
-  display: flex;
   position: fixed;
   right: 10px;
-  width: 250px;
-  height: 250px;
-  top: 100px;
-  border: 2px solid red;
-  border-radius: 2px;
+  width: 300px;
+  height: 130px;
+  top: 15px;
+  right: 16px;
+  border: 1px solid white;
+  border-radius: 0px;
 }
 </style>

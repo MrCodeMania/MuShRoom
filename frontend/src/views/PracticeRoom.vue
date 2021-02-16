@@ -14,7 +14,7 @@
         <v-row no-gutters style="height: auto">
           <v-card elevation="0" height="100%" width="100%" >
                             <!-- 뮤직 보드 -->
-                <v-card elevation="0" width="100%" height="100%">
+                <v-card elevation="0" width="100%" height="100%" class="main-color-light">
                   <MusicBoard  />
                 </v-card>
           </v-card>
