@@ -7,7 +7,7 @@
       <!-- 왼쪽 컴포넌트들 -->
       <v-col cols="8" class="flex-grow-0 flex-shrink-0 pa-4">
         <v-row no-gutters style="height: 100vh">
-          <v-card elevation="0" height="100%" width="100%" color="#00ff0000">
+          <v-card elevation="0" height="100%" width="100%" color="#00ff0000" >
             <!-- 뮤직 보드 상단 페이징 탭 -->
             <v-tabs
               dark
@@ -36,7 +36,7 @@
                   </v-btn>
                   <!-- 페이지 이름 -->
                   <v-text-field
-                    v-model="pageNames.musicBoard[i-1].pageName"
+                    v-model="pageNames[i-1].pageName"
                     background-color="#00ff0000"
                     flat
                     class="tab_textfield"
@@ -131,7 +131,6 @@ export default {
     return {
       page: 0, //  현재 페이지,
       status,
-      openChat: false
       openChat: false,
       showModal: false,
       hasNickName: false,
@@ -150,7 +149,7 @@ export default {
         return pages;
     },
     pageNames() {
-      return this.$store.state.data;
+      return this.$store.state.data.musicBoard;
     }
   },
   methods: {
@@ -180,9 +179,8 @@ export default {
       
       for(let i = 0; i < res.data.musicPageList.length; i++){
         if(i > 0)
-          this.$store.commit('addPage', i - 1)
+          this.$store.commit('addPage', i)
         this.$store.commit('updatePageName',{pageIdx : i, pageName : res.data.musicPageList[i]["pageName"]});
-        this.pageNames[i] = res.data.musicPageList[i]["pageName"];
 
         for(let j = 0; j < res.data.musicPageList[i].musicList.length; j++){
           // 일단 한 번 넣고 수정한다
@@ -234,7 +232,7 @@ export default {
     else if(msg == "deletePage")
       this.musicPageStompClient.send("/socket/music-page/" + this.code + "/receive", JSON.stringify({type:"delete", index: index - 1}), {});
     else if(msg == "updatePageName")
-      this.musicPageStompClient.send("/socket/music-page/" + this.code + "/receive", JSON.stringify({type:"update", index: index - 1, obj: {pageName:this.pageNames.musicBoard[index-1].pageName, musicList:[]}}), {});
+      this.musicPageStompClient.send("/socket/music-page/" + this.code + "/receive", JSON.stringify({type:"update", index: index - 1, obj: {pageName:this.pageNames[index-1].pageName, musicList:[]}}), {});
     
   },
   connect() {
@@ -256,16 +254,16 @@ export default {
 
             if(resBody["type"] == "add")
             {
-              this.pageNames[this.length] = "New Page";
+              this.pageNames[this.length].pageName = "New Page";
               this.$store.commit("addPage", this.length); 
             }
             else if(resBody["type"] == "delete")
+            {
               this.$store.commit("removePage", resBody["index"]);
+              this.page = 0;
+            }
             else if(resBody["type"] == "update")
-              this.$store.commit("updatePageName", {pageIdx : resBody["index"], pageName : resBody["obj"]["pageName"]});
-            
-            this.page = 0;
-            
+              this.$store.commit("updatePageName", {pageIdx : resBody["index"], pageName : resBody["obj"]["pageName"]});          
         });
       },
       error => {
@@ -323,7 +321,7 @@ export default {
     arriveNewChat() {
       if(!this.openChat)
         this.newChat = this.newChat < 99 ? this.newChat+1 : this.newChat;
-    }
+    },
   },
 };
 </script>

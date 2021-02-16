@@ -97,13 +97,16 @@ export default {
             const resBody = JSON.parse(res.body);
             
             console.log(resBody);
+              
 
               if(resBody["type"] == "add")
                 this.$store.commit('updateRecord', {fileName : resBody["obj"]["fileName"], downloadURL : resBody["obj"]["url"], id: resBody["index"]});
               if(resBody["type"] == "delete")
               {
                 this.$store.commit('deleteRecord', resBody["index"]);
-                this.idx--;
+                
+                if(this.idx > 0)
+                  this.idx--;
               }
           });
         },
@@ -134,8 +137,12 @@ export default {
 
               if(resBody["type"] == "add")
                 this.$store.commit('addMusic', {page : i, record : {fileName : resBody["obj"]["fileName"], downloadURL : resBody["obj"]["url"], id: resBody["index"]}});
+              
+              this.page = 0;
+              this.page = i;
             });
           }
+          
         },
         error => {
           // 소켓 연결 실패
