@@ -3,11 +3,11 @@
     <v-card
       id="musicListId"
       class="musicList overflow-y-auto main-color-light "
-      style="height: inherit !important;"
+      style="height: inherit !important; border-radius: 0px;"
       v-scroll.self="onScroll"
     >
       <Player
-        class="mx-8 mt-4 border smallcomponent-color"
+        class="mx-8 mt-4 smallcomponent-color"
         v-for="(item, idx) in music"
         :key="item.id"
         :n="idx"
@@ -21,7 +21,9 @@
     <v-card class="buttonBar d-flex main-color-light "
     >
       <v-spacer></v-spacer>
-      <v-card class="d-flex justify-end main-color-light " elevation="0">
+      <v-card 
+      style="border-radius: 0px;"
+      class="d-flex align-center justify-end main-color-light " elevation="0">
         <v-btn
           class="musicboard_btn pt-1"
           icon
@@ -216,7 +218,5 @@ export default {
 </script>
 
 <style>
-.musicboard_btn {
-  margin: 10px 5px 0px;
-}
+
 </style>

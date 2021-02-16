@@ -11,7 +11,7 @@
     <v-row no-gutters class="mx-auto" style="width: 1100px !important">
       <!-- 왼쪽 컴포넌트들 -->
       <v-col cols="8" class="mx-auto flex-grow-0 flex-shrink-0 px-4 pt-4 pb-2">
-        <v-row no-gutters style="height: 720px; max-height: 79.5vh;">
+        <v-row no-gutters style="height: 725px; max-height: 79vh;">
           <v-card elevation="0" height="100%" width="100%" color="#00ff0000">
                             <!-- 뮤직 보드 -->
                 <v-card 
@@ -32,7 +32,7 @@
         </v-row>
 
         <!-- 파일 목록 -->
-        <v-row no-gutters style="height: 580px; max-height: 60vh;">
+        <v-row no-gutters style="height: 690px; max-height: 72.5vh;">
           <v-card elevation="0" width="100%" height="100%" color="#00ff0000">
             <Record />
           </v-card>
