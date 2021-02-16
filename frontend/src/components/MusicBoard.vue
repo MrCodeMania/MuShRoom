@@ -13,7 +13,6 @@
         v-for="(item, idx) in music"
         :key="item.id"
         :n="idx"
-        :page="page"
         :music="item"
         @deleteMusic="deleteMusic"
         @updateMusicOption="updateMusicOption"
@@ -30,13 +29,13 @@
       <v-spacer></v-spacer>
       <v-card class="d-flex justify-end nav-color" elevation="0">
         <v-btn
-          class="musicboard_btn pt-2"
+          class="musicboard_btn pt-1"
           icon
           dark
           large
           @click="downloadButton"
         >
-          <v-icon dark size="30px">mdi-download</v-icon>
+          <v-icon dark size="26px">mdi-download</v-icon>
         </v-btn>
         <v-btn
           class="musicboard_btn mx-n2"
@@ -75,7 +74,6 @@ import Config from "@/store/config";
 import options from "@/store/option";
 
 export default {
-  props: ["page"],
   components: {
     Player,
   },
@@ -99,27 +97,14 @@ export default {
       return this.$store.getters.getURL;
     },
     music: function () {
-      return this.$store.getters.getBoard(this.page);
-    },
-    length: function () {
-      return this.$store.getters.getPageLength;
-    },
-  },
-  watch: {
-    page: function () {
-      if (this.$refs.player) {
-        this.$refs.player.forEach((el) => {
-          el.removeFromTransport();
-        });
-      }
+      return this.$store.getters.getBoard;
     },
   },
   methods: {
     send(type, msg) {
-      console.log(msg);
       if (type == "music")
         this.musicStompClient.send(
-          "/socket/music/" + this.code + "/" + this.page + "/receive",
+          "/socket/music/" + this.code + "/0/receive",
           JSON.stringify(msg),
           {}
         );
@@ -137,23 +122,19 @@ export default {
           console.log("뮤직보드 소켓 연결 성공", frame);
 
           this.musicStompClient.subscribe(
-            "/socket/music/" + this.code + "/" + this.page + "/send",
+            "/socket/music/" + this.code + "/0/send",
             (res) => {
               const resBody = JSON.parse(res.body);
-
-              console.log(resBody);
 
               if (resBody["type"] == "delete") {
                 this.$toast("musicboard toast", options);
                 this.$store.commit("deleteMusic", {
-                  page: this.page,
                   idx: resBody["index"],
                 });
               }
               if (resBody["type"] == "update") {
                 this.$toast("musicboard toast", options);
                 this.$store.commit("updateMusic", {
-                  page: this.page,
                   music: {
                     id: resBody["index"],
                     url: resBody["obj"]["url"],
@@ -209,7 +190,6 @@ export default {
       this.play = !this.play;
     },
     musicStopButton() {
-      console.log("stop");
       Tone.Transport.stop();
       this.play = false;
     },

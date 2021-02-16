@@ -11,10 +11,10 @@
           fileData.fileName
         }}</span>
         <v-spacer></v-spacer>
-        <v-btn icon dark color="indigo" @click="addThis"
+        <v-btn icon dark color="white" @click="addThis"
           ><v-icon>mdi-plus </v-icon></v-btn
         >
-        <v-btn class="mr-2 ml-1" icon dark color="error" @click="deleteThis"
+        <v-btn class="mr-2 ml-1" icon dark color="white" @click="deleteThis"
           ><v-icon>mdi-delete</v-icon></v-btn
         >
       </v-card-title>

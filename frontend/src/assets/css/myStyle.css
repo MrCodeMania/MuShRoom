@@ -1,21 +1,6 @@
-.negative {
-  color: rgb(73, 73, 73) !important;
-}
-
-.positive {
-  color: green !important;
-}
-
-.border {
-  border: solid;
-  border-width: 1px;
-  border-color: white;
-  border-radius: 12px !important;
-}
-
 .nav-color {
   /* background-color: black !important; */
-  background-color: #161929 !important;
+  background-color: #252526 !important;
 }
 
 .component-color {
@@ -33,7 +18,7 @@
 
 .smallcomponent-color {
   /* background-color: white !important; */
-  background-color: #2d2f3e !important;
+  background-color: #2d2d2d !important;
 }
 
 /* 
@@ -59,7 +44,7 @@ body {
 /* 스크롤 바 밑의 배경 */
 
 ::-webkit-scrollbar-thumb {
-  background: #d7c9b2;
+  background: #f0f0f0f1;
   border-radius: 10px;
 }
 
@@ -73,19 +58,16 @@ body {
 
 .home_background {
   /* theme: black sea */
-  background-image: url('../note2.png'),
-    linear-gradient(-225deg, #2cd8d5 0%, #6b8dd6 48%, #8e37d7 100%);
+  background-color: #252526 !important;
   height: 100%;
 }
 
-
-
 p {
-  color: white;
+  color: #ffffffbb;
 }
 
 span {
-  color: white;
+  color: #ffffffbb;
 }
 
 .medium {

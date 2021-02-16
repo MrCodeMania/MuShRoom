@@ -69,7 +69,6 @@ import Config from "@/store/config";
 import options from "@/store/option";
 
 export default {
-  props: ["page"],
   data: () => {
     return {
       expand: false,
@@ -105,7 +104,7 @@ export default {
         );
       else if (type == "music")
         this.musicStompClient.send(
-          "/socket/music/" + this.code + "/" + this.page + "/receive",
+          "/socket/music/" + this.code + "/0/receive",
           JSON.stringify(msg),
           {}
         );
@@ -127,8 +126,6 @@ export default {
             (res) => {
               this.$toast("record toast", options);
               const resBody = JSON.parse(res.body);
-
-              console.log(resBody);
 
               if (resBody["type"] == "add")
                 this.$store.commit("updateRecord", {
@@ -157,14 +154,12 @@ export default {
           this.connected = true;
           console.log("레코드 소켓 연결 성공", frame);
           this.musicStompClient.subscribe(
-            "/socket/music/" + this.code + "/" + this.page + "/send",
+            "/socket/music/" + this.code + "/0/send",
             (res) => {
               const resBody = JSON.parse(res.body);
-              console.log(resBody);
               if (resBody["type"] == "add") {
                 this.$toast("music toast", options);
                 this.$store.commit("addMusic", {
-                  page: this.page,
                   record: {
                     fileName: resBody["obj"]["fileName"],
                     downloadURL: resBody["obj"]["url"],
@@ -235,7 +230,7 @@ export default {
         if (this.records[i].id === id) {
           this.send("music", {
             type: "add",
-            index: this.$store.getters.getBoard(this.page).length,
+            index: this.$store.getters.getBoard.length,
             obj: {
               url: this.records[i]["downloadURL"],
               fileName: this.records[i]["fileName"],
