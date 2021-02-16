@@ -1,8 +1,8 @@
 <template>
-  <v-card class="musicBoard nav-color" elevation="0" width="100%" height="100%">
+  <v-card class="musicBoard main-color-light " elevation="0" width="100%" height="100%">
     <v-card
       id="musicListId"
-      class="musicList overflow-y-auto nav-color"
+      class="musicList overflow-y-auto main-color-light "
       min-height="73vh"
       max-height="73vh"
       v-scroll.self="onScroll"
@@ -21,13 +21,13 @@
     </v-card>
     <v-divider dark></v-divider>
     <v-card
-      class="buttonBar d-flex nav-color"
+      class="buttonBar d-flex main-color-light "
       elevation="0"
       width="100%"
       height="8vh"
     >
       <v-spacer></v-spacer>
-      <v-card class="d-flex justify-end nav-color" elevation="0">
+      <v-card class="d-flex justify-end main-color-light " elevation="0">
         <v-btn
           class="musicboard_btn pt-1"
           icon

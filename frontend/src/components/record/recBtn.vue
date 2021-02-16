@@ -3,7 +3,7 @@
     <div class="ar-content component-color">
       <div class="ar-recorder mt-3">
         <icon-button
-          style="background-color: #D7C9B2;"
+          style="background-color: #d7c9b2"
           class="ar-icon ar-icon__lg"
           :name="iconButtonType"
           :class="{
@@ -66,7 +66,6 @@ export default {
 
       if (!this.isRecording || (this.isRecording && this.isPause)) {
         this.$store.commit("setRC", "startMetro");
-        console.log("메트로놈으로 시작신호 보냄");
       }
     },
     stopRecorder() {
@@ -115,7 +114,6 @@ export default {
   watch: {
     getRC(val) {
       if (val === "startRecord") {
-        console.log("RECBTN watch", val);
         this.recorder.start();
       } else if (val === "stopRecord") {
         this.recorder.stop();
@@ -127,7 +125,7 @@ export default {
 </script>
 <style lang="scss">
 .ar {
-  width: 420px;
+  width: 230px;
   font-family: "Roboto", sans-serif;
   border-radius: 16px;
   background-color: #fafafa;
@@ -136,14 +134,15 @@ export default {
   box-sizing: content-box;
 
   &-content {
-    padding: 16px;
+    padding: 1px;
+    background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
   &-records {
-    height: 138px;
+    height: 100px;
     padding-top: 1px;
     overflow-y: auto;
     margin-bottom: 20px;
@@ -184,9 +183,14 @@ export default {
     }
 
     &__stop {
+      fill: white !important;
+      background-color: #ff6b64 !important;
       position: absolute;
-      top: 10px;
-      right: -52px;
+      top: 0;
+      right: 0;
+      width: 38px;
+      height: 38px;
+      display: none;
     }
 
     &__time-limit {
@@ -202,116 +206,6 @@ export default {
       font-size: 13px;
       top: 78px;
     }
-  }
-
-  &-spinner {
-    display: flex;
-    height: 30px;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    width: 144px;
-    z-index: 10;
-
-    &__dot {
-      display: block;
-      margin: 0 8px;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      background: #05cbcd;
-      animation-name: blink;
-      animation-duration: 1.4s;
-      animation-iteration-count: infinite;
-      animation-fill-mode: both;
-
-      &:nth-child(2) {
-        animation-delay: 0.2s;
-      }
-
-      &:nth-child(3) {
-        animation-delay: 0.4s;
-      }
-
-      @keyframes blink {
-        0% {
-          opacity: 0.2;
-        }
-        20% {
-          opacity: 1;
-        }
-        100% {
-          opacity: 0.2;
-        }
-      }
-    }
-  }
-
-  &__text {
-    color: rgba(84, 84, 84, 0.5);
-    font-size: 16px;
-  }
-
-  &__blur {
-    filter: blur(2px);
-    opacity: 0.7;
-  }
-
-  &__overlay {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 10;
-  }
-
-  &__upload-status {
-    text-align: center;
-    font-size: 10px;
-    padding: 2px;
-    letter-spacing: 1px;
-    position: absolute;
-    bottom: 0;
-
-    &--success {
-      color: green;
-    }
-
-    &--fail {
-      color: red;
-    }
-  }
-
-  &__rm {
-    cursor: pointer;
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    padding: 6px;
-    line-height: 6px;
-    margin: auto;
-    left: 10px;
-    bottom: 0;
-    top: 0;
-    color: rgb(244, 120, 90);
-  }
-
-  &__downloader,
-  &__uploader {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-  }
-
-  &__downloader {
-    right: 115px;
-  }
-
-  &__uploader {
-    right: 85px;
   }
 }
 

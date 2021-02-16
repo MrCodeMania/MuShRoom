@@ -111,23 +111,18 @@ export default {
   }),
   methods: {
     prev() {
-      console.log("이전");
       this.nowPage -= 1;
       this.show = false;
       setTimeout(() => {
         this.show = true;
       }, 1);
-
-      //this.$forceUpdate();
     },
     next() {
       this.nowPage += 1;
-      console.log("다음");
       this.show = false;
       setTimeout(() => {
         this.show = true;
       }, 1);
-      // this.$forceUpdate();
     },
     changeHelpState() {
       this.$store.commit("helpShowChange");
@@ -144,7 +139,6 @@ export default {
   watch: {
     showState(val) {
       if (val === false) return;
-      console.log("watched:", val);
       this.nowPage = 0;
     },
   },
