@@ -1,7 +1,7 @@
 <template>
     <div style="background-color: #3C3C3C">
         <div style="position: relative">
-            <div v-show="timeline" :id="'container'+page+idx"></div>
+            <div v-show="timeline" :id="'container'+idx"></div>
             <vue-wave-surfer 
                 ref="waveform"
                 :src="url"
@@ -17,7 +17,7 @@
 <script>
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 export default {
-    props: ['url', 'height', 'mouse', 'audioCtx', 'timeline', 'page', 'idx', 'full'],
+    props: ['url', 'height', 'mouse', 'audioCtx', 'timeline', 'idx', 'full'],
     data() {
         return {
             options: {
@@ -32,7 +32,7 @@ export default {
                 audioContext: this.audioCtx,
                 plugins: [
                     Timeline.create({
-                        container: "#container"+this.page+this.idx,
+                        container: "#container"+this.idx,
                         secondaryFontColor: '#ffffffbb'
                     })
                 ]

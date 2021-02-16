@@ -3,7 +3,7 @@
     <div class="d-flex file-title">
       <p class="file-name pb-2 medium">{{ music.fileName }}</p>
       <v-spacer></v-spacer>
-      <v-btn icon color="white" @click="sendDelete()" v-if="status === 'Master'">
+      <v-btn icon dark @click="sendDelete()" v-if="status === 'Master'">
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </div>
@@ -12,7 +12,7 @@
         <v-btn
           v-if="this.state == 'paused' || this.state == 'stopped'"
           icon
-          color="white"
+          dark
           class="mt-4"
           :disabled="player == null"
           v-on:click="start()"
@@ -23,13 +23,13 @@
           v-else
           icon
           class="mt-4"
-          color="white"
+          dark
           :disabled="player == null"
           v-on:click="pause()"
         >
           <v-icon>mdi-pause</v-icon>
         </v-btn>
-        <v-btn icon color="white" class="mt-4" v-on:click="stop()">
+        <v-btn icon dark class="mt-4" v-on:click="stop()">
           <v-icon>mdi-stop</v-icon>
         </v-btn>
       </div>
@@ -41,7 +41,6 @@
           height="64"
           mouse="true"
           timeline="true"
-          :page="page"
           :idx="n"
           full="false"
           @setTime="setTime"
@@ -51,7 +50,7 @@
       <!-- 이 부분부터 ReadOnly -->
       <div class="ml-3 mr-3" v-if="status === 'Master'">
         <!-- dropdown button -->
-        <v-btn icon color="white" class="mt-4" v-on:click="toggleDropdown()">
+        <v-btn icon dark class="mt-4" v-on:click="toggleDropdown()">
           <v-icon v-if="isShow == 0">mdi-chevron-down</v-icon>
           <v-icon v-else>mdi-chevron-up</v-icon>
         </v-btn>
@@ -203,7 +202,6 @@ import Waveform from "./Waveform.vue";
 export default {
   name: "Player",
   props: {
-    page: Number,
     music: Object,
     n: Number
   },
