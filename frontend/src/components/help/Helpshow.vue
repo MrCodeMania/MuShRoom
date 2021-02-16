@@ -10,25 +10,34 @@
         v-if="show"
         transition="v-slide-y-transition"
         dark
+        max-width="400"
+        contain
         :lazy-src="imgsrc[nowPage]"
         :src="imgsrc[nowPage]"
       ></v-img>
-      <div>
+      <div class="ml-4">
         <v-card
           elevation="20"
           class="mx-auto"
-          min-width="200px"
-          max-width="400px"
+          min-width="300px"
+          max-width="500px"
           color="white"
           outlined
         >
-          <div class="d-flex justify-space-between mt-2 ml-2 mr-2">
+          <div class="d-flex justify-space-between mt-2 ml-2 mr-2 align-center">
             <div class="black--text" style="font-weight: bold; font-size: 20px">
               {{ describe[nowPage][0] }}
             </div>
 
-            <v-btn color="indigo" outlined fab small @click="changeHelpState">
-              <v-icon>mdi-close-thick</v-icon>
+            <v-btn
+              color="indigo"
+              outlined
+              fab
+              small
+              @click="changeHelpState"
+              text
+            >
+              <v-icon color="red">mdi-close-thick</v-icon>
             </v-btn>
           </div>
           <v-list-item three-line>
@@ -43,16 +52,24 @@
               <v-btn
                 :disabled="nowPage === 0"
                 small
-                color="indigo"
+                color="indigo  lighten-1"
                 @click="prev"
                 >이전</v-btn
               >
               <v-btn
-                :disabled="nowPage === maxPage"
+                v-if="nowPage !== 2"
+                :disabled="nowPage === 2"
                 small
-                color="indigo"
+                color="indigo darken-4"
                 @click="next"
                 >다음</v-btn
+              >
+              <v-btn
+                v-if="nowPage === 2"
+                small
+                color="indigo darken-4"
+                @click="changeHelpState"
+                >종료</v-btn
               >
             </div>
           </div>
@@ -105,9 +122,7 @@ export default {
     },
   },
   mounted() {
-    //this.box = document.getElementsByClassName("con");
-    //console.log(this.box);
-    // this.share.$;
+    this.maxPage = this.describe.length;
   },
   computed: {
     showState() {
