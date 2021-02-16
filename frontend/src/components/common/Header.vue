@@ -45,7 +45,7 @@ export default {
   props: ["openChat", "hasNickName", "newChat"],
   data() {
     return {
-      logo: require("@/assets/tmpLogo.png"),
+      logo: require("@/assets/Logo.png"),
     };
   },
   methods: {

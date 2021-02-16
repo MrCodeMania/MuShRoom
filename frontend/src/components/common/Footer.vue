@@ -1,5 +1,7 @@
 <template>
-    <v-footer padless height="100" color="#00ff0000">
+    <v-footer 
+    absolute
+    padless color="#00ff0000">
         <v-card class="text-center"
         elevation="0"
         color="#00ff0000"
@@ -13,11 +15,6 @@
             height="100"
             class="d-inline-block">
             </v-img>
-            <!-- <v-card-text class="pa-0 font-weight-bold">
-                <span style="color: white" v-for="name in team" :key="name">
-                    {{ name }}
-                </span>
-            </v-card-text> -->
         </v-card>
     </v-footer>
 </template>
