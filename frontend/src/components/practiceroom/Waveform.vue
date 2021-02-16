@@ -70,7 +70,6 @@ export default {
       this.player.playPause();
     },
     setTime(sec) {
-      console.log(sec);
       this.player.drawer.progress(sec / this.player.getDuration());
     },
   },
