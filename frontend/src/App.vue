@@ -18,10 +18,10 @@ export default {
 <style>
 @font-face {
   font-family: 12롯데마트드림;
-  src: local(※), url('/fonts/12롯데마트드림Bold.tff') format('truetype');
+  src: local(※), url('/fonts/12롯데마트드림Light.tff') format('truetype');
 }
 #app {
-  font-family: '12롯데마트드림Bold', sans-serif;
+  font-family: '12롯데마트드림Light', sans-serif;
   color: rgba(255, 255, 255, 0.733);
 }
 
