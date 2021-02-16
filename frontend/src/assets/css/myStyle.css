@@ -1,25 +1,21 @@
-.nav-color {
-  /* background-color: black !important; */
+
+.main-color {
+  background-color: #1E1E1E !important;
+}
+
+.main-color-light {
   background-color: #252526 !important;
 }
 
 .component-color {
-  background-color: rgb(48, 48, 48) !important;
-  /* background-color: #cbcacc !important; */
-}
-
-.component-color2 {
-  background-color: #36322c !important;
-}
-
-.main-color {
-  background-color: #7992a9 !important;
+  background-color: #303030 !important;
 }
 
 .smallcomponent-color {
-  /* background-color: white !important; */
-  background-color: #2D2D2D !important;
+  background-color: #2d2d2d !important;
 }
+
+
 /* 
 html {
   overflow-y: hidden !important;
@@ -49,12 +45,9 @@ body {
 
 .home_background {
   /* theme: black sea */
-  background-image: url('../note2.png'),
-    linear-gradient(-225deg, #2cd8d5 0%, #6b8dd6 48%, #8e37d7 100%);
+  background-color: #252526 !important;
   height: 100%;
 }
-
-
 
 p {
     color: #ffffffbb;

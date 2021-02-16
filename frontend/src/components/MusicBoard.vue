@@ -1,8 +1,8 @@
 <template>
-  <v-card class="musicBoard nav-color" elevation="0" width="100%" height="100%">
+  <v-card class="musicBoard main-color-light " elevation="0" width="100%" height="100%">
     <v-card
       id="musicListId"
-      class="musicList overflow-y-auto nav-color"
+      class="musicList overflow-y-auto main-color-light "
       min-height="73vh"
       max-height="73vh"
       v-scroll.self="onScroll"
@@ -13,7 +13,6 @@
         v-for="(item, idx) in music"
         :key="item.id"
         :n="idx"
-        :page="page"
         :music="item"
         @deleteMusic="deleteMusic"
         @updateMusicOption="updateMusicOption"
@@ -22,13 +21,13 @@
     </v-card>
     <v-divider dark></v-divider>
     <v-card
-      class="buttonBar d-flex nav-color"
+      class="buttonBar d-flex main-color-light "
       elevation="0"
       width="100%"
       height="8vh"
     >
       <v-spacer></v-spacer>
-      <v-card class="d-flex justify-end nav-color" elevation="0">
+      <v-card class="d-flex justify-end main-color-light " elevation="0">
         <v-btn
           class="musicboard_btn pt-1"
           icon
@@ -74,7 +73,6 @@ import SockJS from "sockjs-client";
 import Config from "@/store/config";
 
 export default {
-  props: ["page"],
   components: {
     Player,
   },
@@ -98,27 +96,14 @@ export default {
       return this.$store.getters.getURL;
     },
     music: function () {
-      return this.$store.getters.getBoard(this.page);
-    },
-    length: function () {
-      return this.$store.getters.getPageLength;
-    },
-  },
-  watch: {
-    page: function () {
-      if (this.$refs.player) {
-        this.$refs.player.forEach((el) => {
-          el.removeFromTransport();
-        });
-      }
+      return this.$store.getters.getBoard;
     },
   },
   methods: {
     send(type, msg) {
-      console.log(msg);
       if (type == "music")
         this.musicStompClient.send(
-          "/socket/music/" + this.code + "/" + this.page + "/receive",
+          "/socket/music/" + this.code + "/0/receive",
           JSON.stringify(msg),
           {}
         );
@@ -136,23 +121,19 @@ export default {
           console.log("뮤직보드 소켓 연결 성공", frame);
 
           this.musicStompClient.subscribe(
-            "/socket/music/" + this.code + "/" + this.page + "/send",
+            "/socket/music/" + this.code + "/0/send",
             (res) => {
               const resBody = JSON.parse(res.body);
-
-              console.log(resBody);
 
               if (resBody["type"] == "delete") {
                 this.$toasts.success("musicboard toast");
                 this.$store.commit("deleteMusic", {
-                  page: this.page,
                   idx: resBody["index"],
                 });
               }
               if (resBody["type"] == "update") {
                 this.$toasts.success("musicboard toast");
                 this.$store.commit("updateMusic", {
-                  page: this.page,
                   music: {
                     id: resBody["index"],
                     url: resBody["obj"]["url"],
@@ -208,7 +189,6 @@ export default {
       this.play = !this.play;
     },
     musicStopButton() {
-      console.log("stop");
       Tone.Transport.stop();
       this.play = false;
     },

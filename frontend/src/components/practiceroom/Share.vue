@@ -23,7 +23,7 @@
         <v-list class="component-color" width="20vw">
                 <v-list-item v-for="(item, idx) in filtered_urls" :key="idx">
                     <v-list-item-content style="padding: 0px !important; margin-bottom: 5px;">
-                        <v-list-item-title style="font-size:12pt !important; font-weight:bold; color: #FBFBFB;">
+                        <v-list-item-title class="text-color" style="font-size:12pt !important; font-weight:bold;">
                             {{item.name}}
                         </v-list-item-title>
                         <div class="share-component">
@@ -66,7 +66,6 @@ export default {
         this.status = this.$store.state.status;
 
         this.loc = document.location.href.split('?');
-        console.log(this.loc);
         if(this.loc.length > 1)
             this.isRoom = true;
         else

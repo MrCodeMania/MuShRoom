@@ -1,7 +1,7 @@
 <template>
   <v-card elevation="0" width="100%" height="98%">
     <v-card elevation="0">
-      <div class="py-3 d-flex justify-space-around nav-color" style="border-radius: 0px">
+      <div class="py-3 d-flex justify-space-around main-color-light " style="border-radius: 0px">
         <v-btn
           text
           style="font-size: 1.5em"
@@ -39,9 +39,9 @@
         /></v-card>
       </v-expand-transition>
     </v-card>
-    <v-divider style="background-color: rgba(255, 255, 255, 0.733);"></v-divider>
+    <v-divider class="text-color"></v-divider> 
     <v-card
-      class="overflow-y-auto nav-color"
+      class="overflow-y-auto main-color-light "
       style="height: inherit !important; border-radius: 0px 0px 3px 3px"
       v-scroll.self="onScroll"
     >
@@ -65,7 +65,6 @@ import SockJS from "sockjs-client";
 import Config from "@/store/config";
 
 export default {
-  props: ["page"],
   data: () => {
     return {
       expand: false,
@@ -100,7 +99,7 @@ export default {
         );
       else if (type == "music")
         this.musicStompClient.send(
-          "/socket/music/" + this.code + "/" + this.page + "/receive",
+          "/socket/music/" + this.code + "/0/receive",
           JSON.stringify(msg),
           {}
         );
@@ -122,8 +121,6 @@ export default {
             (res) => {
               this.$toasts.success("record toast");
               const resBody = JSON.parse(res.body);
-
-              console.log(resBody);
 
               if (resBody["type"] == "add")
                 this.$store.commit("updateRecord", {
@@ -152,14 +149,12 @@ export default {
           this.connected = true;
           console.log("레코드 소켓 연결 성공", frame);
           this.musicStompClient.subscribe(
-            "/socket/music/" + this.code + "/" + this.page + "/send",
+            "/socket/music/" + this.code + "/0/send",
             (res) => {
               const resBody = JSON.parse(res.body);
-              console.log(resBody);
               if (resBody["type"] == "add") {
                 this.$toasts.success("music toast");
                 this.$store.commit("addMusic", {
-                  page: this.page,
                   record: {
                     fileName: resBody["obj"]["fileName"],
                     downloadURL: resBody["obj"]["url"],
@@ -230,7 +225,7 @@ export default {
         if (this.records[i].id === id) {
           this.send("music", {
             type: "add",
-            index: this.$store.getters.getBoard(this.page).length,
+            index: this.$store.getters.getBoard.length,
             obj: {
               url: this.records[i]["downloadURL"],
               fileName: this.records[i]["fileName"],

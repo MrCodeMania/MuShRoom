@@ -6,7 +6,7 @@
         max-width="500"
         persistent>
             <v-card
-            class="d-flex flex-column nav-color" 
+            class="d-flex flex-column main-color" 
             height="auto"
             >
                 <v-card-title class="card-title">

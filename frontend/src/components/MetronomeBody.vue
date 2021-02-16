@@ -1,6 +1,6 @@
 <template>
-  <v-card class="metronome-main nav-color" height="100%" width="100%" elevation="0">
-    <v-card class="d-flex pa-2 metronome-screen nav-color">
+  <v-card class="metronome-main main-color-light " height="100%" width="100%" elevation="0">
+    <v-card class="d-flex pa-2 metronome-screen main-color-light ">
       <BeatIndicator :bpm="bpm" :beatIndex="beatIndex" :isPlaying="isPlaying()"/>
       <v-card class="d-flex ml-2 justify-space-around" style="border-radius: 0px;" height="100%" width="100%" color="#333333">
         <div class="d-flex-column pl-4">
@@ -35,8 +35,8 @@
         </div>
       </v-card>
     </v-card>
-    <v-divider style="background-color: rgba(255, 255, 255, 0.733);"></v-divider>
-    <v-card class="d-flex align-center metronome-btn nav-color">
+    <v-divider class="text-color"></v-divider>
+    <v-card class="d-flex align-center metronome-btn main-color-light ">
       <PlayControlBtn :isPlaying="isPlaying()" @start="onStart" @stop="onStop"/>
       <v-spacer></v-spacer>
       <div class="d-flex align-center">
