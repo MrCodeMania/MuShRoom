@@ -33,13 +33,13 @@ export default {
 .mine {
     float: right;
     margin-top: 2px;
-    background-color: #ffe600 !important;
+    background-color: #f0f0f0f1 !important;
 }
 
 .others{
     float: left;
     margin-top: 2px;
-    background-color: white !important;
+    background-color: #f0f0f09f !important;
 }
 
 .myInfo {

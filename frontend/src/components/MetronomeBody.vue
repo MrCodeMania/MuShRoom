@@ -1,17 +1,17 @@
 <template>
   <v-card class="metronome-main nav-color" height="100%" width="100%" elevation="0">
-    <v-card class="d-flex pa-2 metronome-screen" color="blue-grey darken-4">
+    <v-card class="d-flex pa-2 metronome-screen nav-color">
       <BeatIndicator :bpm="bpm" :beatIndex="beatIndex" :isPlaying="isPlaying()"/>
-      <v-card class="d-flex ml-2 justify-space-around" height="100%" width="100%" color="#868488">
+      <v-card class="d-flex ml-2 justify-space-around" style="border-radius: 0px;" height="100%" width="100%" color="#333333">
         <div class="d-flex-column pl-4">
           <p class="metronome-now">{{ bpm }} <span class="metronome-label"> BPM </span> </p>
-          <v-btn plain class="mt-n3 pl-2" 
+          <v-btn plain class="mt-n3" 
             icon color="white" @click="decrease('bpm')" 
             @mousedown="decreaseStart('bpm')" 
             @mouseleave="decreaseEnd()"
             @mouseup="decreaseEnd()"><v-icon>mdi-minus</v-icon>
           </v-btn>
-          <v-btn plain class="mt-n3 pr-2" 
+          <v-btn plain class="mt-n3" 
             icon color="white" @click="increase('bpm')" 
             @mousedown="increaseStart('bpm')" 
             @mouseleave="increaseEnd()"
@@ -20,13 +20,13 @@
         </div>
         <div class="d-flex-column pr-4">
           <p class="metronome-now">{{ beatsPerBar }} <span class="metronome-label"> Beat </span> </p>
-          <v-btn plain class="mt-n3 ml-n2 pl-2" 
+          <v-btn plain class="mt-n3 ml-n2" 
             icon color="white" @click="decrease('beat')" 
             @mousedown="decreaseStart('beat')" 
             @mouseleave="decreaseEnd()" @mouseup="decreaseEnd()" 
             :disabled="isPlaying()"><v-icon>mdi-minus</v-icon>
           </v-btn>
-          <v-btn plain class="mt-n3 pr-2" 
+          <v-btn plain class="mt-n3" 
             icon color="white" @click="increase('beat')" 
             @mousedown="increaseStart('beat')" 
             @mouseleave="increaseEnd()" @mouseup="increaseEnd()"
@@ -35,7 +35,8 @@
         </div>
       </v-card>
     </v-card>
-    <v-card class="d-flex align-center metronome-btn component-color2">
+    <v-divider style="background-color: rgba(255, 255, 255, 0.733);"></v-divider>
+    <v-card class="d-flex align-center metronome-btn nav-color">
       <PlayControlBtn :isPlaying="isPlaying()" @start="onStart" @stop="onStop"/>
       <v-spacer></v-spacer>
       <div class="d-flex align-center">
@@ -340,7 +341,7 @@ export default {
 } */
 
 .metronome-screen {
-    border-radius: 5px 5px 0px 0px ;
+    border-radius: 0px !important;
     height: 70%;
 }
 
