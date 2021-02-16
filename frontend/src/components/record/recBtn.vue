@@ -1,7 +1,7 @@
 <template>
   <div class="ar">
     <div class="ar-content component-color">
-      <div class="ar-recorder mt-3">
+      <div class="ar-recorder mt-5">
         <icon-button
           style="background-color: #d7c9b2"
           class="ar-icon ar-icon__lg"
@@ -13,7 +13,7 @@
           @click.native="startRecorder"
         />
         <icon-button
-          class="ar-icon ar-icon__sm ar-recorder__stop"
+          class="ar-icon ar-icon__lg ar-recorder__stop"
           name="stop"
           @click.native="stopRecorder"
         />
@@ -125,7 +125,7 @@ export default {
 </script>
 <style lang="scss">
 .ar {
-  width: 230px;
+  width: 100%;
   font-family: "Roboto", sans-serif;
   border-radius: 16px;
   background-color: #fafafa;
@@ -139,33 +139,6 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-
-  &-records {
-    height: 100px;
-    padding-top: 1px;
-    overflow-y: auto;
-    margin-bottom: 20px;
-
-    &__record {
-      width: 320px;
-      height: 45px;
-      padding: 0 10px;
-      margin: 0 auto;
-      line-height: 45px;
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 1px solid #e8e8e8;
-      position: relative;
-
-      &--selected {
-        border: 1px solid #e8e8e8;
-        border-radius: 24px;
-        background-color: #ffffff;
-        margin-top: -1px;
-        padding: 0 34px;
-      }
-    }
   }
 
   &-recorder {
@@ -186,25 +159,9 @@ export default {
       fill: white !important;
       background-color: #ff6b64 !important;
       position: absolute;
-      top: 0;
-      right: 0;
       width: 38px;
       height: 38px;
       display: none;
-    }
-
-    &__time-limit {
-      position: absolute;
-      color: #aeaeae;
-      font-size: 12px;
-      top: 128px;
-    }
-
-    &__records-limit {
-      position: absolute;
-      color: #aeaeae;
-      font-size: 13px;
-      top: 78px;
     }
   }
 }
