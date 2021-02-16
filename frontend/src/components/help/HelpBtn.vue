@@ -1,5 +1,7 @@
 <template>
-  <v-btn color="primary" dark="dark" @click="changeHelpState"> help </v-btn>
+  <v-btn dark text @click="changeHelpState">
+    <v-icon class="pr-2">mdi-help-circle-outline</v-icon> help
+  </v-btn>
 </template>
 
 <script>
