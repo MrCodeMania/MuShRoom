@@ -7,44 +7,28 @@
       >
         <v-btn
           text
-          style="font-size: 1.5em"
           :class="expand ? 'select' : 'not-select'"
-          @click="expandChange(1)"
-          >record
+          @click="showRecord = !showRecord"
+          ><v-icon>mdi-microphone-outline</v-icon>
         </v-btn>
         <v-btn
           text
-          style="font-size: 1.5em"
           :class="expand2 ? 'not-select' : 'not-select'"
-          @click="expandChange(2)"
-          >upload
+          @click="file_upload_open"
+          ><v-icon>mdi-file-upload-outline</v-icon>
         </v-btn>
       </div>
-      <v-expand-transition>
-        <v-card
-          style="position: absolute; z-index: 99"
-          v-show="expand"
-          mode="in-out"
-          height="auto"
-          width="100%"
-          class="mx-auto component-color"
-          ><recordBtn @sendData="receiveData" ref="recBtn"
-        /></v-card>
-      </v-expand-transition>
-      <v-expand-transition>
-        <v-card
-          v-show="expand2"
-          mode="out-in"
-          height="0"
-          width="100%"
-          class="mx-auto"
-          ><uploadBtn @sendData="receiveData" ref="fileupload"
-        /></v-card>
-      </v-expand-transition>
+
+      <recordBtn
+        :showRecord="showRecord"
+        @sendData="receiveData"
+        ref="recBtn"
+      />
+      <UploadBtn @sendData="receiveData" ref="fileupload" />
     </v-card>
     <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
     <v-card
-      class="overflow-y-auto nav-color"
+      class="overflow-y-auto main-color-light "
       style="height: inherit !important; border-radius: 0px 0px 3px 3px"
       v-scroll.self="onScroll"
     >
@@ -61,7 +45,7 @@
 
 <script>
 import recordBtn from "./record/recordBtn";
-import uploadBtn from "./record/fileupload";
+import UploadBtn from "./record/fileupload";
 import recordCard from "./record/Audiocard";
 import Stomp from "webstomp-client";
 import SockJS from "sockjs-client";
@@ -69,11 +53,11 @@ import Config from "@/store/config";
 import options from "@/store/option";
 
 export default {
-  props: ["page"],
   data: () => {
     return {
       expand: false,
-      expand2: false, // expand data
+      expand2: false, //
+      showRecord: false,
       scrollInvoked: 0,
     };
   },
@@ -93,7 +77,7 @@ export default {
   components: {
     recordCard,
     recordBtn,
-    uploadBtn,
+    UploadBtn,
   },
   methods: {
     send(type, msg) {
@@ -105,7 +89,7 @@ export default {
         );
       else if (type == "music")
         this.musicStompClient.send(
-          "/socket/music/" + this.code + "/" + this.page + "/receive",
+          "/socket/music/" + this.code + "/0/receive",
           JSON.stringify(msg),
           {}
         );
@@ -127,8 +111,6 @@ export default {
             (res) => {
               this.$toast("record toast", options);
               const resBody = JSON.parse(res.body);
-
-              console.log(resBody);
 
               if (resBody["type"] == "add")
                 this.$store.commit("updateRecord", {
@@ -157,14 +139,12 @@ export default {
           this.connected = true;
           console.log("레코드 소켓 연결 성공", frame);
           this.musicStompClient.subscribe(
-            "/socket/music/" + this.code + "/" + this.page + "/send",
+            "/socket/music/" + this.code + "/0/send",
             (res) => {
               const resBody = JSON.parse(res.body);
-              console.log(resBody);
               if (resBody["type"] == "add") {
                 this.$toast("music toast", options);
                 this.$store.commit("addMusic", {
-                  page: this.page,
                   record: {
                     fileName: resBody["obj"]["fileName"],
                     downloadURL: resBody["obj"]["url"],
@@ -183,24 +163,11 @@ export default {
       );
     },
 
-    rec_expand_close() {
-      this.$refs.recBtn.expandInit();
+    rec_show() {
+      this.$refs.recBtn.show();
     },
     file_upload_open() {
       this.$refs.fileupload.inputClick();
-    },
-    expandChange(data) {
-      if (data === 1) this.rec_expand_close();
-      if (data === 2) this.file_upload_open();
-
-      if (data == 1) {
-        this.expand = !this.expand;
-        this.expand2 = false;
-      }
-      if (data == 2) {
-        this.expand = false;
-        this.expand2 = true;
-      }
     },
 
     addCard(data) {
@@ -235,7 +202,7 @@ export default {
         if (this.records[i].id === id) {
           this.send("music", {
             type: "add",
-            index: this.$store.getters.getBoard(this.page).length,
+            index: this.$store.getters.getBoard.length,
             obj: {
               url: this.records[i]["downloadURL"],
               fileName: this.records[i]["fileName"],

@@ -1,7 +1,11 @@
 <template>
   <div class="home_background">
-    <Header/>
     <div class="home">
+      <div
+      class="pt-2">
+        <v-img
+        max-width="180" height="50" :src="logo"> </v-img>
+      </div>
       <v-card 
       color="#00ff0000"
       elevation="0"
@@ -9,7 +13,7 @@
       height="100%">
         <v-avatar
         rounded="circle"
-        color="rgba( 255, 255, 255, 0.1 )"
+        color="#3C3C3C"
         size="300">
           <v-btn
         icon
@@ -25,7 +29,8 @@
           <v-card
           color="#00ff0000"
           elevation="0">
-            <v-card-title>
+            <v-card-title
+            style="font-weight: bold; color: #f0f0f0;">
               start
             </v-card-title>
           </v-card>
@@ -38,7 +43,6 @@
 </template>
 
 <script>
-import Header from '@/components/common/Header.vue';
 import Footer from '@/components/common/Footer.vue';
 import axios from '@/service/axios.service.js';
 import Config from '@/store/config'
@@ -46,13 +50,13 @@ import Config from '@/store/config'
 export default {
   name: 'home',
   components: {
-    Header,
     Footer,
     // MainModal
   },
   data: function() {
     return {
       src: require("@/assets/mushroom_v2.png"),
+      logo: require("@/assets/Logo.png"),
       showModal: false,
       address: ""
     }
