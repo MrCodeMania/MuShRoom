@@ -77,7 +77,7 @@ export default {
     },
     props: [
         'openChat', // class 바인딩 바꿔줄 toggle 변수
-        'nickName'  // prefix로 붙일 nickName
+        'nickName'  // nickName
     ],
     data() {
         return {
@@ -114,13 +114,16 @@ export default {
                 this.sentence = '';
                 return;
             }
-            this.stompClient.send("/socket/chat/"+this.roomCode+"/receive", JSON.stringify({id: this.id, message: this.prefix+this.sentence}));
+            this.stompClient.send("/socket/chat/"+this.roomCode+"/receive", JSON.stringify({id: this.id+" "+this.nickName, message: this.sentence}));
             this.sentence = '';
         },
         receiveMessage(res) {
             const resBody = JSON.parse(res.body);
-            console.log("Receive message: ", resBody);
-            this.msgList.push({id: resBody["id"], text: resBody["message"]});
+            // console.log("Receive message: ", resBody);
+            const head = resBody["id"].split(" ");  // id과 닉네임 분리
+            const now = new Date(Date.now());
+            const time = now.getHours()+":"+now.getMinutes();
+            this.msgList.push({id: head[0], nickName: head[1], time: time, text: resBody["message"]});
             if(!this.openChat)
                 this.$emit('newChat');
         },
