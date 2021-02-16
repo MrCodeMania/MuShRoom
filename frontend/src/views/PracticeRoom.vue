@@ -6,9 +6,7 @@
       v-on:openModal="openModal"
       :hasNickName="hasNickName"
       :newChat="newChat"
-      style="display: block; position: fixed; width: auto !important;"
     />
-    <div style="height:70px"></div>
     <!-- 부모 row -->
     <v-row no-gutters class="mx-auto" style="width: 1100px !important">
       <!-- 왼쪽 컴포넌트들 -->
@@ -90,7 +88,7 @@
         </v-row>
 
         <!-- 파일 목록 -->
-        <v-row v-if="status === 'Master'" no-gutters style="height: 63vh">
+        <v-row v-if="status === 'Master'" no-gutters style="height: 62.5vh">
           <v-card elevation="0" width="100%" height="100%">
             <Record :page="page" />
           </v-card>
