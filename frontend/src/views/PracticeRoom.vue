@@ -1,6 +1,7 @@
 <template>
   <v-main>
-    <Header :openChat="openChat" @showChat="showChat" style="display: block; position: fixed; width: auto !important;"/>
+    <Header :openChat="openChat" v-on:toggleChat="toggleChat" v-on:openModal="openModal" :hasNickName="hasNickName" :newChat="newChat" 
+      style="display: block; position: fixed; width: auto !important;"/>
     <div style="height:70px"></div>
     <!-- 부모 row -->
     <v-row no-gutters class="mx-auto" style="width: 1100px !important;">
@@ -83,7 +84,7 @@
         </v-row>
 
         <!-- 파일 목록 -->
-        <v-row v-if="status === 'Master'" no-gutters style="height: 62vh">
+        <v-row v-if="status === 'Master'" no-gutters style="height: 63vh">
           <v-card
             elevation="0"
             width="100%"
@@ -94,18 +95,8 @@
         </v-row>
       </v-col>
     </v-row>
-    <!-- <v-btn
-    class="chat-btn"
-    dark
-    icon
-    @click="showChat()"
-    v-if="!openChat">
-      <v-icon
-      dark>
-        mdi-chat
-      </v-icon>
-    </v-btn> -->
-    <Chat :openChat="openChat" @closeChat="closeChat"/>
+    <Chat :openChat="openChat" @toggleChat="toggleChat" :nickName="nickName" @newChat="arriveNewChat"/>
+    <SetNickName :showModal="showModal" @close="closeModal" @setNickName="setNickName"/>
   </v-main>
 </template>
 
@@ -118,6 +109,9 @@ import axios from "@/service/axios.service.js";
 import Stomp from 'webstomp-client';
 import SockJS from 'sockjs-client';
 import Chat from '@/components/chat/Chat.vue';
+import SetNickName from '@/components/chat/SetNickName.vue';
+
+//import * as Tone from "tone";
 import Config from '@/store/config'
 
 export default {
@@ -126,7 +120,8 @@ export default {
     Metronome,
     MusicBoard,
     Record,
-    Chat
+    Chat,
+    SetNickName
   },
   created() {
     // Status를 vuex에 저장
@@ -140,7 +135,11 @@ export default {
       page: 0, //  현재 페이지,
       status,
       pageNames: ["", "", "", "", ""], // 페이지 이름,
-      openChat: false
+      openChat: false,
+      showModal: false,
+      hasNickName: false,
+      nickName: '',
+      newChat: 0
     };
   },
   computed: {
@@ -281,12 +280,36 @@ export default {
     removePage() {
       this.moveLeft();
       this.send("deletePage");
+    }, 
+    // 채팅창 버튼 누르면 열고 닫는 toggle
+    toggleChat(){
+      if(!this.hasNickName)
+        return;
+
+      if(!this.openChat)
+        this.newChat = 0;
+      
+      this.openChat = !this.openChat;
     },
-    showChat(){
-      this.openChat = true;
+    // 닉네임 설정 모달
+    openModal() {
+      this.showModal = true;
     },
-    closeChat(){
-      this.openChat = false;
+    // 취소 눌렀을 때
+    closeModal() {
+      this.showModal = false;
+    },
+    // 채팅하기 눌렀을 때
+    setNickName(val) {
+      this.showModal = false;
+      this.hasNickName = true;
+      this.nickName = val;
+      this.toggleChat();
+    },
+    // 새로운 메세지가 왔을 때
+    arriveNewChat() {
+      if(!this.openChat)
+        this.newChat = this.newChat < 99 ? this.newChat+1 : this.newChat;
     }
   },
 };
@@ -321,10 +344,4 @@ export default {
   background-color: #3c4d5d;
 }
 
-.chat-btn {
-  display: flex;
-  position: fixed;
-  left: 50px;
-  bottom: 8vh;
-}
 </style>
