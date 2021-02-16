@@ -229,9 +229,6 @@ export default {
   },
   created() {
     this.constructor();
-    setInterval(() => {
-      console.log(typeof this.loopStart);
-    }, 1000);
   },
   watch: {
     music: function () {

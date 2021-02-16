@@ -1,8 +1,8 @@
 <template>
   <v-card class="main-color-light" width="100%" height="91%">
     <v-card
-      class="overflow-y-auto main-color-light "
-      style="height: inherit !important; border-radius: 0px;"
+      class="overflow-y-auto main-color-light"
+      style="height: inherit !important; border-radius: 0px"
       v-scroll.self="onScroll"
     >
       <recordCard
@@ -14,20 +14,15 @@
       />
     </v-card>
     <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
-    <v-card height="9%" class="main-color-light d-flex align-center" style="border-radius: 0px;" >
-      <v-btn
-        icon
-        dark
-        large
-        class="mx-2"
-        @click="showRecord = !showRecord"
-        ><v-icon  size="26px">mdi-microphone</v-icon>
+    <v-card
+      height="9%"
+      class="main-color-light d-flex align-center"
+      style="border-radius: 0px"
+    >
+      <v-btn icon dark large class="mx-2" @click="showRecord = !showRecord"
+        ><v-icon size="26px">mdi-microphone</v-icon>
       </v-btn>
-      <v-btn
-        icon
-        dark
-        large
-        @click="file_upload_open"
+      <v-btn icon dark large @click="file_upload_open"
         ><v-icon size="26px">mdi-file-upload</v-icon>
       </v-btn>
       <recordBtn
@@ -107,17 +102,28 @@ export default {
           this.recordStompClient.subscribe(
             "/socket/record/" + this.code + "/send",
             (res) => {
-              this.$toast("record toast", options);
               const resBody = JSON.parse(res.body);
 
-              if (resBody["type"] == "add")
+              if (resBody["type"] == "add") {
+                this.$toast(
+                  `[${resBody["obj"]["fileName"]}]이(가) 추가되었습니다.`,
+                  options
+                );
                 this.$store.commit("updateRecord", {
                   fileName: resBody["obj"]["fileName"],
                   downloadURL: resBody["obj"]["url"],
                   id: resBody["index"],
                 });
-              if (resBody["type"] == "delete")
+              }
+              if (resBody["type"] == "delete") {
+                this.$toast(
+                  `[${
+                    this.$store.getters.getRecords[resBody.index].fileName
+                  }]이(가) 제거되었습니다.`,
+                  options
+                );
                 this.$store.commit("deleteRecord", resBody.index);
+              }
             }
           );
         },
@@ -141,7 +147,10 @@ export default {
             (res) => {
               const resBody = JSON.parse(res.body);
               if (resBody["type"] == "add") {
-                this.$toast("music toast", options);
+                this.$toast(
+                  `[${resBody["obj"]["fileName"]}]이(가) 칠판으로 이동했습니다`,
+                  options
+                );
                 this.$store.commit("addMusic", {
                   record: {
                     fileName: resBody["obj"]["fileName"],
@@ -220,12 +229,11 @@ export default {
     },
     closeRecord() {
       this.showRecord = false;
-    }
+    },
   },
 };
 </script>
 
 
 <style>
-
 </style>
