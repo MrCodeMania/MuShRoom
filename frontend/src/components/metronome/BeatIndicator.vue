@@ -2,7 +2,7 @@
   <v-fade-transition>
     <v-avatar
       :color="beatIndex ? '#78909C' : '#DD2C00'"
-      :style="isPlaying ? { animationDuration: animationDuration } : 'background-color: #868488 !important;'"
+      :style="isPlaying ? { animationDuration: animationDuration } : 'background-color: #333333 !important;'"
       class="v-avatar--metronome"
       size="50"
       rounded="circle"

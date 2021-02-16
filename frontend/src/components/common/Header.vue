@@ -1,10 +1,10 @@
 <template>
-  <v-app-bar color="black" tile flat class="pt-2 pb-1" rounded height="auto">
+  <v-app-bar tile flat class="pt-2 pb-1 main-color-light " rounded height="auto">
     <v-btn text max-width="180" height="50" @click="toMain">
       <v-img max-width="180" height="50" :src="logo"> </v-img>
     </v-btn>
     <v-spacer></v-spacer>
-    <v-btn dark text @click="toggleChat()" :color="openChat ? 'grey' : 'white'">
+    <v-btn class="text-color" dark text plain @click="toggleChat()" :color="openChat ? 'grey' : 'white'">
       <div style="position: relative" class="pr-2">
         <v-card
           v-if="newChat > 0"
@@ -32,18 +32,20 @@
       </div>
       Chat
     </v-btn>
-    <Share/>
+    <Helpbtn />
+    <Share />
   </v-app-bar>
 </template>
 
 <script>
 import Share from "../practiceroom/Share.vue";
+import Helpbtn from "../help/HelpBtn.vue";
 export default {
-  components: { Share },
+  components: { Share, Helpbtn },
   props: ["openChat", "hasNickName", "newChat"],
   data() {
     return {
-      logo: require("@/assets/tmpLogo.png"),
+      logo: require("@/assets/Logo.png"),
     };
   },
   methods: {
