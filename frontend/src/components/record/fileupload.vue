@@ -21,7 +21,6 @@ export default {
   methods: {
     onFileChanged(e) {
       this.files = e.target.files;
-      console.log(this.files);
       this.upload();
     },
     inputClick() {
@@ -46,7 +45,7 @@ export default {
             this.$emit("sendData", file);
           })
           .catch((err) => {
-            console.log("업로드 실패 ㅠㅠ", err);
+            console.debug("업로드 실패", err);
           });
       }
       this.files = undefined;
