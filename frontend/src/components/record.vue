@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="0" width="100%" height="93%">
+  <v-card class="main-color-light" width="100%" height="91%">
     <v-card
       class="overflow-y-auto main-color-light "
       style="height: inherit !important; border-radius: 0px;"
@@ -14,10 +14,11 @@
       />
     </v-card>
     <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
-    <v-card elevation="0" height="15%" class="main-color-light d-flex align-center" style="border-radius: 0px;" >
+    <v-card height="9%" class="main-color-light d-flex align-center" style="border-radius: 0px;" >
       <v-btn
         icon
         dark
+        large
         class="mx-2"
         @click="showRecord = !showRecord"
         ><v-icon  size="26px">mdi-microphone</v-icon>
@@ -25,6 +26,7 @@
       <v-btn
         icon
         dark
+        large
         @click="file_upload_open"
         ><v-icon size="26px">mdi-file-upload</v-icon>
       </v-btn>
