@@ -1,8 +1,8 @@
 <template>
-  <v-card class="musicBoard nav-color" elevation="0" width="100%" height="100%">
+  <v-card class="musicBoard main-color-light " elevation="0" width="100%" height="100%">
     <v-card
       id="musicListId"
-      class="musicList overflow-y-auto nav-color"
+      class="musicList overflow-y-auto main-color-light "
       min-height="73vh"
       max-height="73vh"
       v-scroll.self="onScroll"
@@ -21,13 +21,13 @@
     </v-card>
     <v-divider dark></v-divider>
     <v-card
-      class="buttonBar d-flex nav-color"
+      class="buttonBar d-flex main-color-light "
       elevation="0"
       width="100%"
       height="8vh"
     >
       <v-spacer></v-spacer>
-      <v-card class="d-flex justify-end nav-color" elevation="0">
+      <v-card class="d-flex justify-end main-color-light " elevation="0">
         <v-btn
           class="musicboard_btn pt-1"
           icon
@@ -71,6 +71,7 @@ import * as Tone from "tone";
 import Stomp from "webstomp-client";
 import SockJS from "sockjs-client";
 import Config from "@/store/config";
+import options from "@/store/option";
 
 export default {
   components: {
@@ -126,13 +127,13 @@ export default {
               const resBody = JSON.parse(res.body);
 
               if (resBody["type"] == "delete") {
-                this.$toasts.success("musicboard toast");
+                this.$toast("musicboard toast", options);
                 this.$store.commit("deleteMusic", {
                   idx: resBody["index"],
                 });
               }
               if (resBody["type"] == "update") {
-                this.$toasts.success("musicboard toast");
+                this.$toast("musicboard toast", options);
                 this.$store.commit("updateMusic", {
                   music: {
                     id: resBody["index"],

@@ -1,47 +1,34 @@
 <template>
   <v-card elevation="0" width="100%" height="98%">
     <v-card elevation="0">
-      <div class="py-3 d-flex justify-space-around nav-color" style="border-radius: 0px">
+      <div
+        class="py-3 d-flex justify-space-around nav-color"
+        style="border-radius: 0px"
+      >
         <v-btn
           text
-          style="font-size: 1.5em"
           :class="expand ? 'select' : 'not-select'"
-          @click="expandChange(1)"
-          >record
+          @click="showRecord = !showRecord"
+          ><v-icon>mdi-microphone-outline</v-icon>
         </v-btn>
         <v-btn
           text
-          style="font-size: 1.5em"
           :class="expand2 ? 'not-select' : 'not-select'"
-          @click="expandChange(2)"
-          >upload
+          @click="file_upload_open"
+          ><v-icon>mdi-file-upload-outline</v-icon>
         </v-btn>
       </div>
-      <v-expand-transition>
-        <v-card
-          style="position: absolute; z-index: 99"
-          v-show="expand"
-          mode="in-out"
-          height="auto"
-          width="100%"
-          class="mx-auto component-color"
-          ><recordBtn @sendData="receiveData" ref="recBtn"
-        /></v-card>
-      </v-expand-transition>
-      <v-expand-transition>
-        <v-card
-          v-show="expand2"
-          mode="out-in"
-          height="0"
-          width="100%"
-          class="mx-auto"
-          ><uploadBtn @sendData="receiveData" ref="fileupload"
-        /></v-card>
-      </v-expand-transition>
+
+      <recordBtn
+        :showRecord="showRecord"
+        @sendData="receiveData"
+        ref="recBtn"
+      />
+      <UploadBtn @sendData="receiveData" ref="fileupload" />
     </v-card>
-    <v-divider style="background-color: rgba(255, 255, 255, 0.733);"></v-divider>
+    <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
     <v-card
-      class="overflow-y-auto nav-color"
+      class="overflow-y-auto main-color-light "
       style="height: inherit !important; border-radius: 0px 0px 3px 3px"
       v-scroll.self="onScroll"
     >
@@ -58,17 +45,19 @@
 
 <script>
 import recordBtn from "./record/recordBtn";
-import uploadBtn from "./record/fileupload";
+import UploadBtn from "./record/fileupload";
 import recordCard from "./record/Audiocard";
 import Stomp from "webstomp-client";
 import SockJS from "sockjs-client";
 import Config from "@/store/config";
+import options from "@/store/option";
 
 export default {
   data: () => {
     return {
       expand: false,
-      expand2: false, // expand data
+      expand2: false, //
+      showRecord: false,
       scrollInvoked: 0,
     };
   },
@@ -78,6 +67,7 @@ export default {
     },
   },
   created() {
+    console.log("option", options);
     this.idx = this.records.length;
 
     this.code = document.location.href.split("=")[1];
@@ -87,7 +77,7 @@ export default {
   components: {
     recordCard,
     recordBtn,
-    uploadBtn,
+    UploadBtn,
   },
   methods: {
     send(type, msg) {
@@ -119,7 +109,7 @@ export default {
           this.recordStompClient.subscribe(
             "/socket/record/" + this.code + "/send",
             (res) => {
-              this.$toasts.success("record toast");
+              this.$toast("record toast", options);
               const resBody = JSON.parse(res.body);
 
               if (resBody["type"] == "add")
@@ -153,7 +143,7 @@ export default {
             (res) => {
               const resBody = JSON.parse(res.body);
               if (resBody["type"] == "add") {
-                this.$toasts.success("music toast");
+                this.$toast("music toast", options);
                 this.$store.commit("addMusic", {
                   record: {
                     fileName: resBody["obj"]["fileName"],
@@ -173,24 +163,11 @@ export default {
       );
     },
 
-    rec_expand_close() {
-      this.$refs.recBtn.expandInit();
+    rec_show() {
+      this.$refs.recBtn.show();
     },
     file_upload_open() {
       this.$refs.fileupload.inputClick();
-    },
-    expandChange(data) {
-      if (data === 1) this.rec_expand_close();
-      if (data === 2) this.file_upload_open();
-
-      if (data == 1) {
-        this.expand = !this.expand;
-        this.expand2 = false;
-      }
-      if (data == 2) {
-        this.expand = false;
-        this.expand2 = true;
-      }
     },
 
     addCard(data) {
