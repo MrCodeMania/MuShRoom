@@ -17,15 +17,14 @@
 <script>
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 export default {
-    props: ['url', 'height', 'mouse', 'audioCtx', 'timeline', 'idx', 'full'],
+    props: ['url', 'height', 'mouse', 'audioCtx', 'timeline', 'idx', 'full', 'color'],
     data() {
         return {
             options: {
-                // barWidth: 2,
                 normalize: false,
                 cursorColor: '#00ff0000',
-                progressColor: '#FED134', //color of waveform behind the cursor
-                waveColor: '#00A2FF', //color of waveform after the cursor
+                progressColor: '#FED134', //color of waveform before the cursor
+                waveColor: this.color, //color of waveform after the cursor
                 scrollParent: this.full,
                 height: this.height,
                 interact: this.mouse,
@@ -42,41 +41,17 @@ export default {
     },
     mounted() {
         this.player.on('ready', ()=>{
-            this.toggleReady();
-            console.log('ready');
+            this.isReady = true;
         });
-        // this.player.zoom(10);
         this.player.on('seek', ()=>{
-            console.log(this.player.getCurrentTime().toFixed(2));
             this.$emit('setTime', this.player.getCurrentTime().toFixed(2));
         });
     },
-    // watch: {
-    //     url: function() {
-    //         this.player.on('ready', ()=>{
-    //             this.toggleReady();
-    //             console.log('ready');
-    //         });
-    //         this.player.zoom(10);
-    //         this.player.on('seek', ()=>{
-    //             console.log(this.player.getCurrentTime().toFixed(2));
-    //             this.$emit('setTime', this.player.getCurrentTime().toFixed(2));
-    //         });
-    //     }
-    // },
     computed: {
         player() {
             return this.$refs.waveform.waveSurfer;
-        },
-    },
-    methods: {
-        play() {
-            this.player.playPause();
-        },
-        toggleReady() {
-            this.isReady = true;
         }
-    }
+    },
 }
 </script>
 

@@ -43,6 +43,7 @@
           timeline="true"
           :idx="n"
           full="false"
+          color="#00A2FF"
           @setTime="setTime"
         ></Waveform>
       </div>

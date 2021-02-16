@@ -19,7 +19,7 @@
         >
       </v-card-title>
 
-      <Waveform class="mx-auto none" :url="fileData.downloadURL" height="60" full="true"/>
+      <Waveform class="mx-auto none" :url="fileData.downloadURL" height="60" full="true" color="#999"/>
     </v-card>
   </div>
 </template>
