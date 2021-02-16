@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="0" width="100%" height="98%">
+  <v-card elevation="0" width="100%" height="100%">
     <v-card
       class="overflow-y-auto main-color-light"
       style="height: inherit !important; border-radius: 3px 3px 0px 0px"

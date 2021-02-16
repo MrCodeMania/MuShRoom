@@ -3,8 +3,8 @@
     <v-card
       id="musicListId"
       class="musicList overflow-y-auto main-color-light "
-      min-height="73vh"
-      max-height="73vh"
+      height="940px"
+      max-height="85vh"
       v-scroll.self="onScroll"
       elevation="0"
     >
@@ -24,7 +24,7 @@
       class="buttonBar d-flex main-color-light "
       elevation="0"
       width="100%"
-      height="8vh"
+      height="60px"
     >
       <v-spacer></v-spacer>
       <v-card class="d-flex justify-end main-color-light " elevation="0">
