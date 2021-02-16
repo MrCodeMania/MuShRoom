@@ -92,7 +92,7 @@ export default new Vuex.Store({
         id: state.data.musicBoard[page].idx++,
         url: record.downloadURL,
         fileName: record.fileName,
-        timestamp: '',
+        timestamp: record.timestamp,
         distortion: {
           object: null,
           value: 0,
@@ -123,14 +123,13 @@ export default new Vuex.Store({
       page,
       idx
     }) {
-      for(let i = idx; i < state.data.musicBoard[page].list.length; i++)
-        state.data.musicBoard[page].list[i].id--;
-        
       state.data.musicBoard[page].list.splice(idx, 1);
       
       if(state.data.musicBoard[page].idx > 0)
         state.data.musicBoard[page].idx--;
-      
+
+      for(let i = idx; i < state.data.musicBoard[page].list.length; i++)
+        state.data.musicBoard[page].list[i].id--;      
     },
     //  musicBoard에 페이지 추가
     addPage(state, pageIdx) {

@@ -5,6 +5,7 @@
       color="white"
       v-if="isPlaying"
       @click="stop"
+      :disabled="recordStartState === 'startRecord'? true : false"
     >
       <v-icon size="30px">mdi-stop</v-icon>
     </v-btn>
@@ -20,6 +21,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 
 export default {
   name: 'MetronomeBtn',
@@ -33,6 +35,9 @@ export default {
     stop() {
       this.$emit('stop');
     },
+  },
+  computed: {
+    ...mapState(['recordStartState'])
   }
 }
 </script>

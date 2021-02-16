@@ -106,7 +106,7 @@ export default {
       beatIndex: 0,
 
       interval: false,
-      clickTime: 0,
+      timer: '',
 
       isStopped: true,
 
@@ -216,21 +216,27 @@ export default {
     },
 
     decreaseStart(point) {
-      if (!this.interval) {
-        this.interval = setInterval(() => this.decrease(point), 100);
-      }
+      this.timer = setTimeout(() => {
+        if (!this.interval) {
+          this.interval = setInterval(() => this.decrease(point), 50);
+        }
+      },1000);
     },
     decreaseEnd() {
+      clearTimeout(this.timer)
       clearInterval(this.interval)
       this.interval = false
     },
 
     increaseStart(point) {
-      if (!this.interval) {
-        this.interval = setInterval(() => this.increase(point), 100);
-      }
+      this.timer = setTimeout(() => {
+        if (!this.interval) {
+          this.interval = setInterval(() => this.increase(point), 50);
+        }
+      },1000);
     },
     increaseEnd() {
+      clearTimeout(this.timer)
       clearInterval(this.interval)
       this.interval = false
     },

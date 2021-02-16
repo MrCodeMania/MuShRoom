@@ -5,7 +5,6 @@
       outlined
       class="mx-auto mt-2 smallcomponent-color"
       width="90%"
-      height="100px"
     >
       <v-card-title width="50%" max-width="60px"
         ><span class="ml-2 medium">{{
@@ -20,7 +19,7 @@
         >
       </v-card-title>
 
-      <Waveform  class="mx-auto none" :url="fileData.downloadURL" height="60"/>
+      <Waveform class="mx-auto none" :url="fileData.downloadURL" height="60" full="true"/>
     </v-card>
   </div>
 </template>

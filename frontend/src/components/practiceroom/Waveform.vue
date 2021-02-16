@@ -1,15 +1,15 @@
 <template>
     <div style="background-color: #555">
-        <div v-if="!isReady" class="text-center py-2">
-            <v-progress-circular indeterminate></v-progress-circular>
-        </div>
-        <div :class="isReady ? '' : 'hide'">
-            <div v-show="timeline" :id="'container'+idx"></div>
+        <div style="position: relative">
+            <div v-show="timeline" :id="'container'+page+idx"></div>
             <vue-wave-surfer 
                 ref="waveform"
                 :src="url"
                 :options="options"
             ></vue-wave-surfer>
+        </div>
+        <div v-if="!isReady" style="position: relative; top: -45px; height: 0" class="text-center py-2">
+            <v-progress-circular indeterminate></v-progress-circular>
         </div>
     </div>
 </template>
@@ -17,7 +17,7 @@
 <script>
 import Timeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline';
 export default {
-    props: ['url', 'height', 'mouse', 'audioCtx', 'timeline', 'idx', 'full'],
+    props: ['url', 'height', 'mouse', 'audioCtx', 'timeline', 'page', 'idx', 'full'],
     data() {
         return {
             options: {
@@ -32,7 +32,7 @@ export default {
                 audioContext: this.audioCtx,
                 plugins: [
                     Timeline.create({
-                        container: "#container" + this.idx,
+                        container: "#container"+this.page+this.idx,
                         secondaryFontColor: '#000'
                     })
                 ]
