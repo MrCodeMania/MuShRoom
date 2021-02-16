@@ -5,7 +5,7 @@
       color="white"
       v-if="isPlaying"
       @click="stop"
-      :disabled="recordStartState === 'startRecord' || 'startMetro'? true : false"
+      :disabled="recordStartState === 'startRecord'? true : false"
     >
       <v-icon size="30px">mdi-stop</v-icon>
     </v-btn>
