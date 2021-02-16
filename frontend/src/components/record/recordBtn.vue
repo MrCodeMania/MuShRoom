@@ -10,9 +10,10 @@
         :sampleRate="44100"
       />
       <div class="mx-auto">
-        <v-card mode="in-out" width="100%" class="mt-n1 component-color">
+        <v-card mode="in-out" width="100%" class="component-color">
           <v-sheet
-            width="80%"
+            width="100%"
+            height="100%"
             class="d-flex align-center mx-auto justify-center component-color"
           >
             <v-text-field
@@ -55,6 +56,8 @@ export default {
       this.inputFileName = "";
     },
     async upload() {
+      if (this.file === "") return;
+      if (this.file.blob === undefined) return;
       const sendFileData = {
         fileName: "",
         downloadURL: "",
@@ -125,7 +128,7 @@ export default {
   width: 250px;
   height: 250px;
   top: 100px;
-  border: 2px solid red;
+
   border-radius: 2px;
 }
 </style>
