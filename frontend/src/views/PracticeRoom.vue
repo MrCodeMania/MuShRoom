@@ -94,9 +94,10 @@ export default {
       uploading: false  // 파일 업로드할 때 true
     };
   },
-  // beforeRouteLeave (to, from, next) {
-  //   alert(to +" "+ from +" "+ next);
-  // },
+  beforeRouteLeave (to) { // 경로 이동 전에 호출되는 메소드
+    window.location.reload(); // 현재 페이지 새로고침
+    this.$router.go(to); // 후에 다음 경로로 이동
+  },
   methods: {
     init() {
       this.code = this.$route.query.shareUrl;
