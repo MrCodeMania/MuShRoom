@@ -13,11 +13,11 @@
       <v-col cols="8" class="mx-auto flex-grow-0 flex-shrink-0 px-4 pt-4 pb-2">
         <v-row no-gutters style="height: 725px; max-height: 79vh;">
           <v-card elevation="0" height="100%" width="100%" color="#00ff0000">
-                            <!-- 뮤직 보드 -->
+            <!-- 뮤직 보드 -->
                 <v-card 
                 elevation="0" width="100%" height="100%" color="#00ff0000">
                   <MusicBoard  />
-                </v-card>
+            </v-card>
           </v-card>
         </v-row>
       </v-col>
@@ -74,6 +74,13 @@ export default {
     SetNickName,
     Help,
   },
+  mounted() {
+    if (this.$cookies.isKey("visit")) {
+      console.log("쿠키있음");
+    } else {
+      this.$store.commit("helpShowChange");
+    }
+  },
   created() {
     // Status를 vuex에 저장
 
@@ -115,7 +122,7 @@ export default {
         // 받아온 res에서 뮤직보드, 레코드보드 불러오기 해야함
         // 뮤직 보드 불러오기
 
-       for (let i = 0; i < res.data.musicPageList[0].musicList.length; i++) {
+        for (let i = 0; i < res.data.musicPageList[0].musicList.length; i++) {
           // 일단 한 번 넣고 수정한다
 
           this.$store.commit("addMusic", {

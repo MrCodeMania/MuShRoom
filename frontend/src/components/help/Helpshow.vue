@@ -15,10 +15,16 @@
         small
         @click="changeHelpState"
         text
+        v-if="firstIn"
       >
         <v-icon color="white">mdi-close-thick</v-icon>
       </v-btn>
-      <v-carousel height="500" hide-delimiter-background show-arrows>
+      <v-carousel
+        height="500"
+        hide-delimiter-background
+        show-arrows
+        @change="test"
+      >
         <template v-slot:prev="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on"
             ><v-icon>mdi-arrow-left-bold-outline</v-icon></v-btn
@@ -43,7 +49,9 @@ export default {
   components: {
     Helpview,
   },
+
   data: () => ({
+    firstIn: false,
     show: true,
     nowPage: 0,
     maxPage: 2,
@@ -74,8 +82,23 @@ export default {
       ["플레이어", "와! 다양한 효과 설명 설명 설명 설명~."],
       ["플레이어", "와! 다양한 효과 설명 설명 설명 설명~."],
     ],
+    visit: [],
   }),
   methods: {
+    test(e) {
+      this.visit[e - 1] = 1;
+      if (this.allVisitCheck() === true) {
+        this.$cookies.set("visit", "visited");
+        this.firstIn = true;
+      }
+      console.log(this.firstIn);
+    },
+    allVisitCheck() {
+      for (var i = 0; i < this.maxPage; i++) {
+        if (this.visit[i] === 0) return false;
+      }
+      return true;
+    },
     prev() {
       this.nowPage -= 1;
       this.show = false;
@@ -96,6 +119,11 @@ export default {
   },
   mounted() {
     this.maxPage = this.describe.length - 1;
+    this.visit = Array.from({ length: this.maxPage + 1 }, () => 0);
+    if (this.$cookies.isKey("visit")) {
+      console.log("쿠키있음");
+      this.firstIn = true;
+    }
   },
   computed: {
     showState() {

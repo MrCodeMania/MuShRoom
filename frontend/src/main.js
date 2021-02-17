@@ -7,9 +7,10 @@ import VueWaveSurfer from 'vue-wave-surfer';
 import Toast from "vue-toastification";
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
+import VueCookies from "vue-cookies";
 
 Vue.config.productionTip = false
-
+Vue.use(VueCookies);
 Vue.use(VueWaveSurfer);
 Vue.use(Toast, {
   transition: "Vue-Toastification__fade",
