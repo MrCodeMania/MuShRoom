@@ -11,13 +11,14 @@
       :before-recording="startRecord"
       :bit-rate="192"
       :sampleRate="44100"
+      :crossState="cross"
     />
     <v-spacer></v-spacer>
     <v-card
       elevation="0"
       width="80%"
       :disabled="nowstate"
-      class="d-flex mb-4 ml-11 align-center main-color"
+      class="d-flex mb-4 ml-7 align-center main-color"
     >
       <v-text-field
         dark
@@ -38,6 +39,24 @@
     >
       <v-icon> mdi-close </v-icon>
     </v-btn>
+    <v-tooltip left>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          icon
+          dark
+          v-bind="attrs"
+          v-on="on"
+          :disabled="recording"
+          style="position: absolute; left: 15px; top: 15px"
+          @click="changeCross"
+        >
+          <v-icon v-if="cross"> mdi-checkbox-blank-outline </v-icon>
+          <v-icon v-else>mdi-checkbox-marked</v-icon>
+        </v-btn>
+      </template>
+      <span v-if="cross">메트로놈 한 박자 후 녹음이 시작됩니다</span>
+      <span v-else>바로 녹음이 시작됩니다.</span></v-tooltip
+    >
   </v-card>
 </template>
 <script>
@@ -54,13 +73,16 @@ export default {
       // blob 형태 {size , type 두가지 정보} , duration 재생길이 , url => 로컬 다운로드 url
       file: {}, // 녹음 완료 후 파일 정보
       nowstate: true,
-      startTime: 4,
+      recording: false,
+      cross: true,
       filenameRules: [(value) => !!value || "Required."],
     };
   },
   methods: {
+    changeCross() {
+      this.cross = !this.cross;
+    },
     closeRecord() {
-      console.log(this.showRecord);
       this.$emit("closeRecord");
     },
     expandInit() {
@@ -121,15 +143,18 @@ export default {
     // :after-recording
     setRecorded() {
       this.hideStopBtn();
+
       setTimeout(() => {
         this.setRecentRecord();
       }, 800);
+      this.recording = false;
       this.nowstate = false;
     },
 
     //:before-recording=
     startRecord() {
       this.nowstate = true;
+      this.recording = true;
       this.showStopBtn();
     },
   },
