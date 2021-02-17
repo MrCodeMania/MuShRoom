@@ -1,9 +1,9 @@
 <template>
-  <div id="player">
+  <div id="player" style="border-radius: 5px;">
     <div class="d-flex file-title">
       <p class="file-name pb-2 medium">{{ music.fileName }}</p>
       <v-spacer></v-spacer>
-      <v-btn icon dark plain @click="sendDelete()" v-if="status === 'Master'">
+      <v-btn icon dark plain @click="sendDelete()" v-if="status === 'Master'" :disabled="!isReady">
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </div>
@@ -47,6 +47,7 @@
           full="false"
           color="#00A2FF"
           @setTime="setTime"
+          @isReady="nowReady"
           ref="waveform"
         ></Waveform>
       </div>
@@ -227,6 +228,7 @@ export default {
       delay: 0,
       offset: 0,
       currentTime: 0,
+      isReady: false,
     };
   },
   created() {
@@ -371,6 +373,9 @@ export default {
         this.start();
       }
     },
+    nowReady() {
+      this.isReady = true;
+    }
   },
 };
 </script>

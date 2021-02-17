@@ -23,6 +23,7 @@
                     style="width: 50px !important;" 
                     color="#ffffffbb"
                     dark
+                    autofocus
                     label="닉네임: " 
                     v-model="nickName"
                     :rules="rule"

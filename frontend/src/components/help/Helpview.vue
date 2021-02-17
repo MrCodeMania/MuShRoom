@@ -49,10 +49,6 @@ export default {
     describe: Array,
     src: String,
   },
-  mounted() {
-    console.log(this.describe);
-    console.log(this.src);
-  },
   methods: {
     changeHelpState() {
       this.$store.commit("helpShowChange");

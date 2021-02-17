@@ -2,7 +2,7 @@
   <v-card class="metronome-main main-color-light " height="100%" width="100%">
     <v-card class="d-flex pa-2 metronome-screen main-color-light ">
       <BeatIndicator :bpm="bpm" :beatIndex="beatIndex" :isPlaying="isPlaying()"/>
-      <v-card class="d-flex ml-2 justify-space-around" style="border-radius: 0px;" height="100%" width="100%" color="#333333">
+      <v-card elevation="0" class="d-flex ml-2 justify-space-around smallcomponent-color" style="border-radius: 5px;" height="100%" width="100%">
         <div class="d-flex-column pl-4">
           <p class="metronome-now">{{ bpm }} <span class="metronome-label"> BPM </span> </p>
           <v-btn plain class="mt-n3" 
