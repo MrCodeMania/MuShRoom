@@ -302,7 +302,6 @@ export default {
       document.getElementById(``);
 
       setTimeout(() => {
-        console.log("state?", this.player.state);
         this.moveProgressBar();
       }, this.music.delay.delay * 1000);
     },
@@ -359,11 +358,10 @@ export default {
     },
     addToTransport() {
       this.player.unsync();
-      this.player.sync().start(0, 2, 5);
+      this.player.sync().start(0);
     },
     moveProgressBar() {
       let interval = setInterval(() => {
-        console.log(this.player.computedDuration);
         if (Tone.Transport.seconds > 0) {
           if (this.player.loop) {
             if (this.music.loop.loopEnd > this.music.loop.loopStart) {

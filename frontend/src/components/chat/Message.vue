@@ -1,7 +1,8 @@
 <template>
     <!-- id 값에 따라 채팅 칸 위치, 색 달라짐 -->
     <div>
-        <div 
+        <div
+        v-if="!isSameId()"
         style="width: 150px; font-size: 14px;"
         :class="msg.id==id ? 'myInfo text-right':'yourInfo'">
             {{ msg.nickName }}
@@ -16,16 +17,71 @@
             {{ msg.text }}
         </v-card>
         <div
+        v-if="showTime()"
         :class="msg.id==id ? 'myInfo':'yourInfo'"
         style="width: 150px; font-size : 10px; color : grey;">
-            {{ msg.time }}
+            {{ msg.time | time() }}
         </div>
     </div>
 </template>
 
 <script>
+import Vue from 'vue';
+
+Vue.filter("time", (value) => {
+
+    const temp = value.split(":");
+    var hour = temp[0];
+    var min = temp[1];
+    if (temp[1].length == 1 ) {
+        min = '0' + temp[1];
+    }
+
+    return hour + ':' + min;
+
+})
+
+
 export default {
-    props: ['msg', 'id'],
+    props: ['msg', 'id', 'msgList', 'idx'],
+    methods: {
+        isSameId() {
+            if (this.idx < 1) {
+                return false;
+            } else {
+                if (this.msgList[this.idx].id == this.msgList[this.idx-1].id) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        },
+        isSameTime() {
+            if (this.idx < 1) {
+                return false;
+            } else {
+                if (this.msgList[this.idx].time == this.msgList[this.idx-1].time) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        },
+        showTime() {
+            if (this.idx == this.msgList.length -1 ) {
+                return true;
+            } else {
+                if ( this.msgList[this.idx].id != this.msgList[this.idx+1].id) {
+                    return true
+                }
+                if ( this.msgList[this.idx].time != this.msgList[this.idx+1].time) {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+    },
 }
 </script>
 

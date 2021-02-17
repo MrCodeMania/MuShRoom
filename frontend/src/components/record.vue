@@ -7,10 +7,11 @@
     >
       <recordCard
         v-for="(item, index) in records"
-        :key="item.id"
+        :key="index"
         v-on:delRecord="delRecord"
         v-on:addRecord="addRecord"
         v-bind:fileData="records[index]"
+        :idx="index"
       />
     </v-card>
     <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
@@ -31,7 +32,11 @@
         @closeRecord="closeRecord"
         ref="recBtn"
       />
-      <UploadBtn @sendData="receiveData" ref="fileupload" />
+      <UploadBtn
+        @sendData="receiveData"
+        @fileUploading="fileUploading"
+        ref="fileupload"
+      />
     </v-card>
   </v-card>
 </template> 
@@ -106,7 +111,7 @@ export default {
               if (resBody["type"] == "add") {
                 this.$toast(
                   `[${resBody["obj"]["fileName"]}]이(가) 추가되었습니다.`,
-                  { ...options, toastClassName: "toastAdd" }
+                  options
                 );
                 this.$store.commit("updateRecord", {
                   fileName: resBody["obj"]["fileName"],
@@ -119,7 +124,7 @@ export default {
                   `[${
                     this.$store.getters.getRecords[resBody.index].fileName
                   }]이(가) 제거되었습니다.`,
-                  { ...options, toastClassName: "toastDelete" }
+                  options
                 );
                 this.$store.commit("deleteRecord", resBody.index);
               }
@@ -148,7 +153,7 @@ export default {
               if (resBody["type"] == "add") {
                 this.$toast(
                   `[${resBody["obj"]["fileName"]}]이(가) 칠판으로 이동했습니다`,
-                  { ...options, toastClassName: "toastMove" }
+                  options
                 );
                 this.$store.commit("addMusic", {
                   record: {
@@ -184,6 +189,7 @@ export default {
       });
     },
     receiveData(data) {
+      this.$emit("uploadComplete");
       data["id"] = this.idx;
       this.idx += 1;
       this.addCard(data);
@@ -191,16 +197,10 @@ export default {
       this.expand = false;
     },
     delRecord(id) {
-      let len = this.records.length;
-      for (var i = 0; i < len; i++) {
-        if (this.records[i].id === id) {
-          this.send("record", {
-            type: "delete",
-            index: i,
-          });
-          break;
-        }
-      }
+      this.send("record", {
+        type: "delete",
+        index: id,
+      });
     },
     addRecord(id) {
       let len = this.records.length;
@@ -233,6 +233,10 @@ export default {
     },
     closeRecord() {
       this.showRecord = false;
+    },
+    // 파일 업로드 될 때
+    fileUploading() {
+      this.$emit("uploadStart");
     },
   },
 };

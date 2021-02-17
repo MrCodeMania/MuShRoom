@@ -24,13 +24,14 @@ export default {
       this.upload();
     },
     inputClick() {
-      this.files = "";
       this.$refs.uploader.click();
     },
     async upload() {
       if (this.files === undefined) {
         return;
       }
+      // 파일 업로드 상태 emit
+      this.$emit('fileUploading');
       for (let i = 0; i < this.files.length; i++) {
         const data = new FormData();
         var date = new Date();
@@ -48,7 +49,8 @@ export default {
             console.debug("업로드 실패", err);
           });
       }
-      this.files = undefined;
+      this.$refs.uploader.value = "";
+      console.log(this.$refs.uploader.value);
     },
   },
 };

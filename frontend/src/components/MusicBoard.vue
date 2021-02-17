@@ -129,7 +129,6 @@ export default {
             "/socket/music/" + this.code + "/0/send",
             (res) => {
               const resBody = JSON.parse(res.body);
-              console.log("res", resBody);
               if (resBody["type"] == "delete") {
                 this.$toast(
                   `[${resBody["obj"]["fileName"]}]이(가) 칠판에서 제거되었습니다.`,
@@ -225,7 +224,6 @@ export default {
       });
     },
     updateMusicOption(id) {
-      console.log("fromBoard ", this.music[id]);
       this.send("music", {
         type: "update",
         index: id,

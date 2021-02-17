@@ -90,7 +90,6 @@ export default new Vuex.Store({
       music
     }) {
       // state.data.musicBoard.list.splice(music.id, 1, music);
-      console.log("storemusic", state.data.musicBoard.list[music.id])
       state.data.musicBoard.list[music.id].volume.value = music.volume.value;
       state.data.musicBoard.list[music.id].distortion.value = music.distortion.value;
       state.data.musicBoard.list[music.id].gain.value = music.gain.value;
