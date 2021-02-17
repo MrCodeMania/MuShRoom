@@ -18,10 +18,19 @@
       >
         <v-icon color="white">mdi-close-thick</v-icon>
       </v-btn>
-      <v-carousel height="500" hide-delimiters show-arrows>
+      <v-carousel height="500" hide-delimiter-background show-arrows>
+        <template v-slot:prev="{ on, attrs }">
+          <v-btn icon v-bind="attrs" v-on="on"
+            ><v-icon>mdi-arrow-left-bold-outline</v-icon></v-btn
+          >
+        </template>
+        <template v-slot:next="{ on, attrs }">
+          <v-btn icon v-bind="attrs" v-on="on"
+            ><v-icon>mdi-arrow-right-bold-outline</v-icon></v-btn
+          >
+        </template>
         <v-carousel-item v-for="(slide, i) in describe" :key="i">
           <Helpview :describe="slide" :src="imgsrc[i]" />
-          <div class="d-flex justify-center">{{ i + 1 }}/{{ maxPage + 1 }}</div>
         </v-carousel-item>
       </v-carousel>
     </v-sheet>
@@ -41,19 +50,13 @@ export default {
     box: "",
     share: "",
     imgsrc: [
-      require("@/assets/help/0.png"),
-      require("@/assets/help/1.png"),
-      require("@/assets/help/2.png"),
-      require("@/assets/help/3.png"),
-      require("@/assets/help/4.png"),
-      require("@/assets/help/5.png"),
-      require("@/assets/help/6.png"),
-      require("@/assets/help/7.png"),
-      require("@/assets/help/8.png"),
-      require("@/assets/help/9.png"),
-      require("@/assets/help/10.png"),
-      require("@/assets/help/11.png"),
-      require("@/assets/help/12.png"),
+      require("@/assets/help/1.gif"),
+      require("@/assets/help/chat.gif"),
+      require("@/assets/help/fileupload.gif"),
+      require("@/assets/help/recordClick.gif"),
+      require("@/assets/help/recordCross.gif"),
+      require("@/assets/help/recordResult.gif"),
+      require("@/assets/help/recordtoboard.gif"),
     ],
     describe: [
       ["메트로놈", `BPM과 Beat를 변경하여 원하는 박자의 ~`],
@@ -69,13 +72,7 @@ export default {
       ],
       ["플레이어", "플레이어다."],
       ["플레이어", "와! 다양한 효과 설명 설명 설명 설명~."],
-      ["플레이어", "버튼 설명"],
-      ["채팅", "와! 채팅"],
-      ["이름!", "이름 입력!"],
-      ["채팅창", "채팅! 정말 대단해!"],
-      ["공유", "여러 사람과 함께 즐겨요~"],
-      ["공유 분기", "이건 무엇 저건 무엇"],
-      ["도움말", "이 화면을 다시 볼 수 있어요."],
+      ["플레이어", "와! 다양한 효과 설명 설명 설명 설명~."],
     ],
   }),
   methods: {

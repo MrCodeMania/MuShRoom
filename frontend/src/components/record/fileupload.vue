@@ -21,7 +21,6 @@ export default {
   methods: {
     onFileChanged(e) {
       this.files = e.target.files;
-      console.log(this.files);
       this.upload();
     },
     inputClick() {
