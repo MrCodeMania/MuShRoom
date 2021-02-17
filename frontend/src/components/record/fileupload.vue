@@ -31,6 +31,8 @@ export default {
       if (this.files === undefined) {
         return;
       }
+
+      this.$emit('fileUploading');
       for (let i = 0; i < this.files.length; i++) {
         const data = new FormData();
         var date = new Date();

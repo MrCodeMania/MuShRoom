@@ -31,7 +31,7 @@
         @closeRecord="closeRecord"
         ref="recBtn"
       />
-      <UploadBtn @sendData="receiveData" ref="fileupload" />
+      <UploadBtn @sendData="receiveData" @fileUploading="fileUploading" ref="fileupload" />
     </v-card>
   </v-card>
 </template> 
@@ -107,7 +107,7 @@ export default {
               if (resBody["type"] == "add") {
                 this.$toast(
                   `[${resBody["obj"]["fileName"]}]이(가) 추가되었습니다.`,
-                  { ...options, toastClassName: "toastAdd"}
+                  options
                 );
                 this.$store.commit("updateRecord", {
                   fileName: resBody["obj"]["fileName"],
@@ -120,7 +120,7 @@ export default {
                   `[${
                     this.$store.getters.getRecords[resBody.index].fileName
                   }]이(가) 제거되었습니다.`,
-                  { ...options, toastClassName: "toastDelete"}
+                  options
                 );
                 this.$store.commit("deleteRecord", resBody.index);
               }
@@ -149,7 +149,7 @@ export default {
               if (resBody["type"] == "add") {
                 this.$toast(
                   `[${resBody["obj"]["fileName"]}]이(가) 칠판으로 이동했습니다`,
-                  { ...options, toastClassName: "toastMove"}
+                  options
                 );
                 this.$store.commit("addMusic", {
                   record: {
@@ -185,6 +185,7 @@ export default {
       });
     },
     receiveData(data) {
+      this.$emit('uploadComplete');
       data["id"] = this.idx;
       this.idx += 1;
       this.addCard(data);
@@ -230,11 +231,14 @@ export default {
     closeRecord() {
       this.showRecord = false;
     },
+    // 파일 업로드 될 때
+    fileUploading() {
+      this.$emit('uploadStart');
+    }
   },
 };
 </script>
 
 
 <style>
-
 </style>
