@@ -11,6 +11,20 @@
       style="height: inherit !important; border-radius: 0px"
       v-scroll.self="onScroll"
     >
+      <div v-if="music.length==0" 
+      style="height: 100%;"
+      class="d-flex justify-center align-center">
+        <div>
+            <v-img
+            width="300px !important"
+            style="object-fit: cover"
+            src="@/assets/grey.png">
+            </v-img>
+            <div class="ml-10" style="color: #4a4a4a;">
+              어떤 음악을 만들지 기대돼요
+            </div>
+        </div>
+      </div>
       <Player
         class="mx-8 mt-4 smallcomponent-color"
         v-for="(item, idx) in music"
