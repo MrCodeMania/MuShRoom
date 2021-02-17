@@ -72,8 +72,12 @@ export default {
                 return true;
             } else {
                 if ( this.msgList[this.idx].id != this.msgList[this.idx+1].id) {
+                    return true
+                }
+                if ( this.msgList[this.idx].time != this.msgList[this.idx+1].time) {
                     return true;
                 }
+
                 return false;
             }
         }
