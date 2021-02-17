@@ -1,5 +1,5 @@
 <template>
-  <v-main class="main-color" style="height: 100%; width: 100%;">
+  <v-main class="main-color" style="height: 100%; width: 100%">
     <Header
       :openChat="openChat"
       v-on:toggleChat="toggleChat"
@@ -11,19 +11,22 @@
     <v-row no-gutters class="mx-auto" style="width: 1100px !important">
       <!-- 왼쪽 컴포넌트들 -->
       <v-col cols="8" class="mx-auto flex-grow-0 flex-shrink-0 px-4 pt-4 pb-2">
-        <v-row no-gutters style="height: 595px;">
+        <v-row no-gutters style="height: 595px">
           <v-card elevation="0" height="100%" width="100%" color="#00ff0000">
-                            <!-- 뮤직 보드 -->
-                <v-card 
-                elevation="0" width="100%" height="100%" color="#00ff0000">
-                  <MusicBoard  />
-                </v-card>
+            <!-- 뮤직 보드 -->
+            <v-card elevation="0" width="100%" height="100%" color="#00ff0000">
+              <MusicBoard />
+            </v-card>
           </v-card>
         </v-row>
       </v-col>
 
       <!-- 오른쪽 컴포넌트들 -->
-      <v-col v-if="status === 'Master'" cols="4" class="flex-grow-0 flex-shrink-0 px-4 pt-4 pb-1">
+      <v-col
+        v-if="status === 'Master'"
+        cols="4"
+        class="flex-grow-0 flex-shrink-0 px-4 pt-4 pb-1"
+      >
         <!-- 매트로놈 -->
         <v-row no-gutters style="height: 130px">
           <v-card elevation="0" width="100%" height="100%" color="#00ff0000">
@@ -32,7 +35,7 @@
         </v-row>
 
         <!-- 파일 목록 -->
-        <v-row no-gutters style="height: 547px;">
+        <v-row no-gutters style="height: 547px">
           <v-card elevation="0" width="100%" height="100%" color="#00ff0000">
             <Record />
           </v-card>
@@ -90,8 +93,7 @@ export default {
       newChat: 0,
     };
   },
-  computed: {
-  },
+  computed: {},
   methods: {
     init() {
       this.code = this.$route.query.shareUrl;
@@ -115,7 +117,7 @@ export default {
         // 받아온 res에서 뮤직보드, 레코드보드 불러오기 해야함
         // 뮤직 보드 불러오기
 
-       for (let i = 0; i < res.data.musicPageList[0].musicList.length; i++) {
+        for (let i = 0; i < res.data.musicPageList[0].musicList.length; i++) {
           // 일단 한 번 넣고 수정한다
 
           this.$store.commit("addMusic", {
@@ -151,6 +153,15 @@ export default {
               reverb: {
                 object: null,
                 value: res.data.musicPageList[0].musicList[i].reverb,
+              },
+              loop: {
+                loop: res.data.musicPageList[0].musicList[i].loop,
+                loopStart: res.data.musicPageList[0].musicList[i].loopStart,
+                loopEnd: res.data.musicPageList[0].musicList[i].loopEnd,
+              },
+              delay: {
+                delay: res.data.musicPageList[0].musicList[i].delay,
+                offset: res.data.musicPageList[0].musicList[i].offset,
               },
             },
           });
@@ -193,7 +204,7 @@ export default {
     },
     // 새로운 메세지가 왔을 때
     arriveNewChat() {
-      if (this.nickName.length>0 && !this.openChat)
+      if (this.nickName.length > 0 && !this.openChat)
         this.newChat = this.newChat < 99 ? this.newChat + 1 : this.newChat;
     },
   },

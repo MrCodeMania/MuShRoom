@@ -60,7 +60,6 @@ export default {
     },
   },
   created() {
-    console.log("option", options);
     this.idx = this.records.length;
 
     this.code = document.location.href.split("=")[1];
@@ -107,7 +106,7 @@ export default {
               if (resBody["type"] == "add") {
                 this.$toast(
                   `[${resBody["obj"]["fileName"]}]이(가) 추가되었습니다.`,
-                  { ...options, toastClassName: "toastAdd"}
+                  { ...options, toastClassName: "toastAdd" }
                 );
                 this.$store.commit("updateRecord", {
                   fileName: resBody["obj"]["fileName"],
@@ -120,7 +119,7 @@ export default {
                   `[${
                     this.$store.getters.getRecords[resBody.index].fileName
                   }]이(가) 제거되었습니다.`,
-                  { ...options, toastClassName: "toastDelete"}
+                  { ...options, toastClassName: "toastDelete" }
                 );
                 this.$store.commit("deleteRecord", resBody.index);
               }
@@ -149,7 +148,7 @@ export default {
               if (resBody["type"] == "add") {
                 this.$toast(
                   `[${resBody["obj"]["fileName"]}]이(가) 칠판으로 이동했습니다`,
-                  { ...options, toastClassName: "toastMove"}
+                  { ...options, toastClassName: "toastMove" }
                 );
                 this.$store.commit("addMusic", {
                   record: {
@@ -217,6 +216,11 @@ export default {
               gain: 0,
               volume: 0,
               reverb: 0,
+              loop: false,
+              loopStart: 0,
+              loopEnd: 0,
+              delay: 0,
+              offset: 0,
             },
           });
 
@@ -236,5 +240,4 @@ export default {
 
 
 <style>
-
 </style>

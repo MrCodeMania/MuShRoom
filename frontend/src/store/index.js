@@ -33,7 +33,7 @@ export default new Vuex.Store({
     //  새로고침 시 data 초기화
     setData(state) {
       state.data = {
-        musicBoard: { 
+        musicBoard: {
           idx: 0,
           list: []
         },
@@ -73,6 +73,15 @@ export default new Vuex.Store({
         reverb: {
           object: null,
           value: 0,
+        },
+        loop: {
+          loop: false,
+          loopStart: 0,
+          loopEnd: 0,
+        },
+        delay: {
+          delay: 0,
+          offset: 0,
         }
       });
     },
@@ -80,8 +89,14 @@ export default new Vuex.Store({
     updateMusic(state, {
       music
     }) {
-      state.data.musicBoard.list.splice(music.id, 1, music);
-
+      // state.data.musicBoard.list.splice(music.id, 1, music);
+      console.log("storemusic", state.data.musicBoard.list[music.id])
+      state.data.musicBoard.list[music.id].volume.value = music.volume.value;
+      state.data.musicBoard.list[music.id].distortion.value = music.distortion.value;
+      state.data.musicBoard.list[music.id].gain.value = music.gain.value;
+      state.data.musicBoard.list[music.id].reverb.value = music.reverb.value;
+      state.data.musicBoard.list[music.id].loop = music.loop;
+      state.data.musicBoard.list[music.id].delay = music.delay;
     },
     // musicBoard에서 음악 삭제
     deleteMusic(state, {
