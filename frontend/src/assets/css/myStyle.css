@@ -1,17 +1,17 @@
 .main-color {
-  background-color: #1e1e1e !important;
+  background-color: rgb(30, 30, 30) !important;
 }
 
 .main-color-light {
-  background-color: #252526 !important;
+  background-color: rgb(45, 45, 45) !important;
 }
 
 .component-color {
-  background-color: #303030 !important;
+  background-color: rgb(50, 50, 50) !important;
 }
 
 .smallcomponent-color {
-  background-color: #2d2d2d !important;
+  background-color: rgb(61, 61, 61) !important;
 }
 
 /* 
@@ -36,7 +36,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
   /* 스크롤 색 */
-  background: #f0f0f0f1;
+  background: #ffffffbb;
   border-radius: 10px;
 }
 
@@ -72,6 +72,16 @@ span {
   font-size: 20px !important;
 }
 
-.Vue-Toastification__toast--default.custom-toast {
-  background-color: #101010bf;
+.Vue-Toastification__toast--default.toastAdd {
+  background-color: rgba(50, 205, 50, 0.493);
 }
+
+.Vue-Toastification__toast--default.toastDelete {
+  background-color: rgba(204, 46, 46, 0.507);
+}
+
+.Vue-Toastification__toast--default.toastMove {
+  background-color: rgba(50, 205, 50, 0.493);
+}
+
+

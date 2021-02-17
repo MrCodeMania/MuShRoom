@@ -4,7 +4,7 @@
     style="z-index: 99">
         <v-card
         dark
-        width="100%" height="100%" class="main-color">
+        width="100%" height="100%" class="main-color-light">
             <!-- 채팅창 상단 -->
             <v-card-title
             class="pr-2">
@@ -66,6 +66,7 @@
                 </v-row>
             </v-card-text>
         </v-card>
+        <v-btn color="yellow" style="position: fixed; bottom:5px; left:5px;" @click="check">?</v-btn>
     </v-container>
 </template>
 
@@ -74,6 +75,8 @@ import Message from '@/components/chat/Message.vue';
 import Stomp from "webstomp-client";
 import SockJS from "sockjs-client";
 import Config from '@/store/config'
+
+
 
 export default {
     components: {
@@ -107,6 +110,9 @@ export default {
         }
     },
     methods: {
+        check() {
+            console.log(this.msgList)
+        },
         closeChat(){    // PracticeRoom에서 openChat = false;
             this.$emit('toggleChat');
         },

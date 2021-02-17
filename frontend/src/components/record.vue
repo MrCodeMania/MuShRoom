@@ -107,7 +107,7 @@ export default {
               if (resBody["type"] == "add") {
                 this.$toast(
                   `[${resBody["obj"]["fileName"]}]이(가) 추가되었습니다.`,
-                  options
+                  { ...options, toastClassName: "toastAdd"}
                 );
                 this.$store.commit("updateRecord", {
                   fileName: resBody["obj"]["fileName"],
@@ -120,7 +120,7 @@ export default {
                   `[${
                     this.$store.getters.getRecords[resBody.index].fileName
                   }]이(가) 제거되었습니다.`,
-                  options
+                  { ...options, toastClassName: "toastDelete"}
                 );
                 this.$store.commit("deleteRecord", resBody.index);
               }
@@ -149,7 +149,7 @@ export default {
               if (resBody["type"] == "add") {
                 this.$toast(
                   `[${resBody["obj"]["fileName"]}]이(가) 칠판으로 이동했습니다`,
-                  options
+                  { ...options, toastClassName: "toastMove"}
                 );
                 this.$store.commit("addMusic", {
                   record: {
@@ -236,4 +236,5 @@ export default {
 
 
 <style>
+
 </style>
