@@ -203,30 +203,23 @@ export default {
       });
     },
     addRecord(id) {
-      let len = this.records.length;
-      for (var i = 0; i < len; i++) {
-        if (this.records[i].id === id) {
-          this.send("music", {
-            type: "add",
-            index: this.$store.getters.getBoard.length,
-            obj: {
-              url: this.records[i]["downloadURL"],
-              fileName: this.records[i]["fileName"],
-              distortion: 0,
-              gain: 0,
-              volume: 0,
-              reverb: 0,
-              loop: false,
-              loopStart: 0,
-              loopEnd: 0,
-              delay: 0,
-              offset: 0,
-            },
-          });
-
-          break;
-        }
-      }
+      this.send("music", {
+        type: "add",
+        index: this.$store.getters.getBoard.length,
+        obj: {
+          url: this.records[id]["downloadURL"],
+          fileName: this.records[id]["fileName"],
+          distortion: 0,
+          gain: 0,
+          volume: 0,
+          reverb: 0,
+          loop: false,
+          loopStart: 0,
+          loopEnd: 0,
+          delay: 0,
+          offset: 0,
+        },
+      });
     },
     onScroll() {
       this.scrollInvoked++;
