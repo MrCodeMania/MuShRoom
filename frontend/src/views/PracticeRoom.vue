@@ -34,7 +34,7 @@
         <!-- 파일 목록 -->
         <v-row no-gutters style="height: 547px;">
           <v-card elevation="0" width="100%" height="100%" color="#00ff0000">
-            <Record />
+            <Record @uploadComplete="uploadComplete" @uploadStart="uploadStart"/>
           </v-card>
         </v-row>
       </v-col>
@@ -51,6 +51,7 @@
       @setNickName="setNickName"
     />
     <Help />
+    <Uploading :uploading="uploading"/>
   </v-main>
 </template>
 
@@ -63,6 +64,7 @@ import axios from "@/service/axios.service.js";
 import Chat from "@/components/chat/Chat.vue";
 import SetNickName from "@/components/chat/SetNickName.vue";
 import Help from "@/components/help/Helpshow.vue";
+import Uploading from "@/components/record/Uploading.vue";
 
 export default {
   components: {
@@ -73,6 +75,7 @@ export default {
     Chat,
     SetNickName,
     Help,
+    Uploading
   },
   created() {
     // Status를 vuex에 저장
@@ -88,10 +91,12 @@ export default {
       hasNickName: false,
       nickName: "",
       newChat: 0,
+      uploading: false  // 파일 업로드할 때 true
     };
   },
-  computed: {
-  },
+  // beforeRouteLeave (to, from, next) {
+  //   alert(to +" "+ from +" "+ next);
+  // },
   methods: {
     init() {
       this.code = this.$route.query.shareUrl;
@@ -195,6 +200,14 @@ export default {
     arriveNewChat() {
       if (this.nickName.length>0 && !this.openChat)
         this.newChat = this.newChat < 99 ? this.newChat + 1 : this.newChat;
+    },
+    // 파일 업로드 완료
+    uploadComplete() {
+      this.uploading = false;
+    },
+    // 파일업로드 시작
+    uploadStart() {
+      this.uploading = true;
     },
   },
 };
