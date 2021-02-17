@@ -43,6 +43,7 @@ export default {
     beforeUpload: { type: Function },
     successfulUpload: { type: Function },
     selectRecord: { type: Function },
+    crossState: { type: Boolean },
   },
   data() {
     return {
@@ -64,14 +65,23 @@ export default {
       }
 
       if (!this.isRecording || (this.isRecording && this.isPause)) {
-        this.$store.commit("setRC", "startMetro");
+        if (this.crossState) {
+          this.$store.commit("setRC", "startMetro");
+        } else {
+          this.recorder.start();
+        }
       }
     },
     stopRecorder() {
       if (!this.isRecording) {
         return;
       }
-      this.$store.commit("setRC", "stopMetro");
+      if (this.crossState) {
+        this.$store.commit("setRC", "stopMetro");
+      } else {
+        this.recorder.stop();
+        this.recordList = this.recorder.recordList();
+      }
     },
     _initRecorder() {
       return new Recorder({
@@ -177,7 +187,6 @@ export default {
       fill: white !important;
       background-color: #ff6b64 !important;
       position: absolute;
-      top:4px;
       width: 38px;
       height: 38px;
       display: none;
