@@ -91,7 +91,6 @@ export default {
         this.$cookies.set("visit", "visited");
         this.firstIn = true;
       }
-      console.log(this.firstIn);
     },
     allVisitCheck() {
       for (var i = 0; i < this.maxPage; i++) {
@@ -121,7 +120,6 @@ export default {
     this.maxPage = this.describe.length - 1;
     this.visit = Array.from({ length: this.maxPage + 1 }, () => 0);
     if (this.$cookies.isKey("visit")) {
-      console.log("쿠키있음");
       this.firstIn = true;
     }
   },
