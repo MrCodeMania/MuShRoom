@@ -108,8 +108,6 @@ export default {
     };
   },
   beforeRouteLeave() { // 경로 이동 전에 호출되는 메소드
-    // window.location.href = 'http://localhost:8080/';
-    // window.history.pushState({name: 'Home'}, '', '/');
     window.location.reload(); // 현재 페이지 새로고침
   },
   methods: {
