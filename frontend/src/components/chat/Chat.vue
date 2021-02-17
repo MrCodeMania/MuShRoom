@@ -12,6 +12,7 @@
                 <v-spacer></v-spacer>
                 <v-btn 
                 icon
+                plain
                 style="position: absolute; right: 5px; top: 5px;"
                 @click="closeChat()"
                 >
@@ -20,7 +21,7 @@
                     </v-icon>
                 </v-btn>
             </v-card-title>
-            <v-divider></v-divider>
+            <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
             <!-- 메세지 나오는 부분 -->
             <v-container
             id="scroll-target"
@@ -30,7 +31,7 @@
                     <Message :msg="msg" :id="id"/>
                 </div>
             </v-container>
-            <v-divider></v-divider>
+            <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
             <!-- 채팅창 하단 -->
             <v-card-text
             class="bottom-area py-0">
@@ -53,6 +54,7 @@
                     >
                         <v-btn
                         icon
+                        plain
                         @click="sendMessage()"
                         >
                             <v-icon

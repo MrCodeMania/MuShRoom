@@ -23,7 +23,7 @@
       />
     </v-card>
     <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
-    <v-card class="buttonBar d-flex main-color-light">
+    <v-card height="50px" class="buttonBar d-flex main-color-light">
       <v-spacer></v-spacer>
       <v-card
         style="border-radius: 0px"
@@ -34,33 +34,33 @@
           class="musicboard_btn pt-1"
           icon
           dark
-          large
+          plain
           @click="downloadButton"
         >
-          <v-icon dark size="26px">mdi-download</v-icon>
+          <v-icon size="26px">mdi-download</v-icon>
         </v-btn>
         <v-btn
-          class="musicboard_btn mx-n2"
+          class="musicboard_btn"
           icon
           dark
-          large
+          plain
           @click="musicPlayButton"
         >
           <div v-if="!play">
-            <v-icon dark size="30px">mdi-play</v-icon>
+            <v-icon size="30px">mdi-play</v-icon>
           </div>
           <div v-else>
-            <v-icon dark size="30px">mdi-pause</v-icon>
+            <v-icon size="30px">mdi-pause</v-icon>
           </div>
         </v-btn>
         <v-btn
           class="musicboard_btn mr-5"
           icon
           dark
-          large
+          plain
           @click="musicStopButton"
         >
-          <v-icon dark size="30px">mdi-stop</v-icon>
+          <v-icon size="30px">mdi-stop</v-icon>
         </v-btn>
       </v-card>
     </v-card>

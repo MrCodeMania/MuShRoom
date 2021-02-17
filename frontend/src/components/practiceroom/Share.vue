@@ -34,6 +34,7 @@
                                 readonly="readonly"
                                 ref="textToCopy">
                             <v-btn
+                                plain
                                 fab="fab"
                                 tile="tile"
                                 text="text"
