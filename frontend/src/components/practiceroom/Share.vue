@@ -15,7 +15,7 @@
                 @click="reset"
                 v-bind="attrs"
                 v-on="on">
-                <v-icon class="pr-2">mdi-share-variant</v-icon>
+                <v-icon size="26px" class="pr-2">mdi-share-variant</v-icon>
                 Share
             </v-btn>
         </template>

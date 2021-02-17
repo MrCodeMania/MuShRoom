@@ -344,13 +344,15 @@ export default {
       this.player.volume.value = this.music.volume.value;
       this.music.gain.object.gain.value = this.music.gain.value;
       this.music.reverb.object.wet.value = this.music.reverb.value;
+      this.player.loop = this.music.loop.loop;
+      this.player.loopStart = this.music.loop.loopStart;
+      this.player.loopEnd = this.music.loop.loopEnd;
     },
     toggleDropdown() {
       this.isShow ^= 1;
     },
     toggleLoop(e) {
       this.player.loop = e;
-      this.music.loop.loop = e;
       this.updateMusicOption();
     },
     setLoopTime() {
