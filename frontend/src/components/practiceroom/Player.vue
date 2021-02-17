@@ -140,6 +140,7 @@
                 name="loop"
                 dark
                 class="ml-1 mt-2 pt-6"
+                v-model="music.loop.loop"
                 v-on:change="toggleLoop($event)"
               ></v-checkbox>
             </div>
@@ -151,7 +152,8 @@
                 dark
                 style="width: 80px !important"
                 label="Start Time"
-                v-model.number="loopStart"
+                min="0"
+                v-model.number="music.loop.loopStart"
                 v-on:change="setLoopTime()"
               ></v-text-field>
             </div>
@@ -163,7 +165,8 @@
                 dark
                 style="width: 80px !important"
                 label="End Time"
-                v-model.number="loopEnd"
+                min="0"
+                v-model.number="music.loop.loopEnd"
                 v-on:change="setLoopTime()"
               ></v-text-field>
             </div>
@@ -181,8 +184,10 @@
                 type="number"
                 dark
                 style="width: 150px !important"
-                label="Delay Time (단위: note)"
-                v-model="delay"
+                label="Delay Time"
+                min="0"
+                v-model="music.delay.delay"
+                @change="updateMusicOption()"
               ></v-text-field>
             </div>
             <div class="d-flex">
@@ -192,8 +197,10 @@
                 dark
                 type="number"
                 style="width: 150px !important"
-                label="Start Time (단위: note)"
-                v-model="offset"
+                label="Start Time"
+                min="0"
+                v-model="music.delay.offset"
+                @change="updateMusicOption()"
               ></v-text-field>
             </div>
           </div>
@@ -222,11 +229,7 @@ export default {
       player: null,
       state: "stopped",
       isShow: 0,
-      loopStart: 0.0,
-      loopEnd: 0.0,
       isExist: false,
-      delay: 0,
-      offset: 0,
       currentTime: 0,
       isReady: false,
     };
@@ -245,7 +248,6 @@ export default {
       const player = new Tone.Player(this.music.url, () => {
         this.player = player;
         this.player.onstop = () => {
-          console.log(this.state);
           if (this.state == "stopped") {
             Tone.Transport.stop();
           } else if (this.state == "paused") {
@@ -256,13 +258,14 @@ export default {
               player.buffer.duration + player.context.lookAhead <
               Tone.Transport.seconds
             ) {
-              console.log("over!!");
               this.stop();
             }
           }
         };
-        console.log(this.music);
         player.volume.value = this.music.volume.value;
+        player.loop = this.music.loop.loop;
+        player.loopStart = this.music.loop.loopStart;
+        player.loopEnd = this.music.loop.loopEnd;
         const gain = new Tone.Gain(0).toDestination();
         this.music.gain.object = gain;
         this.player.connect(gain);
@@ -295,22 +298,14 @@ export default {
       // 박자로 시간과 오프셋을 맞추고싶다면: time or offset + Tone.Time(박자).toSeconds();
       var now = Tone.now();
       Tone.Transport.start(
-        now + Tone.Time(this.delay).toSeconds(),
-        Tone.Time(this.offset).toSeconds() + this.currentTime
+        now + this.music.delay.delay,
+        this.music.delay.offset + this.currentTime
       );
       document.getElementById(``);
 
-      let interval = setInterval(() => {
-        if (Tone.Transport.seconds > 0) {
-          if (this.player.loop) {
-            this.$refs.waveform.setTime(
-              (Tone.Transport.seconds % (this.loopStart - this.loopEnd)) +
-                this.loopStart
-            );
-          } else this.$refs.waveform.setTime(Tone.Transport.seconds);
-        }
-        if (this.state != "started") clearInterval(interval);
-      }, 50);
+      setTimeout(() => {
+        this.moveProgressBar();
+      }, this.music.delay.delay * 1000);
     },
     pause() {
       this.currentTime = Tone.Transport.seconds;
@@ -327,33 +322,65 @@ export default {
     },
     changeDistortion(value) {
       this.music.distortion.object.distortion = value;
-      this.$emit("updateMusicOption", this.n);
+      this.updateMusicOption();
     },
     changeVolume(value) {
       this.player.volume.value = value;
-      this.$emit("updateMusicOption", this.n);
+      this.updateMusicOption();
     },
     changeGain(value) {
       this.music.gain.object.gain.value = value;
-      this.$emit("updateMusicOption", this.n);
+      this.updateMusicOption();
     },
     changeReverb(value) {
       this.music.reverb.object.wet.value = value;
+      this.updateMusicOption();
+    },
+    updateMusicOption() {
       this.$emit("updateMusicOption", this.n);
+    },
+    updateAll() {
+      this.music.distortion.object.distortion = this.music.distortion.value;
+      this.player.volume.value = this.music.volume.value;
+      this.music.gain.object.gain.value = this.music.gain.value;
+      this.music.reverb.object.wet.value = this.music.reverb.value;
     },
     toggleDropdown() {
       this.isShow ^= 1;
     },
     toggleLoop(e) {
       this.player.loop = e;
+      this.music.loop.loop = e;
+      this.updateMusicOption();
     },
     setLoopTime() {
-      this.player.loopStart = this.loopStart;
-      this.player.loopEnd = this.loopEnd;
+      this.player.loopStart = this.music.loop.loopStart;
+      this.player.loopEnd = this.music.loop.loopEnd;
+      this.updateMusicOption();
     },
     addToTransport() {
       this.player.unsync();
       this.player.sync().start(0);
+    },
+    moveProgressBar() {
+      let interval = setInterval(() => {
+        if (Tone.Transport.seconds > 0) {
+          if (this.player.loop) {
+            if (this.music.loop.loopEnd > this.music.loop.loopStart) {
+              this.$refs.waveform.setTime(
+                (Tone.Transport.seconds %
+                  (this.music.loop.loopStart - this.music.loop.loopEnd)) +
+                  this.music.loop.loopStart
+              );
+            } else {
+              this.$refs.waveform.setTime(
+                Tone.Transport.seconds + this.music.loop.loopStart
+              );
+            }
+          } else this.$refs.waveform.setTime(Tone.Transport.seconds);
+        }
+        if (this.player.state != "started") clearInterval(interval);
+      }, 50);
     },
     removeFromTransport() {
       this.currentTime = 0;
@@ -365,7 +392,6 @@ export default {
       this.$emit("deleteMusic", this.n);
     },
     setTime(sec) {
-      console.log("Player set time: ", sec);
       this.player.unsync();
 
       this.currentTime = sec;

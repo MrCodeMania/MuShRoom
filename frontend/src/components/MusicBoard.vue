@@ -11,18 +11,21 @@
       style="height: inherit !important; border-radius: 0px"
       v-scroll.self="onScroll"
     >
-      <div v-if="music.length==0" 
-      style="height: 100%;"
-      class="d-flex justify-center align-center">
+      <div
+        v-if="music.length == 0"
+        style="height: 100%"
+        class="d-flex justify-center align-center"
+      >
         <div>
             <v-img
             width="250px !important"
             style="object-fit: cover"
-            src="@/assets/grey.png">
-            </v-img>
-            <div class="ml-10" style="color: #4a4a4a;">
-              어떤 음악을 만들지 기대돼요
-            </div>
+            src="@/assets/grey.png"
+          >
+          </v-img>
+          <div class="ml-10" style="color: #4a4a4a">
+            어떤 음악을 만들지 기대돼요
+          </div>
         </div>
       </div>
       <Player
@@ -44,13 +47,7 @@
         class="d-flex align-center justify-end main-color-light"
         elevation="0"
       >
-        <v-btn
-          class="musicboard_btn"
-          icon
-          dark
-          plain
-          @click="musicPlayButton"
-        >
+        <v-btn class="musicboard_btn" icon dark plain @click="musicPlayButton">
           <div v-if="!play">
             <v-icon size="30px">mdi-play</v-icon>
           </div>
@@ -121,6 +118,7 @@ export default {
 
       let musicSocket = new SockJS(serverURL);
       this.musicStompClient = Stomp.over(musicSocket);
+      this.musicStompClient.debug = () => {};
       this.musicStompClient.connect(
         {},
         (frame) => {
@@ -132,11 +130,10 @@ export default {
             "/socket/music/" + this.code + "/0/send",
             (res) => {
               const resBody = JSON.parse(res.body);
-
               if (resBody["type"] == "delete") {
                 this.$toast(
                   `[${resBody["obj"]["fileName"]}]이(가) 칠판에서 제거되었습니다.`,
-                  { ...options, toastClassName: "toastDelete"}
+                  { ...options, toastClassName: "toastDelete" }
                 );
                 this.$store.commit("deleteMusic", {
                   idx: resBody["index"],
@@ -145,7 +142,7 @@ export default {
               if (resBody["type"] == "update") {
                 this.$toast(
                   `[${resBody["obj"]["fileName"]}]이(가) 칠판에서 수정되었습니다.`,
-                  { ...options, toastClassName: "toastAdd"}
+                  { ...options, toastClassName: "toastAdd" }
                 );
                 this.$store.commit("updateMusic", {
                   music: {
@@ -169,8 +166,19 @@ export default {
                       object: null,
                       value: resBody["obj"]["reverb"],
                     },
+                    loop: {
+                      loop: resBody["obj"]["loop"],
+                      loopStart: resBody["obj"]["loopStart"],
+                      loopEnd: resBody["obj"]["loopEnd"],
+                    },
+                    delay: {
+                      delay: resBody["obj"]["delay"],
+                      offset: resBody["obj"]["offset"],
+                    },
                   },
                 });
+                // 받은 값으로 업데이트
+                this.$refs.player[resBody["index"]].updateAll();
               }
             }
           );
@@ -191,6 +199,9 @@ export default {
             el.addToTransport();
           });
           Tone.Transport.start();
+          this.$refs.player.forEach((el) => {
+            el.moveProgressBar();
+          });
         } else {
           // error
           console.log("player 가 존재하지 않습니다.");
@@ -224,6 +235,11 @@ export default {
           distortion: this.music[id].distortion.value,
           gain: this.music[id].gain.value,
           reverb: this.music[id].reverb.value,
+          loop: this.music[id].loop.loop,
+          loopStart: this.music[id].loop.loopStart,
+          loopEnd: this.music[id].loop.loopEnd,
+          delay: this.music[id].delay.delay,
+          offset: this.music[id].delay.offset,
         },
       });
     },
