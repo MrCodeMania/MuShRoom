@@ -7,10 +7,11 @@
     >
       <recordCard
         v-for="(item, index) in records"
-        :key="item.id"
+        :key="index"
         v-on:delRecord="delRecord"
         v-on:addRecord="addRecord"
         v-bind:fileData="records[index]"
+        :idx="index"
       />
     </v-card>
     <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
@@ -195,7 +196,7 @@ export default {
     delRecord(id) {
       let len = this.records.length;
       for (var i = 0; i < len; i++) {
-        if (this.records[i].id === id) {
+        if (i == id) {
           this.send("record", {
             type: "delete",
             index: i,
@@ -207,7 +208,7 @@ export default {
     addRecord(id) {
       let len = this.records.length;
       for (var i = 0; i < len; i++) {
-        if (this.records[i].id === id) {
+        if (i == id) {
           this.send("music", {
             type: "add",
             index: this.$store.getters.getBoard.length,

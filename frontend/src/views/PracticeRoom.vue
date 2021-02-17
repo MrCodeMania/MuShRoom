@@ -94,8 +94,9 @@ export default {
       uploading: false  // 파일 업로드할 때 true
     };
   },
-  computed: {
-  },
+  // beforeRouteLeave (to, from, next) {
+  //   alert(to +" "+ from +" "+ next);
+  // },
   methods: {
     init() {
       this.code = this.$route.query.shareUrl;
@@ -200,14 +201,14 @@ export default {
       if (this.nickName.length>0 && !this.openChat)
         this.newChat = this.newChat < 99 ? this.newChat + 1 : this.newChat;
     },
-    // 업로드 완료
+    // 파일 업로드 완료
     uploadComplete() {
       this.uploading = false;
     },
-    // 업로드 시작
+    // 파일업로드 시작
     uploadStart() {
       this.uploading = true;
-    }
+    },
   },
 };
 </script>
