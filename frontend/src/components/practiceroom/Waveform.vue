@@ -21,50 +21,58 @@
 <script>
 import Timeline from "wavesurfer.js/dist/plugin/wavesurfer.timeline";
 export default {
-    props: ["url", "height", "mouse", "audioCtx", "timeline", "idx", "full", "color"],
-    data() {
-        return {
-            options: {
-                normalize: false,
-                cursorColor: "#00ff0000",
-                progressColor: "#FED134", //color of waveform before the cursor
-                waveColor: this.color, //color of waveform after the cursor
-                scrollParent: this.full,
-                height: this.height,
-                interact: this.mouse,
-                audioContext: this.audioCtx,
-                plugins: [
-                    Timeline.create({
-                        container: "#container" + this.idx,
-                        secondaryFontColor: '#ffffffbb',
-                    }),
-                ],
-            },
-            isReady: false,
-        };
+  props: [
+    "url",
+    "height",
+    "mouse",
+    "audioCtx",
+    "timeline",
+    "idx",
+    "full",
+    "color",
+  ],
+  data() {
+    return {
+      options: {
+        normalize: false,
+        cursorColor: "#00ff0000",
+        progressColor: "#FED134", //color of waveform before the cursor
+        waveColor: this.color, //color of waveform after the cursor
+        scrollParent: this.full,
+        height: this.height,
+        interact: this.mouse,
+        audioContext: this.audioCtx,
+        plugins: [
+          Timeline.create({
+            container: "#container" + this.idx,
+            secondaryFontColor: "#ffffffbb",
+          }),
+        ],
+      },
+      isReady: false,
+    };
+  },
+  mounted() {
+    this.player.on("ready", () => {
+      this.isReady = true;
+    });
+    this.player.on("seek", () => {
+      this.$emit("setTime", this.player.getCurrentTime().toFixed(2));
+    });
+  },
+  computed: {
+    player() {
+      return this.$refs.waveform.waveSurfer;
     },
-    mounted() {
-        this.player.on("ready", () => {
-            this.isReady = true;
-        });
-        this.player.on("seek", () => {
-            this.$emit("setTime", this.player.getCurrentTime().toFixed(2));
-        });
+  },
+  methods: {
+    play() {
+      this.player.playPause();
     },
-    computed: {
-        player() {
-            return this.$refs.waveform.waveSurfer;
-        }
+    setTime(sec) {
+      this.player.drawer.progress(sec / this.player.getDuration());
     },
-    methods: {
-        play() {
-            this.player.playPause();
-        },
-        setTime(sec) {
-            console.log(sec);
-            this.player.drawer.progress(sec / this.player.getDuration());
-        },
-    },
+  },
 };
 </script>
 

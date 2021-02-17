@@ -1,9 +1,14 @@
 <template>
-  <v-card class="musicBoard main-color-light " elevation="0" width="100%" height="100%">
+  <v-card
+    class="musicBoard main-color-light"
+    elevation="0"
+    width="100%"
+    height="100%"
+  >
     <v-card
       id="musicListId"
-      class="musicList overflow-y-auto main-color-light "
-      style="height: inherit !important; border-radius: 0px;"
+      class="musicList overflow-y-auto main-color-light"
+      style="height: inherit !important; border-radius: 0px"
       v-scroll.self="onScroll"
     >
       <Player
@@ -18,12 +23,13 @@
       />
     </v-card>
     <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
-    <v-card class="buttonBar d-flex main-color-light "
-    >
+    <v-card class="buttonBar d-flex main-color-light">
       <v-spacer></v-spacer>
-      <v-card 
-      style="border-radius: 0px;"
-      class="d-flex align-center justify-end main-color-light " elevation="0">
+      <v-card
+        style="border-radius: 0px"
+        class="d-flex align-center justify-end main-color-light"
+        elevation="0"
+      >
         <v-btn
           class="musicboard_btn pt-1"
           icon
@@ -123,13 +129,19 @@ export default {
               const resBody = JSON.parse(res.body);
 
               if (resBody["type"] == "delete") {
-                this.$toast("musicboard toast", options);
+                this.$toast(
+                  `[${resBody["obj"]["fileName"]}]이(가) 칠판에서 제거되었습니다.`,
+                  options
+                );
                 this.$store.commit("deleteMusic", {
                   idx: resBody["index"],
                 });
               }
               if (resBody["type"] == "update") {
-                this.$toast("musicboard toast", options);
+                this.$toast(
+                  `[${resBody["obj"]["fileName"]}]이(가) 칠판에서 수정되었습니다.`,
+                  options
+                );
                 this.$store.commit("updateMusic", {
                   music: {
                     id: resBody["index"],
@@ -218,5 +230,4 @@ export default {
 </script>
 
 <style>
-
 </style>
