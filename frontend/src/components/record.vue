@@ -194,37 +194,24 @@ export default {
       this.expand = false;
     },
     delRecord(id) {
-      let len = this.records.length;
-      for (var i = 0; i < len; i++) {
-        if (i == id) {
-          this.send("record", {
+      this.send("record", {
             type: "delete",
-            index: i,
+            index: id,
           });
-          break;
-        }
-      }
     },
     addRecord(id) {
-      let len = this.records.length;
-      for (var i = 0; i < len; i++) {
-        if (i == id) {
-          this.send("music", {
-            type: "add",
-            index: this.$store.getters.getBoard.length,
-            obj: {
-              url: this.records[i]["downloadURL"],
-              fileName: this.records[i]["fileName"],
-              distortion: 0,
-              gain: 0,
-              volume: 0,
-              reverb: 0,
-            },
-          });
-
-          break;
-        }
-      }
+      this.send("music", {
+        type: "add",
+        index: this.$store.getters.getBoard.length,
+        obj: {
+          url: this.records[id]["downloadURL"],
+          fileName: this.records[id]["fileName"],
+          distortion: 0,
+          gain: 0,
+          volume: 0,
+          reverb: 0,
+        },
+      });
     },
     onScroll() {
       this.scrollInvoked++;
