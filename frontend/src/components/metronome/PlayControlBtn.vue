@@ -3,6 +3,7 @@
     <v-btn
       icon
       dark
+      plain
       v-if="isPlaying"
       @click="stop"
       :disabled="recordStartState === 'startMetro' || recordStartState === 'startRecord' ? true : false"
@@ -12,6 +13,7 @@
     <v-btn
       icon
       dark
+      plain
       v-else
       @click="start"
     >

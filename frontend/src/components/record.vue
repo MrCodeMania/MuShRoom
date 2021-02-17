@@ -15,14 +15,14 @@
     </v-card>
     <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
     <v-card
-      height="9%"
+      height="50px"
       class="main-color-light d-flex align-center"
       style="border-radius: 0px"
     >
-      <v-btn icon dark large class="mx-2" @click="showRecord = !showRecord"
+      <v-btn icon dark plain class="ml-5" @click="showRecord = !showRecord"
         ><v-icon size="26px">mdi-microphone</v-icon>
       </v-btn>
-      <v-btn icon dark large @click="file_upload_open"
+      <v-btn icon dark plain @click="file_upload_open"
         ><v-icon size="26px">mdi-file-upload</v-icon>
       </v-btn>
       <recordBtn
