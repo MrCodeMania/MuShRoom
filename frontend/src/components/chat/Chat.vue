@@ -28,7 +28,7 @@
             class="middle-area px-0 mx-auto">
                 <div v-for="(msg, idx) in msgList"
                 :key="idx">
-                    <Message :msg="msg" :id="id"/>
+                    <Message :msg="msg" :idx="idx" :msgList="msgList" :id="id"/>
                 </div>
             </v-container>
             <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
@@ -66,7 +66,6 @@
                 </v-row>
             </v-card-text>
         </v-card>
-        <v-btn color="yellow" style="position: fixed; bottom:5px; left:5px;" @click="check">?</v-btn>
     </v-container>
 </template>
 
@@ -110,9 +109,6 @@ export default {
         }
     },
     methods: {
-        check() {
-            console.log(this.msgList)
-        },
         closeChat(){    // PracticeRoom에서 openChat = false;
             this.$emit('toggleChat');
         },
