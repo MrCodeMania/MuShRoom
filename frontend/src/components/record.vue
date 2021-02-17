@@ -65,6 +65,11 @@ export default {
     },
   },
   created() {
+    // 권한
+    navigator.mediaDevices
+      .getUserMedia({ audio: true })
+      .then()
+      .catch((err) => console.log(err));
     this.idx = this.records.length;
 
     this.code = document.location.href.split("=")[1];
