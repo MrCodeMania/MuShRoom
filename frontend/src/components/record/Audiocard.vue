@@ -6,6 +6,7 @@
       class="mx-auto mt-2 smallcomponent-color"
       width="90%"
       height="auto"
+      style="border: 4px solid rgb(61, 61, 61); border-radius: 5px;"
     >
       <v-card-title width="50%" max-width="60px"
         ><span class="ml-2 medium">{{
@@ -53,5 +54,7 @@ export default {
 .v-card__subtitle, .v-card__text, .v-card__title {
     padding: 0px;
 }
+
+
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: #3c3c3c">
+  <div style="background-color: #2d2d2d">
     <div style="position: relative">
       <div v-show="timeline" :id="'container' + idx"></div>
       <vue-wave-surfer
