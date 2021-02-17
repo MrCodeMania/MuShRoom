@@ -45,6 +45,7 @@
         <v-btn
           icon
           dark
+          plain
           @click="onVolumeMute"
           class="volume-slider"
         >
@@ -54,6 +55,7 @@
         </v-btn>
         <v-slider
           dark
+          color="#ffffffbb"
           class="pt-5"
           track-color="grey darken-2"
           v-model="volume"

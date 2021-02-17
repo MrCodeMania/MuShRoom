@@ -11,7 +11,7 @@ const options = {
     closeButton: false,
     icon: false,
     rtl: false,
-    toastClassName: "custom-toast"
+    // toastClassName: "custom-toast"
 }
 
 export default options

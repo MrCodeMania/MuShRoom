@@ -3,7 +3,7 @@
     <div class="d-flex file-title">
       <p class="file-name pb-2 medium">{{ music.fileName }}</p>
       <v-spacer></v-spacer>
-      <v-btn icon dark @click="sendDelete()" v-if="status === 'Master'">
+      <v-btn icon dark plain @click="sendDelete()" v-if="status === 'Master'">
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </div>
@@ -13,6 +13,7 @@
           v-if="this.state == 'paused' || this.state == 'stopped'"
           icon
           dark
+          plain
           class="mt-4"
           :disabled="player == null"
           v-on:click="start()"
@@ -22,6 +23,7 @@
         <v-btn
           v-else
           icon
+          plain
           class="mt-4"
           dark
           :disabled="player == null"
@@ -29,7 +31,7 @@
         >
           <v-icon>mdi-pause</v-icon>
         </v-btn>
-        <v-btn icon dark class="mt-4" v-on:click="stop()">
+        <v-btn icon plain dark class="mt-4" v-on:click="stop()">
           <v-icon>mdi-stop</v-icon>
         </v-btn>
       </div>
@@ -52,7 +54,7 @@
       <!-- 이 부분부터 ReadOnly -->
       <div class="ml-3 mr-3" v-if="status === 'Master'">
         <!-- dropdown button -->
-        <v-btn icon dark class="mt-4" v-on:click="toggleDropdown()">
+        <v-btn icon dark plain class="mt-4" v-on:click="toggleDropdown()">
           <v-icon v-if="isShow == 0">mdi-chevron-down</v-icon>
           <v-icon v-else>mdi-chevron-up</v-icon>
         </v-btn>
@@ -70,7 +72,7 @@
             <div>
               <p>Volume</p>
               <v-slider
-                color="white"
+                color="#ffffffbb"
                 class="ml-2"
                 track-color="grey darken-2"
                 v-model="music.volume.value"
@@ -84,7 +86,7 @@
             <div>
               <p>Distortion</p>
               <v-slider
-                color="white"
+                color="#ffffffbb"
                 class="ml-2"
                 track-color="grey darken-2"
                 v-model="music.distortion.value"
@@ -98,7 +100,7 @@
             <div>
               <p>Gain</p>
               <v-slider
-                color="white"
+                color="#ffffffbb"
                 class="ml-2"
                 track-color="grey darken-2"
                 v-model="music.gain.value"
@@ -112,7 +114,7 @@
             <div>
               <p>Reverb</p>
               <v-slider
-                color="white"
+                color="#ffffffbb"
                 class="ml-2 mb-n2"
                 track-color="grey darken-2"
                 v-model="music.reverb.value"

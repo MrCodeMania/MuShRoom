@@ -4,7 +4,7 @@
     style="z-index: 99">
         <v-card
         dark
-        width="100%" height="100%" class="main-color">
+        width="100%" height="100%" class="main-color-light">
             <!-- 채팅창 상단 -->
             <v-card-title
             class="pr-2">
@@ -12,6 +12,7 @@
                 <v-spacer></v-spacer>
                 <v-btn 
                 icon
+                plain
                 style="position: absolute; right: 5px; top: 5px;"
                 @click="closeChat()"
                 >
@@ -20,17 +21,17 @@
                     </v-icon>
                 </v-btn>
             </v-card-title>
-            <v-divider></v-divider>
+            <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
             <!-- 메세지 나오는 부분 -->
             <v-container
             id="scroll-target"
             class="middle-area px-0 mx-auto">
                 <div v-for="(msg, idx) in msgList"
                 :key="idx">
-                    <Message :msg="msg" :id="id"/>
+                    <Message :msg="msg" :idx="idx" :msgList="msgList" :id="id"/>
                 </div>
             </v-container>
-            <v-divider></v-divider>
+            <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
             <!-- 채팅창 하단 -->
             <v-card-text
             class="bottom-area py-0">
@@ -53,6 +54,7 @@
                     >
                         <v-btn
                         icon
+                        plain
                         @click="sendMessage()"
                         >
                             <v-icon
@@ -72,6 +74,8 @@ import Message from '@/components/chat/Message.vue';
 import Stomp from "webstomp-client";
 import SockJS from "sockjs-client";
 import Config from '@/store/config'
+
+
 
 export default {
     components: {

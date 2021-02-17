@@ -37,7 +37,7 @@
       />
     </v-card>
     <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
-    <v-card class="buttonBar d-flex main-color-light">
+    <v-card height="50px" class="buttonBar d-flex main-color-light">
       <v-spacer></v-spacer>
       <v-card
         style="border-radius: 0px"
@@ -45,36 +45,27 @@
         elevation="0"
       >
         <v-btn
-          class="musicboard_btn pt-1"
+          class="musicboard_btn"
           icon
           dark
-          large
-          @click="downloadButton"
-        >
-          <v-icon dark size="26px">mdi-download</v-icon>
-        </v-btn>
-        <v-btn
-          class="musicboard_btn mx-n2"
-          icon
-          dark
-          large
+          plain
           @click="musicPlayButton"
         >
           <div v-if="!play">
-            <v-icon dark size="30px">mdi-play</v-icon>
+            <v-icon size="30px">mdi-play</v-icon>
           </div>
           <div v-else>
-            <v-icon dark size="30px">mdi-pause</v-icon>
+            <v-icon size="30px">mdi-pause</v-icon>
           </div>
         </v-btn>
         <v-btn
           class="musicboard_btn mr-5"
           icon
           dark
-          large
+          plain
           @click="musicStopButton"
         >
-          <v-icon dark size="30px">mdi-stop</v-icon>
+          <v-icon size="30px">mdi-stop</v-icon>
         </v-btn>
       </v-card>
     </v-card>
@@ -145,7 +136,7 @@ export default {
               if (resBody["type"] == "delete") {
                 this.$toast(
                   `[${resBody["obj"]["fileName"]}]이(가) 칠판에서 제거되었습니다.`,
-                  options
+                  { ...options, toastClassName: "toastDelete"}
                 );
                 this.$store.commit("deleteMusic", {
                   idx: resBody["index"],
@@ -154,7 +145,7 @@ export default {
               if (resBody["type"] == "update") {
                 this.$toast(
                   `[${resBody["obj"]["fileName"]}]이(가) 칠판에서 수정되었습니다.`,
-                  options
+                  { ...options, toastClassName: "toastAdd"}
                 );
                 this.$store.commit("updateMusic", {
                   music: {
@@ -190,9 +181,6 @@ export default {
           this.connected = false;
         }
       );
-    },
-    downloadButton() {
-      console.log("download");
     },
     musicPlayButton() {
       if (this.play) {

@@ -6,16 +6,17 @@
       class="mx-auto mt-2 smallcomponent-color"
       width="90%"
       height="auto"
+      style="border: 4px solid rgb(61, 61, 61); border-radius: 5px;"
     >
       <v-card-title width="50%" max-width="60px"
         ><span class="ml-2 medium">{{
           fileData.fileName
         }}</span>
         <v-spacer></v-spacer>
-        <v-btn icon dark @click="addThis"
+        <v-btn icon dark plain @click="addThis"
           ><v-icon>mdi-plus </v-icon></v-btn
         >
-        <v-btn class="mr-2 ml-1" icon dark @click="deleteThis"
+        <v-btn class="mr-2" plain icon dark @click="deleteThis"
           ><v-icon>mdi-delete</v-icon></v-btn
         >
       </v-card-title>
@@ -27,7 +28,7 @@
 <script>
 import Waveform from "../practiceroom/Waveform";
 export default {
-  props: ["fileData"],
+  props: ["fileData", "idx"],
   components: {
     Waveform,
   },
@@ -36,10 +37,10 @@ export default {
   }),
   methods: {
     deleteThis() {
-      this.$emit("delRecord", this.fileData.id);
+      this.$emit("delRecord", this.idx);
     },
     addThis() {
-      this.$emit("addRecord", this.fileData.id);
+      this.$emit("addRecord", this.idx);
     },
   },
 };
@@ -53,5 +54,7 @@ export default {
 .v-card__subtitle, .v-card__text, .v-card__title {
     padding: 0px;
 }
+
+
 
 </style>

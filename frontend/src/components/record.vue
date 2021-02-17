@@ -7,22 +7,23 @@
     >
       <recordCard
         v-for="(item, index) in records"
-        :key="item.id"
+        :key="index"
         v-on:delRecord="delRecord"
         v-on:addRecord="addRecord"
         v-bind:fileData="records[index]"
+        :idx="index"
       />
     </v-card>
     <v-divider style="background-color: rgba(255, 255, 255, 0.733)"></v-divider>
     <v-card
-      height="9%"
+      height="50px"
       class="main-color-light d-flex align-center"
       style="border-radius: 0px"
     >
-      <v-btn icon dark large class="mx-2" @click="showRecord = !showRecord"
+      <v-btn icon dark plain class="ml-5" @click="showRecord = !showRecord"
         ><v-icon size="26px">mdi-microphone</v-icon>
       </v-btn>
-      <v-btn icon dark large @click="file_upload_open"
+      <v-btn icon dark plain @click="file_upload_open"
         ><v-icon size="26px">mdi-file-upload</v-icon>
       </v-btn>
       <recordBtn
@@ -31,7 +32,7 @@
         @closeRecord="closeRecord"
         ref="recBtn"
       />
-      <UploadBtn @sendData="receiveData" ref="fileupload" />
+      <UploadBtn @sendData="receiveData" @fileUploading="fileUploading" ref="fileupload" />
     </v-card>
   </v-card>
 </template> 
@@ -185,6 +186,7 @@ export default {
       });
     },
     receiveData(data) {
+      this.$emit('uploadComplete');
       data["id"] = this.idx;
       this.idx += 1;
       this.addCard(data);
@@ -192,37 +194,24 @@ export default {
       this.expand = false;
     },
     delRecord(id) {
-      let len = this.records.length;
-      for (var i = 0; i < len; i++) {
-        if (this.records[i].id === id) {
-          this.send("record", {
+      this.send("record", {
             type: "delete",
-            index: i,
+            index: id,
           });
-          break;
-        }
-      }
     },
     addRecord(id) {
-      let len = this.records.length;
-      for (var i = 0; i < len; i++) {
-        if (this.records[i].id === id) {
-          this.send("music", {
-            type: "add",
-            index: this.$store.getters.getBoard.length,
-            obj: {
-              url: this.records[i]["downloadURL"],
-              fileName: this.records[i]["fileName"],
-              distortion: 0,
-              gain: 0,
-              volume: 0,
-              reverb: 0,
-            },
-          });
-
-          break;
-        }
-      }
+      this.send("music", {
+        type: "add",
+        index: this.$store.getters.getBoard.length,
+        obj: {
+          url: this.records[id]["downloadURL"],
+          fileName: this.records[id]["fileName"],
+          distortion: 0,
+          gain: 0,
+          volume: 0,
+          reverb: 0,
+        },
+      });
     },
     onScroll() {
       this.scrollInvoked++;
@@ -230,6 +219,10 @@ export default {
     closeRecord() {
       this.showRecord = false;
     },
+    // 파일 업로드 될 때
+    fileUploading() {
+      this.$emit('uploadStart');
+    }
   },
 };
 </script>
