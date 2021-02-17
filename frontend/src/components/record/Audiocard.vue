@@ -28,7 +28,7 @@
 <script>
 import Waveform from "../practiceroom/Waveform";
 export default {
-  props: ["fileData"],
+  props: ["fileData", "idx"],
   components: {
     Waveform,
   },
@@ -37,10 +37,10 @@ export default {
   }),
   methods: {
     deleteThis() {
-      this.$emit("delRecord", this.fileData.id);
+      this.$emit("delRecord", this.idx);
     },
     addThis() {
-      this.$emit("addRecord", this.fileData.id);
+      this.$emit("addRecord", this.idx);
     },
   },
 };
