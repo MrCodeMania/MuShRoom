@@ -21,10 +21,10 @@ export default {
   methods: {
     onFileChanged(e) {
       this.files = e.target.files;
+      console.log(this.files);
       this.upload();
     },
     inputClick() {
-      this.files = "";
       this.$refs.uploader.click();
     },
     async upload() {
@@ -48,7 +48,8 @@ export default {
             console.debug("업로드 실패", err);
           });
       }
-      this.files = undefined;
+      this.$refs.uploader.value = "";
+      console.log(this.$refs.uploader.value);
     },
   },
 };
