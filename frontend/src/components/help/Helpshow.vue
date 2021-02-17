@@ -16,7 +16,7 @@
         @click="changeHelpState"
         text
       >
-        <v-icon color="red">mdi-close-thick</v-icon>
+        <v-icon color="white">mdi-close-thick</v-icon>
       </v-btn>
       <v-carousel height="500" hide-delimiters show-arrows>
         <v-carousel-item v-for="(slide, i) in describe" :key="i">

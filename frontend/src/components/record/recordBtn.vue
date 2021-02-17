@@ -1,5 +1,9 @@
 <template>
-  <v-card class="record main-color d-flex flex-column" style="z-index: 100" v-if="showRecord">
+  <v-card
+    class="record main-color d-flex flex-column"
+    style="z-index: 100"
+    v-if="showRecord"
+  >
     <recBtn
       style="border: none"
       ref="recorder"
@@ -9,7 +13,12 @@
       :sampleRate="44100"
     />
     <v-spacer></v-spacer>
-    <v-card elevation="0" width="80%" class="d-flex mb-4 ml-11 align-center main-color">
+    <v-card
+      elevation="0"
+      width="80%"
+      :disabled="nowstate"
+      class="d-flex mb-4 ml-11 align-center main-color"
+    >
       <v-text-field
         dark
         v-model="inputFileName"
@@ -21,10 +30,10 @@
         ><v-icon size="30px">mdi-plus</v-icon></v-btn
       >
     </v-card>
-    <v-btn 
+    <v-btn
       icon
       dark
-      style="position: absolute; right: 5px; top: 5px;"
+      style="position: absolute; right: 5px; top: 5px"
       @click="closeRecord"
     >
       <v-icon> mdi-close </v-icon>
@@ -44,15 +53,15 @@ export default {
       //컴포넌트에서 녹화한 파일을 담는 변수
       // blob 형태 {size , type 두가지 정보} , duration 재생길이 , url => 로컬 다운로드 url
       file: {}, // 녹음 완료 후 파일 정보
-
+      nowstate: true,
       startTime: 4,
       filenameRules: [(value) => !!value || "Required."],
     };
   },
   methods: {
     closeRecord() {
-      console.log(this.showRecord)
-      this.$emit('closeRecord')
+      console.log(this.showRecord);
+      this.$emit("closeRecord");
     },
     expandInit() {
       this.inputFileName = "";
@@ -83,6 +92,10 @@ export default {
           console.debug("녹음 파일 업로드 실패", err);
         });
       this.$emit("sendData", sendFileData);
+      this.closeRecord();
+      this.nowstate = true;
+      this.inputFileName = null;
+      this.file = "";
     },
 
     hideStopBtn() {
@@ -111,10 +124,12 @@ export default {
       setTimeout(() => {
         this.setRecentRecord();
       }, 800);
+      this.nowstate = false;
     },
 
     //:before-recording=
     startRecord() {
+      this.nowstate = true;
       this.showStopBtn();
     },
   },
