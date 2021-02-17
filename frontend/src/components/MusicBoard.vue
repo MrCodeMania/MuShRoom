@@ -118,6 +118,7 @@ export default {
 
       let musicSocket = new SockJS(serverURL);
       this.musicStompClient = Stomp.over(musicSocket);
+      this.musicStompClient.debug = () => {};
       this.musicStompClient.connect(
         {},
         (frame) => {
