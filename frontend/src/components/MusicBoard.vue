@@ -45,15 +45,6 @@
         elevation="0"
       >
         <v-btn
-          class="musicboard_btn pt-1"
-          icon
-          dark
-          plain
-          @click="downloadButton"
-        >
-          <v-icon size="26px">mdi-download</v-icon>
-        </v-btn>
-        <v-btn
           class="musicboard_btn"
           icon
           dark
@@ -190,9 +181,6 @@ export default {
           this.connected = false;
         }
       );
-    },
-    downloadButton() {
-      console.log("download");
     },
     musicPlayButton() {
       if (this.play) {
