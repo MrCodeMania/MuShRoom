@@ -37,7 +37,10 @@
         <!-- 파일 목록 -->
         <v-row no-gutters style="height: 690px; max-height: 72.5vh">
           <v-card elevation="0" width="100%" height="100%" color="#00ff0000">
-            <Record @uploadComplete="uploadComplete" @uploadStart="uploadStart"/>
+            <Record
+              @uploadComplete="uploadComplete"
+              @uploadStart="uploadStart"
+            />
           </v-card>
         </v-row>
       </v-col>
@@ -54,7 +57,7 @@
       @setNickName="setNickName"
     />
     <Help />
-    <Uploading :uploading="uploading"/>
+    <Uploading :uploading="uploading" />
   </v-main>
 </template>
 
@@ -78,7 +81,7 @@ export default {
     Chat,
     SetNickName,
     Help,
-    Uploading
+    Uploading,
   },
   mounted() {
     if (this.$cookies.isKey("visit")) {
@@ -101,7 +104,7 @@ export default {
       hasNickName: false,
       nickName: "",
       newChat: 0,
-      uploading: false  // 파일 업로드할 때 true
+      uploading: false, // 파일 업로드할 때 true
     };
   },
   computed: {},
@@ -164,6 +167,15 @@ export default {
               reverb: {
                 object: null,
                 value: res.data.musicPageList[0].musicList[i].reverb,
+              },
+              loop: {
+                loop: res.data.musicPageList[0].musicList[i].loop,
+                loopStart: res.data.musicPageList[0].musicList[i].loopStart,
+                loopEnd: res.data.musicPageList[0].musicList[i].loopEnd,
+              },
+              delay: {
+                delay: res.data.musicPageList[0].musicList[i].delay,
+                offset: res.data.musicPageList[0].musicList[i].offset,
               },
             },
           });

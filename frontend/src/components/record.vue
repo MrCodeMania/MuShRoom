@@ -32,7 +32,11 @@
         @closeRecord="closeRecord"
         ref="recBtn"
       />
-      <UploadBtn @sendData="receiveData" @fileUploading="fileUploading" ref="fileupload" />
+      <UploadBtn
+        @sendData="receiveData"
+        @fileUploading="fileUploading"
+        ref="fileupload"
+      />
     </v-card>
   </v-card>
 </template> 
@@ -61,7 +65,6 @@ export default {
     },
   },
   created() {
-    console.log("option", options);
     this.idx = this.records.length;
 
     this.code = document.location.href.split("=")[1];
@@ -186,7 +189,7 @@ export default {
       });
     },
     receiveData(data) {
-      this.$emit('uploadComplete');
+      this.$emit("uploadComplete");
       data["id"] = this.idx;
       this.idx += 1;
       this.addCard(data);
@@ -195,9 +198,9 @@ export default {
     },
     delRecord(id) {
       this.send("record", {
-            type: "delete",
-            index: id,
-          });
+        type: "delete",
+        index: id,
+      });
     },
     addRecord(id) {
       this.send("music", {
@@ -210,6 +213,11 @@ export default {
           gain: 0,
           volume: 0,
           reverb: 0,
+          loop: false,
+          loopStart: 0,
+          loopEnd: 0,
+          delay: 0,
+          offset: 0,
         },
       });
     },
@@ -221,8 +229,8 @@ export default {
     },
     // 파일 업로드 될 때
     fileUploading() {
-      this.$emit('uploadStart');
-    }
+      this.$emit("uploadStart");
+    },
   },
 };
 </script>
