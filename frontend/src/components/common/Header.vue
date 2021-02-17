@@ -28,7 +28,7 @@
             {{ newChat }}
           </div>
         </v-card>
-        <v-icon dark> mdi-chat </v-icon>
+        <v-icon size="26px" dark> mdi-chat </v-icon>
       </div>
       Chat
     </v-btn>
