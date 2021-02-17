@@ -17,8 +17,8 @@
         class="d-flex justify-center align-center"
       >
         <div>
-          <v-img
-            width="300px !important"
+            <v-img
+            width="250px !important"
             style="object-fit: cover"
             src="@/assets/grey.png"
           >

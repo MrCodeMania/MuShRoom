@@ -16,12 +16,13 @@
         <v-btn icon dark plain @click="addThis"
           ><v-icon>mdi-plus </v-icon></v-btn
         >
-        <v-btn class="mr-2" plain icon dark @click="deleteThis"
+        <v-btn :disabled="!isReady"
+        class="mr-2" plain icon dark @click="deleteThis"
           ><v-icon>mdi-delete</v-icon></v-btn
         >
       </v-card-title>
 
-      <Waveform class="mx-auto none" :url="fileData.downloadURL" height="60" full="true" color="#999"/>
+      <Waveform class="mx-auto none" :url="fileData.downloadURL" height="60" full="false" color="#999" @isReady="nowReady"/>
     </v-card>
   </div>
 </template>
@@ -34,6 +35,7 @@ export default {
   },
   data: () => ({
     showMenu: false,
+    isReady: false
   }),
   methods: {
     deleteThis() {
@@ -42,6 +44,9 @@ export default {
     addThis() {
       this.$emit("addRecord", this.idx);
     },
+    nowReady() {
+      this.isReady = true;
+    }
   },
 };
 </script>

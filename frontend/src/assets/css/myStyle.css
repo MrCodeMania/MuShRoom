@@ -40,6 +40,11 @@ body {
   border-radius: 10px;
 }
 
+.scroll::-webkit-scrollbar-thumb {
+  /* 스크롤 색 */
+  background: #00ff0000 !important;
+}
+
 ::-webkit-scrollbar-button {
   /* 스크롤 화살표 버튼 없앰 */
   display: none;
@@ -83,5 +88,3 @@ span {
 .Vue-Toastification__toast--default.toastMove {
   background-color: rgba(50, 205, 50, 0.493);
 }
-
-
