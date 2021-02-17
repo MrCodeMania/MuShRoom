@@ -54,7 +54,7 @@
           <v-icon v-else>mdi-checkbox-marked</v-icon>
         </v-btn>
       </template>
-      <span v-if="cross">메트로놈 한 박자 후 녹음이 시작됩니다</span>
+      <span v-if="cross">메트로놈 시작 한 마디 후 녹음이 시작됩니다</span>
       <span v-else>바로 녹음이 시작됩니다.</span></v-tooltip
     >
   </v-card>
