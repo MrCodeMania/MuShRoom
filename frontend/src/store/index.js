@@ -64,7 +64,7 @@ export default new Vuex.Store({
         },
         volume: {
           object: null,
-          value: -5,
+          value: -40,
         },
         gain: {
           object: null,
