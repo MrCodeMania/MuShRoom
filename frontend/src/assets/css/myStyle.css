@@ -78,23 +78,22 @@ span {
 }
 
 .Vue-Toastification__toast--default.toastAdd {
-  background-color: rgba(50, 205, 50, 0.493);
+  background-color: rgba(28, 175, 255, 0.884);
 }
 
 .Vue-Toastification__toast--default.toastDelete {
-  background-color: rgba(204, 46, 46, 0.507);
+  background-color: rgba(255, 50, 50, 0.767);
 }
 
 .Vue-Toastification__toast--default.toastMove {
   background-color: rgba(50, 205, 50, 0.493);
 }
 
-
 .wrap4 {
   letter-spacing: 1.5px;
   white-space: nowrap;
   position: relative;
-  overflow: hidden;   
+  overflow: hidden;
   text-overflow: ellipsis;
   display: block;
   width: 100%;
@@ -104,7 +103,7 @@ span {
   letter-spacing: 1.5px;
   white-space: nowrap;
   position: relative;
-  overflow: hidden;   
+  overflow: hidden;
   text-overflow: ellipsis;
   display: block;
   width: 100%;
@@ -115,11 +114,12 @@ span {
   width: 100%;
 }
 
-.wrap3:hover, .wrap2:hover {
+.wrap3:hover,
+.wrap2:hover {
   width: auto;
 }
 
-.wrap2:hover .wrap3 { 
+.wrap2:hover .wrap3 {
   animation: scroll 10s;
 }
 
@@ -134,7 +134,10 @@ span {
 }
 
 @keyframes scroll {
-    0% {left: 0px;}
-    100% {left: -100%;}              
+  0% {
+    left: 0px;
+  }
+  100% {
+    left: -100%;
+  }
 }
-

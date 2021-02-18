@@ -17,10 +17,10 @@
             ></v-img></div
         ></v-sheet>
         <v-divider></v-divider>
-        <div class="d-flex justify-center align-center flex-column mt-6">
+        <div class="d-flex justify-center align-center flex-column">
           <v-sheet width="100%" color="#1e1e1e"
             ><div
-              class="d-flex align-center justify-center"
+              class="d-flex align-center justify-center pa-4 text-center"
               v-html="describe[0]"
             ></div
           ></v-sheet>

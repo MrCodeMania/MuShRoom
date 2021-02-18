@@ -134,9 +134,9 @@ export default {
             (res) => {
               const resBody = JSON.parse(res.body);
               if (resBody["type"] == "delete") {
-                this.$toast(
-                  `[${resBody["obj"]["fileName"]}]이(가) 칠판에서 제거되었습니다.`,
-                  { ...options, toastClassName: "toastDelete" }
+                this.$toast.error(
+                  `[${resBody["obj"]["fileName"]}]이(가) 뮤직보드에서 제거되었습니다.`,
+                  options
                 );
                 this.$store.commit("deleteMusic", {
                   idx: resBody["index"],
@@ -148,9 +148,9 @@ export default {
                 this.$refs.player[resBody["index"]].player.dispose();
               }
               if (resBody["type"] == "update") {
-                this.$toast(
-                  `[${resBody["obj"]["fileName"]}]이(가) 칠판에서 수정되었습니다.`,
-                  { ...options, toastClassName: "toastAdd" }
+                this.$toast.success(
+                  `[${resBody["obj"]["fileName"]}]이(가) 뮤직보드에서 수정되었습니다.`,
+                  options
                 );
                 this.$store.commit("updateMusic", {
                   music: {

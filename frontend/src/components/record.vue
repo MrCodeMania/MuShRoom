@@ -118,7 +118,7 @@ export default {
 
               if (resBody["type"] == "add") {
                 this.$toast(
-                  `[${resBody["obj"]["fileName"]}]이(가) 추가되었습니다.`,
+                  `[${resBody["obj"]["fileName"]}]이(가) 업로드 되었습니다.`,
                   options
                 );
                 this.$store.commit("updateRecord", {
@@ -128,10 +128,10 @@ export default {
                 });
               }
               if (resBody["type"] == "delete") {
-                this.$toast(
+                this.$toast.error(
                   `[${
                     this.$store.getters.getRecords[resBody.index].fileName
-                  }]이(가) 제거되었습니다.`,
+                  }]이(가) 제거 되었습니다.`,
                   options
                 );
                 this.$store.commit("deleteRecord", resBody.index);
@@ -161,7 +161,7 @@ export default {
               const resBody = JSON.parse(res.body);
               if (resBody["type"] == "add") {
                 this.$toast(
-                  `[${resBody["obj"]["fileName"]}]이(가) 칠판으로 이동했습니다`,
+                  `[${resBody["obj"]["fileName"]}]이(가) 뮤직보드로 이동했습니다`,
                   options
                 );
                 this.$store.commit("addMusic", {
