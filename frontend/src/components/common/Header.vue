@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     toMain() {
-      window.location.href ='http://musicshareroom.tk/';
+      window.location.href ='/';
     },
     toggleChat: function () {
       // 닉네임이 없으면
