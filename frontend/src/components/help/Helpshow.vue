@@ -59,26 +59,30 @@ export default {
     box: "",
     share: "",
     imgsrc: [
-      require("@/assets/help/mic.gif"),
+      // require("@/assets/help/mic.gif"),
+      require("@/assets/help/Metro.gif"),
       require("@/assets/help/record.gif"),
       require("@/assets/help/recordWithMet.gif"),
       require("@/assets/help/recordSolo.gif"),
-      require("@/assets/help/AddDelete.gif"),
-      require("@/assets/help/Metro.gif"),
       require("@/assets/help/fileupload.gif"),
+      require("@/assets/help/AddDelete.gif"),
       require("@/assets/help/expand.gif"),
       require("@/assets/help/share.gif"),
     ],
     describe: [
-      [`마이크를 허용해야 합니다`],
-      [`여기서 녹음이 가능 합니다`],
-      [`메트로놈과 함께 시작할 수 있습니다`],
-      [`바로 녹음도 가능합니다`],
-      [`칠판에 추가하거나 삭제가 가능합니다`],
-      [`BPM과 Beat을 변경하여 메트로놈 사용 가능합니다`],
-      [`파일을 올릴 수 있습니다`],
-      [`다양한 옵션을 추가 가능합니다`],
-      [`만든 음악을 공유할 수 있습니다`],
+      // [`마이크를 허용해야 합니다`],
+      [`메트로놈에서 BPM을 올려 속도를 높이고 Beat로 박자를 변경할 수 있습니다.<br>
+      꾹 누르면 빠른 조절이 가능합니다.`],
+      [`버튼을 누르면 녹음 창이 뜹니다.`],
+      [`체크박스가 해제되어 있으면 한마디 쉬고 녹음이 시작됩니다.<br>
+      이어폰을 착용하지 않으면 메트로놈 소리가 함께 녹음될 수 있습니다.`],
+      [`체크박스를 누르면 메트로놈 없이 녹음이 가능합니다.<br>
+      녹음이 완료되면 파일보드(오른쪽)에 추가할 수 있습니다.`],
+      [`파일보드(오른쪽)에 직접 음악파일을 업로드 할 수 있습니다.`],
+      [`파일보드(오른쪽)에서 뮤직보드(왼쪽)으로 음악파일을 추가하거나 삭제가 가능합니다.`],
+      [`버튼을 눌러 확장된 화면에서 다양한 옵션을 줄 수 있습니다.`],
+      [`Musician(편집 가능) 링크를 공유해 함께 음악을 만들고,<br>
+      Audience(감상 전용) 링크를 공유해 내 음악을 함께 들을 수 있습니다.`],
     ],
   }),
   methods: {

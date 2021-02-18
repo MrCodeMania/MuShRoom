@@ -77,14 +77,14 @@ span {
   font-size: 20px !important;
 }
 
-.Vue-Toastification__toast--default.toastAdd {
-  background-color: rgba(50, 205, 50, 0.493);
+/* .Vue-Toastification__toast--default.toastAdd {
+  background-color: rgba(28, 175, 255, 0.884);
 }
 
 .Vue-Toastification__toast--default.toastDelete {
-  background-color: rgba(204, 46, 46, 0.507);
+  background-color: rgba(255, 50, 50, 0.767);
 }
 
 .Vue-Toastification__toast--default.toastMove {
-  background-color: rgba(50, 205, 50, 0.493);
-}
+  background-color: rgba(64, 255, 96, 0.699);
+} */

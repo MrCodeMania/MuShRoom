@@ -12,7 +12,8 @@
         width="150px"
         :class="msg.id==id ? 'mine' : 'others'"
         class="px-2"
-        style="font-size: 14px;"
+        style="font-size: 14px; border-radius: 10px;"
+        dark
         elevation="0">
             {{ msg.text }}
         </v-card>
@@ -89,13 +90,13 @@ export default {
 .mine {
     float: right;
     margin-top: 2px;
-    background-color: #f0f0f0f1 !important;
+    background-color: #00A2FF !important;
 }
 
 .others{
     float: left;
     margin-top: 2px;
-    background-color: #f0f0f09f !important;
+    background-color: #003D5E !important;
 }
 
 .myInfo {

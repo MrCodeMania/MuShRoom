@@ -4,9 +4,9 @@
     :class="openChat ? 'chat' : 'hide'"
     style="z-index: 99"
   >
-    <v-card dark width="100%" height="100%" color="#8CBBD7">
+    <v-card dark width="100%" height="100%" color="#02141E">
       <!-- 채팅창 상단 -->
-      <v-card-title class="pr-2 main-color-light">
+      <v-card-title class="pr-2">
         Chat
         <v-spacer></v-spacer>
         <v-btn
@@ -18,36 +18,37 @@
           <v-icon> mdi-close </v-icon>
         </v-btn>
       </v-card-title>
-      <v-divider
-        style="background-color: rgba(255, 255, 255, 0.733)"
-      ></v-divider>
       <!-- 메세지 나오는 부분 -->
-      <v-container id="scroll-target" class="middle-area px-0 mx-auto">
+      <v-container id="scroll-target" class="middle-area px-4 py-0">
         <div v-for="(msg, idx) in msgList" :key="idx">
           <Message :msg="msg" :idx="idx" :msgList="msgList" :id="id" />
         </div>
       </v-container>
-      <v-divider
-        style="background-color: rgba(255, 255, 255, 0.733)"
-      ></v-divider>
       <!-- 채팅창 하단 -->
-      <v-card-text class="bottom-area py-0 main-color-light">
+      <v-card-text class="bottom-area pa-0 mx-auto mt-5"
+      style="background-color: #00ff0000;">
         <v-row>
           <!-- text 입력칸 -->
-          <v-col cols="10">
+          <v-col cols="10" 
+          style="height: 50px;"
+          class="d-flex align-center mt-4">
             <v-textarea
-              style="font-size: 14px"
-              class="chat-area"
+              color="white !important"
+              style="font-size: 14px;"
+              class="ml-2 mb-5 chat-area"
               v-model="sentence"
               @keyup.enter="sendMessage()"
               autofocus
               auto-grow
-              rows="1"
+              solo
+              flat
+              background-color="#003D5E"
+              :rows="1"
             >
             </v-textarea>
           </v-col>
           <!-- 전송 버튼 -->
-          <v-col class="d-flex align-center px-0">
+          <v-col class="pa-0">
             <v-btn icon plain @click="sendMessage()">
               <v-icon small> mdi-send </v-icon>
             </v-btn>
@@ -84,26 +85,18 @@ export default {
     // 소켓 연결
     this.connect();
   },
-  computed: {
-    length() {
-      // 전체 리스트 길이
-      return this.msgList.length;
-    },
-  },
-  watch: {
-    length: function () {
+  methods: {
+    moveBottom(){
       var obj = document.getElementById("scroll-target");
       obj.scrollTop = obj.scrollHeight;
     },
-  },
-  methods: {
     closeChat() {
       // PracticeRoom에서 openChat = false;
       this.$emit("toggleChat");
     },
     sendMessage: function () {
       // 엔터 또는 전송버튼 누르면 전송
-      if (this.sentence.length == 1) {
+      if (this.sentence.trim().length == 0) {
         // 빈칸일 때 보내지 않음
         this.sentence = "";
         return;
@@ -129,7 +122,8 @@ export default {
         time: time,
         text: resBody["message"],
       });
-
+      
+      this.moveBottom();  // 리스트에 집어넣고 스크롤 하단으로
       //  창이 닫혀있는데 새 메세지가 오면 PracticeRoom에서 newChat++;
       if (!this.openChat) this.$emit("newChat");
     },
@@ -180,22 +174,23 @@ export default {
   width: 300px;
   height: 500px;
   bottom: 20px;
-  border: 1px solid white;
   border-radius: 5px;
 }
 
 .middle-area {
-  height: 344px;
-  width: 90%;
+  height: 360px;
+  width: 100%;
   overflow-y: auto;
 }
 
 .chat-area {
-  max-height: 100px;
+  max-height: 70px;
   overflow-y: hidden;
 }
 
 .bottom-area {
-  height: 100px;
+  height: 50px;
+  border-radius: 10px !important;
+  width: 95%;
 }
 </style>
