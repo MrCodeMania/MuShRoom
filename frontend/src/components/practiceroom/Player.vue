@@ -10,7 +10,8 @@
             {{ music.fileName }}
           </div>
         </div>
-      </div>.
+      </div>
+      .
       <v-spacer></v-spacer>
       <v-btn
         icon
@@ -178,7 +179,8 @@
                   >
                 </template>
                 <span style="font-size: 10px"
-                  >시작시간(start)과 끝시간(end)를 설정해 그 사이를 반복합니다 어떤가요</span
+                  >시작시간(start)과 끝시간(end)를 설정해 그 사이를 반복합니다
+                  어떤가요</span
                 ></v-tooltip
               >
               <p class="d-flex" style="font-size: 10px">
@@ -236,7 +238,8 @@
                 </template>
                 <span style="font-size: 10px"
                   >설정 시간(초) 부터 재생됩니다.</span
-                ></v-tooltip>
+                ></v-tooltip
+              >
               <p style="font-size: 10px">Start Point</p>
               <div style="max-height: 48px" class="pa-3 d-flex">
                 <div class="d-flex align-center">
@@ -256,7 +259,7 @@
             <v-divider
               style="background-color: rgba(255, 255, 255, 0.733)"
             ></v-divider>
-            <div  class="pa-3" style="width: 240px; height: 33%">
+            <div class="pa-3" style="width: 240px; height: 33%">
               <v-tooltip max-width="180px" bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <v-icon
@@ -268,7 +271,9 @@
                     >mdi-help-circle-outline</v-icon
                   >
                 </template>
-                <span style="font-size: 10px">설정 시간(초) 후 재생됩니다.</span>
+                <span style="font-size: 10px"
+                  >설정 시간(초) 후 재생됩니다.</span
+                >
               </v-tooltip>
               <p style="font-size: 10px">Delay</p>
               <div style="max-height: 44px" class="pa-3 d-flex">
@@ -291,6 +296,7 @@
       </v-sheet>
     </div>
     <v-divider class="mt-3"></v-divider>
+    <Alert :showAlert="showAlert" :title="alertTitle" :content="alertContent" @close="closeAlert" />
   </div>
 </template>
 
@@ -298,6 +304,7 @@
 import * as Tone from "tone";
 import Waveform from "./Waveform.vue";
 import { mapState } from "vuex";
+import Alert from '@/components/common/Alert.vue';
 
 export default {
   name: "Player",
@@ -307,6 +314,7 @@ export default {
   },
   components: {
     Waveform,
+    Alert
   },
   data() {
     return {
@@ -318,6 +326,10 @@ export default {
       isReady: 0,
       duration: null,
       startTime: 0,
+      checkFinish: false,
+      alertTitle: '제목',
+      alertContent: '내용',
+      showAlert: false
     };
   },
   created() {
@@ -338,6 +350,7 @@ export default {
       const player = new Tone.Player(this.music.url, () => {
         this.player = player;
         this.player.onstop = () => {
+          console.log("stop");
           if (this.state == "stopped" || this.state == "paused") {
             //Tone.Transport.stop();
           } else {
@@ -348,6 +361,11 @@ export default {
             ) {
               //this.stop();
             }
+          }
+
+          if(!this.checkFinish){
+            this.checkFinish = true;
+            this.$emit('finished');
           }
         };
         player.volume.value = this.music.volume.value;
@@ -513,11 +531,23 @@ export default {
           this.music.delay.offset + this.music.loop.loopStart
         );
 
+      this.checkFinish = false;
       setTimeout(() => this.moveProgressBar(), this.music.delay.delay * 1000);
     },
     moveProgressBar() {
       let interval = setInterval(() => {
-        console.log(this.startTime + this.currentTime);
+        console.log(this.startTime, this.currentTime, this.duration);
+        if (this.duration < this.startTime + this.currentTime) {
+          this.$store.state.isSetPlaying = false;
+          this.$store.state.isSetIdx = -1;
+
+          this.$refs.waveform.setTime(0);
+          this.currentTime = 0;
+          this.startTime = 0;
+          this.state = "stopped";
+          this.player.unsync();
+        }
+
         let time;
         if (Tone.Transport.seconds > 0) {
           if (this.player.loop) {
@@ -533,13 +563,14 @@ export default {
                   (this.duration - this.music.loop.loopStart));
             }
           } else {
-            time = Tone.Transport.seconds + this.music.delay.offset;
+            time =
+              Tone.Transport.seconds +
+              this.music.delay.offset -
+              this.music.delay.delay;
           }
           this.currentTime = time;
           //if (this.currentTime > this.duration) this.stop();
-          this.$refs.waveform.setTime(
-            this.startTime + time - this.music.delay.delay
-          );
+          this.$refs.waveform.setTime(this.startTime + time);
         }
         if (this.player.state != "started") {
           this.startTime += this.currentTime;
@@ -578,6 +609,9 @@ export default {
       this.duration = sec;
       this.music.loop.loopEnd = this.duration;
     },
+    closeAlert() {
+      this.showAlert = false;
+    }
   },
 };
 </script>
