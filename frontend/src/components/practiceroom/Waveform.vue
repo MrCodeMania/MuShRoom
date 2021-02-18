@@ -60,6 +60,7 @@ export default {
     this.player.on("seek", () => {
       this.$emit("setTime", this.player.getCurrentTime().toFixed(2));
     });
+    this.$emit("setDuration", this.player.getDuration());
   },
   computed: {
     player() {
