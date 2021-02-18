@@ -37,6 +37,7 @@
         @deleteMusic="deleteMusic"
         @updateMusicOption="updateMusicOption"
         @release="musicStopButton"
+        @finished="isAllFinished"
         ref="player"
       />
     </v-card>
@@ -50,25 +51,20 @@
       >
         <v-btn
           class="musicboard_btn"
-          :disabled="isSetRecording || isSetPlaying"
+          :disabled="isSetRecording || isSetPlaying || play"
           icon
           dark
           plain
           @click="musicPlayButton"
         >
-          <div v-if="!play">
-            <v-icon size="30px">mdi-play</v-icon>
-          </div>
-          <div v-else>
-            <v-icon size="30px">mdi-pause</v-icon>
-          </div>
+          <v-icon size="30px">mdi-play</v-icon>
         </v-btn>
         <v-btn
           class="musicboard_btn mr-5"
           icon
           dark
           plain
-          :disabled="isSetRecording || isSetPlaying"
+          :disabled="isSetRecording || isSetPlaying || !play"
           @click="musicStopButton"
         >
           <v-icon size="30px">mdi-stop</v-icon>
@@ -97,6 +93,7 @@ export default {
       scrollInvoked: 0,
       code: "",
       status,
+      finished: 0,
     };
   },
   created() {
@@ -112,6 +109,9 @@ export default {
     },
     music: function () {
       return this.$store.getters.getBoard;
+    },
+    numOfMusic: function () {
+      return this.music.length;
     },
     ...mapState(["isSetRecording", "isSetPlaying"]),
   },
@@ -207,26 +207,22 @@ export default {
       );
     },
     musicPlayButton() {
-      if (this.play) {
-        this.$store.state.isAllPlaying = false;
-        Tone.Transport.pause();
+      this.musicStopButton();
+      this.$store.state.isAllPlaying = true;
+      if (this.$refs.player) {
+        this.$refs.player.forEach((el) => {
+          el.addToTransport();
+        });
+        Tone.Transport.start();
+        this.$refs.player.forEach((el) => {
+          el.moveProgressBar();
+        });
       } else {
-        this.$store.state.isAllPlaying = true;
-        if (this.$refs.player) {
-          this.$refs.player.forEach((el) => {
-            el.addToTransport();
-          });
-          Tone.Transport.start();
-          this.$refs.player.forEach((el) => {
-            el.moveProgressBar();
-          });
-        } else {
-          // error
-          console.log("player 가 존재하지 않습니다.");
-        }
+        // error
+        console.log("player 가 존재하지 않습니다.");
       }
 
-      this.play = !this.play;
+      this.play = true;
     },
     musicStopButton(idx) {
       // Feat: release all
@@ -239,6 +235,7 @@ export default {
           if (el.n != idx) el.stop();
         });
       }
+      this.finished = 0;
     },
     onScroll() {
       this.scrollInvoked++;
@@ -268,6 +265,9 @@ export default {
           offset: this.music[id].delay.offset,
         },
       });
+    },
+    isAllFinished() {
+      if (++this.finished == this.numOfMusic) this.musicStopButton();
     },
   },
 };

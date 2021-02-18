@@ -321,6 +321,7 @@ export default {
       isReady: 0,
       duration: null,
       startTime: 0,
+      checkFinish: false
     };
   },
   created() {
@@ -350,6 +351,11 @@ export default {
             ) {
               //this.stop();
             }
+          }
+
+          if(!this.checkFinish){
+            this.checkFinish = true;
+            this.$emit('finished');
           }
         };
         player.volume.value = this.music.volume.value;
@@ -471,6 +477,7 @@ export default {
           this.music.delay.offset + this.music.loop.loopStart
         );
 
+      this.checkFinish = false;
       setTimeout(() => this.moveProgressBar(), this.music.delay.delay * 1000);
     },
     moveProgressBar() {
