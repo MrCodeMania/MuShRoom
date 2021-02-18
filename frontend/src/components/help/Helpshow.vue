@@ -6,15 +6,8 @@
     color="white"
     z-index="4"
   >
-    <v-sheet color="1E1E1E" width="700" height="500" rounded>
-      <v-btn
-        id="exit"
-        color="#ffffffbb"
-        @click="changeHelpState"
-        icon
-        plain
-        v-if="firstIn"
-      >
+    <v-sheet color="#00000a" width="700" height="500" rounded>
+      <v-btn id="exit" color="#white" @click="changeHelpState" icon plain>
         <v-icon size="26px">mdi-close</v-icon>
       </v-btn>
       <v-carousel
@@ -24,13 +17,23 @@
         @change="test"
       >
         <template v-slot:prev="{ on, attrs }">
-          <v-btn style="background-color: rgb(30, 30, 30);" icon plain v-bind="attrs" v-on="on"
+          <v-btn
+            style="background-color: rgb(30, 30, 30)"
+            icon
+            plain
+            v-bind="attrs"
+            v-on="on"
             ><v-icon size="26px">mdi-arrow-left-bold-outline</v-icon></v-btn
           >
         </template>
         <template v-slot:next="{ on, attrs }">
-          <v-btn style="background-color: rgb(30, 30, 30);" icon plain v-bind="attrs" v-on="on"
-            ><v-icon  size="26px">mdi-arrow-right-bold-outline</v-icon></v-btn
+          <v-btn
+            style="background-color: rgb(30, 30, 30)"
+            icon
+            plain
+            v-bind="attrs"
+            v-on="on"
+            ><v-icon size="26px">mdi-arrow-right-bold-outline</v-icon></v-btn
           >
         </template>
         <v-carousel-item v-for="(slide, i) in describe" :key="i">
@@ -56,39 +59,33 @@ export default {
     box: "",
     share: "",
     imgsrc: [
-      require("@/assets/help/1.gif"),
-      require("@/assets/help/chat.gif"),
+      require("@/assets/help/mic.gif"),
+      require("@/assets/help/record.gif"),
+      require("@/assets/help/recordWithMet.gif"),
+      require("@/assets/help/recordSolo.gif"),
+      require("@/assets/help/AddDelete.gif"),
+      require("@/assets/help/Metro.gif"),
       require("@/assets/help/fileupload.gif"),
-      require("@/assets/help/recordClick.gif"),
-      require("@/assets/help/recordCross.gif"),
-      require("@/assets/help/recordResult.gif"),
-      require("@/assets/help/recordtoboard.gif"),
+      require("@/assets/help/expand.gif"),
+      require("@/assets/help/share.gif"),
     ],
     describe: [
-      [`내용1`],
-      [`내용2`],
-      [`내용3`],
-      [`내용4`],
-      [`내용5`],
-      [`내용6`],
-      [`내용7`],
+      [`마이크를 허용해야 합니다`],
+      [`여기서 녹음이 가능 합니다`],
+      [`메트로놈과 함께 시작할 수 있습니다`],
+      [`바로 녹음도 가능합니다`],
+      [`칠판에 추가하거나 삭제가 가능합니다`],
+      [`BPM과 Beat을 변경하여 메트로놈 사용 가능합니다`],
+      [`파일을 올릴 수 있습니다`],
+      [`다양한 옵션을 추가 가능합니다`],
+      [`만든 음악을 공유할 수 있습니다`],
     ],
-    visit: [],
   }),
   methods: {
-    test(e) {
-      this.visit[e - 1] = 1;
-      if (this.allVisitCheck() === true) {
-        this.$cookies.set("visit", "visited");
-        this.firstIn = true;
-      }
+    test() {
+      this.$cookies.set("visit", "visited");
     },
-    allVisitCheck() {
-      for (var i = 0; i < this.maxPage; i++) {
-        if (this.visit[i] === 0) return false;
-      }
-      return true;
-    },
+
     prev() {
       this.nowPage -= 1;
       this.show = false;
@@ -112,6 +109,19 @@ export default {
     this.visit = Array.from({ length: this.maxPage + 1 }, () => 0);
     if (this.$cookies.isKey("visit")) {
       this.firstIn = true;
+    }
+    if (navigator.mediaDevices) {
+      const constraints = {
+        audio: true,
+      };
+      navigator.mediaDevices
+        .getUserMedia(constraints)
+        .then((stream) => {
+          console.debug(stream);
+        })
+        .catch((err) => {
+          console.log("The following error occurred: " + err);
+        });
     }
   },
   computed: {
