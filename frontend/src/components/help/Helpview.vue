@@ -3,14 +3,14 @@
     <v-sheet height="420" color="323232 " elevation="20" rounded>
       <v-row no-gutters class="d-flex flex-column justify-center">
         <v-sheet
-          height="360"
+          height="340"
           color="#1e1e1e"
           rounded
           class="d-flex align-center justify-center"
         >
           <div>
             <v-img
-              max-height="400"
+              max-height="380"
               max-width="500"
               contain
               :src="src"
