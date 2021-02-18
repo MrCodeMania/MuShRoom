@@ -309,6 +309,7 @@ export default {
       currentTime: 0,
       isReady: 0,
       duration: null,
+      startTime: 0,
     };
   },
   created() {
@@ -378,7 +379,7 @@ export default {
           this.music.delay.delay,
           this.music.delay.offset +
             (this.music.loop.loop ? this.music.loop.loopStart : 0) +
-            this.currentTime
+            this.startTime
         );
 
       // now: Transport 생성 후 현재 시간
@@ -391,7 +392,6 @@ export default {
       this.$store.state.isSetPlaying = false;
       this.$store.state.isSetIdx = -1;
 
-      this.currentTime = Tone.Transport.seconds;
       this.state = "paused";
       this.player.unsync();
       Tone.Transport.stop();
@@ -402,6 +402,7 @@ export default {
 
       this.$refs.waveform.setTime(0);
       this.currentTime = 0;
+      this.startTime = 0;
       this.state = "stopped";
       this.player.unsync();
       Tone.Transport.stop();
@@ -459,8 +460,8 @@ export default {
       setTimeout(() => this.moveProgressBar(), this.music.delay.delay * 1000);
     },
     moveProgressBar() {
-      console.log("start");
       let interval = setInterval(() => {
+        console.log(this.startTime + this.currentTime);
         let time;
         if (Tone.Transport.seconds > 0) {
           if (this.player.loop) {
@@ -480,13 +481,19 @@ export default {
           }
           this.currentTime = time;
           //if (this.currentTime > this.duration) this.stop();
-          this.$refs.waveform.setTime(time - this.music.delay.delay);
+          this.$refs.waveform.setTime(
+            this.startTime + time - this.music.delay.delay
+          );
         }
-        if (this.player.state != "started") clearInterval(interval);
+        if (this.player.state != "started") {
+          this.startTime += this.currentTime;
+          clearInterval(interval);
+        }
       }, 50);
     },
     removeFromTransport() {
       this.currentTime = 0;
+      this.startTime = 0;
       this.player.unsync();
     },
     sendDelete() {
@@ -501,7 +508,9 @@ export default {
     setTime(sec) {
       this.player.unsync();
 
-      this.currentTime = sec;
+      console.log(typeof sec);
+      this.startTime = parseInt(sec);
+      this.currentTime = 0;
       if (this.state == "started") {
         this.start();
       }
