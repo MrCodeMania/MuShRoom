@@ -14,6 +14,7 @@
       icon
       dark
       plain
+      :disabled="isSetPlaying || isAllPlaying"
       v-else
       @click="start"
     >
@@ -39,7 +40,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(['recordStartState'])
+    ...mapState(['recordStartState',"isSetPlaying", "isSetRecording", "isAllPlaying"])
   }
 }
 </script>
