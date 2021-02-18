@@ -24,13 +24,13 @@
         @change="test"
       >
         <template v-slot:prev="{ on, attrs }">
-          <v-btn icon plain v-bind="attrs" v-on="on"
+          <v-btn style="background-color: rgb(30, 30, 30);" icon plain v-bind="attrs" v-on="on"
             ><v-icon size="26px">mdi-arrow-left-bold-outline</v-icon></v-btn
           >
         </template>
         <template v-slot:next="{ on, attrs }">
-          <v-btn icon plain v-bind="attrs" v-on="on"
-            ><v-icon size="26px">mdi-arrow-right-bold-outline</v-icon></v-btn
+          <v-btn style="background-color: rgb(30, 30, 30);" icon plain v-bind="attrs" v-on="on"
+            ><v-icon  size="26px">mdi-arrow-right-bold-outline</v-icon></v-btn
           >
         </template>
         <v-carousel-item v-for="(slide, i) in describe" :key="i">
