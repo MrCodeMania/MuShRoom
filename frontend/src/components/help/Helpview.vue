@@ -3,22 +3,22 @@
     <v-sheet height="420" color="323232 " elevation="20" rounded>
       <v-row no-gutters class="d-flex flex-column justify-center">
         <v-sheet
-          height="340"
-          color="1e1e1e"
+          height="360"
+          color="#1e1e1e"
           rounded
           class="d-flex align-center justify-center"
         >
           <div>
             <v-img
-              max-height="320"
-              max-width="420"
+              max-height="400"
+              max-width="500"
               contain
               :src="src"
             ></v-img></div
         ></v-sheet>
-        <v-divider class="mt-4"></v-divider>
+        <v-divider></v-divider>
         <div class="d-flex justify-center align-center flex-column mt-6">
-          <v-sheet width="100%" color="2d2d2d"
+          <v-sheet width="100%" color="#1e1e1e"
             ><div
               class="d-flex align-center justify-center"
               v-html="describe[0]"
