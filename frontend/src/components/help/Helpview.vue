@@ -1,10 +1,10 @@
 <template>
   <v-container>
-    <v-sheet height="420" color="black" elevation="20" rounded>
+    <v-sheet height="420" color="323232 " elevation="20" rounded>
       <v-row no-gutters class="d-flex flex-column justify-center">
         <v-sheet
           height="340"
-          color="black"
+          color="1e1e1e"
           rounded
           class="d-flex align-center justify-center"
         >
@@ -18,7 +18,7 @@
         ></v-sheet>
         <v-divider class="mt-4"></v-divider>
         <div class="d-flex justify-center align-center flex-column mt-6">
-          <v-sheet width="100%" color="black"
+          <v-sheet width="100%" color="2d2d2d"
             ><div
               class="d-flex align-center justify-center"
               v-html="describe[0]"
