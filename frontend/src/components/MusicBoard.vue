@@ -259,9 +259,6 @@ export default {
         },
       });
     },
-    stopAllPlay() {
-      this.musicStopButton();
-    }
   },
 };
 </script>
