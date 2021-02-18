@@ -456,17 +456,23 @@ export default {
           this.music.delay.offset = 0;
         } else if ( this.music.delay.offset < 0 ) {
           this.music.delay.offset = 0;
-          alert("0보다 작은 값은 입력할 수 없습니다.")
+          this.showAlert = true;
+          this.alertTitle = "스타트포인트 에러"
+          this.alertContent = "0 보다 작은 값은 입력할 수 없습니다.";
         } else if ( this.music.delay.offset >= this.duration ) {
+          this.showAlert = true;
           this.music.delay.offset = 0;
-          alert("총 길이보다 크거나 같은 값은 입력할 수 없습니다.")
+          this.alertTitle = "스타트포인트 에러"
+          this.alertContent ="총 길이보다 크거나 같은 값은 입력할 수 없습니다.";
         }
       } else {
         if ( this.music.delay.delay == "" ) {
           this.music.delay.delay = 0;
         } else if ( this.music.delay.delay < 0 ) {
           this.music.delay.delay = 0;
-          alert("0보다 작은 값은 입력할 수 없습니다.")
+          this.showAlert = true;
+          this.alertTitle = "딜레이 에러"
+          this.alertContent = "0 보다 작은 값은 입력할 수 없습니다.";
         } 
       }
 
@@ -495,23 +501,33 @@ export default {
         this.music.loop.loopStart = 0;
       } else if (this.music.loop.loopStart < 0) {
         this.music.loop.loopStart = 0;
-        alert("0보다 작은 값은 입력할 수 없습니다.")
+        this.showAlert = true;
+        this.alertTitle = "루프 에러"
+        this.alertContent = "0 보다 작은 값은 입력할 수 없습니다.";
       } else if ( this.music.loop.loopStart >= this.duration ) {
         this.music.loop.loopStart = 0;
-        alert("총 길이보다 크거나 같은 값은 입력할 수 없습니다.")        
+        this.showAlert = true;
+        this.alertTitle = "루프 에러"
+        this.alertContent = "총 길이보다 크거나 같은 값은 입력할 수 없습니다.";      
       }
 
       if ( this.music.loop.loopEnd == "" ) {
         this.music.loop.loopEnd = this.duration;
       } else if (this.music.loop.loopEnd < 0) {
         this.music.loop.loopEnd = this.duration;
-        alert("0보다 작은 값은 입력할 수 없습니다.")
+        this.showAlert = true;
+        this.alertTitle = "루프 에러"
+        this.alertContent = "0 보다 작은 값은 입력할 수 없습니다.";
       } else if ( this.music.loop.loopEnd <= this.music.loop.loopStart ) {
         this.music.loop.loopEnd = this.duration;
-        alert("루프 시작 시간보다 작거나 같은 값은 입력할 수 없습니다.")
+        this.showAlert = true;
+        this.alertTitle = "루프 에러"
+        this.alertContent = "루프 시작 시간보다 작거나 같은 값은 입력할 수 없습니다.";
       } else if ( this.music.loop.loopEnd > this.duration ) {
         this.music.loop.loopEnd = this.duration;
-        alert("총 길이보다 크거나 같은 값은 입력할 수 없습니다.")   
+        this.showAlert = true;
+        this.alertTitle = "루프 에러"
+        this.alertContent = "총 길이보다 크거나 같은 값은 입력할 수 없습니다.";
       }
 
       if (!this.music.loop.loopEnd || this.music.loop.loopEnd < 0 || this.music.loop.loopEnd <= this.music.loop.loopStart) {
