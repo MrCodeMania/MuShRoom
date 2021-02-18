@@ -34,19 +34,20 @@
     <v-btn
       icon
       dark
+      :disabled="isSetRecording"
       style="position: absolute; right: 5px; top: 5px"
       @click="closeRecord"
     >
       <v-icon> mdi-close </v-icon>
     </v-btn>
-    <v-tooltip left>
+    <v-tooltip max-width="200px" left>
       <template v-slot:activator="{ on, attrs }">
         <v-btn
           icon
           dark
           v-bind="attrs"
           v-on="on"
-          :disabled="recording"
+          :disabled="isSetRecording"
           style="position: absolute; left: 15px; top: 15px"
           @click="changeCross"
         >
@@ -63,6 +64,8 @@
 import recBtn from "./recBtn.vue";
 import sendfile from "@/service/filecontrol";
 import { getYyyyMmDdMmSsToString } from "@/lib/timestamp";
+import { mapState } from "vuex";
+
 export default {
   components: { recBtn },
   props: ["showRecord"],
@@ -77,6 +80,9 @@ export default {
       cross: true,
       filenameRules: [(value) => !!value || "Required."],
     };
+  },
+  computed: {
+    ...mapState(['isSetRecording'])
   },
   methods: {
     changeCross() {

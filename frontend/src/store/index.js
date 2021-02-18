@@ -19,8 +19,11 @@ export default new Vuex.Store({
     recordStartState: "",
     shareUrl: [],
     idx: 0,
+
+    isSetIdx: -1,
     isSetRecording: false,
     isSetPlaying: false,
+    isAllPlaying: false,
   },
   mutations: {
     helpShowChange(state) {

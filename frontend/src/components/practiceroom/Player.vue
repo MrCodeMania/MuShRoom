@@ -22,7 +22,7 @@
           dark
           plain
           class="mt-4"
-          :disabled="player == null"
+          :disabled="player == null || isAllPlaying || isSetRecording || isSetPlaying "
           v-on:click="start()"
         >
           <v-icon>mdi-play</v-icon>
@@ -38,7 +38,7 @@
         >
           <v-icon>mdi-pause</v-icon>
         </v-btn>
-        <v-btn icon plain dark class="mt-4" v-on:click="stop()">
+        <v-btn icon plain dark class="mt-4" :disabled="isAllPlaying || isSetRecording || (isSetIdx != -1 && isSetIdx != n)" v-on:click="stop()">
           <v-icon>mdi-stop</v-icon>
         </v-btn>
       </div>
@@ -269,6 +269,7 @@
 <script>
 import * as Tone from "tone";
 import Waveform from "./Waveform.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "Player",
@@ -292,6 +293,9 @@ export default {
   },
   created() {
     this.constructor();
+  },
+  computed: {
+    ...mapState(['isSetIdx','isSetPlaying','isAllPlaying', 'isSetRecording'])
   },
   watch: {
     music: function () {
@@ -340,6 +344,9 @@ export default {
       this.status = this.$store.state.status;
     },
     start() {
+      this.$store.state.isSetPlaying = true;
+      this.$store.state.isSetIdx = this.n;
+
       Tone.start(); // ...start()를 실행하기 위한 사전 작업
       this.state = "started"; // delay를 줄 경우, player.state로 즉시 받아오면 stopped가 넘어옴
       this.player.unsync();
@@ -361,12 +368,18 @@ export default {
       this.moveProgressBar();
     },
     pause() {
+      this.$store.state.isSetPlaying = false;
+      this.$store.state.isSetIdx = -1;
+
       this.currentTime = Tone.Transport.seconds;
       this.state = "paused";
       this.player.unsync();
       Tone.Transport.stop();
     },
     stop() {
+      this.$store.state.isSetPlaying = false;
+      this.$store.state.isSetIdx = -1;
+      
       this.$refs.waveform.setTime(0);
       this.currentTime = 0;
       this.state = "stopped";

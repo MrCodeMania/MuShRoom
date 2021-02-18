@@ -316,7 +316,7 @@ export default {
     getRC() {
       return this.$store.getters.getRC;
     },
-    ...mapState(["recordStartState", "isSetPlaying", "isSetRecording"]),
+    ...mapState(["recordStartState"]),
   },
 
   mounted() {
