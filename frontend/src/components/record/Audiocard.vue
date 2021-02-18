@@ -10,7 +10,7 @@
     >
       <v-card-title width="50%" max-width="60px"
         ><span class="ml-2 medium">{{
-          fileData.fileName
+          fileData.fileName | truncate(19, '...')
         }}</span>
         <v-spacer></v-spacer>
         <v-btn icon dark plain @click="addThis"

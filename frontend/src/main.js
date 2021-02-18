@@ -9,6 +9,19 @@ import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import VueCookies from "vue-cookies";
 
+
+const truncate = function (text, length, clamp) {
+  clamp = clamp || '...'
+  const node = document.createElement('div')
+  node.innerHTML = text
+  const content = node.textContent
+  return content.length > length ? content.slice(0, length) + clamp : content
+}
+Vue.filter('truncate', truncate)
+
+
+
+
 Vue.config.productionTip = false
 Vue.use(VueCookies);
 Vue.use(VueWaveSurfer);
