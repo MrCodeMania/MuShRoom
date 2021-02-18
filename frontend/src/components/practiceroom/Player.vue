@@ -340,7 +340,6 @@ export default {
       const player = new Tone.Player(this.music.url, () => {
         this.player = player;
         this.player.onstop = () => {
-          console.log("stop");
           if (this.state == "stopped" || this.state == "paused") {
             //Tone.Transport.stop();
           } else {
@@ -375,6 +374,9 @@ export default {
       this.status = this.$store.state.status;
     },
     start() {
+      // 자신 이외의 모든 Player stop
+      this.$emit("release", this.n);
+
       this.$store.state.isSetPlaying = true;
       this.$store.state.isSetIdx = this.n;
 
@@ -473,7 +475,6 @@ export default {
     },
     moveProgressBar() {
       let interval = setInterval(() => {
-        console.log(this.startTime, this.currentTime, this.duration);
         if (this.duration < this.startTime + this.currentTime) {
           this.$store.state.isSetPlaying = false;
           this.$store.state.isSetIdx = -1;
@@ -532,7 +533,6 @@ export default {
     setTime(sec) {
       this.player.unsync();
 
-      console.log(typeof sec);
       this.startTime = parseInt(sec);
       this.currentTime = 0;
       if (this.state == "started") {

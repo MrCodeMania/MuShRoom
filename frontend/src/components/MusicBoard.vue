@@ -36,6 +36,7 @@
         :music="item"
         @deleteMusic="deleteMusic"
         @updateMusicOption="updateMusicOption"
+        @release="musicStopButton"
         ref="player"
       />
     </v-card>
@@ -227,7 +228,7 @@ export default {
 
       this.play = !this.play;
     },
-    musicStopButton() {
+    musicStopButton(idx) {
       // Feat: release all
       Tone.Transport.stop();
       this.$store.state.isAllPlaying = false;
@@ -235,7 +236,7 @@ export default {
 
       if (this.$refs.player) {
         this.$refs.player.forEach((el) => {
-          el.stop();
+          if (el.n != idx) el.stop();
         });
       }
     },
