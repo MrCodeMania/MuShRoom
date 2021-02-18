@@ -17,7 +17,7 @@
         class="d-flex justify-center align-center"
       >
         <div>
-            <v-img
+          <v-img
             width="250px !important"
             style="object-fit: cover"
             src="@/assets/grey.png"
@@ -143,7 +143,6 @@ export default {
                 this.play = false;
                 this.$refs.player[resBody["index"]].player.unsync();
                 this.$refs.player[resBody["index"]].player.dispose();
-                
               }
               if (resBody["type"] == "update") {
                 this.$toast(
@@ -217,6 +216,7 @@ export default {
       this.play = !this.play;
     },
     musicStopButton() {
+      // Feat: release all
       Tone.Transport.stop();
       this.play = false;
     },
