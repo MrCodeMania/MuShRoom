@@ -294,6 +294,7 @@
       </v-sheet>
     </div>
     <v-divider class="mt-3"></v-divider>
+    <Alert :showAlert="showAlert" :title="alertTitle" :content="alertContent" @close="closeAlert" />
   </div>
 </template>
 
@@ -301,6 +302,7 @@
 import * as Tone from "tone";
 import Waveform from "./Waveform.vue";
 import { mapState } from "vuex";
+import Alert from '@/components/common/Alert.vue';
 
 export default {
   name: "Player",
@@ -310,6 +312,7 @@ export default {
   },
   components: {
     Waveform,
+    Alert
   },
   data() {
     return {
@@ -321,7 +324,10 @@ export default {
       isReady: 0,
       duration: null,
       startTime: 0,
-      checkFinish: false
+      checkFinish: false,
+      alertTitle: '제목',
+      alertContent: '내용',
+      showAlert: false
     };
   },
   created() {
@@ -552,6 +558,9 @@ export default {
     setDuration(sec) {
       this.duration = sec;
     },
+    closeAlert() {
+      this.showAlert = false;
+    }
   },
 };
 </script>
