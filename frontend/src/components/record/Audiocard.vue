@@ -8,10 +8,14 @@
       height="auto"
       style="border: 4px solid rgb(61, 61, 61); border-radius: 5px;"
     >
-      <v-card-title width="50%" max-width="60px"
-        ><span class="ml-2 medium">{{
-          fileData.fileName | truncate(19, '...')
-        }}</span>
+      <v-card-title width="50%" max-width="60px">
+        <div class="wrap1">
+          <div class="wrap2">
+            <div class="ml-2 medium text-color" :class="fileData.fileName.length > 18 ? 'wrap3':'wrap4'">{{
+              fileData.fileName
+            }}</div>
+          </div>
+        </div>
         <v-spacer></v-spacer>
         <v-btn icon dark plain @click="addThis"
           ><v-icon>mdi-plus </v-icon></v-btn
@@ -59,7 +63,6 @@ export default {
 .v-card__subtitle, .v-card__text, .v-card__title {
     padding: 0px;
 }
-
 
 
 </style>
