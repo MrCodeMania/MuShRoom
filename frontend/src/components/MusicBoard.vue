@@ -138,6 +138,12 @@ export default {
                 this.$store.commit("deleteMusic", {
                   idx: resBody["index"],
                 });
+
+                Tone.Transport.stop();
+                this.play = false;
+                this.$refs.player[resBody["index"]].player.unsync();
+                this.$refs.player[resBody["index"]].player.dispose();
+                
               }
               if (resBody["type"] == "update") {
                 this.$toast(
