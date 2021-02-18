@@ -3,7 +3,10 @@
     <div class="d-flex file-title">
       <div class="wrap1-long">
         <div class="wrap2">
-          <div class="ml-2 medium text-color" :class="music.fileName.length > 50 ? 'wrap3':'wrap4'">
+          <div
+            class="ml-2 medium text-color"
+            :class="music.fileName.length > 50 ? 'wrap3' : 'wrap4'"
+          >
             {{ music.fileName }}
           </div>
         </div>
@@ -28,7 +31,9 @@
           dark
           plain
           class="mt-4"
-          :disabled="player == null || isAllPlaying || isSetRecording || isSetPlaying "
+          :disabled="
+            player == null || isAllPlaying || isSetRecording || isSetPlaying
+          "
           v-on:click="start()"
         >
           <v-icon>mdi-play</v-icon>
@@ -44,7 +49,16 @@
         >
           <v-icon>mdi-pause</v-icon>
         </v-btn>
-        <v-btn icon plain dark class="mt-4" :disabled="isAllPlaying || isSetRecording || (isSetIdx != -1 && isSetIdx != n)" v-on:click="stop()">
+        <v-btn
+          icon
+          plain
+          dark
+          class="mt-4"
+          :disabled="
+            isAllPlaying || isSetRecording || (isSetIdx != -1 && isSetIdx != n)
+          "
+          v-on:click="stop()"
+        >
           <v-icon>mdi-stop</v-icon>
         </v-btn>
       </div>
@@ -98,8 +112,8 @@
                 color="#ffffffbb"
                 track-color="grey darken-2"
                 v-model="music.volume.value"
-                min="-30"
-                max="20"
+                min="-80"
+                max="-5"
                 step="0.01"
                 @change="changeVolume(music.volume.value)"
               ></v-slider>
@@ -307,7 +321,7 @@ export default {
     this.constructor();
   },
   computed: {
-    ...mapState(['isSetIdx','isSetPlaying','isAllPlaying', 'isSetRecording'])
+    ...mapState(["isSetIdx", "isSetPlaying", "isAllPlaying", "isSetRecording"]),
   },
   watch: {
     music: function () {
@@ -320,17 +334,15 @@ export default {
       const player = new Tone.Player(this.music.url, () => {
         this.player = player;
         this.player.onstop = () => {
-          if (this.state == "stopped") {
-            Tone.Transport.stop();
-          } else if (this.state == "paused") {
-            Tone.Transport.stop();
+          if (this.state == "stopped" || this.state == "paused") {
+            //Tone.Transport.stop();
           } else {
             // 재생 시간이 최대 시간 이후일 때 (정지)
             if (
               player.buffer.duration + player.context.lookAhead <
               Tone.Transport.seconds
             ) {
-              this.stop();
+              //this.stop();
             }
           }
         };
@@ -370,14 +382,16 @@ export default {
         .sync()
         .start(
           this.music.delay.delay,
-          this.music.delay.offset + this.music.loop.loopStart
+          this.music.delay.offset +
+            (this.music.loop.loop ? this.music.loop.loopStart : 0) +
+            this.currentTime
         );
 
       // now: Transport 생성 후 현재 시간
       // offset: 시작할 오프셋 위치. 초 단위
       // 박자로 시간과 오프셋을 맞추고싶다면: time or offset + Tone.Time(박자).toSeconds();
       Tone.Transport.start();
-      this.moveProgressBar();
+      setTimeout(() => this.moveProgressBar(), this.music.delay.delay * 1000);
     },
     pause() {
       this.$store.state.isSetPlaying = false;
@@ -391,7 +405,7 @@ export default {
     stop() {
       this.$store.state.isSetPlaying = false;
       this.$store.state.isSetIdx = -1;
-      
+
       this.$refs.waveform.setTime(0);
       this.currentTime = 0;
       this.state = "stopped";
@@ -447,35 +461,32 @@ export default {
           this.music.delay.delay,
           this.music.delay.offset + this.music.loop.loopStart
         );
+
+      setTimeout(() => this.moveProgressBar(), this.music.delay.delay * 1000);
     },
     moveProgressBar() {
+      console.log("start");
       let interval = setInterval(() => {
-        //console.log(Tone.Transport.seconds);
+        let time;
         if (Tone.Transport.seconds > 0) {
           if (this.player.loop) {
             if (this.music.loop.loopEnd > this.music.loop.loopStart) {
-              this.$refs.waveform.setTime(
+              time =
                 (Tone.Transport.seconds %
                   (this.music.loop.loopStart - this.music.loop.loopEnd)) +
-                  this.music.loop.loopStart
-              );
+                this.music.loop.loopStart;
             } else {
-              console.log(
+              time =
                 this.music.loop.loopStart +
-                  (Tone.Transport.seconds %
-                    (this.duration - this.music.loop.loopStart))
-              );
-              //const tmp = this.duration - this.loopStart;
-              this.$refs.waveform.setTime(
-                this.music.loop.loopStart +
-                  (Tone.Transport.seconds %
-                    (this.duration - this.music.loop.loopStart))
-              );
+                (Tone.Transport.seconds %
+                  (this.duration - this.music.loop.loopStart));
             }
-          } else
-            this.$refs.waveform.setTime(
-              Tone.Transport.seconds + this.music.delay.offset
-            );
+          } else {
+            time = Tone.Transport.seconds + this.music.delay.offset;
+          }
+          this.currentTime = time;
+          //if (this.currentTime > this.duration) this.stop();
+          this.$refs.waveform.setTime(time - this.music.delay.delay);
         }
         if (this.player.state != "started") clearInterval(interval);
       }, 50);
@@ -488,7 +499,6 @@ export default {
       this.$store.state.isSetPlaying = false;
       this.$store.state.isAllPlaying = false;
       this.$store.state.isSetIdx = -1;
-
 
       this.player.unsync();
       this.player.dispose();
