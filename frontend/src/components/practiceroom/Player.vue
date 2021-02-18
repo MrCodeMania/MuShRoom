@@ -7,7 +7,7 @@
             {{ music.fileName }}
           </div>
         </div>
-      </div>
+      </div>.
       <v-spacer></v-spacer>
       <v-btn
         icon
@@ -151,7 +151,7 @@
           ></v-divider>
 
           <div>
-            <div class="pa-3" style="width: 240px; height: 50%">
+            <div class="pa-3" style="width: 240px; height: 33%">
               <v-tooltip max-width="180px" bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <v-icon
@@ -164,19 +164,19 @@
                   >
                 </template>
                 <span style="font-size: 10px"
-                  >메트로놈 시작 한 마디 후 녹음이 시작됩니다</span
+                  >시작시간(start)과 끝시간(end)를 설정해 그 사이를 반복합니다 어떤가요</span
                 ></v-tooltip
               >
               <p class="d-flex" style="font-size: 10px">
                 Loop
-                <v-btn icon plain dark small class="mt-n1" @click="toggleLoop">
+                <v-btn icon plain dark small class="mt-n2" @click="toggleLoop">
                   <v-icon v-if="music.loop.loop" color="red" small
                     >mdi-repeat</v-icon
                   >
                   <v-icon v-else small>mdi-repeat-off</v-icon>
                 </v-btn>
               </p>
-              <div class="d-flex justify-space-around">
+              <div style="max-height: 38px" class="d-flex justify-space-around">
                 <div class="d-flex align-center">
                   <p style="font-size: 10px">Start</p>
                   <v-text-field
@@ -206,12 +206,12 @@
             <v-divider
               style="background-color: rgba(255, 255, 255, 0.733)"
             ></v-divider>
-            <div class="pa-3" style="width: 240px; height: 50%">
+            <div class="pa-3" style="width: 240px; height: 33%">
               <v-tooltip max-width="180px" bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <v-icon
                     color="#ffffffbb"
-                    style="position: absolute; top: 125px; right: 12px"
+                    style="position: absolute; top: 83px; right: 12px"
                     v-bind="attrs"
                     v-on="on"
                     size="14px"
@@ -219,11 +219,10 @@
                   >
                 </template>
                 <span style="font-size: 10px"
-                  >메트로놈 시작 한 마디 후 녹음이 시작됩니다</span
-                ></v-tooltip
-              >
-              <!-- <p style="font-size: 10px">Start Point</p>
-              <div class="pa-3 d-flex">
+                  >설정 시간(초) 부터 재생됩니다.</span
+                ></v-tooltip>
+              <p style="font-size: 10px">Start Point</p>
+              <div style="max-height: 48px" class="pa-3 d-flex">
                 <div class="d-flex align-center">
                   <p style="font-size: 10px">Time</p>
                   <v-text-field
@@ -236,27 +235,34 @@
                     @change="updateMusicOption()"
                   ></v-text-field>
                 </div>
-              </div> -->
-              <div class="d-flex justify-space-around">
+              </div>
+            </div>
+            <v-divider
+              style="background-color: rgba(255, 255, 255, 0.733)"
+            ></v-divider>
+            <div  class="pa-3" style="width: 240px; height: 33%">
+              <v-tooltip max-width="180px" bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon
+                    color="#ffffffbb"
+                    style="position: absolute; top: 157px; right: 12px"
+                    v-bind="attrs"
+                    v-on="on"
+                    size="14px"
+                    >mdi-help-circle-outline</v-icon
+                  >
+                </template>
+                <span style="font-size: 10px">설정 시간(초) 후 재생됩니다.</span>
+              </v-tooltip>
+              <p style="font-size: 10px">Delay</p>
+              <div style="max-height: 44px" class="pa-3 d-flex">
                 <div class="d-flex align-center">
-                  <p style="font-size: 10px">Start Point</p>
+                  <p style="font-size: 10px">Time</p>
                   <v-text-field
                     class="ml-2"
                     type="number"
                     dark
-                    style="width: 60px !important"
-                    min="0"
-                    v-model="music.delay.offset"
-                    @change="updateMusicOption()"
-                  ></v-text-field>
-                </div>
-                <div class="d-flex align-center">
-                  <p style="font-size: 10px">Delay</p>
-                  <v-text-field
-                    class="ml-2"
-                    type="number"
-                    dark
-                    style="width: 60px !important"
+                    style="width: 80px !important"
                     min="0"
                     v-model.number="music.delay.delay"
                     v-on:change="updateMusicOption()"
