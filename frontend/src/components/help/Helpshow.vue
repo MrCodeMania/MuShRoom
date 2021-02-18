@@ -24,13 +24,13 @@
         @change="test"
       >
         <template v-slot:prev="{ on, attrs }">
-          <v-btn icon plain v-bind="attrs" v-on="on"
+          <v-btn style="background-color: rgb(30, 30, 30);" icon plain v-bind="attrs" v-on="on"
             ><v-icon size="26px">mdi-arrow-left-bold-outline</v-icon></v-btn
           >
         </template>
         <template v-slot:next="{ on, attrs }">
-          <v-btn icon plain v-bind="attrs" v-on="on"
-            ><v-icon size="26px">mdi-arrow-right-bold-outline</v-icon></v-btn
+          <v-btn style="background-color: rgb(30, 30, 30);" icon plain v-bind="attrs" v-on="on"
+            ><v-icon  size="26px">mdi-arrow-right-bold-outline</v-icon></v-btn
           >
         </template>
         <v-carousel-item v-for="(slide, i) in describe" :key="i">
@@ -65,20 +65,13 @@ export default {
       require("@/assets/help/recordtoboard.gif"),
     ],
     describe: [
-      ["메트로놈", `BPM과 Beat를 변경하여 원하는 박자의 ~`],
-      ["음악 추가", `녹음을 하거나컴퓨터에서 음악을추가할 수 있습니다`],
-      [
-        "녹음",
-        `메트로놈 1사이클 후 녹음을 시작합니다. 파일 이름을 입력하면 서버에 업로드 됩니다.`,
-      ],
-      [
-        "레코드뷰",
-        `추가 한 음악 파일을 보관합니다.
-        플레이어에 추가하거나 뷰에서 제거가 가능합니다.`,
-      ],
-      ["플레이어", "플레이어다."],
-      ["플레이어", "와! 다양한 효과 설명 설명 설명 설명~."],
-      ["플레이어", "와! 다양한 효과 설명 설명 설명 설명~."],
+      [`내용1`],
+      [`내용2`],
+      [`내용3`],
+      [`내용4`],
+      [`내용5`],
+      [`내용6`],
+      [`내용7`],
     ],
     visit: [],
   }),

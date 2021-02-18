@@ -71,144 +71,160 @@
 
     <div>
       <v-sheet
-        style="margin: 0px 72px 0px 84px; background-color: #00ff0000"
-        height="auto"
+        style="margin: 0px 61px 0px 72.5px; background-color: #00ff0000"
+        height="220px"
         :hidden="isShow == 0"
       >
-        <v-card style="background-color: #00ff0000; border-radius: 0px">
-          <div class="px-3 pt-3 d-flex justify-space-around">
-            <div>
-              <p>Volume</p>
+        <v-card class="d-flex" height="100%" style="background-color: #00ff0000; border-radius: 0px">
+          <div class="px-3 pt-3 d-flex justify-space-around" style="min-width: 260px">
+            <div class="d-flex-column justify-center" style="width: 65px">
+              <p style="font-size: 10px; text-align: center;" >Volume</p>
               <v-slider
+                vertical
                 color="#ffffffbb"
-                class="ml-2"
                 track-color="grey darken-2"
                 v-model="music.volume.value"
                 min="-30"
                 max="20"
                 step="0.01"
-                style="width: 100px !important"
+                
                 @change="changeVolume(music.volume.value)"
               ></v-slider>
             </div>
-            <div>
-              <p>Distortion</p>
+            <div class="d-flex-column justify-center" style="width: 65px">
+              <p style="font-size: 10px; text-align: center;">Distortion</p>
               <v-slider
+                vertical
                 color="#ffffffbb"
-                class="ml-2"
                 track-color="grey darken-2"
                 v-model="music.distortion.value"
                 min="0"
                 max="5"
                 step="0.01"
-                style="width: 100px !important"
+                
                 @change="changeDistortion(music.distortion.value)"
               ></v-slider>
             </div>
-            <div>
-              <p>Gain</p>
+            <div class="d-flex-column justify-center" style="width: 65px">
+              <p style="font-size: 10px; text-align: center;">Gain</p>
               <v-slider
+                vertical
                 color="#ffffffbb"
-                class="ml-2"
                 track-color="grey darken-2"
                 v-model="music.gain.value"
                 min="0"
                 max="10"
                 step="0.01"
-                style="width: 100px !important"
+                
                 @change="changeGain(music.gain.value)"
               ></v-slider>
             </div>
-            <div>
-              <p>Reverb</p>
+            <div class="d-flex-column justify-center" style="width: 65px">
+              <p style="font-size: 10px; text-align: center;">Reverb</p>
               <v-slider
+                vertical
                 color="#ffffffbb"
-                class="ml-2 mb-n2"
                 track-color="grey darken-2"
                 v-model="music.reverb.value"
                 min="0"
                 max="1"
                 step="0.01"
-                style="width: 100px !important"
+                
                 @change="changeReverb(music.reverb.value)"
               ></v-slider>
             </div>
           </div>
 
-          <v-divider
+          <v-divider vertical
             style="background-color: rgba(255, 255, 255, 0.733)"
           ></v-divider>
 
-          <div class="pa-3 d-flex justify-space-around">
-            <div class="d-flex align-center">
-              <p class="align-self-center pt-3">Loop</p>
-              <v-checkbox
-                id="loop"
-                name="loop"
-                dark
-                class="ml-1 mt-2 pt-6"
-                v-model="music.loop.loop"
-                v-on:change="toggleLoop($event)"
-              ></v-checkbox>
-            </div>
-            <div class="d-flex align-center">
-              <p class="align-self-center pt-3">Loop Start:</p>
-              <v-text-field
-                class="ml-2"
-                type="number"
-                dark
-                style="width: 80px !important"
-                label="Start Time"
-                min="0"
-                v-model.number="music.loop.loopStart"
-                v-on:change="setLoopTime()"
-              ></v-text-field>
-            </div>
-            <div class="d-flex align-center">
-              <p class="align-self-center pt-3">Loop End:</p>
-              <v-text-field
-                class="ml-2"
-                type="number"
-                dark
-                style="width: 80px !important"
-                label="End Time"
-                min="0"
-                v-model.number="music.loop.loopEnd"
-                v-on:change="setLoopTime()"
-              ></v-text-field>
-            </div>
-          </div>
 
-          <v-divider
-            style="background-color: rgba(255, 255, 255, 0.733)"
-          ></v-divider>
 
-          <div class="pa-3 d-flex justify-space-around">
-            <div class="d-flex">
-              <p class="align-self-center pt-3">Delay:</p>
-              <v-text-field
-                class="ml-2"
-                type="number"
+
+          <div>
+            <div class="pa-3" style="width: 240px; height: 50%;">
+              <v-tooltip max-width="180px" bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon 
+                    color="#ffffffbb" 
+                    style="position: absolute; top: 12px; right: 12px;" 
+                    v-bind="attrs"
+                    v-on="on"
+                    size="14px">mdi-help-circle-outline</v-icon>
+                </template>
+                <span style="font-size : 10px">메트로놈 시작 한 마디 후 녹음이 시작됩니다</span></v-tooltip
+              >
+              <p class="d-flex" style="font-size: 10px;">Loop
+              <v-btn
+                icon
+                plain
                 dark
-                style="width: 150px !important"
-                label="Delay Time"
-                min="0"
-                v-model="music.delay.delay"
-                @change="updateMusicOption()"
-              ></v-text-field>
+                small
+                class="mt-n1"
+                @click="toggleLoop"
+              >
+                <v-icon v-if="music.loop.loop" color="red" small>mdi-repeat</v-icon>
+                <v-icon v-else small>mdi-repeat-off</v-icon>
+              </v-btn>
+              </p>
+              <div class="d-flex justify-space-around">
+                <div class="d-flex align-center">
+                  <p style="font-size: 10px;">Start</p>
+                  <v-text-field
+                    class="ml-2"
+                    type="number"
+                    dark
+                    style="width: 60px !important"
+                    min="0"
+                    v-model.number="music.loop.loopStart"
+                    v-on:change="setLoopTime()"
+                  ></v-text-field>
+                </div>
+                <div class="d-flex align-center">
+                  <p style="font-size: 10px;">End</p>
+                  <v-text-field
+                    class="ml-2"
+                    type="number"
+                    dark
+                    style="width: 60px !important"
+                    min="0"
+                    v-model.number="music.loop.loopEnd"
+                    v-on:change="setLoopTime()"
+                  ></v-text-field>
+                </div>
+              </div>
             </div>
-            <div class="d-flex">
-              <p class="align-self-center pt-3">StartAt:</p>
-              <v-text-field
-                class="ml-2"
-                dark
-                type="number"
-                style="width: 150px !important"
-                label="Start Time"
-                min="0"
-                v-model="music.delay.offset"
-                @change="updateMusicOption()"
-              ></v-text-field>
+            <v-divider
+              style="background-color: rgba(255, 255, 255, 0.733)"
+            ></v-divider>
+            <div class="pa-3" style="width: 240px; height: 50%;">
+              <v-tooltip max-width="180px" bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon 
+                    color="#ffffffbb" 
+                    style="position: absolute; top: 125px; right: 12px;"
+                    v-bind="attrs"
+                    v-on="on"
+                    size="14px">mdi-help-circle-outline</v-icon>
+                </template>
+                <span style="font-size : 10px;" >메트로놈 시작 한 마디 후 녹음이 시작됩니다</span></v-tooltip
+              >
+              <p style="font-size: 10px;">Start Point</p>
+              <div class="pa-3 d-flex">
+                <div class="d-flex align-center">
+                  <p style="font-size: 10px;">Time </p>
+                  <v-text-field
+                    class="ml-2"
+                    dark
+                    type="number"
+                    style="width: 80px !important"
+                    min="0"
+                    v-model="music.delay.offset"
+                    @change="updateMusicOption()"
+                  ></v-text-field>
+                </div>
+            </div>
             </div>
           </div>
         </v-card>
@@ -355,8 +371,9 @@ export default {
     toggleDropdown() {
       this.isShow ^= 1;
     },
-    toggleLoop(e) {
-      this.player.loop = e;
+    toggleLoop() {
+      this.music.loop.loop = !this.music.loop.loop;
+      this.player.loop = !this.player.loop;
       this.updateMusicOption();
     },
     setLoopTime() {
@@ -428,12 +445,25 @@ export default {
 }
 
 .file-name {
-  font-size: 1.5em;
-  color: balck;
   margin: 0px !important;
 }
 
 #player p {
   margin: 0px !important;
 }
+
+
+#player .v-slider__thumb {
+  align-self: center !important;
+  width: 20px !important;
+  height: 10px !important;
+  border-radius: 0px !important;
+  background-color:  #8CBBD7 !important;
+  transform: translateX(-20%) !important;
+}
+
+#player .v-slider__track-container {
+   width: 10px !important;
+}
+
 </style>

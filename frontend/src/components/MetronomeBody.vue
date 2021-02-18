@@ -41,13 +41,12 @@
     class="d-flex align-center metronome-btn main-color-light ">
       <PlayControlBtn :isPlaying="isPlaying()" @start="onStart" @stop="onStop"/>
       <v-spacer></v-spacer>
-      <div class="d-flex align-center">
+      <div class="d-flex align-center metronome-slider">
         <v-btn
           icon
           dark
           plain
           @click="onVolumeMute"
-          class="volume-slider"
         >
           <v-icon v-if="volume == -50 || mute">mdi-volume-mute</v-icon>
           <v-icon v-else-if="volume > -50 && volume <= 0">mdi-volume-medium</v-icon>
@@ -361,6 +360,16 @@ export default {
   font-weight: 600;
   padding-top: 12px;
   width: 60px;
+}
+
+.metronome-slider .v-slider__thumb {
+  width: 10px !important;
+  height: 20px !important;
+  border-radius: 0px !important;
+}
+
+.metronome-slider .v-slider__track-container {
+   height: 10px !important;
 }
 
 
