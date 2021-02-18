@@ -20,7 +20,7 @@
       class="main-color-light d-flex align-center"
       style="border-radius: 0px"
     >
-      <v-btn icon dark plain class="ml-5" :disabled="isSetPlaying || isSetRecording || isAllPlaying"  @click="showRecord = !showRecord"
+      <v-btn icon dark plain class="ml-5" :disabled="isSetPlaying || isSetRecording || isAllPlaying || isSetMetronome"  @click="showRecord = !showRecord"
         ><v-icon size="26px">mdi-microphone</v-icon>
       </v-btn>
       <v-btn icon dark plain @click="file_upload_open"
@@ -64,7 +64,7 @@ export default {
     records: function () {
       return this.$store.getters.getRecords;
     },
-    ...mapState(['isSetPlaying', 'isSetRecording', 'isAllPlaying'])
+    ...mapState(['isSetPlaying', 'isSetRecording', 'isAllPlaying', 'isSetMetronome'])
   },
   created() {
     // 권한
