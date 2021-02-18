@@ -36,7 +36,6 @@
         :music="item"
         @deleteMusic="deleteMusic"
         @updateMusicOption="updateMusicOption"
-        @finished="musicStopButton"
         ref="player"
       />
     </v-card>
@@ -48,13 +47,22 @@
         class="d-flex align-center justify-end main-color-light"
         elevation="0"
       >
-        <v-btn 
-        v-if="!play"
-        class="musicboard_btn mr-5" :disabled="isSetRecording || isSetPlaying" icon dark plain @click="musicPlayButton">
-          <v-icon size="30px">mdi-play</v-icon>
+        <v-btn
+          class="musicboard_btn"
+          :disabled="isSetRecording || isSetPlaying"
+          icon
+          dark
+          plain
+          @click="musicPlayButton"
+        >
+          <div v-if="!play">
+            <v-icon size="30px">mdi-play</v-icon>
+          </div>
+          <div v-else>
+            <v-icon size="30px">mdi-pause</v-icon>
+          </div>
         </v-btn>
         <v-btn
-          v-else
           class="musicboard_btn mr-5"
           icon
           dark
@@ -104,7 +112,7 @@ export default {
     music: function () {
       return this.$store.getters.getBoard;
     },
-    ...mapState(['isSetRecording', 'isSetPlaying'])
+    ...mapState(["isSetRecording", "isSetPlaying"]),
   },
   methods: {
     send(type, msg) {
@@ -198,10 +206,10 @@ export default {
       );
     },
     musicPlayButton() {
-      // if (this.play) {
-      //   this.$store.state.isAllPlaying = false;
-      //   Tone.Transport.pause();
-      // } else {
+      if (this.play) {
+        this.$store.state.isAllPlaying = false;
+        Tone.Transport.pause();
+      } else {
         this.$store.state.isAllPlaying = true;
         if (this.$refs.player) {
           this.$refs.player.forEach((el) => {
@@ -215,19 +223,20 @@ export default {
           // error
           console.log("player 가 존재하지 않습니다.");
         }
-      // }
+      }
 
-      this.play = true;
+      this.play = !this.play;
     },
     musicStopButton() {
       // Feat: release all
-      // Tone.Transport.stop();
+      Tone.Transport.stop();
+      this.$store.state.isAllPlaying = false;
+      this.play = false;
+
       if (this.$refs.player) {
-          this.$refs.player.forEach((el) => {
-            el.stop();
-          });
-        this.$store.state.isAllPlaying = false;
-        this.play = false;
+        this.$refs.player.forEach((el) => {
+          el.stop();
+        });
       }
     },
     onScroll() {
