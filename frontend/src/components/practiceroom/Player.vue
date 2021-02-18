@@ -473,6 +473,11 @@ export default {
       this.player.unsync();
     },
     sendDelete() {
+      this.$store.state.isSetPlaying = false;
+      this.$store.state.isAllPlaying = false;
+      this.$store.state.isSetIdx = -1;
+
+
       this.player.unsync();
       this.player.dispose();
       this.$emit("deleteMusic", this.n);
