@@ -1,9 +1,16 @@
 <template>
-  <div id="player" style="border-radius: 5px;">
+  <div id="player" style="border-radius: 5px">
     <div class="d-flex file-title">
       <p class="file-name pb-2 medium">{{ music.fileName }}</p>
       <v-spacer></v-spacer>
-      <v-btn icon dark plain @click="sendDelete()" v-if="status === 'Master'" :disabled="!isReady">
+      <v-btn
+        icon
+        dark
+        plain
+        @click="sendDelete()"
+        v-if="status === 'Master'"
+        :disabled="!isReady"
+      >
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </div>
@@ -48,6 +55,7 @@
           color="#00A2FF"
           @setTime="setTime"
           @isReady="nowReady"
+          @setDuration="setDuration"
           ref="waveform"
         ></Waveform>
       </div>
@@ -68,10 +76,17 @@
         height="220px"
         :hidden="isShow == 0"
       >
-        <v-card class="d-flex" height="100%" style="background-color: #00ff0000; border-radius: 0px">
-          <div class="px-3 pt-3 d-flex justify-space-around" style="min-width: 260px">
+        <v-card
+          class="d-flex"
+          height="100%"
+          style="background-color: #00ff0000; border-radius: 0px"
+        >
+          <div
+            class="px-3 pt-3 d-flex justify-space-around"
+            style="min-width: 260px"
+          >
             <div class="d-flex-column justify-center" style="width: 65px">
-              <p style="font-size: 10px; text-align: center;" >Volume</p>
+              <p style="font-size: 10px; text-align: center">Volume</p>
               <v-slider
                 vertical
                 color="#ffffffbb"
@@ -80,12 +95,11 @@
                 min="-30"
                 max="20"
                 step="0.01"
-                
                 @change="changeVolume(music.volume.value)"
               ></v-slider>
             </div>
             <div class="d-flex-column justify-center" style="width: 65px">
-              <p style="font-size: 10px; text-align: center;">Distortion</p>
+              <p style="font-size: 10px; text-align: center">Distortion</p>
               <v-slider
                 vertical
                 color="#ffffffbb"
@@ -94,12 +108,11 @@
                 min="0"
                 max="5"
                 step="0.01"
-                
                 @change="changeDistortion(music.distortion.value)"
               ></v-slider>
             </div>
             <div class="d-flex-column justify-center" style="width: 65px">
-              <p style="font-size: 10px; text-align: center;">Gain</p>
+              <p style="font-size: 10px; text-align: center">Gain</p>
               <v-slider
                 vertical
                 color="#ffffffbb"
@@ -108,12 +121,11 @@
                 min="0"
                 max="10"
                 step="0.01"
-                
                 @change="changeGain(music.gain.value)"
               ></v-slider>
             </div>
             <div class="d-flex-column justify-center" style="width: 65px">
-              <p style="font-size: 10px; text-align: center;">Reverb</p>
+              <p style="font-size: 10px; text-align: center">Reverb</p>
               <v-slider
                 vertical
                 color="#ffffffbb"
@@ -122,48 +134,45 @@
                 min="0"
                 max="1"
                 step="0.01"
-                
                 @change="changeReverb(music.reverb.value)"
               ></v-slider>
             </div>
           </div>
 
-          <v-divider vertical
+          <v-divider
+            vertical
             style="background-color: rgba(255, 255, 255, 0.733)"
           ></v-divider>
 
-
-
-
           <div>
-            <div class="pa-3" style="width: 240px; height: 50%;">
+            <div class="pa-3" style="width: 240px; height: 50%">
               <v-tooltip max-width="180px" bottom>
                 <template v-slot:activator="{ on, attrs }">
-                  <v-icon 
-                    color="#ffffffbb" 
-                    style="position: absolute; top: 12px; right: 12px;" 
+                  <v-icon
+                    color="#ffffffbb"
+                    style="position: absolute; top: 12px; right: 12px"
                     v-bind="attrs"
                     v-on="on"
-                    size="14px">mdi-help-circle-outline</v-icon>
+                    size="14px"
+                    >mdi-help-circle-outline</v-icon
+                  >
                 </template>
-                <span style="font-size : 10px">메트로놈 시작 한 마디 후 녹음이 시작됩니다</span></v-tooltip
+                <span style="font-size: 10px"
+                  >메트로놈 시작 한 마디 후 녹음이 시작됩니다</span
+                ></v-tooltip
               >
-              <p class="d-flex" style="font-size: 10px;">Loop
-              <v-btn
-                icon
-                plain
-                dark
-                small
-                class="mt-n1"
-                @click="toggleLoop"
-              >
-                <v-icon v-if="music.loop.loop" color="red" small>mdi-repeat</v-icon>
-                <v-icon v-else small>mdi-repeat-off</v-icon>
-              </v-btn>
+              <p class="d-flex" style="font-size: 10px">
+                Loop
+                <v-btn icon plain dark small class="mt-n1" @click="toggleLoop">
+                  <v-icon v-if="music.loop.loop" color="red" small
+                    >mdi-repeat</v-icon
+                  >
+                  <v-icon v-else small>mdi-repeat-off</v-icon>
+                </v-btn>
               </p>
               <div class="d-flex justify-space-around">
                 <div class="d-flex align-center">
-                  <p style="font-size: 10px;">Start</p>
+                  <p style="font-size: 10px">Start</p>
                   <v-text-field
                     class="ml-2"
                     type="number"
@@ -175,7 +184,7 @@
                   ></v-text-field>
                 </div>
                 <div class="d-flex align-center">
-                  <p style="font-size: 10px;">End</p>
+                  <p style="font-size: 10px">End</p>
                   <v-text-field
                     class="ml-2"
                     type="number"
@@ -191,22 +200,26 @@
             <v-divider
               style="background-color: rgba(255, 255, 255, 0.733)"
             ></v-divider>
-            <div class="pa-3" style="width: 240px; height: 50%;">
+            <div class="pa-3" style="width: 240px; height: 50%">
               <v-tooltip max-width="180px" bottom>
                 <template v-slot:activator="{ on, attrs }">
-                  <v-icon 
-                    color="#ffffffbb" 
-                    style="position: absolute; top: 125px; right: 12px;"
+                  <v-icon
+                    color="#ffffffbb"
+                    style="position: absolute; top: 125px; right: 12px"
                     v-bind="attrs"
                     v-on="on"
-                    size="14px">mdi-help-circle-outline</v-icon>
+                    size="14px"
+                    >mdi-help-circle-outline</v-icon
+                  >
                 </template>
-                <span style="font-size : 10px;" >메트로놈 시작 한 마디 후 녹음이 시작됩니다</span></v-tooltip
+                <span style="font-size: 10px"
+                  >메트로놈 시작 한 마디 후 녹음이 시작됩니다</span
+                ></v-tooltip
               >
-              <p style="font-size: 10px;">Start Point</p>
+              <!-- <p style="font-size: 10px">Start Point</p>
               <div class="pa-3 d-flex">
                 <div class="d-flex align-center">
-                  <p style="font-size: 10px;">Time </p>
+                  <p style="font-size: 10px">Time</p>
                   <v-text-field
                     class="ml-2"
                     dark
@@ -217,7 +230,33 @@
                     @change="updateMusicOption()"
                   ></v-text-field>
                 </div>
-            </div>
+              </div> -->
+              <div class="d-flex justify-space-around">
+                <div class="d-flex align-center">
+                  <p style="font-size: 10px">Start Point</p>
+                  <v-text-field
+                    class="ml-2"
+                    type="number"
+                    dark
+                    style="width: 60px !important"
+                    min="0"
+                    v-model="music.delay.offset"
+                    @change="updateMusicOption()"
+                  ></v-text-field>
+                </div>
+                <div class="d-flex align-center">
+                  <p style="font-size: 10px">Delay</p>
+                  <v-text-field
+                    class="ml-2"
+                    type="number"
+                    dark
+                    style="width: 60px !important"
+                    min="0"
+                    v-model.number="music.delay.delay"
+                    v-on:change="updateMusicOption()"
+                  ></v-text-field>
+                </div>
+              </div>
             </div>
           </div>
         </v-card>
@@ -247,7 +286,8 @@ export default {
       isShow: 0,
       isExist: false,
       currentTime: 0,
-      isReady: false,
+      isReady: 0,
+      duration: null,
     };
   },
   created() {
@@ -298,30 +338,27 @@ export default {
       }).toDestination();
 
       this.status = this.$store.state.status;
-      Tone.start(); // ...start()를 실행하기 위한 사전 작업
     },
     start() {
+      Tone.start(); // ...start()를 실행하기 위한 사전 작업
       this.state = "started"; // delay를 줄 경우, player.state로 즉시 받아오면 stopped가 넘어옴
       this.player.unsync();
       Tone.start(); // ...start()를 실행하기 위한 사전 작업
       Tone.Transport.stop();
       Tone.Transport.cancel(); // clean objects
 
-      this.player.sync().start(0);
+      this.player
+        .sync()
+        .start(
+          this.music.delay.delay,
+          this.music.delay.offset + this.music.loop.loopStart
+        );
 
       // now: Transport 생성 후 현재 시간
       // offset: 시작할 오프셋 위치. 초 단위
       // 박자로 시간과 오프셋을 맞추고싶다면: time or offset + Tone.Time(박자).toSeconds();
-      var now = Tone.now();
-      Tone.Transport.start(
-        now + this.music.delay.delay,
-        this.music.delay.offset + this.currentTime
-      );
-      document.getElementById(``);
-
-      setTimeout(() => {
-        this.moveProgressBar();
-      }, this.music.delay.delay * 1000);
+      Tone.Transport.start();
+      this.moveProgressBar();
     },
     pause() {
       this.currentTime = Tone.Transport.seconds;
@@ -379,10 +416,16 @@ export default {
     },
     addToTransport() {
       this.player.unsync();
-      this.player.sync().start(0);
+      this.player
+        .sync()
+        .start(
+          this.music.delay.delay,
+          this.music.delay.offset + this.music.loop.loopStart
+        );
     },
     moveProgressBar() {
       let interval = setInterval(() => {
+        //console.log(Tone.Transport.seconds);
         if (Tone.Transport.seconds > 0) {
           if (this.player.loop) {
             if (this.music.loop.loopEnd > this.music.loop.loopStart) {
@@ -392,11 +435,22 @@ export default {
                   this.music.loop.loopStart
               );
             } else {
+              console.log(
+                this.music.loop.loopStart +
+                  (Tone.Transport.seconds %
+                    (this.duration - this.music.loop.loopStart))
+              );
+              //const tmp = this.duration - this.loopStart;
               this.$refs.waveform.setTime(
-                Tone.Transport.seconds + this.music.loop.loopStart
+                this.music.loop.loopStart +
+                  (Tone.Transport.seconds %
+                    (this.duration - this.music.loop.loopStart))
               );
             }
-          } else this.$refs.waveform.setTime(Tone.Transport.seconds);
+          } else
+            this.$refs.waveform.setTime(
+              Tone.Transport.seconds + this.music.delay.offset
+            );
         }
         if (this.player.state != "started") clearInterval(interval);
       }, 50);
@@ -420,7 +474,10 @@ export default {
     },
     nowReady() {
       this.isReady = true;
-    }
+    },
+    setDuration(sec) {
+      this.duration = sec;
+    },
   },
 };
 </script>
@@ -439,18 +496,16 @@ export default {
   margin: 0px !important;
 }
 
-
 #player .v-slider__thumb {
   align-self: center !important;
   width: 20px !important;
   height: 10px !important;
   border-radius: 0px !important;
-  background-color:  #8CBBD7 !important;
+  background-color: #8cbbd7 !important;
   transform: translateX(-20%) !important;
 }
 
 #player .v-slider__track-container {
-   width: 10px !important;
+  width: 10px !important;
 }
-
 </style>

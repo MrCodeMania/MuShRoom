@@ -55,12 +55,12 @@ export default {
   mounted() {
     this.player.on("ready", () => {
       this.isReady = true;
-      this.$emit('isReady');
+      this.$emit("setDuration", this.player.getDuration());
+      this.$emit("isReady");
     });
     this.player.on("seek", () => {
       this.$emit("setTime", this.player.getCurrentTime().toFixed(2));
     });
-    this.$emit("setDuration", this.player.getDuration());
   },
   computed: {
     player() {
