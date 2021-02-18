@@ -33,7 +33,7 @@
           plain
           class="mt-4"
           :disabled="
-            player == null || isAllPlaying || isSetRecording || isSetPlaying
+            player == null || isAllPlaying || isSetRecording || isSetPlaying || isSetMetronome
           "
           v-on:click="start()"
         >
@@ -56,7 +56,7 @@
           dark
           class="mt-4"
           :disabled="
-            isAllPlaying || isSetRecording || (isSetIdx != -1 && isSetIdx != n)
+            isAllPlaying || isSetRecording || isSetMetronome || (isSetIdx != -1 && isSetIdx != n)
           "
           v-on:click="stop()"
         >
@@ -337,7 +337,7 @@ export default {
 
   },
   computed: {
-    ...mapState(["isSetIdx", "isSetPlaying", "isAllPlaying", "isSetRecording"]),
+    ...mapState(["isSetIdx", "isSetPlaying", "isAllPlaying", "isSetRecording", "isSetMetronome"]),
   },
   watch: {
     music: function () {

@@ -33,9 +33,11 @@ export default {
   },
   methods: {
     start() {
+      this.$store.state.isSetMetronome = true;
       this.$emit('start');
     },
     stop() {
+      this.$store.state.isSetMetronome = false;
       this.$emit('stop');
     },
   },

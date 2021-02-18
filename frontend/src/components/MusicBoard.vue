@@ -50,7 +50,7 @@
       >
         <v-btn
           class="musicboard_btn"
-          :disabled="isSetRecording || isSetPlaying || play"
+          :disabled="isSetRecording || isSetPlaying || play || music.length == 0 || isSetMetronome"
           icon
           dark
           plain
@@ -112,7 +112,7 @@ export default {
     numOfMusic: function() {
       return this.music.length;
     },
-    ...mapState(["isSetRecording", "isSetPlaying"]),
+    ...mapState(["isSetRecording", "isSetPlaying", "isSetMetronome"]),
   },
   methods: {
     send(type, msg) {

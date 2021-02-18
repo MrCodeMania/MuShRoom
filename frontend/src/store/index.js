@@ -23,6 +23,7 @@ export default new Vuex.Store({
     isSetIdx: -1,
     isSetRecording: false,
     isSetPlaying: false,
+    isSetMetronome: false,
     isAllPlaying: false,
   },
   mutations: {
