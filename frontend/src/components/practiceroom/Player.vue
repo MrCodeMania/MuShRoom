@@ -485,7 +485,7 @@ export default {
             time = Tone.Transport.seconds + this.music.delay.offset;
           }
           this.currentTime = time;
-          //if (this.currentTime > this.duration) this.stop();
+          if (this.currentTime > this.duration) this.$emit('finished');
           this.$refs.waveform.setTime(time - this.music.delay.delay);
         }
         if (this.player.state != "started") clearInterval(interval);
