@@ -60,6 +60,7 @@ export default {
     share: "",
     imgsrc: [
       // require("@/assets/help/mic.gif"),
+      require("@/assets/help/share.gif"),
       require("@/assets/help/Metro.gif"),
       require("@/assets/help/record.gif"),
       require("@/assets/help/recordWithMet.gif"),
@@ -67,10 +68,12 @@ export default {
       require("@/assets/help/fileupload.gif"),
       require("@/assets/help/AddDelete.gif"),
       require("@/assets/help/expand.gif"),
-      require("@/assets/help/share.gif"),
     ],
     describe: [
       // [`마이크를 허용해야 합니다`],
+      [`Musician(편집 가능) 링크를 공유해 함께 음악을 만들고,<br>
+      Audience(감상 전용) 링크를 공유해 내 음악을 함께 들을 수 있습니다.<br>
+      <주의> Musician 링크는 항상 안전한 곳에 저장하십시오.`],
       [`메트로놈에서 BPM을 올려 속도를 높이고 Beat로 박자를 변경할 수 있습니다.<br>
       꾹 누르면 빠른 조절이 가능합니다.`],
       [`버튼을 누르면 녹음 창이 뜹니다.`],
@@ -81,8 +84,6 @@ export default {
       [`파일보드(오른쪽)에 직접 음악파일을 업로드 할 수 있습니다.`],
       [`파일보드(오른쪽)에서 뮤직보드(왼쪽)으로 음악파일을 추가하거나 삭제가 가능합니다.`],
       [`버튼을 눌러 확장된 화면에서 다양한 옵션을 줄 수 있습니다.`],
-      [`Musician(편집 가능) 링크를 공유해 함께 음악을 만들고,<br>
-      Audience(감상 전용) 링크를 공유해 내 음악을 함께 들을 수 있습니다.`],
     ],
   }),
   methods: {
@@ -149,4 +150,5 @@ export default {
   top: 10px;
   right: 10px;
 }
+
 </style>
