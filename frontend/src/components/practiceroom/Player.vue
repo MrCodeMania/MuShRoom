@@ -1,9 +1,16 @@
 <template>
-  <div id="player" style="border-radius: 5px;">
+  <div id="player" style="border-radius: 5px">
     <div class="d-flex file-title">
       <p class="file-name pb-2 medium">{{ music.fileName }}</p>
       <v-spacer></v-spacer>
-      <v-btn icon dark plain @click="sendDelete()" v-if="status === 'Master'" :disabled="!isReady">
+      <v-btn
+        icon
+        dark
+        plain
+        @click="sendDelete()"
+        v-if="status === 'Master'"
+        :disabled="!isReady"
+      >
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </div>
@@ -231,7 +238,7 @@ export default {
       isShow: 0,
       isExist: false,
       currentTime: 0,
-      isReady: false,
+      duration: null,
     };
   },
   created() {
@@ -282,30 +289,27 @@ export default {
       }).toDestination();
 
       this.status = this.$store.state.status;
-      Tone.start(); // ...start()를 실행하기 위한 사전 작업
     },
     start() {
+      Tone.start(); // ...start()를 실행하기 위한 사전 작업
       this.state = "started"; // delay를 줄 경우, player.state로 즉시 받아오면 stopped가 넘어옴
       this.player.unsync();
       Tone.start(); // ...start()를 실행하기 위한 사전 작업
       Tone.Transport.stop();
       Tone.Transport.cancel(); // clean objects
 
-      this.player.sync().start(0);
+      this.player
+        .sync()
+        .start(
+          this.music.delay.delay,
+          this.music.delay.offset + this.music.loop.loopStart
+        );
 
       // now: Transport 생성 후 현재 시간
       // offset: 시작할 오프셋 위치. 초 단위
       // 박자로 시간과 오프셋을 맞추고싶다면: time or offset + Tone.Time(박자).toSeconds();
-      var now = Tone.now();
-      Tone.Transport.start(
-        now + this.music.delay.delay,
-        this.music.delay.offset + this.currentTime
-      );
-      document.getElementById(``);
-
-      setTimeout(() => {
-        this.moveProgressBar();
-      }, this.music.delay.delay * 1000);
+      Tone.Transport.start();
+      this.moveProgressBar();
     },
     pause() {
       this.currentTime = Tone.Transport.seconds;
@@ -376,10 +380,15 @@ export default {
               );
             } else {
               this.$refs.waveform.setTime(
-                Tone.Transport.seconds + this.music.loop.loopStart
+                Tone.Transport.seconds +
+                  this.music.loop.loopStart +
+                  this.music.delay.offset
               );
             }
-          } else this.$refs.waveform.setTime(Tone.Transport.seconds);
+          } else
+            this.$refs.waveform.setTime(
+              Tone.Transport.seconds + this.music.delay.offset
+            );
         }
         if (this.player.state != "started") clearInterval(interval);
       }, 50);
@@ -403,7 +412,11 @@ export default {
     },
     nowReady() {
       this.isReady = true;
-    }
+    },
+    setDuration(sec) {
+      console.log("duration", sec);
+      this.duration = sec;
+    },
   },
 };
 </script>
