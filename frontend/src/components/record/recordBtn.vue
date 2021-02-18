@@ -51,8 +51,9 @@
           style="position: absolute; left: 15px; top: 15px"
           @click="changeCross"
         >
-          <v-icon v-if="cross"> mdi-checkbox-blank-outline </v-icon>
-          <v-icon v-else>mdi-checkbox-marked</v-icon>
+          <v-icon v-if="cross"> mdi-metronome-tick </v-icon>
+          <v-icon v-else color="black"> mdi-metronome-tick </v-icon>
+          <v-icon v-if="!cross" style="position: absolute"> mdi-close </v-icon>
         </v-btn>
       </template>
       <span v-if="cross">메트로놈 시작 한 마디 후 녹음이 시작됩니다</span>
@@ -82,7 +83,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['isSetRecording'])
+    ...mapState(["isSetRecording"]),
   },
   methods: {
     changeCross() {
