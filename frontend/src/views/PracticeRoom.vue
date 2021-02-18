@@ -87,6 +87,8 @@ export default {
     if (this.$cookies.isKey("visit")) {
       return;
     } else {
+      if (this.$store.state.status === "Slave") return;
+
       this.$store.commit("helpShowChange");
     }
   },
