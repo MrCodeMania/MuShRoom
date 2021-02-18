@@ -142,6 +142,8 @@ export default {
     },
 
     onStart() {
+      Transport.stop()
+      Transport.cancel(0);
       if (this.isPlaying()) {
         return;
       }
@@ -314,7 +316,7 @@ export default {
     getRC() {
       return this.$store.getters.getRC;
     },
-    ...mapState(["recordStartState"]),
+    ...mapState(["recordStartState", "isSetPlaying", "isSetRecording"]),
   },
 
   mounted() {
