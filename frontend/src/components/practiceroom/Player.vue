@@ -201,6 +201,7 @@
                     dark
                     style="width: 60px !important"
                     min="0"
+                    :max="duration"
                     v-model.number="music.loop.loopStart"
                     v-on:change="setLoopTime()"
                   ></v-text-field>
@@ -213,6 +214,7 @@
                     dark
                     style="width: 60px !important"
                     min="0"
+                    :max="duration"
                     v-model.number="music.loop.loopEnd"
                     v-on:change="setLoopTime()"
                   ></v-text-field>
@@ -249,7 +251,7 @@
                     style="width: 80px !important"
                     min="0"
                     v-model="music.delay.offset"
-                    @change="updateMusicOption()"
+                    @change="updateMusicOption('offset')"
                   ></v-text-field>
                 </div>
               </div>
@@ -284,7 +286,7 @@
                     style="width: 80px !important"
                     min="0"
                     v-model.number="music.delay.delay"
-                    v-on:change="updateMusicOption()"
+                    v-on:change="updateMusicOption('delay')"
                   ></v-text-field>
                 </div>
               </div>
@@ -332,6 +334,7 @@ export default {
   },
   created() {
     this.constructor();
+
   },
   computed: {
     ...mapState(["isSetIdx", "isSetPlaying", "isAllPlaying", "isSetRecording"]),
@@ -447,9 +450,35 @@ export default {
       this.music.reverb.object.wet.value = value;
       this.updateMusicOption();
     },
-    updateMusicOption() {
+    updateMusicOption(point) {
+      if (point == "offset") {
+        if ( this.music.delay.offset == "" ) {
+          this.music.delay.offset = 0;
+        } else if ( this.music.delay.offset < 0 ) {
+          this.music.delay.offset = 0;
+          this.showAlert = true;
+          this.alertTitle = "스타트포인트 에러"
+          this.alertContent = "0 보다 작은 값은 입력할 수 없습니다.";
+        } else if ( this.music.delay.offset >= this.duration ) {
+          this.showAlert = true;
+          this.music.delay.offset = 0;
+          this.alertTitle = "스타트포인트 에러"
+          this.alertContent ="총 길이보다 크거나 같은 값은 입력할 수 없습니다.";
+        }
+      } else {
+        if ( this.music.delay.delay == "" ) {
+          this.music.delay.delay = 0;
+        } else if ( this.music.delay.delay < 0 ) {
+          this.music.delay.delay = 0;
+          this.showAlert = true;
+          this.alertTitle = "딜레이 에러"
+          this.alertContent = "0 보다 작은 값은 입력할 수 없습니다.";
+        } 
+      }
+
       this.$emit("updateMusicOption", this.n);
     },
+
     updateAll() {
       this.music.distortion.object.distortion = this.music.distortion.value;
       this.player.volume.value = this.music.volume.value;
@@ -468,6 +497,43 @@ export default {
       this.updateMusicOption();
     },
     setLoopTime() {
+      if ( this.music.loop.loopStart == "" ) {
+        this.music.loop.loopStart = 0;
+      } else if (this.music.loop.loopStart < 0) {
+        this.music.loop.loopStart = 0;
+        this.showAlert = true;
+        this.alertTitle = "루프 에러"
+        this.alertContent = "0 보다 작은 값은 입력할 수 없습니다.";
+      } else if ( this.music.loop.loopStart >= this.duration ) {
+        this.music.loop.loopStart = 0;
+        this.showAlert = true;
+        this.alertTitle = "루프 에러"
+        this.alertContent = "총 길이보다 크거나 같은 값은 입력할 수 없습니다.";      
+      }
+
+      if ( this.music.loop.loopEnd == "" ) {
+        this.music.loop.loopEnd = this.duration;
+      } else if (this.music.loop.loopEnd < 0) {
+        this.music.loop.loopEnd = this.duration;
+        this.showAlert = true;
+        this.alertTitle = "루프 에러"
+        this.alertContent = "0 보다 작은 값은 입력할 수 없습니다.";
+      } else if ( this.music.loop.loopEnd <= this.music.loop.loopStart ) {
+        this.music.loop.loopEnd = this.duration;
+        this.showAlert = true;
+        this.alertTitle = "루프 에러"
+        this.alertContent = "루프 시작 시간보다 작거나 같은 값은 입력할 수 없습니다.";
+      } else if ( this.music.loop.loopEnd > this.duration ) {
+        this.music.loop.loopEnd = this.duration;
+        this.showAlert = true;
+        this.alertTitle = "루프 에러"
+        this.alertContent = "총 길이보다 크거나 같은 값은 입력할 수 없습니다.";
+      }
+
+      if (!this.music.loop.loopEnd || this.music.loop.loopEnd < 0 || this.music.loop.loopEnd <= this.music.loop.loopStart) {
+        this.music.loop.loopEnd = 0;
+      } 
+      
       this.player.loopStart = this.music.loop.loopStart;
       this.player.loopEnd = this.music.loop.loopEnd;
       this.updateMusicOption();
@@ -557,6 +623,7 @@ export default {
     },
     setDuration(sec) {
       this.duration = sec;
+      this.music.loop.loopEnd = this.duration;
     },
     closeAlert() {
       this.showAlert = false;

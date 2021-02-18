@@ -10,14 +10,14 @@
             >
                 <v-card-title class="card-title">
                     <div>
-                        <div style="color: #ffffffbb">{{ title }}</div>
+                        <div style="color: #ffffffbb; padding-top: 5px; padding-left:5px">{{ title }}</div>
                    </div>
                 </v-card-title>
-                <v-card-text class="mx-auto pt-2 d-flex justify-space-between align-center">
+                <v-card-text class="pl-10 pt-2 d-flex text-color align-center">
                     {{ content }}
                 </v-card-text>
                 <v-card-actions class="card-actions">
-                    <v-btn color="#ffffffbb" text @click="close" >확인</v-btn>
+                    <v-btn color="#ffffffbb" text plain @click="close" >확인</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
