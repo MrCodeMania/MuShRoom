@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     toMain() {
-      this.$router.push({ name: "Home" });
+      window.location.href ='/';
     },
     toggleChat: function () {
       // 닉네임이 없으면

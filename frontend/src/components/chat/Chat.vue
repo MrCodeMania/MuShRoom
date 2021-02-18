@@ -4,9 +4,9 @@
     :class="openChat ? 'chat' : 'hide'"
     style="z-index: 99"
   >
-    <v-card dark width="100%" height="100%" class="main-color-light">
+    <v-card dark width="100%" height="100%" color="#8CBBD7">
       <!-- 채팅창 상단 -->
-      <v-card-title class="pr-2">
+      <v-card-title class="pr-2 main-color-light">
         Chat
         <v-spacer></v-spacer>
         <v-btn
@@ -31,7 +31,7 @@
         style="background-color: rgba(255, 255, 255, 0.733)"
       ></v-divider>
       <!-- 채팅창 하단 -->
-      <v-card-text class="bottom-area py-0">
+      <v-card-text class="bottom-area py-0 main-color-light">
         <v-row>
           <!-- text 입력칸 -->
           <v-col cols="10">
@@ -181,11 +181,11 @@ export default {
   height: 500px;
   bottom: 20px;
   border: 1px solid white;
-  border-radius: 3px;
+  border-radius: 5px;
 }
 
 .middle-area {
-  height: 65%;
+  height: 344px;
   width: 90%;
   overflow-y: auto;
 }
