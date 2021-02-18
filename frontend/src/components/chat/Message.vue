@@ -19,8 +19,8 @@
         </v-card>
         <div
         v-if="showTime()"
-        :class="msg.id==id ? 'myInfo':'yourInfo'"
-        style="width: 150px; font-size : 10px; color : grey;">
+        :class="msg.id==id ? 'myInfo':'yourInfoTime'"
+        style="width: 140px; font-size : 10px; color : grey;">
             {{ msg.time | time() }}
         </div>
     </div>
@@ -34,6 +34,9 @@ Vue.filter("time", (value) => {
     const temp = value.split(":");
     var hour = temp[0];
     var min = temp[1];
+    if (temp[0].length == 1) {
+        hour = '0' + temp[0];
+    }
     if (temp[1].length == 1 ) {
         min = '0' + temp[1];
     }
@@ -105,6 +108,11 @@ export default {
 
 .yourInfo {
     float: left;
+}
+
+.yourInfoTime {
+    float:left;
+    padding-left:110px;
 }
 
 </style>
