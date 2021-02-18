@@ -180,7 +180,7 @@
                 </template>
                 <span style="font-size: 10px"
                   >시작시간(start)과 끝시간(end)를 설정해 그 사이를 반복합니다
-                  어떤가요</span
+                  </span
                 ></v-tooltip
               >
               <p class="d-flex" style="font-size: 10px">
