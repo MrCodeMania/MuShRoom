@@ -47,7 +47,7 @@
         class="d-flex align-center justify-end main-color-light"
         elevation="0"
       >
-        <v-btn class="musicboard_btn" :disabled="isSetRecording" icon dark plain @click="musicPlayButton">
+        <v-btn class="musicboard_btn" :disabled="isSetRecording || isSetPlaying" icon dark plain @click="musicPlayButton">
           <div v-if="!play">
             <v-icon size="30px">mdi-play</v-icon>
           </div>
@@ -60,7 +60,7 @@
           icon
           dark
           plain
-          :disabled="isSetRecording"
+          :disabled="isSetRecording || isSetPlaying"
           @click="musicStopButton"
         >
           <v-icon size="30px">mdi-stop</v-icon>
@@ -200,6 +200,7 @@ export default {
     },
     musicPlayButton() {
       if (this.play) {
+        this.$store.state.isAllPlaying = false;
         Tone.Transport.pause();
       } else {
         this.$store.state.isAllPlaying = true;

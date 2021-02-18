@@ -1,7 +1,13 @@
 <template>
   <div id="player" style="border-radius: 5px">
     <div class="d-flex file-title">
-      <p class="file-name pb-2 medium">{{ music.fileName }}</p>
+      <div class="wrap1-long">
+        <div class="wrap2">
+          <div class="ml-2 medium text-color" :class="music.fileName.length > 50 ? 'wrap3':'wrap4'">
+            {{ music.fileName }}
+          </div>
+        </div>
+      </div>
       <v-spacer></v-spacer>
       <v-btn
         icon
@@ -473,6 +479,11 @@ export default {
       this.player.unsync();
     },
     sendDelete() {
+      this.$store.state.isSetPlaying = false;
+      this.$store.state.isAllPlaying = false;
+      this.$store.state.isSetIdx = -1;
+
+
       this.player.unsync();
       this.player.dispose();
       this.$emit("deleteMusic", this.n);

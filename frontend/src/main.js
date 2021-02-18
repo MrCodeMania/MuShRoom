@@ -9,6 +9,7 @@ import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import VueCookies from "vue-cookies";
 
+
 Vue.config.productionTip = false
 Vue.use(VueCookies);
 Vue.use(VueWaveSurfer);
