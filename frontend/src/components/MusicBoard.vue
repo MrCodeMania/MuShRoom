@@ -47,7 +47,14 @@
         class="d-flex align-center justify-end main-color-light"
         elevation="0"
       >
-        <v-btn class="musicboard_btn" :disabled="isSetRecording || isSetPlaying" icon dark plain @click="musicPlayButton">
+        <v-btn
+          class="musicboard_btn"
+          :disabled="isSetRecording || isSetPlaying"
+          icon
+          dark
+          plain
+          @click="musicPlayButton"
+        >
           <div v-if="!play">
             <v-icon size="30px">mdi-play</v-icon>
           </div>
@@ -105,7 +112,7 @@ export default {
     music: function () {
       return this.$store.getters.getBoard;
     },
-    ...mapState(['isSetRecording', 'isSetPlaying'])
+    ...mapState(["isSetRecording", "isSetPlaying"]),
   },
   methods: {
     send(type, msg) {
@@ -225,6 +232,12 @@ export default {
       Tone.Transport.stop();
       this.$store.state.isAllPlaying = false;
       this.play = false;
+
+      if (this.$refs.player) {
+        this.$refs.player.forEach((el) => {
+          el.stop();
+        });
+      }
     },
     onScroll() {
       this.scrollInvoked++;
