@@ -45,19 +45,18 @@
 <script>
 import Footer from '@/components/common/Footer.vue';
 import axios from '@/service/axios.service.js';
-import Config from '@/store/config'
+import Config from '@/store/config';
 
 export default {
   name: 'home',
   components: {
     Footer,
-    // MainModal
   },
   data: function() {
     return {
       src: require("@/assets/mushroom_v2.png"),
       logo: require("@/assets/Logo.png"),
-      showModal: false,
+      showModal: true,
       address: ""
     }
   },
