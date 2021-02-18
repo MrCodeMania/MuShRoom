@@ -1,43 +1,30 @@
 <template>
   <v-container>
-    <v-sheet height="420" color="1E1E1E" elevation="20" rounded>
-      <v-row no-gutters
-        ><v-col :cols="8">
-          <v-sheet
-            height="410"
-            color="303030"
-            rounded
-            class="d-flex align-center justify-center mt-1"
-          >
-            <div>
-              <v-img
-                max-height="400"
-                max-width="400"
-                contain
-                :src="src"
-              ></v-img></div></v-sheet
-        ></v-col>
-        <v-divider vertical class="ml-1"></v-divider>
-        <v-col>
+    <v-sheet height="420" color="black" elevation="20" rounded>
+      <v-row no-gutters class="d-flex flex-column justify-center">
+        <v-sheet
+          height="340"
+          color="black"
+          rounded
+          class="d-flex align-center justify-center"
+        >
           <div>
-            <v-sheet
-              rounded
-              width="200"
-              color="303030"
-              class="d-flex align-center mt-4 ml-1 justify-space-around"
-              ><div>
-                {{ describe[0] }}
-              </div>
-            </v-sheet>
-            <v-divider class="mt-4"></v-divider>
-            <v-sheet width="200" height="300" color="303030" class="mt-1 ml-1"
-              ><div
-                class="d-flex align-center justify-center mt-10"
-                v-html="describe[1]"
-              ></div
-            ></v-sheet>
-          </div>
-        </v-col>
+            <v-img
+              max-height="320"
+              max-width="420"
+              contain
+              :src="src"
+            ></v-img></div
+        ></v-sheet>
+        <v-divider class="mt-4"></v-divider>
+        <div class="d-flex justify-center align-center flex-column mt-6">
+          <v-sheet width="100%" color="black"
+            ><div
+              class="d-flex align-center justify-center"
+              v-html="describe[0]"
+            ></div
+          ></v-sheet>
+        </div>
       </v-row>
     </v-sheet>
   </v-container>
