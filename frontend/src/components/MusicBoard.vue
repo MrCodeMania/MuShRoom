@@ -47,7 +47,7 @@
         class="d-flex align-center justify-end main-color-light"
         elevation="0"
       >
-        <v-btn class="musicboard_btn" icon dark plain @click="musicPlayButton">
+        <v-btn class="musicboard_btn" :disabled="isSetRecording || isSetPlaying" icon dark plain @click="musicPlayButton">
           <div v-if="!play">
             <v-icon size="30px">mdi-play</v-icon>
           </div>
@@ -60,6 +60,7 @@
           icon
           dark
           plain
+          :disabled="isSetRecording || isSetPlaying"
           @click="musicStopButton"
         >
           <v-icon size="30px">mdi-stop</v-icon>
@@ -76,6 +77,7 @@ import Stomp from "webstomp-client";
 import SockJS from "sockjs-client";
 import Config from "@/store/config";
 import options from "@/store/option";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -103,6 +105,7 @@ export default {
     music: function () {
       return this.$store.getters.getBoard;
     },
+    ...mapState(['isSetRecording', 'isSetPlaying'])
   },
   methods: {
     send(type, msg) {
@@ -197,8 +200,10 @@ export default {
     },
     musicPlayButton() {
       if (this.play) {
+        this.$store.state.isAllPlaying = false;
         Tone.Transport.pause();
       } else {
+        this.$store.state.isAllPlaying = true;
         if (this.$refs.player) {
           this.$refs.player.forEach((el) => {
             el.addToTransport();
@@ -218,6 +223,7 @@ export default {
     musicStopButton() {
       // Feat: release all
       Tone.Transport.stop();
+      this.$store.state.isAllPlaying = false;
       this.play = false;
     },
     onScroll() {

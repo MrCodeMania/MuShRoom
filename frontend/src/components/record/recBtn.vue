@@ -27,6 +27,7 @@ import IconButton from "./icon-button";
 import Recorder from "@/lib/recorder";
 import UploaderPropsMixin from "@/mixins/uploader-props";
 import { convertTimeMMSS } from "@/lib/utils";
+
 export default {
   mixins: [UploaderPropsMixin],
   props: {
@@ -60,6 +61,7 @@ export default {
   },
   methods: {
     startRecorder() {
+      
       if (this.attempts && this.recorder.records.length >= this.attempts) {
         return;
       }
@@ -71,6 +73,7 @@ export default {
           this.recorder.start();
         }
       }
+      this.$store.state.isSetRecording = true;
     },
     stopRecorder() {
       if (!this.isRecording) {
@@ -82,6 +85,7 @@ export default {
         this.recorder.stop();
         this.recordList = this.recorder.recordList();
       }
+      this.$store.state.isSetRecording = false;
     },
     _initRecorder() {
       return new Recorder({
