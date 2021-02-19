@@ -180,24 +180,28 @@ export default {
     },
 
     onVolumeMute() {
-      if(!this.mute) {
-        this.saveVolume = this.volume;
-        this.volume = -50;
-      } else {
-        this.volume = this.saveVolume;
+      if (this.isSetMetronome ) {
+        if(!this.mute) {
+          this.saveVolume = this.volume;
+          this.volume = -50;
+        } else {
+          this.volume = this.saveVolume;
+        }
+        this.mute = !this.mute;
+        Destination.mute = this.mute;
       }
-      this.mute = !this.mute;
-      Destination.mute = this.mute;
 
     },
 
     onChangeBySlide() {
-      if (this.mute) {
-        this.onVolumeMute()
-      }
-      Destination.volume.value = this.volume/2;
-      if (this.volume == -50) {
-        Destination.mute = !this.mute;
+      if (this.isSetMetronome) {
+        if (this.mute) {
+          this.onVolumeMute()
+        }
+        Destination.volume.value = this.volume/2;
+        if (this.volume == -50) {
+          Destination.mute = !this.mute;
+        }
       }
     },
 
@@ -316,7 +320,7 @@ export default {
     getRC() {
       return this.$store.getters.getRC;
     },
-    ...mapState(["recordStartState"]),
+    ...mapState(["recordStartState", "isSetMetronome"]),
   },
 
   mounted() {
