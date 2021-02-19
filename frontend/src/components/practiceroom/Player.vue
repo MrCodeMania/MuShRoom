@@ -381,6 +381,15 @@ export default {
             this.checkFinish = true;
             this.$emit("finished");
           }
+
+          this.$store.state.isSetPlaying = false;
+          this.$store.state.isSetIdx = -1;
+
+          this.$refs.waveform.setTime(0);
+          this.currentTime = 0;
+          this.startTime = 0;
+          this.state = "stopped";
+          this.player.unsync();
         };
         player.volume.value = this.music.volume.value;
         player.loop = this.music.loop.loop;
