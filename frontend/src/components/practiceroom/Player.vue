@@ -33,7 +33,11 @@
           plain
           class="mt-4"
           :disabled="
-            player == null || isAllPlaying || isSetRecording || isSetPlaying || isSetMetronome
+            player == null ||
+            isAllPlaying ||
+            isSetRecording ||
+            isSetPlaying ||
+            isSetMetronome
           "
           v-on:click="start()"
         >
@@ -56,7 +60,10 @@
           dark
           class="mt-4"
           :disabled="
-            isAllPlaying || isSetRecording || isSetMetronome || (isSetIdx != -1 && isSetIdx != n)
+            isAllPlaying ||
+            isSetRecording ||
+            isSetMetronome ||
+            (isSetIdx != -1 && isSetIdx != n)
           "
           v-on:click="stop()"
         >
@@ -180,8 +187,7 @@
                 </template>
                 <span style="font-size: 10px"
                   >시작시간(start)과 끝시간(end)를 설정해 그 사이를 반복합니다
-                  </span
-                ></v-tooltip
+                </span></v-tooltip
               >
               <p class="d-flex" style="font-size: 10px">
                 Loop
@@ -296,7 +302,12 @@
       </v-sheet>
     </div>
     <v-divider class="mt-3"></v-divider>
-    <Alert :showAlert="showAlert" :title="alertTitle" :content="alertContent" @close="closeAlert" />
+    <Alert
+      :showAlert="showAlert"
+      :title="alertTitle"
+      :content="alertContent"
+      @close="closeAlert"
+    />
   </div>
 </template>
 
@@ -304,7 +315,7 @@
 import * as Tone from "tone";
 import Waveform from "./Waveform.vue";
 import { mapState } from "vuex";
-import Alert from '@/components/common/Alert.vue';
+import Alert from "@/components/common/Alert.vue";
 
 export default {
   name: "Player",
@@ -314,7 +325,7 @@ export default {
   },
   components: {
     Waveform,
-    Alert
+    Alert,
   },
   data() {
     return {
@@ -327,17 +338,22 @@ export default {
       duration: null,
       startTime: 0,
       checkFinish: false,
-      alertTitle: '제목',
-      alertContent: '내용',
-      showAlert: false
+      alertTitle: "제목",
+      alertContent: "내용",
+      showAlert: false,
     };
   },
   created() {
     this.constructor();
-
   },
   computed: {
-    ...mapState(["isSetIdx", "isSetPlaying", "isAllPlaying", "isSetRecording", "isSetMetronome"]),
+    ...mapState([
+      "isSetIdx",
+      "isSetPlaying",
+      "isAllPlaying",
+      "isSetRecording",
+      "isSetMetronome",
+    ]),
   },
   watch: {
     music: function () {
@@ -350,7 +366,6 @@ export default {
       const player = new Tone.Player(this.music.url, () => {
         this.player = player;
         this.player.onstop = () => {
-          console.log("stop");
           if (this.state == "stopped" || this.state == "paused") {
             //Tone.Transport.stop();
           } else {
@@ -363,9 +378,9 @@ export default {
             }
           }
 
-          if(!this.checkFinish){
+          if (!this.checkFinish) {
             this.checkFinish = true;
-            this.$emit('finished');
+            this.$emit("finished");
           }
         };
         player.volume.value = this.music.volume.value;
@@ -390,6 +405,9 @@ export default {
       this.status = this.$store.state.status;
     },
     start() {
+      // 자신 이외의 모든 Player stop
+      this.$emit("release", this.n);
+
       this.$store.state.isSetPlaying = true;
       this.$store.state.isSetIdx = this.n;
 
@@ -413,7 +431,7 @@ export default {
       // offset: 시작할 오프셋 위치. 초 단위
       // 박자로 시간과 오프셋을 맞추고싶다면: time or offset + Tone.Time(박자).toSeconds();
       Tone.Transport.start();
-      setTimeout(() => this.moveProgressBar(), this.music.delay.delay * 1000);
+      this.moveProgressBar();
     },
     pause() {
       this.$store.state.isSetPlaying = false;
@@ -452,28 +470,29 @@ export default {
     },
     updateMusicOption(point) {
       if (point == "offset") {
-        if ( this.music.delay.offset == "" ) {
+        if (this.music.delay.offset == "") {
           this.music.delay.offset = 0;
-        } else if ( this.music.delay.offset < 0 ) {
+        } else if (this.music.delay.offset < 0) {
           this.music.delay.offset = 0;
           this.showAlert = true;
-          this.alertTitle = "스타트포인트 에러"
+          this.alertTitle = "스타트포인트 에러";
           this.alertContent = "0 보다 작은 값은 입력할 수 없습니다.";
-        } else if ( this.music.delay.offset >= this.duration ) {
+        } else if (this.music.delay.offset >= this.duration) {
           this.showAlert = true;
           this.music.delay.offset = 0;
-          this.alertTitle = "스타트포인트 에러"
-          this.alertContent ="총 길이보다 크거나 같은 값은 입력할 수 없습니다.";
+          this.alertTitle = "스타트포인트 에러";
+          this.alertContent =
+            "총 길이보다 크거나 같은 값은 입력할 수 없습니다.";
         }
       } else {
-        if ( this.music.delay.delay == "" ) {
+        if (this.music.delay.delay == "") {
           this.music.delay.delay = 0;
-        } else if ( this.music.delay.delay < 0 ) {
+        } else if (this.music.delay.delay < 0) {
           this.music.delay.delay = 0;
           this.showAlert = true;
-          this.alertTitle = "딜레이 에러"
+          this.alertTitle = "딜레이 에러";
           this.alertContent = "0 보다 작은 값은 입력할 수 없습니다.";
-        } 
+        }
       }
 
       this.$emit("updateMusicOption", this.n);
@@ -497,43 +516,48 @@ export default {
       this.updateMusicOption();
     },
     setLoopTime() {
-      if ( this.music.loop.loopStart == "" ) {
+      if (this.music.loop.loopStart == "") {
         this.music.loop.loopStart = 0;
       } else if (this.music.loop.loopStart < 0) {
         this.music.loop.loopStart = 0;
         this.showAlert = true;
-        this.alertTitle = "루프 에러"
+        this.alertTitle = "루프 에러";
         this.alertContent = "0 보다 작은 값은 입력할 수 없습니다.";
-      } else if ( this.music.loop.loopStart >= this.duration ) {
+      } else if (this.music.loop.loopStart >= this.duration) {
         this.music.loop.loopStart = 0;
         this.showAlert = true;
-        this.alertTitle = "루프 에러"
-        this.alertContent = "총 길이보다 크거나 같은 값은 입력할 수 없습니다.";      
+        this.alertTitle = "루프 에러";
+        this.alertContent = "총 길이보다 크거나 같은 값은 입력할 수 없습니다.";
       }
 
-      if ( this.music.loop.loopEnd == "" ) {
+      if (this.music.loop.loopEnd == "") {
         this.music.loop.loopEnd = this.duration;
       } else if (this.music.loop.loopEnd < 0) {
         this.music.loop.loopEnd = this.duration;
         this.showAlert = true;
-        this.alertTitle = "루프 에러"
+        this.alertTitle = "루프 에러";
         this.alertContent = "0 보다 작은 값은 입력할 수 없습니다.";
-      } else if ( this.music.loop.loopEnd <= this.music.loop.loopStart ) {
+      } else if (this.music.loop.loopEnd <= this.music.loop.loopStart) {
         this.music.loop.loopEnd = this.duration;
         this.showAlert = true;
-        this.alertTitle = "루프 에러"
-        this.alertContent = "루프 시작 시간보다 작거나 같은 값은 입력할 수 없습니다.";
-      } else if ( this.music.loop.loopEnd > this.duration ) {
+        this.alertTitle = "루프 에러";
+        this.alertContent =
+          "루프 시작 시간보다 작거나 같은 값은 입력할 수 없습니다.";
+      } else if (this.music.loop.loopEnd > this.duration) {
         this.music.loop.loopEnd = this.duration;
         this.showAlert = true;
-        this.alertTitle = "루프 에러"
+        this.alertTitle = "루프 에러";
         this.alertContent = "총 길이보다 크거나 같은 값은 입력할 수 없습니다.";
       }
 
-      if (!this.music.loop.loopEnd || this.music.loop.loopEnd < 0 || this.music.loop.loopEnd <= this.music.loop.loopStart) {
+      if (
+        !this.music.loop.loopEnd ||
+        this.music.loop.loopEnd < 0 ||
+        this.music.loop.loopEnd <= this.music.loop.loopStart
+      ) {
         this.music.loop.loopEnd = 0;
-      } 
-      
+      }
+
       this.player.loopStart = this.music.loop.loopStart;
       this.player.loopEnd = this.music.loop.loopEnd;
       this.updateMusicOption();
@@ -548,51 +572,52 @@ export default {
         );
 
       this.checkFinish = false;
-      setTimeout(() => this.moveProgressBar(), this.music.delay.delay * 1000);
+      this.moveProgressBar();
     },
-    moveProgressBar() {
-      let interval = setInterval(() => {
-        console.log(this.startTime, this.currentTime, this.duration);
-        if (this.duration < this.startTime + this.currentTime) {
-          this.$store.state.isSetPlaying = false;
-          this.$store.state.isSetIdx = -1;
+    moveProgressBar(wait = this.music.delay.delay * 1000) {
+      setTimeout(() => {
+        let interval = setInterval(() => {
+          if (this.duration < this.startTime + this.currentTime) {
+            this.$store.state.isSetPlaying = false;
+            this.$store.state.isSetIdx = -1;
 
-          this.$refs.waveform.setTime(0);
-          this.currentTime = 0;
-          this.startTime = 0;
-          this.state = "stopped";
-          this.player.unsync();
-        }
+            this.$refs.waveform.setTime(0);
+            this.currentTime = 0;
+            this.startTime = 0;
+            this.state = "stopped";
+            this.player.unsync();
+          }
 
-        let time;
-        if (Tone.Transport.seconds > 0) {
-          if (this.player.loop) {
-            if (this.music.loop.loopEnd > this.music.loop.loopStart) {
-              time =
-                (Tone.Transport.seconds %
-                  (this.music.loop.loopStart - this.music.loop.loopEnd)) +
-                this.music.loop.loopStart;
+          let time;
+          if (Tone.Transport.seconds > 0) {
+            if (this.player.loop) {
+              if (this.music.loop.loopEnd > this.music.loop.loopStart) {
+                time =
+                  (Tone.Transport.seconds %
+                    (this.music.loop.loopStart - this.music.loop.loopEnd)) +
+                  this.music.loop.loopStart;
+              } else {
+                time =
+                  this.music.loop.loopStart +
+                  (Tone.Transport.seconds %
+                    (this.duration - this.music.loop.loopStart));
+              }
             } else {
               time =
-                this.music.loop.loopStart +
-                (Tone.Transport.seconds %
-                  (this.duration - this.music.loop.loopStart));
+                Tone.Transport.seconds +
+                this.music.delay.offset -
+                this.music.delay.delay;
             }
-          } else {
-            time =
-              Tone.Transport.seconds +
-              this.music.delay.offset -
-              this.music.delay.delay;
+            this.currentTime = time;
+            //if (this.currentTime > this.duration) this.stop();
+            this.$refs.waveform.setTime(this.startTime + time);
           }
-          this.currentTime = time;
-          //if (this.currentTime > this.duration) this.stop();
-          this.$refs.waveform.setTime(this.startTime + time);
-        }
-        if (this.player.state != "started") {
-          this.startTime += this.currentTime;
-          clearInterval(interval);
-        }
-      }, 50);
+          if (this.player.state != "started") {
+            this.startTime += this.currentTime;
+            clearInterval(interval);
+          }
+        }, 50);
+      }, wait);
     },
     removeFromTransport() {
       this.currentTime = 0;
@@ -611,7 +636,6 @@ export default {
     setTime(sec) {
       this.player.unsync();
 
-      console.log(typeof sec);
       this.startTime = parseInt(sec);
       this.currentTime = 0;
       if (this.state == "started") {
@@ -627,7 +651,7 @@ export default {
     },
     closeAlert() {
       this.showAlert = false;
-    }
+    },
   },
 };
 </script>

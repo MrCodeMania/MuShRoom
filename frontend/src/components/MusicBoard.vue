@@ -36,6 +36,7 @@
         :music="item"
         @deleteMusic="deleteMusic"
         @updateMusicOption="updateMusicOption"
+        @release="musicStopButton"
         @finished="isAllFinished"
         ref="player"
       />
@@ -92,7 +93,7 @@ export default {
       scrollInvoked: 0,
       code: "",
       status,
-      finished: 0
+      finished: 0,
     };
   },
   created() {
@@ -109,7 +110,7 @@ export default {
     music: function () {
       return this.$store.getters.getBoard;
     },
-    numOfMusic: function() {
+    numOfMusic: function () {
       return this.music.length;
     },
     ...mapState(["isSetRecording", "isSetPlaying", "isSetMetronome"]),
@@ -223,7 +224,7 @@ export default {
 
       this.play = true;
     },
-    musicStopButton() {
+    musicStopButton(idx) {
       // Feat: release all
       Tone.Transport.stop();
       this.$store.state.isAllPlaying = false;
@@ -231,7 +232,7 @@ export default {
 
       if (this.$refs.player) {
         this.$refs.player.forEach((el) => {
-          el.stop();
+          if (el.n != idx) el.stop();
         });
       }
       this.finished = 0;
@@ -266,9 +267,8 @@ export default {
       });
     },
     isAllFinished() {
-      if(++this.finished == this.numOfMusic)
-        this.musicStopButton();
-    }
+      if (++this.finished == this.numOfMusic) this.musicStopButton();
+    },
   },
 };
 </script>
