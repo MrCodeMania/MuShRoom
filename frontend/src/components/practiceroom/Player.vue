@@ -530,20 +530,20 @@ export default {
       }
 
       if (this.music.loop.loopEnd == "") {
-        this.music.loop.loopEnd = this.duration;
+        this.music.loop.loopEnd = 0;
       } else if (this.music.loop.loopEnd < 0) {
-        this.music.loop.loopEnd = this.duration;
+        this.music.loop.loopEnd = 0;
         this.showAlert = true;
         this.alertTitle = "루프 에러";
         this.alertContent = "0 보다 작은 값은 입력할 수 없습니다.";
       } else if (this.music.loop.loopEnd <= this.music.loop.loopStart) {
-        this.music.loop.loopEnd = this.duration;
+        this.music.loop.loopEnd = 0;
         this.showAlert = true;
         this.alertTitle = "루프 에러";
         this.alertContent =
           "루프 시작 시간보다 작거나 같은 값은 입력할 수 없습니다.";
       } else if (this.music.loop.loopEnd > this.duration) {
-        this.music.loop.loopEnd = this.duration;
+        this.music.loop.loopEnd = 0;
         this.showAlert = true;
         this.alertTitle = "루프 에러";
         this.alertContent = "총 길이보다 크거나 같은 값은 입력할 수 없습니다.";
@@ -646,7 +646,6 @@ export default {
     },
     setDuration(sec) {
       this.duration = sec;
-      this.music.loop.loopEnd = this.duration;
     },
     closeAlert() {
       this.showAlert = false;
