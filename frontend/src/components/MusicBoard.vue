@@ -51,7 +51,13 @@
       >
         <v-btn
           class="musicboard_btn"
-          :disabled="isSetRecording || isSetPlaying || play || music.length == 0 || isSetMetronome"
+          :disabled="
+            isSetRecording ||
+            isSetPlaying ||
+            play ||
+            music.length == 0 ||
+            isSetMetronome
+          "
           icon
           dark
           plain
@@ -135,7 +141,7 @@ export default {
         (frame) => {
           // 소켓 연결 성공
           this.connected = true;
-          console.log("뮤직보드 소켓 연결 성공", frame);
+          frame;
 
           this.musicStompClient.subscribe(
             "/socket/music/" + this.code + "/0/send",
@@ -219,7 +225,7 @@ export default {
         });
       } else {
         // error
-        console.log("player 가 존재하지 않습니다.");
+        //console.log("player 가 존재하지 않습니다.");
       }
 
       this.play = true;

@@ -20,7 +20,15 @@
       class="main-color-light d-flex align-center"
       style="border-radius: 0px"
     >
-      <v-btn icon dark plain class="ml-5" :disabled="isSetPlaying || isSetRecording || isAllPlaying || isSetMetronome"  @click="showRecord = !showRecord"
+      <v-btn
+        icon
+        dark
+        plain
+        class="ml-5"
+        :disabled="
+          isSetPlaying || isSetRecording || isAllPlaying || isSetMetronome
+        "
+        @click="showRecord = !showRecord"
         ><v-icon size="26px">mdi-microphone</v-icon>
       </v-btn>
       <v-btn icon dark plain @click="file_upload_open"
@@ -49,7 +57,7 @@ import Stomp from "webstomp-client";
 import SockJS from "sockjs-client";
 import Config from "@/store/config";
 import options from "@/store/option";
-import { mapState} from "vuex";
+import { mapState } from "vuex";
 
 export default {
   data: () => {
@@ -64,7 +72,12 @@ export default {
     records: function () {
       return this.$store.getters.getRecords;
     },
-    ...mapState(['isSetPlaying', 'isSetRecording', 'isAllPlaying', 'isSetMetronome'])
+    ...mapState([
+      "isSetPlaying",
+      "isSetRecording",
+      "isAllPlaying",
+      "isSetMetronome",
+    ]),
   },
   created() {
     // 권한
@@ -109,7 +122,7 @@ export default {
         (frame) => {
           // 소켓 연결 성공
           this.connected = true;
-          console.log("레코드 소켓 연결 성공", frame);
+          frame;
 
           this.recordStompClient.subscribe(
             "/socket/record/" + this.code + "/send",
@@ -154,7 +167,7 @@ export default {
         (frame) => {
           // // 소켓 연결 성공
           this.connected = true;
-          console.log("레코드 소켓 연결 성공", frame);
+          frame;
           this.musicStompClient.subscribe(
             "/socket/music/" + this.code + "/0/send",
             (res) => {

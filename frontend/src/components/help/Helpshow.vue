@@ -134,7 +134,7 @@ export default {
       navigator.mediaDevices
         .getUserMedia(constraints)
         .then((stream) => {
-          console.debug(stream);
+          stream;
         })
         .catch((err) => {
           console.log("The following error occurred: " + err);

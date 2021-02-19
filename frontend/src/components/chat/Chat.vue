@@ -25,16 +25,20 @@
         </div>
       </v-container>
       <!-- 채팅창 하단 -->
-      <v-card-text class="bottom-area pa-0 mx-auto mt-5"
-      style="background-color: #00ff0000;">
+      <v-card-text
+        class="bottom-area pa-0 mx-auto mt-5"
+        style="background-color: #00ff0000"
+      >
         <v-row>
           <!-- text 입력칸 -->
-          <v-col cols="10" 
-          style="height: 50px;"
-          class="d-flex align-center mt-4">
+          <v-col
+            cols="10"
+            style="height: 50px"
+            class="d-flex align-center mt-4"
+          >
             <v-textarea
               color="white !important"
-              style="font-size: 14px;"
+              style="font-size: 14px"
               class="ml-2 mb-5 chat-area"
               v-model="sentence"
               @keyup.enter="sendMessage()"
@@ -86,7 +90,7 @@ export default {
     this.connect();
   },
   methods: {
-    moveBottom(){
+    moveBottom() {
       var obj = document.getElementById("scroll-target");
       obj.scrollTop = obj.scrollHeight;
     },
@@ -122,8 +126,8 @@ export default {
         time: time,
         text: resBody["message"],
       });
-      
-      this.moveBottom();  // 리스트에 집어넣고 스크롤 하단으로
+
+      this.moveBottom(); // 리스트에 집어넣고 스크롤 하단으로
       //  창이 닫혀있는데 새 메세지가 오면 PracticeRoom에서 newChat++;
       if (!this.openChat) this.$emit("newChat");
     },

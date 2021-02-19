@@ -31,7 +31,7 @@ export default {
         return;
       }
       // 파일 업로드 상태 emit
-      this.$emit('fileUploading');
+      this.$emit("fileUploading");
       for (let i = 0; i < this.files.length; i++) {
         const data = new FormData();
         var date = new Date();
@@ -50,7 +50,7 @@ export default {
           });
       }
       this.$refs.uploader.value = "";
-      console.log(this.$refs.uploader.value);
+      //console.log(this.$refs.uploader.value);
     },
   },
 };
