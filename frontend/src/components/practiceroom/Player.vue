@@ -11,7 +11,7 @@
           </div>
         </div>
       </div>
-      .
+
       <v-spacer></v-spacer>
       <v-btn
         icon
@@ -301,7 +301,6 @@
         </v-card>
       </v-sheet>
     </div>
-    <v-divider class="mt-3"></v-divider>
     <Alert
       :showAlert="showAlert"
       :title="alertTitle"
